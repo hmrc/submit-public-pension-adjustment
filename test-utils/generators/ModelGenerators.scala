@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.config
+package generators
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+trait ModelGenerators extends Generators {
 
-@Singleton
-class AppConfig @Inject()(config: Configuration) {
-
-  val appName: String = config.get[String]("appName")
 }

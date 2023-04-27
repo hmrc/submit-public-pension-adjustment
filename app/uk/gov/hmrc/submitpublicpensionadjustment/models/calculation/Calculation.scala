@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.config
+package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import play.api.libs.json.{Format, Json, OFormat}
 
-@Singleton
-class AppConfig @Inject()(config: Configuration) {
+import java.time.Instant
 
-  val appName: String = config.get[String]("appName")
+final case class Calculation(
+  nino: String,
+  dataItem1: String,
+  submissionReference: String,
+  created: Instant
+)
+
+object Calculation {
+
+  implicit def format(implicit f: Format[Instant]): OFormat[Calculation] = Json.format
 }

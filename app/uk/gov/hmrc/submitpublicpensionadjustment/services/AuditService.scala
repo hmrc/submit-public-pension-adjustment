@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.config
+package uk.gov.hmrc.submitpublicpensionadjustment.services
+
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.audit.http.connector.AuditConnector
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.CalculationSubmissionEvent
 
 import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import scala.concurrent.ExecutionContext
 
 @Singleton
-class AppConfig @Inject()(config: Configuration) {
+class AuditService @Inject() (
+  auditConnector: AuditConnector
+)(implicit ec: ExecutionContext) {
 
-  val appName: String = config.get[String]("appName")
+  def auditSubmitRequest(event: CalculationSubmissionEvent)(implicit hc: HeaderCarrier): Unit =
+    auditConnector.sendExplicitAudit("CalculationSubmission", event)
 }

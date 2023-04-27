@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.config
+package uk.gov.hmrc.submitpublicpensionadjustment.services
 
 import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import scala.util.Random
 
 @Singleton
-class AppConfig @Inject()(config: Configuration) {
+class SubmissionReferenceService @Inject() () {
 
-  val appName: String = config.get[String]("appName")
+  def random(): String =
+    Random.alphanumeric
+      .take(12)
+      .mkString
+      .toUpperCase
 }

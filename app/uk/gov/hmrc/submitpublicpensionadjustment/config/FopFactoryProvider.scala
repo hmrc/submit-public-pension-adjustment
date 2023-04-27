@@ -16,11 +16,16 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.config
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import org.apache.fop.apps.{FopFactory, FopFactoryBuilder}
+import play.api.Environment
+
+import javax.inject.{Inject, Provider, Singleton}
 
 @Singleton
-class AppConfig @Inject()(config: Configuration) {
-
-  val appName: String = config.get[String]("appName")
+class FopFactoryProvider @Inject() (
+  environment: Environment
+) extends Provider[FopFactory] {
+  override def get(): FopFactory =
+    new FopFactoryBuilder(environment.rootPath.toURI)
+      .build()
 }
