@@ -68,7 +68,6 @@ class InternalAuthTokenInitialiserImpl @Inject() (
 
   private def setup(): Future[Done] = for {
     _ <- ensureAuthToken()
-    //_ <- addDmsSubmissionGrants()
   } yield Done
 
   private def ensureAuthToken(): Future[Done] =
@@ -78,6 +77,7 @@ class InternalAuthTokenInitialiserImpl @Inject() (
         Future.successful(Done)
       } else {
         createClientAuthToken()
+        addDmsSubmissionGrants()
       }
     }
 
