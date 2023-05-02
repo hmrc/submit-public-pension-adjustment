@@ -45,9 +45,10 @@ class IdentifierAction @Inject() (val authConnector: AuthConnector, val parser: 
 
     authorised(AffinityGroup.Individual and ConfidenceLevel.L50).retrieve(retrievals) {
       case Some(nino) ~ Some(internalId) ~ Some(affinityGroup) ~ credentialRole =>
-        val eventualResult: Future[Result] = block(IdentifierRequest(request, nino, internalId, affinityGroup, credentialRole))
+        val eventualResult: Future[Result] =
+          block(IdentifierRequest(request, nino, internalId, affinityGroup, credentialRole))
         eventualResult
-      case _          =>
+      case _                                                                    =>
         Future.successful(Unauthorized)
     }
   }

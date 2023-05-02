@@ -38,14 +38,20 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 import scala.concurrent.Future
 
-class DmsSubmissionServiceSpec extends AnyFreeSpec with Matchers with ScalaFutures with OptionValues with MockitoSugar with BeforeAndAfterEach {
+class DmsSubmissionServiceSpec
+    extends AnyFreeSpec
+    with Matchers
+    with ScalaFutures
+    with OptionValues
+    with MockitoSugar
+    with BeforeAndAfterEach {
 
   override def beforeEach(): Unit = {
     super.beforeEach()
     reset(mockFopService, mockDmsSubmissionConnector)
   }
 
-  private val mockFopService = mock[FopService]
+  private val mockFopService             = mock[FopService]
   private val mockDmsSubmissionConnector = mock[DmsSubmissionConnector]
 
   private lazy val app = GuiceApplicationBuilder()
@@ -58,15 +64,15 @@ class DmsSubmissionServiceSpec extends AnyFreeSpec with Matchers with ScalaFutur
     )
     .build()
 
-  private lazy val service = app.injector.instanceOf[DmsSubmissionService]
-  private lazy val calculationTemplate = app.injector.instanceOf[CalculationPdf]
-  private implicit lazy val mat: Materializer = app.injector.instanceOf[Materializer]
+  private lazy val service                     = app.injector.instanceOf[DmsSubmissionService]
+  private lazy val calculationTemplate         = app.injector.instanceOf[CalculationPdf]
+  private implicit lazy val mat: Materializer  = app.injector.instanceOf[Materializer]
   private implicit lazy val messages: Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
 
   "submitCalculation" - {
 
     val submissionReference = "submissionReference"
-    val now = Instant.now.truncatedTo(ChronoUnit.MILLIS)
+    val now                 = Instant.now.truncatedTo(ChronoUnit.MILLIS)
 
     val calculation = Calculation(
       nino = "nino",
@@ -79,20 +85,27 @@ class DmsSubmissionServiceSpec extends AnyFreeSpec with Matchers with ScalaFutur
 
     "must create a PDF from the calculation and send it to DMS Submission" in {
 
-      val bytes = "PdfBytes".getBytes("UTF-8")
+      val bytes                                               = "PdfBytes".getBytes("UTF-8")
       val sourceCaptor: ArgumentCaptor[Source[ByteString, _]] = ArgumentCaptor.forClass(classOf[Source[ByteString, _]])
 
       when(mockFopService.render(any())).thenReturn(Future.successful(bytes))
-      when(mockDmsSubmissionConnector.submitCalculation(any(), any(), any(), any())(any())).thenReturn(Future.successful(Done))
+      when(mockDmsSubmissionConnector.submitCalculation(any(), any(), any(), any())(any()))
+        .thenReturn(Future.successful(Done))
 
       val expectedXml = calculationTemplate(calculation).body
 
       service.submitCalculation(calculation)(hc).futureValue
 
       verify(mockFopService).render(eqTo(expectedXml))
-      verify(mockDmsSubmissionConnector).submitCalculation(eqTo("nino"), sourceCaptor.capture(), eqTo(calculation.created), eqTo(submissionReference))(eqTo(hc))
+      verify(mockDmsSubmissionConnector).submitCalculation(
+        eqTo("nino"),
+        sourceCaptor.capture(),
+        eqTo(calculation.created),
+        eqTo(submissionReference)
+      )(eqTo(hc))
 
-      val result = sourceCaptor.getValue().toMat(Sink.fold(ByteString.emptyByteString)(_ ++ _))(Keep.right).run().futureValue
+      val result =
+        sourceCaptor.getValue().toMat(Sink.fold(ByteString.emptyByteString)(_ ++ _))(Keep.right).run().futureValue
 
       result.decodeString("UTF-8") mustEqual "PdfBytes"
     }
@@ -109,7 +122,8 @@ class DmsSubmissionServiceSpec extends AnyFreeSpec with Matchers with ScalaFutur
     "must fail if the dms submission connector fails" in {
 
       when(mockFopService.render(any())).thenReturn(Future.successful(Array.emptyByteArray))
-      when(mockDmsSubmissionConnector.submitCalculation(any(), any(), any(), any())(any())).thenReturn(Future.failed(new RuntimeException()))
+      when(mockDmsSubmissionConnector.submitCalculation(any(), any(), any(), any())(any()))
+        .thenReturn(Future.failed(new RuntimeException()))
 
       service.submitCalculation(calculation)(hc).failed.futureValue
     }

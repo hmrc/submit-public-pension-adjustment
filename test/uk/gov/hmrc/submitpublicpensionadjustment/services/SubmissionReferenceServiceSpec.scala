@@ -26,7 +26,7 @@ class SubmissionReferenceServiceSpec extends AnyFreeSpec with Matchers {
     "must generate valid submission references" in {
 
       val service = new SubmissionReferenceService()
-      val ids = Vector.fill(100)(service.random())
+      val ids     = Vector.fill(100)(service.random())
       val pattern = """^[\dA-Z]{4}(-?)[\dA-Z]{4}\1[\dA-Z]{4}$"""
 
       ids.foreach { id =>

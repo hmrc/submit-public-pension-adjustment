@@ -30,8 +30,14 @@ import play.api.libs.json.Json
 import play.api.test.Helpers.AUTHORIZATION
 import uk.gov.hmrc.submitpublicpensionadjustment.utils.WireMockHelper
 
-class InternalAuthInitialiserSpec extends AnyFreeSpec with Matchers with ScalaFutures with IntegrationPatience with WireMockHelper with BeforeAndAfterEach
-  with BeforeAndAfterAll{
+class InternalAuthInitialiserSpec
+    extends AnyFreeSpec
+    with Matchers
+    with ScalaFutures
+    with IntegrationPatience
+    with WireMockHelper
+    with BeforeAndAfterEach
+    with BeforeAndAfterAll {
 
   override def beforeAll(): Unit = {
     super.beforeAll()
@@ -53,16 +59,16 @@ class InternalAuthInitialiserSpec extends AnyFreeSpec with Matchers with ScalaFu
     "must initialise the internal-auth token if it is not already initialised" in {
 
       val authToken = "authToken"
-      val appName = "appName"
+      val appName   = "appName"
 
       val expectedRequest = Json.obj(
-        "token" -> authToken,
-        "principal" -> appName,
+        "token"       -> authToken,
+        "principal"   -> appName,
         "permissions" -> Seq(
           Json.obj(
-            "resourceType" -> "dms-submission",
+            "resourceType"     -> "dms-submission",
             "resourceLocation" -> "submit",
-            "actions" -> List("WRITE")
+            "actions"          -> List("WRITE")
           )
         )
       )
@@ -80,18 +86,20 @@ class InternalAuthInitialiserSpec extends AnyFreeSpec with Matchers with ScalaFu
       GuiceApplicationBuilder()
         .configure(
           "microservice.services.internal-auth.port" -> wireMockServer.port(),
-          "appName" -> appName,
-          "internal-auth-token-initialiser.enabled" -> true,
-          "internal-auth.token" -> authToken
+          "appName"                                  -> appName,
+          "internal-auth-token-initialiser.enabled"  -> true,
+          "internal-auth.token"                      -> authToken
         )
         .build()
 
       eventually(Timeout(Span(30, Seconds))) {
-        wireMockServer.verify(1,
+        wireMockServer.verify(
+          1,
           getRequestedFor(urlMatching("/test-only/token"))
             .withHeader(AUTHORIZATION, equalTo(authToken))
         )
-        wireMockServer.verify(1,
+        wireMockServer.verify(
+          1,
           postRequestedFor(urlMatching("/test-only/token"))
             .withRequestBody(equalToJson(Json.stringify(Json.toJson(expectedRequest))))
         )
@@ -101,7 +109,7 @@ class InternalAuthInitialiserSpec extends AnyFreeSpec with Matchers with ScalaFu
     "must not initialise the internal-auth token if it is already initialised" in {
 
       val authToken = "authToken"
-      val appName = "appName"
+      val appName   = "appName"
 
       wireMockServer.stubFor(
         get(urlMatching("/test-only/token"))
@@ -116,21 +124,20 @@ class InternalAuthInitialiserSpec extends AnyFreeSpec with Matchers with ScalaFu
       val app = GuiceApplicationBuilder()
         .configure(
           "microservice.services.internal-auth.port" -> wireMockServer.port(),
-          "appName" -> appName,
-          "internal-auth-token-initialiser.enabled" -> true,
-          "internal-auth.token" -> authToken
+          "appName"                                  -> appName,
+          "internal-auth-token-initialiser.enabled"  -> true,
+          "internal-auth.token"                      -> authToken
         )
         .build()
 
       app.injector.instanceOf[InternalAuthTokenInitialiser].initialised.futureValue
 
-      wireMockServer.verify(1,
+      wireMockServer.verify(
+        1,
         getRequestedFor(urlMatching("/test-only/token"))
           .withHeader(AUTHORIZATION, equalTo(authToken))
       )
-      wireMockServer.verify(0,
-        postRequestedFor(urlMatching("/test-only/token"))
-      )
+      wireMockServer.verify(0, postRequestedFor(urlMatching("/test-only/token")))
     }
   }
 
@@ -139,7 +146,7 @@ class InternalAuthInitialiserSpec extends AnyFreeSpec with Matchers with ScalaFu
     "must not make the relevant calls to internal-auth" in {
 
       val authToken = "authToken"
-      val appName = "appName"
+      val appName   = "appName"
 
       wireMockServer.stubFor(
         get(urlMatching("/test-only/token"))
@@ -154,20 +161,16 @@ class InternalAuthInitialiserSpec extends AnyFreeSpec with Matchers with ScalaFu
       val app = GuiceApplicationBuilder()
         .configure(
           "microservice.services.internal-auth.port" -> wireMockServer.port(),
-          "appName" -> appName,
-          "internal-auth-token-initialiser.enabled" -> false,
-          "internal-auth.token" -> authToken
+          "appName"                                  -> appName,
+          "internal-auth-token-initialiser.enabled"  -> false,
+          "internal-auth.token"                      -> authToken
         )
         .build()
 
       app.injector.instanceOf[InternalAuthTokenInitialiser].initialised.futureValue
 
-      wireMockServer.verify(0,
-        getRequestedFor(urlMatching("/test-only/token"))
-      )
-      wireMockServer.verify(0,
-        postRequestedFor(urlMatching("/test-only/token"))
-      )
+      wireMockServer.verify(0, getRequestedFor(urlMatching("/test-only/token")))
+      wireMockServer.verify(0, postRequestedFor(urlMatching("/test-only/token")))
     }
   }
 }

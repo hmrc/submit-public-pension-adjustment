@@ -20,10 +20,10 @@ import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.auth.core.{AffinityGroup, CredentialRole}
 
 final case class CalculationSubmissionEvent(
-                                             internalId: String,
-                                             affinityGroup: AffinityGroup,
-                                             credentialRole: Option[CredentialRole],
-                                             calculation: Calculation
+  internalId: String,
+  affinityGroup: AffinityGroup,
+  credentialRole: Option[CredentialRole],
+  calculation: Calculation
 )
 
 object CalculationSubmissionEvent {

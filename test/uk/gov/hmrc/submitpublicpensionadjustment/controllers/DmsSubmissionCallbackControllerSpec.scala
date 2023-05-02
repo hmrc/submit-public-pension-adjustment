@@ -34,24 +34,33 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.{NotificationRequest
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class DmsSubmissionCallbackControllerSpec extends AnyFreeSpec with Matchers with OptionValues with ScalaFutures with MockitoSugar with BeforeAndAfterEach {
+class DmsSubmissionCallbackControllerSpec
+    extends AnyFreeSpec
+    with Matchers
+    with OptionValues
+    with ScalaFutures
+    with MockitoSugar
+    with BeforeAndAfterEach {
 
   override def beforeEach(): Unit = {
     super.beforeEach()
     reset(mockStubBehaviour)
   }
 
-  private val mockStubBehaviour = mock[StubBehaviour]
+  private val mockStubBehaviour         = mock[StubBehaviour]
   private val stubBackendAuthComponents =
     BackendAuthComponentsStub(mockStubBehaviour)(stubControllerComponents(), implicitly)
 
   private val app = GuiceApplicationBuilder()
     .overrides(
-      bind[BackendAuthComponents].toInstance(stubBackendAuthComponents),
+      bind[BackendAuthComponents].toInstance(stubBackendAuthComponents)
     )
     .build()
 
-  private val predicate = Predicate.Permission(Resource(ResourceType("submit-public-pension-adjustment"), ResourceLocation("dms/callback")), IAAction("WRITE"))
+  private val predicate = Predicate.Permission(
+    Resource(ResourceType("submit-public-pension-adjustment"), ResourceLocation("dms/callback")),
+    IAAction("WRITE")
+  )
 
   private val notification = NotificationRequest(
     id = "id",

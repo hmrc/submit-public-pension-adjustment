@@ -19,10 +19,10 @@ package uk.gov.hmrc.submitpublicpensionadjustment.models.dms
 import play.api.libs.json.{Json, OFormat}
 
 final case class NotificationRequest(
-                                      id: String,
-                                      status: SubmissionItemStatus,
-                                      failureReason: Option[String]
-                                    )
+  id: String,
+  status: SubmissionItemStatus,
+  failureReason: Option[String]
+)
 
 object NotificationRequest {
 

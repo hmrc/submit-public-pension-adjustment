@@ -25,7 +25,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CalculationService @Inject()(
+class CalculationService @Inject() (
   dmsSubmissionService: DmsSubmissionService,
   submissionReferenceService: SubmissionReferenceService,
   auditService: AuditService,
@@ -33,11 +33,11 @@ class CalculationService @Inject()(
 )(implicit ec: ExecutionContext) {
 
   def submit(nino: String, request: CalculationRequest, auditMetadata: AuditMetadata)(implicit
-                                                                                      hc: HeaderCarrier
+    hc: HeaderCarrier
   ): Future[String] = {
 
     val submissionReference: String = submissionReferenceService.random()
-    val now: Instant                =  Instant.now(clock)
+    val now: Instant                = Instant.now(clock)
     val calculation: Calculation    = Calculation(nino, request.dataItem1, submissionReference, now)
 
     for {

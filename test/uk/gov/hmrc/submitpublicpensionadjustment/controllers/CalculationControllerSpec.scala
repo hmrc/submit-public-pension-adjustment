@@ -37,17 +37,24 @@ import uk.gov.hmrc.submitpublicpensionadjustment.services.CalculationService
 
 import scala.concurrent.Future
 
-class CalculationControllerSpec extends AnyFreeSpec with Matchers with OptionValues with ModelGenerators with MockitoSugar with BeforeAndAfterEach {
+class CalculationControllerSpec
+    extends AnyFreeSpec
+    with Matchers
+    with OptionValues
+    with ModelGenerators
+    with MockitoSugar
+    with BeforeAndAfterEach {
 
   private val mockCalculationService = mock[CalculationService]
-  private val mockAuthConnector = mock[AuthConnector]
+  private val mockAuthConnector      = mock[AuthConnector]
 
   private val app =
     GuiceApplicationBuilder()
       .overrides(
         bind[CalculationService].toInstance(mockCalculationService),
         bind[AuthConnector].toInstance(mockAuthConnector)
-      ).build()
+      )
+      .build()
 
   override def beforeEach(): Unit = {
     reset(mockCalculationService, mockAuthConnector)
@@ -58,14 +65,29 @@ class CalculationControllerSpec extends AnyFreeSpec with Matchers with OptionVal
 
     "must submit the calculation and return a submission response" in {
 
-      when(mockAuthConnector.authorise[Option[String] ~ Option[String] ~ Option[AffinityGroup] ~ Option[CredentialRole]](any(), any())(any(), any()))
-        .thenReturn(Future.successful(new ~(new ~(new ~(Some("nino"), Some("internalId")), Some(AffinityGroup.Organisation)), Some(User))))
-      when(mockCalculationService.submit(any(), any(), any())(any())) thenReturn Future.successful("submissionReference")
+      when(
+        mockAuthConnector.authorise[Option[String] ~ Option[String] ~ Option[AffinityGroup] ~ Option[CredentialRole]](
+          any(),
+          any()
+        )(any(), any())
+      )
+        .thenReturn(
+          Future.successful(
+            new ~(new ~(new ~(Some("nino"), Some("internalId")), Some(AffinityGroup.Organisation)), Some(User))
+          )
+        )
+      when(mockCalculationService.submit(any(), any(), any())(any())) thenReturn Future.successful(
+        "submissionReference"
+      )
 
-      val expectedMetadata = AuditMetadata(internalId = "internalId", affinityGroup = AffinityGroup.Organisation, credentialRole = Some(User))
+      val expectedMetadata = AuditMetadata(
+        internalId = "internalId",
+        affinityGroup = AffinityGroup.Organisation,
+        credentialRole = Some(User)
+      )
 
       val calculationRequest = CalculationRequest(
-        dataItem1 = "dataItem1",
+        dataItem1 = "dataItem1"
       )
 
       val request =
@@ -76,7 +98,9 @@ class CalculationControllerSpec extends AnyFreeSpec with Matchers with OptionVal
 
       status(result) mustEqual OK
       contentAsJson(result) mustEqual Json.toJson(CalculationSubmissionResponse("submissionReference"))
-      verify(mockCalculationService, times(1)).submit(eqTo("nino"), eqTo(calculationRequest), eqTo(expectedMetadata))(any())
+      verify(mockCalculationService, times(1)).submit(eqTo("nino"), eqTo(calculationRequest), eqTo(expectedMetadata))(
+        any()
+      )
     }
   }
 }

@@ -67,10 +67,9 @@ object WireMockHelper {
   implicit class MappingBuilderExt(builder: client.MappingBuilder) {
 
     def withRequestHeaders(headers: Set[(String, String)]): MappingBuilder =
-      headers.foldLeft(builder) {
-        (builder, header) =>
-          val (key, value) = header
-          builder.withHeader(key, equalTo(value))
+      headers.foldLeft(builder) { (builder, header) =>
+        val (key, value) = header
+        builder.withHeader(key, equalTo(value))
       }
   }
 

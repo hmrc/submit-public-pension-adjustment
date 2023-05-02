@@ -59,14 +59,12 @@ class DefaultDmsSubmissionService @Inject() (
     } yield Done
 
   private def submitToDms(calculation: Calculation, pdfBytes: Array[Byte], submissionReference: String)(implicit
-                                                                                                        hc: HeaderCarrier
-  ): Future[Done] = {
-
+    hc: HeaderCarrier
+  ): Future[Done] =
     dmsConnector.submitCalculation(
       customerId = calculation.nino,
       pdf = Source.single(ByteString(pdfBytes)),
       timestamp = calculation.created,
       submissionReference = submissionReference
     )
-  }
 }

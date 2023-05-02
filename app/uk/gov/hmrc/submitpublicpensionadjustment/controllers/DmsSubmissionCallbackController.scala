@@ -25,10 +25,11 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.{NotificationRequest
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class DmsSubmissionCallbackController @Inject()(
-                                                  override val controllerComponents: ControllerComponents,
-                                                  auth: BackendAuthComponents
-                                                ) extends BackendBaseController with Logging {
+class DmsSubmissionCallbackController @Inject() (
+  override val controllerComponents: ControllerComponents,
+  auth: BackendAuthComponents
+) extends BackendBaseController
+    with Logging {
 
   private val predicate = Predicate.Permission(
     resource = Resource(
@@ -41,11 +42,12 @@ class DmsSubmissionCallbackController @Inject()(
   private val authorised = auth.authorizedAction(predicate)
 
   def callback = authorised(parse.json[NotificationRequest]) { implicit request =>
-
     val notification = request.body
 
     if (notification.status == SubmissionItemStatus.Failed) {
-      logger.error(s"DMS notification received for ${notification.id} failed with error: ${notification.failureReason.getOrElse("")}")
+      logger.error(
+        s"DMS notification received for ${notification.id} failed with error: ${notification.failureReason.getOrElse("")}"
+      )
     } else {
       logger.info(s"DMS notification received for ${notification.id} with status ${notification.status}")
     }

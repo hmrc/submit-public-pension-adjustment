@@ -28,22 +28,23 @@ import uk.gov.hmrc.submitpublicpensionadjustment.services.CalculationService
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CalculationController @Inject()(
-                                       cc: ControllerComponents,
-                                       calculationService: CalculationService,
-                                       identify: IdentifierAction
+class CalculationController @Inject() (
+  cc: ControllerComponents,
+  calculationService: CalculationService,
+  identify: IdentifierAction
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  def submit: Action[JsValue] = identify(parse.json[CalculationRequest]).async(parse.json) { implicit identifiedRequest: IdentifierRequest[JsValue] =>
-    withValidJson[CalculationRequest]("Submit Calculation") { claimInput =>
-      val nino = identifiedRequest.nino
-      calculationService
-        .submit(nino, claimInput, getAuditMetadata(identifiedRequest))
-        .map { id =>
-          Ok(Json.toJson(CalculationSubmissionResponse(id)))
-        }
-    }
+  def submit: Action[JsValue] = identify(parse.json[CalculationRequest]).async(parse.json) {
+    implicit identifiedRequest: IdentifierRequest[JsValue] =>
+      withValidJson[CalculationRequest]("Submit Calculation") { claimInput =>
+        val nino = identifiedRequest.nino
+        calculationService
+          .submit(nino, claimInput, getAuditMetadata(identifiedRequest))
+          .map { id =>
+            Ok(Json.toJson(CalculationSubmissionResponse(id)))
+          }
+      }
   }
 
   private def withValidJson[T](

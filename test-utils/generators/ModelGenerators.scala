@@ -16,6 +16,4 @@
 
 package generators
 
-trait ModelGenerators extends Generators {
-
-}
+trait ModelGenerators extends Generators {}
