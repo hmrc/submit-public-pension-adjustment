@@ -1,0 +1,9 @@
+@this()
+
+<fo:layout-master-set>
+    <fo:simple-page-master master-name="main" page-height="297mm" page-width="210mm" margin-top="1.5cm" margin-bottom="1.5cm" margin-left="1.5cm" margin-right="1.5cm">
+        <fo:region-body region-name="xsl-region-body" margin-top="3cm" margin-bottom="0.5cm" />
+        <fo:region-before region-name="xsl-region-before"/>
+        <fo:region-after region-name="xsl-region-after"/>
+    </fo:simple-page-master>
+</fo:layout-master-set>

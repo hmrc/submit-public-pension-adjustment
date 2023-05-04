@@ -1,0 +1,12 @@
+@this()
+
+@(isH1: Boolean = false)(implicit messages: Messages)
+
+<fo:static-content flow-name="xsl-region-before">
+    <fo:block>
+        <fo:external-graphic src="url(conf/resources/logo.jpg)" padding-right="1cm" fox:alt-text="HM Revenue and Customs logo" />
+        <fo:block @if(isH1){role="H1"} margin-left="7.5cm" margin-top="-1.5cm" text-align="right" font-size="18pt" font-weight="bold">@messages("pdf.title")
+    </fo:block>
+    </fo:block>
+    <fo:block border-bottom-width="1pt" border-bottom-style="solid" margin-top="1mm" margin-bottom="1mm"/>
+</fo:static-content>

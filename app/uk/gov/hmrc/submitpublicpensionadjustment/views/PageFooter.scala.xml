@@ -1,0 +1,7 @@
+@this()
+
+    @()(implicit messages: Messages)
+
+<fo:static-content flow-name="xsl-region-after">
+    <fo:block font-size="11pt">@messages("pdf.page") <fo:page-number/> @messages("pdf.of") <fo:page-number-citation ref-id="FinalElement" /></fo:block>
+</fo:static-content>

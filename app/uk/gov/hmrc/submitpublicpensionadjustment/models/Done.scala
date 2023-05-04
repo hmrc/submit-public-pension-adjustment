@@ -14,13 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.config
+package uk.gov.hmrc.submitpublicpensionadjustment.models
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
-
-@Singleton
-class AppConfig @Inject() (config: Configuration) {
-
-  val appName: String = config.get[String]("appName")
-}
+sealed abstract class Done
+object Done extends Done

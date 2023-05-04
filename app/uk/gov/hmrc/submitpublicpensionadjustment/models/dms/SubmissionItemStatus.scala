@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.config
+package uk.gov.hmrc.submitpublicpensionadjustment.models.dms
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import enumeratum.{Enum, EnumEntry, PlayJsonEnum}
 
-@Singleton
-class AppConfig @Inject() (config: Configuration) {
+sealed abstract class SubmissionItemStatus extends EnumEntry
 
-  val appName: String = config.get[String]("appName")
+object SubmissionItemStatus extends Enum[SubmissionItemStatus] with PlayJsonEnum[SubmissionItemStatus] {
+
+  case object Submitted extends SubmissionItemStatus
+  case object Forwarded extends SubmissionItemStatus
+  case object Processed extends SubmissionItemStatus
+  case object Failed extends SubmissionItemStatus
+  case object Completed extends SubmissionItemStatus
+
+  override def values: IndexedSeq[SubmissionItemStatus] = findValues
 }

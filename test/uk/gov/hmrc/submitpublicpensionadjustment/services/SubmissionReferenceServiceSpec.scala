@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.config
+package uk.gov.hmrc.submitpublicpensionadjustment.services
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers
 
-@Singleton
-class AppConfig @Inject() (config: Configuration) {
+class SubmissionReferenceServiceSpec extends AnyFreeSpec with Matchers {
 
-  val appName: String = config.get[String]("appName")
+  "random" - {
+
+    "must generate valid submission references" in {
+
+      val service = new SubmissionReferenceService()
+      val ids     = Vector.fill(100)(service.random())
+      val pattern = """^[\dA-Z]{4}(-?)[\dA-Z]{4}\1[\dA-Z]{4}$"""
+
+      ids.foreach { id =>
+        id must fullyMatch regex pattern
+      }
+    }
+  }
 }

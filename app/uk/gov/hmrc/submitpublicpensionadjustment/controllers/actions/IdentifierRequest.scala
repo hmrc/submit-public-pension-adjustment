@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.config
+package uk.gov.hmrc.submitpublicpensionadjustment.controllers.actions
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import play.api.mvc.{Request, WrappedRequest}
+import uk.gov.hmrc.auth.core.{AffinityGroup, CredentialRole}
 
-@Singleton
-class AppConfig @Inject() (config: Configuration) {
-
-  val appName: String = config.get[String]("appName")
-}
+final case class IdentifierRequest[A](
+  request: Request[A],
+  nino: String,
+  internalId: String,
+  affinityGroup: AffinityGroup,
+  credentialRole: Option[CredentialRole]
+) extends WrappedRequest[A](request)

@@ -1,0 +1,14 @@
+@this()
+
+@(key: String, value: String)(implicit messages: Messages)
+
+<fo:block border-bottom-width="1pt" border-bottom-style="solid" margin-top="1mm" margin-bottom="1mm" border-bottom-color="gray" padding-top="1mm" padding-bottom="1mm">
+    <fo:inline-container width="5cm">
+        <fo:block font-weight="bold">@messages(key)</fo:block>
+    </fo:inline-container>
+    <fo:inline-container width="12cm" margin-left="1cm">
+        @value.split('\n').map { line =>
+            <fo:block margin-bottom="3mm">@(line)</fo:block>
+        }
+    </fo:inline-container>
+</fo:block>

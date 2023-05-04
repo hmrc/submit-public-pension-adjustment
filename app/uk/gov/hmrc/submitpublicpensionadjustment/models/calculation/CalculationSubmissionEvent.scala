@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.config
+package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.auth.core.{AffinityGroup, CredentialRole}
 
-@Singleton
-class AppConfig @Inject() (config: Configuration) {
+final case class CalculationSubmissionEvent(
+  internalId: String,
+  affinityGroup: AffinityGroup,
+  credentialRole: Option[CredentialRole],
+  calculation: Calculation
+)
 
-  val appName: String = config.get[String]("appName")
+object CalculationSubmissionEvent {
+
+  implicit lazy val format: OFormat[CalculationSubmissionEvent] = Json.format
 }
