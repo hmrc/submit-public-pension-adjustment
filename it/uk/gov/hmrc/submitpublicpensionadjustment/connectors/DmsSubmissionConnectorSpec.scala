@@ -68,16 +68,16 @@ class DmsSubmissionConnectorSpec
   private lazy val app: Application =
     new GuiceApplicationBuilder()
       .configure(
-        "microservice.services.dms-submission.port"               -> wireMockServer.port,
-        "microservice.services.dms-submission.callbackUrl"        -> "http://localhost/callback",
-        "microservice.services.dms-submission.store"              -> "true",
-        "microservice.services.dms-submission.source"             -> "TBC",
-        "microservice.services.dms-submission.formId"             -> "TBC",
-        "microservice.services.dms-submission.casKey"             -> "casKey",
-        "microservice.services.dms-submission.classificationType" -> "TBC",
-        "microservice.services.dms-submission.businessArea"       -> "TBC",
-        "internal-auth.token"                                     -> "authKey",
-        "akka.stream.materializer.subscription-timeout.mode"      -> "warn"
+        "microservice.services.dms-submission.port"                            -> wireMockServer.port,
+        "microservice.services.dms-submission.callbackUrl"                     -> "http://localhost/callback",
+        "microservice.services.dms-submission.store"                           -> "true",
+        "microservice.services.dms-submission.source"                          -> "source",
+        "microservice.services.dms-submission.formId"                          -> "formId",
+        "microservice.services.dms-submission.casKey"                          -> "casKey",
+        "microservice.services.dms-submission.base64EncodedClassificationType" -> "dGVzdA==",
+        "microservice.services.dms-submission.businessArea"                    -> "businessArea",
+        "internal-auth.token"                                                  -> "authKey",
+        "akka.stream.materializer.subscription-timeout.mode"                   -> "warn"
       )
       .build()
 
@@ -106,14 +106,14 @@ class DmsSubmissionConnectorSpec
             aMultipart().withName("submissionReference").withBody(equalTo("submissionReference"))
           )
           .withMultipartRequestBody(aMultipart().withName("callbackUrl").withBody(equalTo("http://localhost/callback")))
-          .withMultipartRequestBody(aMultipart().withName("metadata.source").withBody(equalTo("TBC")))
+          .withMultipartRequestBody(aMultipart().withName("metadata.source").withBody(equalTo("source")))
           .withMultipartRequestBody(
             aMultipart().withName("metadata.timeOfReceipt").withBody(equalTo("2022-03-02T12:30:45"))
           )
-          .withMultipartRequestBody(aMultipart().withName("metadata.formId").withBody(equalTo("TBC")))
+          .withMultipartRequestBody(aMultipart().withName("metadata.formId").withBody(equalTo("formId")))
           .withMultipartRequestBody(aMultipart().withName("metadata.customerId").withBody(equalTo("someNino")))
-          .withMultipartRequestBody(aMultipart().withName("metadata.classificationType").withBody(equalTo("TBC")))
-          .withMultipartRequestBody(aMultipart().withName("metadata.businessArea").withBody(equalTo("TBC")))
+          .withMultipartRequestBody(aMultipart().withName("metadata.classificationType").withBody(equalTo("test")))
+          .withMultipartRequestBody(aMultipart().withName("metadata.businessArea").withBody(equalTo("businessArea")))
           .withMultipartRequestBody(
             aMultipart()
               .withName("form")
