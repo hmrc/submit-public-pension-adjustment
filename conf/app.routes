@@ -2,3 +2,9 @@
 
 POST       /calculation/submit           uk.gov.hmrc.submitpublicpensionadjustment.controllers.CalculationController.submit
 POST       /dms/callback                 uk.gov.hmrc.submitpublicpensionadjustment.controllers.DmsSubmissionCallbackController.callback
+
+#######################################
+# BARs verify status (for lockout)
+#######################################
+POST        /bars/verify/status                                             bars.BarsVerifyStatusController.status()
+POST        /bars/verify/update                                             bars.BarsVerifyStatusController.update()

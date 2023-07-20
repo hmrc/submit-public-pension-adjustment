@@ -1,0 +1,43 @@
+# Auth Login Stub - run to get a Bearer Token (see Authorization header in the response)
+# and use in the {{$placeholder}} field in the Status and Update http requests
+
+POST localhost:8585/government-gateway/session/login
+Content-Type: application/json
+
+{
+  "credId": "a-cred-id",
+  "affinityGroup": "Organisation",
+  "confidenceLevel": 200,
+  "credentialStrength": "strong",
+  "enrolments": []
+}
+
+###
+
+# replace
+# Authorization: {{$placeholder}}
+# with the bearer token generated from the above call to /government-gateway/session/login
+# (for example)
+# Authorization: Bearer BXQ3/Treo4kQCZvVcC...
+
+# STATUS
+POST http://localhost:9066/direct-debit-backend/bars/verify/status
+Content-Type: application/json
+Authorization: {{$placeholder}}
+
+{
+  "taxId": "047GZ00583"
+}
+
+###
+
+# UPDATE
+POST http://localhost:9066/direct-debit-backend/bars/verify/update
+Content-Type: application/json
+Authorization: {{$placeholder}}
+
+{
+  "taxId": "047GZ00583"
+}
+
+###
