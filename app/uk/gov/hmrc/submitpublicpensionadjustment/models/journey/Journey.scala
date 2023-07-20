@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.config
+package uk.gov.hmrc.submitpublicpensionadjustment.models.journey
 
-import play.api.Configuration
+import play.api.libs.json.{Format, Json}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.Nino
 
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.duration.FiniteDuration
+case class Journey
+(
+  id: JourneyId,
+  nino: Nino
+)
 
-@Singleton
-class BarsConfig @Inject()(
-    config: Configuration
-) {
-  val barsVerifyRepoTtl: FiniteDuration = config.get[FiniteDuration]("bars.verify.repoTtl")
-  val barsVerifyMaxAttempts: Int = config.get[Int]("bars.verify.maxAttempts")
+object Journey {
+  implicit def format: Format[Journey] = Json.format[Journey]
 }

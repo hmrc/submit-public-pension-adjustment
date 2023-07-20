@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.config
+package support
 
-import play.api.Configuration
+import java.time._
 
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.duration.FiniteDuration
-
-@Singleton
-class BarsConfig @Inject()(
-    config: Configuration
-) {
-  val barsVerifyRepoTtl: FiniteDuration = config.get[FiniteDuration]("bars.verify.repoTtl")
-  val barsVerifyMaxAttempts: Int = config.get[Int]("bars.verify.maxAttempts")
+object DatesSupport {
+  def fixedClockUTC(fixedAtDate: LocalDate): Clock = Clock.fixed(fixedAtDate.atStartOfDay().toInstant(ZoneOffset.UTC), ZoneId.of("Z"))
+  def fixedClockUTC(fixedAtDateTime: LocalDateTime): Clock = Clock.fixed(fixedAtDateTime.toInstant(ZoneOffset.UTC), ZoneId.of("Z"))
 }

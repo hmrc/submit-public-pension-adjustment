@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.config
+package uk.gov.hmrc.submitpublicpensionadjustment.models.journey
 
-import play.api.Configuration
+import play.api.libs.functional.syntax.toInvariantFunctorOps
+import play.api.libs.json.Format
+import play.api.mvc.PathBindable
 
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.duration.FiniteDuration
+case class JourneyId(value: String) extends AnyVal
 
-@Singleton
-class BarsConfig @Inject()(
-    config: Configuration
-) {
-  val barsVerifyRepoTtl: FiniteDuration = config.get[FiniteDuration]("bars.verify.repoTtl")
-  val barsVerifyMaxAttempts: Int = config.get[Int]("bars.verify.maxAttempts")
+object JourneyId {
+  implicit val pathBinder: PathBindable[JourneyId] = PathBindable.anyValPathBindable[JourneyId]
+  implicit val format: Format[JourneyId] = implicitly[Format[String]].inmap(JourneyId(_), _.value)
 }

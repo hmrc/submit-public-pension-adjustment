@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.config
+package support
 
-import play.api.Configuration
+import org.scalatest.OptionValues
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.duration.FiniteDuration
-
-@Singleton
-class BarsConfig @Inject()(
-    config: Configuration
-) {
-  val barsVerifyRepoTtl: FiniteDuration = config.get[FiniteDuration]("bars.verify.repoTtl")
-  val barsVerifyMaxAttempts: Int = config.get[Int]("bars.verify.maxAttempts")
-}
+trait UnitSpec
+  extends AnyWordSpec
+  with Matchers
+  with OptionValues

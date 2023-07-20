@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.config
+package support
 
-import play.api.Configuration
+import scala.concurrent.ExecutionContext
+import scala.concurrent.ExecutionContext.global
 
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.duration.FiniteDuration
+trait GlobalExecutionContext {
 
-@Singleton
-class BarsConfig @Inject()(
-    config: Configuration
-) {
-  val barsVerifyRepoTtl: FiniteDuration = config.get[FiniteDuration]("bars.verify.repoTtl")
-  val barsVerifyMaxAttempts: Int = config.get[Int]("bars.verify.maxAttempts")
+  implicit def ec: ExecutionContext = global
+
 }

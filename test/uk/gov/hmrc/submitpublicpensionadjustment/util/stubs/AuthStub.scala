@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.config
+package uk.gov.hmrc.submitpublicpensionadjustment.util.stubs
 
-import play.api.Configuration
+import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, post, stubFor, urlPathEqualTo}
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
 
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.duration.FiniteDuration
+object AuthStub {
 
-@Singleton
-class BarsConfig @Inject()(
-    config: Configuration
-) {
-  val barsVerifyRepoTtl: FiniteDuration = config.get[FiniteDuration]("bars.verify.repoTtl")
-  val barsVerifyMaxAttempts: Int = config.get[Int]("bars.verify.maxAttempts")
+  private val authoriseUrl: String = "/auth/authorise"
+
+  def authorise(responseBody: String = "{}"): StubMapping =
+    stubFor(
+      post(urlPathEqualTo(authoriseUrl))
+        .willReturn(aResponse().withStatus(200).withBody(responseBody))
+    )
+
 }
