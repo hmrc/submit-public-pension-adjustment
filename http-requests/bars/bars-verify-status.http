@@ -21,7 +21,7 @@ Content-Type: application/json
 # Authorization: Bearer BXQ3/Treo4kQCZvVcC...
 
 # STATUS
-POST http://localhost:9066/direct-debit-backend/bars/verify/status
+POST http://localhost:9066/submit-public-pension-adjustment/bars/verify/status
 Content-Type: application/json
 Authorization: {{$placeholder}}
 
@@ -32,7 +32,7 @@ Authorization: {{$placeholder}}
 ###
 
 # UPDATE
-POST http://localhost:9066/direct-debit-backend/bars/verify/update
+POST http://localhost:9066/submit-public-pension-adjustment/bars/verify/update
 Content-Type: application/json
 Authorization: {{$placeholder}}
 

@@ -1,13 +1,13 @@
 package bars
 
 import bars.BarsVerifyStatusRepo._
-import uk.gov.hmrc.submitpublicpensionadjustment.models.bars.{BarsVerifyStatus, TaxIdKey}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.bars.{BarsVerifyStatus, BarsVerifyStatusId, EncryptedBarsVerifyStatus}
 import org.mongodb.scala.model.{IndexModel, IndexOptions, Indexes}
 import repository.Repo
 import repository.Repo.{Id, IdExtractor}
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.Codecs
-import uk.gov.hmrc.submitpublicpensionadjustment.config.BarsConfig
+import uk.gov.hmrc.submitpublicpensionadjustment.config.{AppConfig, BarsConfig}
 
 import java.util.concurrent.TimeUnit
 import javax.inject.{Inject, Singleton}
@@ -16,19 +16,19 @@ import scala.concurrent.ExecutionContext
 @Singleton
 final class BarsVerifyStatusRepo @Inject() (
                                              mongoComponent: MongoComponent,
-                                             config:         BarsConfig
+                                             config:         AppConfig
                                            )(implicit ec: ExecutionContext)
-  extends Repo[TaxIdKey, BarsVerifyStatus](
+  extends Repo[String, EncryptedBarsVerifyStatus](
     collectionName = "bars",
     mongoComponent = mongoComponent,
     indexes        = BarsVerifyStatusRepo.indexes(config.barsVerifyRepoTtl.toSeconds),
-    extraCodecs    = Codecs.playFormatCodecsBuilder(BarsVerifyStatus.format).build,
-    replaceIndexes = true
+    extraCodecs    = Codecs.playFormatCodecsBuilder(EncryptedBarsVerifyStatus.format).build,
+    replaceIndexes = false
   )
 
 object BarsVerifyStatusRepo {
-  implicit val taxId: Id[TaxIdKey] = (i: TaxIdKey) => i.value
-  implicit val taxIdExtractor: IdExtractor[BarsVerifyStatus, TaxIdKey] = (b: BarsVerifyStatus) => b._id
+  implicit val id: Id[String] = (i: String) => i
+  implicit val idExtractor: IdExtractor[EncryptedBarsVerifyStatus, String] = (b: EncryptedBarsVerifyStatus) => b._id
 
   def indexes(cacheTtlInSeconds: Long): Seq[IndexModel] = Seq(
     IndexModel(

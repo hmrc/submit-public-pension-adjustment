@@ -2,7 +2,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.models.bars
 
 import play.api.libs.json.{Format, Json}
 
-final case class BarsUpdateVerifyStatusParams(taxId: TaxIdKey)
+final case class BarsUpdateVerifyStatusParams(taxId: BarsVerifyStatusId)
 
 object BarsUpdateVerifyStatusParams {
   implicit val format: Format[BarsUpdateVerifyStatusParams] = Json.format

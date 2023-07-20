@@ -19,8 +19,14 @@ package uk.gov.hmrc.submitpublicpensionadjustment.config
 import javax.inject.{Inject, Singleton}
 import play.api.Configuration
 
+import scala.concurrent.duration.FiniteDuration
+
 @Singleton
 class AppConfig @Inject() (config: Configuration) {
 
   val appName: String = config.get[String]("appName")
+
+  val barsVerifyRepoTtl: FiniteDuration = config.get[FiniteDuration]("bars.verify.repoTtl")
+  val barsVerifyMaxAttempts: Int = config.get[Int]("bars.verify.maxAttempts")
+
 }
