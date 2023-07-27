@@ -14,20 +14,23 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.services
+package uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission
 
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.audit.http.connector.AuditConnector
-import uk.gov.hmrc.submitpublicpensionadjustment.models.FinalSubmissionEvent
+import uk.gov.hmrc.submitpublicpensionadjustment.models.Enumerable
 
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+sealed trait OnBehalfOfMemberType
 
-@Singleton
-class AuditService @Inject() (
-  auditConnector: AuditConnector
-)(implicit ec: ExecutionContext) {
+object OnBehalfOfMemberType extends Enumerable.Implicits {
 
-  def auditSubmitRequest(event: FinalSubmissionEvent)(implicit hc: HeaderCarrier): Unit =
-    auditConnector.sendExplicitAudit("FinalSubmission", event)
+  case object PowerOfAttorney extends OnBehalfOfMemberType
+  case object Deceased extends OnBehalfOfMemberType
+
+  val values: Seq[OnBehalfOfMemberType] = Seq(
+    PowerOfAttorney,
+    Deceased
+  )
+
+  implicit lazy val enumerable: Enumerable[OnBehalfOfMemberType] =
+    Enumerable(values.map(v => v.toString -> v): _*)
+
 }

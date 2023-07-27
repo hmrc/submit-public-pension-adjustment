@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.services
+package uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission
 
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.audit.http.connector.AuditConnector
-import uk.gov.hmrc.submitpublicpensionadjustment.models.FinalSubmissionEvent
+import play.api.libs.json.{Format, Json}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.CalculationInputs
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.CalculationResponse
 
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+case class FinalSubmission(
+  calculationInputs: CalculationInputs,
+  calculation: Option[CalculationResponse],
+  submissionInputs: SubmissionInputs
+) {}
 
-@Singleton
-class AuditService @Inject() (
-  auditConnector: AuditConnector
-)(implicit ec: ExecutionContext) {
+object FinalSubmission {
 
-  def auditSubmitRequest(event: FinalSubmissionEvent)(implicit hc: HeaderCarrier): Unit =
-    auditConnector.sendExplicitAudit("FinalSubmission", event)
+  implicit lazy val formats: Format[FinalSubmission] = Json.format
 }

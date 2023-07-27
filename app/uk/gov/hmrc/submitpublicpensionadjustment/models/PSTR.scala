@@ -14,20 +14,25 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation
+package uk.gov.hmrc.submitpublicpensionadjustment.models
 
-import play.api.libs.json.{Format, Json, OFormat}
+import play.api.libs.json.{Format, Json}
 
-import java.time.Instant
+import scala.util.matching.Regex
 
-final case class Calculation(
-  nino: String,
-  dataItem1: String,
-  submissionReference: String,
-  created: Instant
-)
+case class PSTR(value: String)
 
-object Calculation {
+object PSTR {
 
-  implicit def format(implicit f: Format[Instant]): OFormat[Calculation] = Json.format
+  implicit lazy val formats: Format[PSTR] = Json.format
+
+  val New: String = "New"
+
+  private val pattern: Regex = """(\d{8})[A-Z]{2}""".r.anchored
+
+  def fromString(pstrString: String): Option[PSTR] =
+    pstrString match {
+      case pattern(_) => Some(PSTR(pstrString))
+      case _          => None
+    }
 }

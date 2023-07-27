@@ -1,0 +1,87 @@
+@import java.time.format.DateTimeFormatter
+@import java.time.ZoneId
+@import java.time.Instant
+@import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.PDFViewModel
+
+@this(
+    header: PageHeader,
+    footer: PageFooter,
+    line: Line,
+    pdfSection: PdfSection
+)
+
+@(viewModel: PDFViewModel)(implicit messages: Messages)
+
+<fo:page-sequence master-reference="main">
+
+    @footer()
+
+    <fo:flow flow-name="xsl-region-body" font-size="11pt" text-align="left">
+
+        <fo:block-container>
+
+            <fo:block role="H2" id="final-submission" font-size="18pt" font-weight="bold" margin-bottom="0.5cm">
+                @messages("pdf.title")
+            </fo:block>
+
+            <fo:block role="H2" id="case-number" font-size="18pt" font-weight="bold" margin-bottom="0.5cm">
+                @viewModel.caseNumber
+            </fo:block>
+
+            @pdfSection(Some(viewModel.administrativeDetailsSection), Some("administrativeDetailsSection"))
+            @line("","")
+
+            @pdfSection(viewModel.onBehalfOfSection, Some("onBehalfOfSection"))
+            @line("","")
+
+            @pdfSection(viewModel.lifetimeAllowanceSection, Some("lifetimeAllowanceSection"))
+            @line("","")
+
+            <fo:block role="H3" id="publicSectorSchemeDetailsSection" font-size="14pt" font-weight="bold" margin-bottom="0.5cm">
+                @messages("pdf.publicSectorSchemeDetailsSection.heading")
+            </fo:block>
+
+            @viewModel.publicSectorSchemeDetailsSections.map { section =>{
+                    @pdfSection(Some(section), None)
+                }
+            }
+            @line("","")
+
+            <fo:block role="H3" id="compensationSection" font-size="14pt" font-weight="bold" margin-bottom="0.5cm">
+                @messages("pdf.compensationSection.heading")
+            </fo:block>
+
+            @viewModel.compensationSections.map { section =>{
+                    @pdfSection(Some(section), None)
+                }
+            }
+            @line("","")
+
+            <fo:block role="H3" id="taxAdministrationFrameworkSection" font-size="14pt" font-weight="bold" margin-bottom="0.5cm">
+                @messages("pdf.taxAdministrationFrameworkSection.heading")
+            </fo:block>
+
+            @viewModel.taxAdministrationFrameworkSections.map { section =>{
+                    @pdfSection(Some(section), None)
+                }
+            }
+            @line("","")
+
+            @pdfSection(viewModel.additionalOrHigherReliefSection, Some("additionalOrHigherReliefSection"))
+            @line("","")
+
+            @pdfSection(viewModel.paymentInformationSection, Some("paymentInformationSection"))
+            @line("","")
+
+            @pdfSection(Some(viewModel.declarationsSection), Some("declarationsSection"))
+            @line("","")
+
+            @line(messages("pdf.submitted"), DateTimeFormatter.ofPattern("d MMMM yyyy - kk:mm").withZone(ZoneId.systemDefault()).format(Instant.now))
+
+            <fo:block id="FinalElement">
+
+            </fo:block>
+        </fo:block-container>
+    </fo:flow>
+
+</fo:page-sequence>

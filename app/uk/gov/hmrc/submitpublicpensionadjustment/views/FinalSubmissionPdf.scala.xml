@@ -1,11 +1,11 @@
-@import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.Calculation
+@import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.PDFViewModel
 
 @this(
     layout: Layout,
-    summary: CalculationSummary
+    finalSubmissionBody: FinalSubmissionBody
 )
 
-@(calculation: Calculation)(implicit messages: Messages)
+@(pdfViewModel: PDFViewModel)(implicit messages: Messages)
 
 <fo:root xml:lang="en" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:fox="http://xmlgraphics.apache.org/fop/extensions" font-family="sans-serif">
 
@@ -19,6 +19,6 @@
         </pdf:catalog>
     </fo:declarations>
 
-    @summary(calculation)
+    @finalSubmissionBody(pdfViewModel)
 
 </fo:root>

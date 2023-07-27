@@ -23,47 +23,57 @@ import org.mockito.MockitoSugar
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
+import play.api.Logging
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.json.Json
+import play.api.libs.json.{JsResult, Json}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.~
-import uk.gov.hmrc.submitpublicpensionadjustment.controllers.routes
-import uk.gov.hmrc.submitpublicpensionadjustment.models.AuditMetadata
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.{CalculationRequest, CalculationSubmissionResponse}
-import uk.gov.hmrc.submitpublicpensionadjustment.services.CalculationService
+import uk.gov.hmrc.submitpublicpensionadjustment.TestData
+import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{AuditMetadata, FinalSubmissionResponse}
+import uk.gov.hmrc.submitpublicpensionadjustment.services.FinalSubmissionService
 
 import scala.concurrent.Future
 
-class CalculationControllerSpec
+class FinalSubmissionControllerSpec
     extends AnyFreeSpec
     with Matchers
     with OptionValues
     with ModelGenerators
     with MockitoSugar
-    with BeforeAndAfterEach {
+    with BeforeAndAfterEach
+    with Logging {
 
-  private val mockCalculationService = mock[CalculationService]
-  private val mockAuthConnector      = mock[AuthConnector]
+  private val mockFinalSubmissionService = mock[FinalSubmissionService]
+  private val mockAuthConnector          = mock[AuthConnector]
 
   private val app =
     GuiceApplicationBuilder()
       .overrides(
-        bind[CalculationService].toInstance(mockCalculationService),
+        bind[FinalSubmissionService].toInstance(mockFinalSubmissionService),
         bind[AuthConnector].toInstance(mockAuthConnector)
       )
       .build()
 
   override def beforeEach(): Unit = {
-    reset(mockCalculationService, mockAuthConnector)
+    reset(mockFinalSubmissionService, mockAuthConnector)
     super.beforeEach()
   }
 
   "submit" - {
 
-    "must submit the calculation and return a submission response" in {
+    "can serialise and deserialize symmetrically" in {
+      val serialised = Json.prettyPrint(Json.toJson(TestData.finalSubmission))
+      logger.info(s"serialised:$serialised")
+
+      val deserialized: JsResult[FinalSubmission] = Json.parse(serialised).validate[FinalSubmission]
+      deserialized.get mustBe TestData.finalSubmission
+    }
+
+    "must submit the final submission and return a submission response" in {
 
       when(
         mockAuthConnector.authorise[Option[String] ~ Option[String] ~ Option[AffinityGroup] ~ Option[CredentialRole]](
@@ -76,7 +86,8 @@ class CalculationControllerSpec
             new ~(new ~(new ~(Some("nino"), Some("internalId")), Some(AffinityGroup.Organisation)), Some(User))
           )
         )
-      when(mockCalculationService.submit(any(), any(), any())(any())) thenReturn Future.successful(
+
+      when(mockFinalSubmissionService.submit(any(), any())(any())) thenReturn Future.successful(
         "submissionReference"
       )
 
@@ -86,19 +97,17 @@ class CalculationControllerSpec
         credentialRole = Some(User)
       )
 
-      val calculationRequest = CalculationRequest(
-        dataItem1 = "dataItem1"
-      )
+      val finalSubmission = TestData.finalSubmission
 
       val request =
-        FakeRequest(POST, routes.CalculationController.submit.url)
-          .withBody(Json.toJson(calculationRequest))
+        FakeRequest(POST, routes.FinalSubmissionController.submit.url)
+          .withBody(Json.toJson(finalSubmission))
 
       val result = route(app, request).value
 
       status(result) mustEqual OK
-      contentAsJson(result) mustEqual Json.toJson(CalculationSubmissionResponse("submissionReference"))
-      verify(mockCalculationService, times(1)).submit(eqTo("nino"), eqTo(calculationRequest), eqTo(expectedMetadata))(
+      contentAsJson(result) mustEqual Json.toJson(FinalSubmissionResponse("submissionReference"))
+      verify(mockFinalSubmissionService, times(1)).submit(eqTo(finalSubmission), eqTo(expectedMetadata))(
         any()
       )
     }

@@ -19,7 +19,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.services
 import akka.stream.Materializer
 import akka.stream.scaladsl.{Keep, Sink, Source}
 import akka.util.ByteString
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.mockito.ArgumentMatchers.{any, eq => eqTo, matches}
 import org.mockito.{ArgumentCaptor, MockitoSugar}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
@@ -29,13 +29,11 @@ import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.submitpublicpensionadjustment.TestData
 import uk.gov.hmrc.submitpublicpensionadjustment.connectors.DmsSubmissionConnector
 import uk.gov.hmrc.submitpublicpensionadjustment.models.Done
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.Calculation
-import uk.gov.hmrc.submitpublicpensionadjustment.views.xml.CalculationPdf
+import uk.gov.hmrc.submitpublicpensionadjustment.views.xml.FinalSubmissionPdf
 
-import java.time.Instant
-import java.time.temporal.ChronoUnit
 import scala.concurrent.Future
 
 class DmsSubmissionServiceSpec
@@ -53,11 +51,13 @@ class DmsSubmissionServiceSpec
 
   private val mockFopService             = mock[FopService]
   private val mockDmsSubmissionConnector = mock[DmsSubmissionConnector]
+  private val mockViewModelService       = mock[ViewModelService]
 
   private lazy val app = GuiceApplicationBuilder()
     .overrides(
       bind[FopService].toInstance(mockFopService),
-      bind[DmsSubmissionConnector].toInstance(mockDmsSubmissionConnector)
+      bind[DmsSubmissionConnector].toInstance(mockDmsSubmissionConnector),
+      bind[ViewModelService].toInstance(mockViewModelService)
     )
     .configure(
       "dms-submission.enabled" -> true
@@ -65,42 +65,39 @@ class DmsSubmissionServiceSpec
     .build()
 
   private lazy val service                     = app.injector.instanceOf[DmsSubmissionService]
-  private lazy val calculationTemplate         = app.injector.instanceOf[CalculationPdf]
+  private lazy val finalSubmissionTemplate     = app.injector.instanceOf[FinalSubmissionPdf]
   private implicit lazy val mat: Materializer  = app.injector.instanceOf[Materializer]
   private implicit lazy val messages: Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
 
-  "submitCalculation" - {
+  "finalSubmission" - {
 
+    val caseNumber          = "caseNumber"
     val submissionReference = "submissionReference"
-    val now                 = Instant.now.truncatedTo(ChronoUnit.MILLIS)
 
-    val calculation = Calculation(
-      nino = "nino",
-      dataItem1 = "dataItem1",
-      submissionReference = "submissionReference",
-      created = now
-    )
+    val finalSubmission = TestData.finalSubmission
 
     val hc: HeaderCarrier = HeaderCarrier()
 
-    "must create a PDF from the calculation and send it to DMS Submission" in {
+    "must create a PDF from the FinalSubmission and send it to DMS Submission" in {
 
       val bytes                                               = "PdfBytes".getBytes("UTF-8")
       val sourceCaptor: ArgumentCaptor[Source[ByteString, _]] = ArgumentCaptor.forClass(classOf[Source[ByteString, _]])
 
       when(mockFopService.render(any())).thenReturn(Future.successful(bytes))
-      when(mockDmsSubmissionConnector.submitCalculation(any(), any(), any(), any())(any()))
+      when(mockDmsSubmissionConnector.submit(any(), any(), any(), any())(any()))
         .thenReturn(Future.successful(Done))
+      when(mockViewModelService.viewModel(any(), any())).thenReturn(TestData.viewModel)
 
-      val expectedXml = calculationTemplate(calculation).body
+      val expectedXml = finalSubmissionTemplate(TestData.viewModel).body
 
-      service.submitCalculation(calculation)(hc).futureValue
+      service.send(caseNumber, finalSubmission, submissionReference)(hc).futureValue
 
+      verify(mockViewModelService).viewModel(matches(caseNumber), eqTo(finalSubmission))
       verify(mockFopService).render(eqTo(expectedXml))
-      verify(mockDmsSubmissionConnector).submitCalculation(
-        eqTo("nino"),
+      verify(mockDmsSubmissionConnector).submit(
+        eqTo("someNino"),
         sourceCaptor.capture(),
-        eqTo(calculation.created),
+        any(),
         eqTo(submissionReference)
       )(eqTo(hc))
 
@@ -114,18 +111,18 @@ class DmsSubmissionServiceSpec
 
       when(mockFopService.render(any())).thenReturn(Future.failed(new RuntimeException()))
 
-      service.submitCalculation(calculation)(hc).failed.futureValue
+      service.send(caseNumber, finalSubmission, submissionReference)(hc).failed.futureValue
 
-      verify(mockDmsSubmissionConnector, never).submitCalculation(any(), any(), any(), any())(any())
+      verify(mockDmsSubmissionConnector, never).submit(any(), any(), any(), any())(any())
     }
 
     "must fail if the dms submission connector fails" in {
 
       when(mockFopService.render(any())).thenReturn(Future.successful(Array.emptyByteArray))
-      when(mockDmsSubmissionConnector.submitCalculation(any(), any(), any(), any())(any()))
+      when(mockDmsSubmissionConnector.submit(any(), any(), any(), any())(any()))
         .thenReturn(Future.failed(new RuntimeException()))
 
-      service.submitCalculation(calculation)(hc).failed.futureValue
+      service.send(caseNumber, finalSubmission, submissionReference)(hc).failed.futureValue
     }
   }
 }

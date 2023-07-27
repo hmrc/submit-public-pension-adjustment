@@ -17,40 +17,36 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.{Calculation, CalculationRequest, CalculationSubmissionEvent}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.AuditMetadata
+import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{AuditMetadata, FinalSubmissionEvent}
 
-import java.time.{Clock, Instant}
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CalculationService @Inject() (
+class FinalSubmissionService @Inject() (
   dmsSubmissionService: DmsSubmissionService,
   submissionReferenceService: SubmissionReferenceService,
-  auditService: AuditService,
-  clock: Clock
+  auditService: AuditService
 )(implicit ec: ExecutionContext) {
 
-  def submit(nino: String, request: CalculationRequest, auditMetadata: AuditMetadata)(implicit
+  def submit(finalSubmission: FinalSubmission, auditMetadata: AuditMetadata)(implicit
     hc: HeaderCarrier
   ): Future[String] = {
 
     val submissionReference: String = submissionReferenceService.random()
-    val now: Instant                = Instant.now(clock)
-    val calculation: Calculation    = Calculation(nino, request.dataItem1, submissionReference, now)
 
     for {
-      _ <- dmsSubmissionService.submitCalculation(calculation)
-      _  = auditService.auditSubmitRequest(buildAudit(calculation, auditMetadata))
+      _ <- dmsSubmissionService.send(finalSubmission.submissionInputs.caseNumber, finalSubmission, submissionReference)
+      _  = auditService.auditSubmitRequest(buildAudit(finalSubmission, auditMetadata))
     } yield submissionReference
   }
 
-  private def buildAudit(calculation: Calculation, auditMetadata: AuditMetadata): CalculationSubmissionEvent =
-    CalculationSubmissionEvent(
+  private def buildAudit(finalSubmission: FinalSubmission, auditMetadata: AuditMetadata): FinalSubmissionEvent =
+    FinalSubmissionEvent(
       internalId = auditMetadata.internalId,
       affinityGroup = auditMetadata.affinityGroup,
       credentialRole = auditMetadata.credentialRole,
-      calculation = calculation
+      finalSubmission = finalSubmission
     )
 }

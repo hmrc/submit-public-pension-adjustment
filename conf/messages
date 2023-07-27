@@ -1,8 +1,110 @@
-pdf.title=Public Pension Adjustment
-pdf.calculationSummary=Calculation Summary
-pdf.dataItem1=Data Item 1
-pdf.nino=National Insurance number
-pdf.submissionReference=Submission reference
-pdf.submitted=Submitted at
-pdf.page=Page
-pdf.of=of
+pdf.header = PPA Final Submission
+pdf.title = Calculate your public service pension adjustment
+pdf.page = Page
+pdf.of = of
+pdf.submitted = Submitted
+
+pdf.2011 = 10/11
+pdf.2012 = 11/12
+pdf.2013 = 12/13
+pdf.2014 = 13/14
+pdf.2015 = 14/15
+pdf.2016 = 15/16
+pdf.2017 = 16/17
+pdf.2018 = 17/18
+pdf.2019 = 18/19
+pdf.2020 = 19/20
+pdf.2021 = 20/21
+
+pdf.administrativeDetailsSection.heading = Administrative details
+pdf.administrativeDetailsSection.firstName = First name
+pdf.administrativeDetailsSection.surname = Surname
+pdf.administrativeDetailsSection.dob = Date of birth
+pdf.administrativeDetailsSection.addressLine1 = Address line 1
+pdf.administrativeDetailsSection.addressLine2 = Address line 2
+pdf.administrativeDetailsSection.postCode = Postcode
+pdf.administrativeDetailsSection.country = Country
+pdf.administrativeDetailsSection.utr = Unique Taxpayer Reference (UTR)
+pdf.administrativeDetailsSection.ninoOrTrn = National Insurance number or alternative identifier (TRN)
+pdf.administrativeDetailsSection.contactNumber = Contact number
+
+pdf.onBehalfOfSection.heading = Details of member you have lasting power of attorney or deputyship
+pdf.onBehalfOfSection.firstName = First name
+pdf.onBehalfOfSection.surname = Surname
+pdf.onBehalfOfSection.dob = Date of birth
+pdf.onBehalfOfSection.addressLine1 = Address line 1
+pdf.onBehalfOfSection.addressLine2 = Address line 2
+pdf.onBehalfOfSection.postCode = Postcode
+pdf.onBehalfOfSection.country = Country
+pdf.onBehalfOfSection.utr = Unique Taxpayer Reference (UTR)
+pdf.onBehalfOfSection.ninoOrTrn = National Insurance number or alternative identifier (TRN)
+
+pdf.lifetimeAllowanceSection.heading= Lifetime Allowance
+
+pdf.publicSectorSchemeDetailsSection.heading = Public sector pension scheme details
+pdf.publicSectorSchemeDetailsSection.schemeName = Name of pension scheme
+pdf.publicSectorSchemeDetailsSection.pstr = PSTR
+pdf.publicSectorSchemeDetailsSection.individualSchemeReference = Member's individual pension scheme reference
+
+pdf.compensationSection.heading = Compensation
+pdf.compensationSection.directAmount = Amount of direct compensation $period
+pdf.compensationSection.indirectAmount = Amount of indirect compensation $period
+pdf.compensationSection.revisedTaxChargeTotal = Revised tax charge total $period
+pdf.compensationSection.chargeYouPaid = How much of the charge did you pay?
+pdf.compensationSection.chargeSchemePaid = How much of the charge did your pension scheme pay?
+pdf.compensationSection.originalSchemePaidChargeName = Name of scheme originally paid charge $period
+pdf.compensationSection.originalSchemePaidChargePstr = PSTR of scheme originally paid charge $period
+
+pdf.taxAdministrationFrameworkSection.heading = Tax administration framework
+
+pdf.taxAdministrationFrameworkSection.previousChargeAmount = Value of previous charge for $period
+pdf.taxAdministrationFrameworkSection.whoChargePaidBy = Who was the previous charge paid by?
+pdf.taxAdministrationFrameworkSection.previousChargePaidBySchemeName = Name of scheme
+pdf.taxAdministrationFrameworkSection.previousChargePaidByPstr = PSTR
+pdf.taxAdministrationFrameworkSection.creditValue = Credit value for $period
+pdf.taxAdministrationFrameworkSection.debitValue = Debit value for $period
+pdf.taxAdministrationFrameworkSection.isSchemePayingCharge = Is the scheme paying the charge?
+pdf.taxAdministrationFrameworkSection.schemePaymentElectionDate = Date of election made to the scheme
+pdf.taxAdministrationFrameworkSection.schemePayingChargeAmount = Value scheme is paying
+pdf.taxAdministrationFrameworkSection.schemePayingPstr = PSTR of scheme paying
+pdf.taxAdministrationFrameworkSection.schemePayingName = Name of scheme paying
+
+pdf.additionalOrHigherReliefSection.heading = Are you claiming for higher or additional rate tax relief?
+pdf.additionalOrHigherReliefSection.amount = Amount
+pdf.additionalOrHigherReliefSection.schemePayingName = Name of scheme paying
+pdf.additionalOrHigherReliefSection.schemePayingPstr = PSTR of scheme paying
+
+pdf.paymentInformationSection.heading = Payment information
+pdf.paymentInformationSection.accountName = Name on bank account
+pdf.paymentInformationSection.sortCode = Sort code
+pdf.paymentInformationSection.accountNumber = Account number
+
+pdf.declarationsSection.heading = Declarations
+pdf.declarationsSection.compensation = Declaration for compensation
+pdf.declarationsSection.tax = Declaration for tax administration framework
+pdf.declarationsSection.address = Declaration for address
+pdf.declarationsSection.contact = Declaration for contact details
+pdf.declarationsSection.trueAndComplete = Declaration for true and complete
+pdf.declarationsSection.onBehalfDeceased = Declaration if claiming on behalf of a deceased individual
+pdf.declarationsSection.deputyship = Declaration if claiming on behalf of a member for whom you have a lasting power of attorney or deputyship
+
+pdf.lifetimeAllowanceSection.hadBce = Have you had a benefit crystallisation event in your pension?
+pdf.lifetimeAllowanceSection.bceDate = What was the date of the benefit crystallisation event?
+pdf.lifetimeAllowanceSection.changeInLtaPercentage = Have you been told about a change in the lifetime allowance percentage?
+pdf.lifetimeAllowanceSection.ltaChargeType = Has the change resulted in a new, increased or decreased lifetime allowance charge?
+pdf.lifetimeAllowanceSection.haveLtaProtectionOrEnhancement = Do you have lifetime allowance protection or enhancements?
+pdf.lifetimeAllowanceSection.protectionType = What is your protection type?
+pdf.lifetimeAllowanceSection.protectionReference = What is your protection reference?
+pdf.lifetimeAllowanceSection.changeToProtectionType = Has your protection type or enhancement changed?
+pdf.lifetimeAllowanceSection.newProtectionTypeOrEnhancement = What is the new protection type or enhancement?
+pdf.lifetimeAllowanceSection.newProtectionTypeOrReference = What is the reference of the new protection type or reference?
+pdf.lifetimeAllowanceSection.hadLtaCharge = Have you had a lifetime allowance charge from 6 April 2015 to 5 April 2023?
+pdf.lifetimeAllowanceSection.howExcessPaid = How was the excess above your lifetime allowance paid to you?
+pdf.lifetimeAllowanceSection.ltaChargeAmount = How much was your lifetime allowance charge?
+pdf.lifetimeAllowanceSection.whoPaidLtaCharge = Who paid your lifetime allowance charge?
+pdf.lifetimeAllowanceSection.schemeThatPaidChargeName = What is the name of the pension scheme that paid your lifetime allowance charge
+pdf.lifetimeAllowanceSection.schemeThatPaidChargeTaxRef = What is the tax reference for the pension scheme that paid?
+pdf.lifetimeAllowanceSection.newLtaChargeValue = What is the value of the new lifetime allowance charge?
+pdf.lifetimeAllowanceSection.whoPayingExtraCharge = Who is paying the extra lifetime allowance charge?
+pdf.lifetimeAllowanceSection.whoPayingExtraChargeSchemeName = What is the name of the scheme that is paying the extra charge?
+pdf.lifetimeAllowanceSection.whoPayingExtraChargeTaxRef = What is the tax reference of the scheme that is paying the extra charge?

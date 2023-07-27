@@ -1,11 +1,11 @@
-@import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.Calculation
+@import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.PDFViewModel
 
 @this()
 
-@(calculation: Calculation)(implicit messages: Messages)
+@(pdfViewModel: PDFViewModel)(implicit messages: Messages)
 
 <fo:bookmark-tree>
     <fo:bookmark internal-destination="title">
-        <fo:bookmark-title>@messages("pdf.title")</fo:bookmark-title>
+        <fo:bookmark-title>@messages("pdf.header")</fo:bookmark-title>
     </fo:bookmark>
 </fo:bookmark-tree>
