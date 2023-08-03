@@ -83,7 +83,7 @@ class DmsSubmissionConnectorSpec
 
   private lazy val connector: DmsSubmissionConnector = app.injector.instanceOf[DmsSubmissionConnector]
 
-  "submitCalculation" - {
+  "submit" - {
 
     val source = Source.single(ByteString.fromString("SomePdfBytes"))
 
@@ -118,7 +118,7 @@ class DmsSubmissionConnectorSpec
             aMultipart()
               .withName("form")
               .withBody(equalTo("SomePdfBytes"))
-              .withHeader("Content-Disposition", containing("""filename="calculation.pdf""""))
+              .withHeader("Content-Disposition", containing("""filename="final-submission.pdf""""))
               .withHeader("Content-Type", equalTo("application/pdf"))
           )
           .willReturn(
@@ -128,7 +128,7 @@ class DmsSubmissionConnectorSpec
           )
       )
 
-      connector.submitCalculation(nino, source, timestamp, submissionReference)(hc).futureValue
+      connector.submit(nino, source, timestamp, submissionReference)(hc).futureValue
     }
 
     "must fail when the server returns another status" in {
@@ -141,7 +141,7 @@ class DmsSubmissionConnectorSpec
           )
       )
 
-      connector.submitCalculation(nino, source, timestamp, submissionReference)(hc).failed.futureValue
+      connector.submit(nino, source, timestamp, submissionReference)(hc).failed.futureValue
     }
   }
 }

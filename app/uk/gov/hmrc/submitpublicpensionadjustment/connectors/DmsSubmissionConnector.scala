@@ -54,7 +54,7 @@ class DmsSubmissionConnector @Inject() (
     dmsSubmissionConfig.get[String]("base64EncodedClassificationType")
   private val businessArea: String                    = dmsSubmissionConfig.get[String]("businessArea")
 
-  def submitCalculation(
+  def submit(
     customerId: String,
     pdf: Source[ByteString, _],
     timestamp: Instant,
@@ -83,7 +83,7 @@ class DmsSubmissionConnector @Inject() (
     val fileParts = Seq(
       MultipartFormData.FilePart(
         key = "form",
-        filename = "calculation.pdf",
+        filename = "final-submission.pdf",
         contentType = Some("application/pdf"),
         ref = pdf
       )

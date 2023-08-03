@@ -22,21 +22,26 @@ import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.connectors.DmsSubmissionConnector
 import uk.gov.hmrc.submitpublicpensionadjustment.models.Done
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.Calculation
-import uk.gov.hmrc.submitpublicpensionadjustment.views.xml.CalculationPdf
+import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
+import uk.gov.hmrc.submitpublicpensionadjustment.views.xml.FinalSubmissionPdf
 
-import java.nio.file.{Files, Paths}
+import java.time.Instant
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 abstract class DmsSubmissionService {
 
-  def submitCalculation(calculation: Calculation)(implicit hc: HeaderCarrier): Future[Done]
+  def send(caseNumber: String, finalSubmission: FinalSubmission, submissionReference: String)(implicit
+    hc: HeaderCarrier
+  ): Future[Done]
 }
 
 @Singleton
 class NoOpDmsSubmissionService @Inject() () extends DmsSubmissionService {
-  override def submitCalculation(calculation: Calculation)(implicit hc: HeaderCarrier): Future[Done] =
+
+  override def send(caseNumber: String, finalSubmission: FinalSubmission, submissionReference: String)(implicit
+    hc: HeaderCarrier
+  ): Future[Done] =
     Future.successful(Done)
 }
 
@@ -44,7 +49,8 @@ class NoOpDmsSubmissionService @Inject() () extends DmsSubmissionService {
 class DefaultDmsSubmissionService @Inject() (
   dmsConnector: DmsSubmissionConnector,
   fopService: FopService,
-  pdfTemplate: CalculationPdf,
+  viewModelService: ViewModelService,
+  pdfTemplate: FinalSubmissionPdf,
   messagesApi: MessagesApi
 )(implicit ec: ExecutionContext)
     extends DmsSubmissionService {
@@ -52,19 +58,23 @@ class DefaultDmsSubmissionService @Inject() (
   private implicit val messages: Messages =
     messagesApi.preferred(Seq.empty)
 
-  override def submitCalculation(calculation: Calculation)(implicit hc: HeaderCarrier): Future[Done] =
-    for {
-      pdfBytes <- fopService.render(pdfTemplate(calculation).body)
-      _        <- submitToDms(calculation, pdfBytes, calculation.submissionReference)
-    } yield Done
-
-  private def submitToDms(calculation: Calculation, pdfBytes: Array[Byte], submissionReference: String)(implicit
+  override def send(caseNumber: String, finalSubmission: FinalSubmission, submissionReference: String)(implicit
     hc: HeaderCarrier
   ): Future[Done] =
-    dmsConnector.submitCalculation(
-      customerId = calculation.nino,
+    for {
+      pdfBytes   <- fopService.render(pdfTemplate(viewModelService.viewModel(caseNumber, finalSubmission)).body)
+      identifiers = finalSubmission.submissionInputs.administrativeDetails.claimantDetails.taxIdentifiers
+      _          <-
+        submitToDms(identifiers.nino.getOrElse(identifiers.trn.getOrElse("Undefined")), pdfBytes, submissionReference)
+    } yield Done
+
+  private def submitToDms(customerId: String, pdfBytes: Array[Byte], submissionReference: String)(implicit
+    hc: HeaderCarrier
+  ): Future[Done] =
+    dmsConnector.submit(
+      customerId = customerId,
       pdf = Source.single(ByteString(pdfBytes)),
-      timestamp = calculation.created,
+      timestamp = Instant.now,
       submissionReference = submissionReference
     )
 }

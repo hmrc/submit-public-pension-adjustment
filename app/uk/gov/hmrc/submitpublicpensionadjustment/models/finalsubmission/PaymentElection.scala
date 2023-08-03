@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation
+package uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{Format, Json}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.Period
 
-final case class CalculationRequest(
-  dataItem1: String
-)
+case class PaymentElection(
+  period: Period,
+  personalCharge: Option[PersonalCharge],
+  schemeCharge: Option[SchemeCharge]
+) {}
 
-object CalculationRequest {
+object PaymentElection {
 
-  implicit lazy val format: OFormat[CalculationRequest] = Json.format
+  implicit lazy val formats: Format[PaymentElection] = Json.format
 }

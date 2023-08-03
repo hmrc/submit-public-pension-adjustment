@@ -20,29 +20,27 @@ import play.api.libs.json.{JsSuccess, JsValue, Json, Reads}
 import play.api.mvc.{Action, ControllerComponents, Request, Result}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import uk.gov.hmrc.submitpublicpensionadjustment.controllers.actions.{IdentifierAction, IdentifierRequest}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.CalculationRequest.format
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.{CalculationRequest, CalculationSubmissionResponse}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.AuditMetadata
-import uk.gov.hmrc.submitpublicpensionadjustment.services.CalculationService
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{AuditMetadata, FinalSubmissionResponse}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
+import uk.gov.hmrc.submitpublicpensionadjustment.services.FinalSubmissionService
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CalculationController @Inject() (
+class FinalSubmissionController @Inject() (
   cc: ControllerComponents,
-  calculationService: CalculationService,
+  finalSubmissionService: FinalSubmissionService,
   identify: IdentifierAction
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  def submit: Action[JsValue] = identify(parse.json[CalculationRequest]).async(parse.json) {
+  def submit: Action[JsValue] = identify(parse.json[FinalSubmission]).async(parse.json) {
     implicit identifiedRequest: IdentifierRequest[JsValue] =>
-      withValidJson[CalculationRequest]("Submit Calculation") { claimInput =>
-        val nino = identifiedRequest.nino
-        calculationService
-          .submit(nino, claimInput, getAuditMetadata(identifiedRequest))
+      withValidJson[FinalSubmission]("Final Submission") { finalSubmission =>
+        finalSubmissionService
+          .submit(finalSubmission, getAuditMetadata(identifiedRequest))
           .map { id =>
-            Ok(Json.toJson(CalculationSubmissionResponse(id)))
+            Ok(Json.toJson(FinalSubmissionResponse(id)))
           }
       }
   }

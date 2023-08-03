@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.services
+package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs
 
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.audit.http.connector.AuditConnector
-import uk.gov.hmrc.submitpublicpensionadjustment.models.FinalSubmissionEvent
+import play.api.libs.json.{Format, Json, Reads, __}
 
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+case class AnnualAllowance(scottishTaxYears: List[Period], taxYears: List[TaxYear])
 
-@Singleton
-class AuditService @Inject() (
-  auditConnector: AuditConnector
-)(implicit ec: ExecutionContext) {
+object AnnualAllowance {
 
-  def auditSubmitRequest(event: FinalSubmissionEvent)(implicit hc: HeaderCarrier): Unit =
-    auditConnector.sendExplicitAudit("FinalSubmission", event)
+  implicit lazy val reads: Reads[AnnualAllowance] = {
+
+    import play.api.libs.functional.syntax._
+
+    ((__ \ "scottishTaxYears").read[List[Period]] and
+      (__ \ "taxYears").read[List[TaxYear]])(AnnualAllowance(_, _))
+  }
+
+  implicit lazy val formats: Format[AnnualAllowance] = Json.format
 }

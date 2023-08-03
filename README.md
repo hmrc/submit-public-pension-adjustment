@@ -5,10 +5,7 @@ This service provides the backend for the Submit Public Pension Adjustment Front
 
 ## Frontend
 
-[Submit Public Pension Adjustment Frontend](https://github.com/hmrc/submit-public-pension-adjustment-frontend)
-
-## Persistence
-This service uses mongodb to retrieve the details of a pension adjustment calculation, as created by [Calculate Public Pension Adjustment](https://github.com/hmrc/calculate-public-pension-adjustment).
+[Submit Public Pension Adjustment](https://github.com/hmrc/submit-public-pension-adjustment)
 
 ## Requirements
 This service is written in Scala using the Play framework, so needs at least a JRE to run.

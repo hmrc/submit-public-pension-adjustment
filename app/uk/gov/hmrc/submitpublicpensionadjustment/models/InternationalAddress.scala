@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation
+package uk.gov.hmrc.submitpublicpensionadjustment.models
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json._
 
-final case class CalculationSubmissionResponse(submissionReference: String)
+case class InternationalAddress(
+  addressLine1: String,
+  addressLine2: Option[String],
+  townOrCity: String,
+  stateOrRegion: Option[String],
+  postCode: Option[String],
+  country: String
+)
 
-object CalculationSubmissionResponse {
-
-  implicit lazy val format: OFormat[CalculationSubmissionResponse] = Json.format
+object InternationalAddress {
+  implicit val format = Json.format[InternationalAddress]
 }

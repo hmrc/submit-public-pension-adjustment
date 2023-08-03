@@ -14,19 +14,6 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation
+package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf
 
-import play.api.libs.json.{Json, OFormat}
-import uk.gov.hmrc.auth.core.{AffinityGroup, CredentialRole}
-
-final case class CalculationSubmissionEvent(
-  internalId: String,
-  affinityGroup: AffinityGroup,
-  credentialRole: Option[CredentialRole],
-  calculation: Calculation
-)
-
-object CalculationSubmissionEvent {
-
-  implicit lazy val format: OFormat[CalculationSubmissionEvent] = Json.format
-}
+case class Row(displayLabel: String, displayValue: String) {}

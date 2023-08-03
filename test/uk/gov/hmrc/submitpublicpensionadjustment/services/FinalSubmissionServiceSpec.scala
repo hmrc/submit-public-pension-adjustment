@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
-import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.{any, matches}
 import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.MockitoSugar
 import org.scalatest.BeforeAndAfterEach
@@ -25,15 +25,13 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.{Calculation, CalculationRequest, CalculationSubmissionEvent}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.{AuditMetadata, Done}
-import uk.gov.hmrc.submitpublicpensionadjustment.services.{AuditService, CalculationService, DmsSubmissionService, SubmissionReferenceService}
+import uk.gov.hmrc.submitpublicpensionadjustment.TestData
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{AuditMetadata, Done, FinalSubmissionEvent}
 
-import java.time.{Clock, Instant, ZoneId}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class CalculationServiceSpec
+class FinalSubmissionServiceSpec
     extends AnyFreeSpec
     with Matchers
     with MockitoSugar
@@ -44,16 +42,13 @@ class CalculationServiceSpec
   private val mockDmsSubmissionService       = mock[DmsSubmissionService]
   private val mockSubmissionReferenceService = mock[SubmissionReferenceService]
   private val mockAuditService               = mock[AuditService]
-  private val fixedInstant                   = Instant.now
-  private val fixedClock                     = Clock.fixed(fixedInstant, ZoneId.systemDefault())
 
   private val hc: HeaderCarrier = HeaderCarrier()
 
-  private val service = new CalculationService(
+  private val service = new FinalSubmissionService(
     mockDmsSubmissionService,
     mockSubmissionReferenceService,
-    mockAuditService,
-    fixedClock
+    mockAuditService
   )
 
   override def beforeEach(): Unit = {
@@ -67,14 +62,13 @@ class CalculationServiceSpec
 
   "submit" - {
 
-    "must submit a calculation and return a submissionReference" in {
+    "must send to DMS and return a submissionReference" in {
 
       when(mockSubmissionReferenceService.random()).thenReturn("submissionReference")
-      when(mockDmsSubmissionService.submitCalculation(any())(any())).thenReturn(Future.successful(Done))
+      when(mockDmsSubmissionService.send(matches("caseNumber"), any(), matches("submissionReference"))(any()))
+        .thenReturn(Future.successful(Done))
 
-      val calculationRequest = CalculationRequest(
-        "dataItem1"
-      )
+      val finalSubmission = TestData.finalSubmission
 
       val auditMetadata = AuditMetadata(
         internalId = "internalId",
@@ -82,24 +76,19 @@ class CalculationServiceSpec
         credentialRole = None
       )
 
-      val expectedCalculation = Calculation(
-        nino = "nino",
-        dataItem1 = "dataItem1",
-        submissionReference = "submissionReference",
-        created = fixedInstant
-      )
-
-      val expectedAudit = CalculationSubmissionEvent(
+      val expectedAudit = FinalSubmissionEvent(
         internalId = "internalId",
         affinityGroup = AffinityGroup.Individual,
         credentialRole = None,
-        calculation = expectedCalculation
+        finalSubmission = finalSubmission
       )
 
-      val result = service.submit("nino", calculationRequest, auditMetadata)(hc).futureValue
+      val result = service.submit(finalSubmission, auditMetadata)(hc).futureValue
 
       result mustEqual "submissionReference"
-      verify(mockDmsSubmissionService, times(1)).submitCalculation(eqTo(expectedCalculation))(any())
+      verify(mockDmsSubmissionService, times(1)).send(matches("caseNumber"), any(), matches("submissionReference"))(
+        any()
+      )
       verify(mockAuditService, times(1)).auditSubmitRequest(eqTo(expectedAudit))(any())
     }
   }

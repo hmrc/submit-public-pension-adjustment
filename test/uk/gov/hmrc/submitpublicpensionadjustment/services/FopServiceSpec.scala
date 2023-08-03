@@ -23,19 +23,16 @@ import org.scalatest.matchers.must.Matchers
 import play.api.i18n.MessagesApi
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.Calculation
-import uk.gov.hmrc.submitpublicpensionadjustment.views.xml.CalculationPdf
+import uk.gov.hmrc.submitpublicpensionadjustment.TestData
+import uk.gov.hmrc.submitpublicpensionadjustment.views.xml.FinalSubmissionPdf
 
 import java.nio.file.{Files, Paths}
-import java.time.Instant
 import scala.io.Source
 
 class FopServiceSpec extends AnyFreeSpec with Matchers with ScalaFutures with IntegrationPatience {
 
   private val app        = GuiceApplicationBuilder().build()
   private val fopService = app.injector.instanceOf[FopService]
-
-  private val fixedInstant = Instant.now
 
   "render" - {
 
@@ -45,21 +42,14 @@ class FopServiceSpec extends AnyFreeSpec with Matchers with ScalaFutures with In
       PDDocument.load(result)
     }
 
-    "must generate a test PDF" in {
-
-      val calculation = Calculation(
-        nino = "nino",
-        dataItem1 = "dataItem1",
-        submissionReference = "submissionReference",
-        created = fixedInstant
-      )
-
-      val view      = app.injector.instanceOf[CalculationPdf]
+    "must generate a Final Submission PDF" in {
+      val view      = app.injector.instanceOf[FinalSubmissionPdf]
       val messages  = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
-      val xmlString = view.render(calculation, messages).body
+      val viewModel = TestData.viewModel
+      val xmlString = view.render(viewModel, messages).body
       val result    = fopService.render(xmlString).futureValue
 
-      val fileName = "test/resources/fop/test.pdf"
+      val fileName = "test/resources/fop/final_submission.pdf"
       Files.write(Paths.get(fileName), result)
     }
   }
