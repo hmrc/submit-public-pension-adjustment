@@ -17,6 +17,7 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf
 
 import play.api.i18n.Messages
+import uk.gov.hmrc.submitpublicpensionadjustment.models.CaseIdentifiers
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections._
 
@@ -55,9 +56,9 @@ case class PDFViewModel(
 }
 
 object PDFViewModel {
-  def build(caseNumber: String, finalSubmission: FinalSubmission): PDFViewModel =
+  def build(caseIdentifiers: CaseIdentifiers, finalSubmission: FinalSubmission): PDFViewModel =
     PDFViewModel(
-      caseNumber,
+      caseIdentifiers.caseNumber,
       AdministrativeDetailsSection.build(finalSubmission),
       OnBehalfOfSection.build(finalSubmission),
       LifetimeAllowanceSection.build(finalSubmission),

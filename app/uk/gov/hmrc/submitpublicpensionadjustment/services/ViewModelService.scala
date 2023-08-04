@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
+import uk.gov.hmrc.submitpublicpensionadjustment.models.CaseIdentifiers
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.PDFViewModel
 
@@ -23,6 +24,6 @@ import javax.inject.{Inject, Singleton}
 
 @Singleton
 class ViewModelService @Inject() () {
-  def viewModel(caseNumber: String, finalSubmission: FinalSubmission): PDFViewModel =
-    PDFViewModel.build(caseNumber, finalSubmission)
+  def viewModel(caseIdentifiers: CaseIdentifiers, finalSubmission: FinalSubmission): PDFViewModel =
+    PDFViewModel.build(caseIdentifiers, finalSubmission)
 }

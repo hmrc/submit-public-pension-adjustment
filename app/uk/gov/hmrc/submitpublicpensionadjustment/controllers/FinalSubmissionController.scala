@@ -39,8 +39,8 @@ class FinalSubmissionController @Inject() (
       withValidJson[FinalSubmission]("Final Submission") { finalSubmission =>
         finalSubmissionService
           .submit(finalSubmission, getAuditMetadata(identifiedRequest))
-          .map { id =>
-            Ok(Json.toJson(FinalSubmissionResponse(id)))
+          .map { submissionReferences =>
+            Ok(Json.toJson(FinalSubmissionResponse(submissionReferences)))
           }
       }
   }

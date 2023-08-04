@@ -18,7 +18,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.models
 
 import play.api.libs.json.{Json, OFormat}
 
-final case class FinalSubmissionResponse(submissionReference: String)
+final case class FinalSubmissionResponse(submissionReferences: Seq[String])
 
 object FinalSubmissionResponse {
 

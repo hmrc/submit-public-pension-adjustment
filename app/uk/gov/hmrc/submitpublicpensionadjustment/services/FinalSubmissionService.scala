@@ -16,9 +16,10 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
+import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.submitpublicpensionadjustment.models._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
-import uk.gov.hmrc.submitpublicpensionadjustment.models.{AuditMetadata, FinalSubmissionEvent}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -26,20 +27,45 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class FinalSubmissionService @Inject() (
   dmsSubmissionService: DmsSubmissionService,
-  submissionReferenceService: SubmissionReferenceService,
+  queueLogicService: QueueLogicService,
   auditService: AuditService
-)(implicit ec: ExecutionContext) {
+)(implicit ec: ExecutionContext)
+    extends Logging {
 
   def submit(finalSubmission: FinalSubmission, auditMetadata: AuditMetadata)(implicit
     hc: HeaderCarrier
-  ): Future[String] = {
+  ): Future[Seq[String]] = {
 
-    val submissionReference: String = submissionReferenceService.random()
+    val queueReferences: Seq[QueueReference] = queueLogicService.computeQueueReferences(finalSubmission)
+    logger.info(s"queueReferences : $queueReferences")
 
-    for {
-      _ <- dmsSubmissionService.send(finalSubmission.submissionInputs.caseNumber, finalSubmission, submissionReference)
-      _  = auditService.auditSubmitRequest(buildAudit(finalSubmission, auditMetadata))
-    } yield submissionReference
+    val responses: Seq[Future[String]] =
+      sendToDms(finalSubmission, auditMetadata, queueReferences)
+
+    Future.sequence(responses)
+  }
+
+  private def sendToDms(
+    finalSubmission: FinalSubmission,
+    auditMetadata: AuditMetadata,
+    queueReferences: Seq[QueueReference]
+  )(implicit
+    hc: HeaderCarrier
+  ) = {
+    val responses: Seq[Future[String]] = queueReferences.map { queueReference =>
+      val caseIdentifiers = CaseIdentifiers(queueReference.submissionReference, queueReferences)
+      for {
+        _ <-
+          dmsSubmissionService.send(
+            caseIdentifiers,
+            finalSubmission,
+            queueReference.submissionReference,
+            queueReference.dmsQueue.queueName()
+          )
+        _  = auditService.auditSubmitRequest(buildAudit(finalSubmission, auditMetadata))
+      } yield queueReference.submissionReference
+    }
+    responses
   }
 
   private def buildAudit(finalSubmission: FinalSubmission, auditMetadata: AuditMetadata): FinalSubmissionEvent =

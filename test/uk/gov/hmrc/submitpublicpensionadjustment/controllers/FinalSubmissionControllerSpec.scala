@@ -88,7 +88,7 @@ class FinalSubmissionControllerSpec
         )
 
       when(mockFinalSubmissionService.submit(any(), any())(any())) thenReturn Future.successful(
-        "submissionReference"
+        List("ABCDEF123456")
       )
 
       val expectedMetadata = AuditMetadata(
@@ -106,7 +106,9 @@ class FinalSubmissionControllerSpec
       val result = route(app, request).value
 
       status(result) mustEqual OK
-      contentAsJson(result) mustEqual Json.toJson(FinalSubmissionResponse("submissionReference"))
+      contentAsJson(result) mustEqual Json.toJson(
+        FinalSubmissionResponse(Seq("ABCDEF123456"))
+      )
       verify(mockFinalSubmissionService, times(1)).submit(eqTo(finalSubmission), eqTo(expectedMetadata))(
         any()
       )

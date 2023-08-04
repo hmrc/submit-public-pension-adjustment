@@ -19,7 +19,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.services
 import akka.stream.Materializer
 import akka.stream.scaladsl.{Keep, Sink, Source}
 import akka.util.ByteString
-import org.mockito.ArgumentMatchers.{any, eq => eqTo, matches}
+import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.{ArgumentCaptor, MockitoSugar}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
@@ -31,7 +31,8 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
 import uk.gov.hmrc.submitpublicpensionadjustment.connectors.DmsSubmissionConnector
-import uk.gov.hmrc.submitpublicpensionadjustment.models.Done
+import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.Compensation
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{CaseIdentifiers, Done, QueueReference}
 import uk.gov.hmrc.submitpublicpensionadjustment.views.xml.FinalSubmissionPdf
 
 import scala.concurrent.Future
@@ -71,8 +72,9 @@ class DmsSubmissionServiceSpec
 
   "finalSubmission" - {
 
-    val caseNumber          = "caseNumber"
     val submissionReference = "submissionReference"
+    val dmsQueue            = Compensation("Compensation_Queue")
+    val caseIdentifiers     = CaseIdentifiers(submissionReference, Seq(QueueReference(dmsQueue, submissionReference)))
 
     val finalSubmission = TestData.finalSubmission
 
@@ -84,21 +86,22 @@ class DmsSubmissionServiceSpec
       val sourceCaptor: ArgumentCaptor[Source[ByteString, _]] = ArgumentCaptor.forClass(classOf[Source[ByteString, _]])
 
       when(mockFopService.render(any())).thenReturn(Future.successful(bytes))
-      when(mockDmsSubmissionConnector.submit(any(), any(), any(), any())(any()))
+      when(mockDmsSubmissionConnector.submit(any(), any(), any(), any(), any())(any()))
         .thenReturn(Future.successful(Done))
       when(mockViewModelService.viewModel(any(), any())).thenReturn(TestData.viewModel)
 
       val expectedXml = finalSubmissionTemplate(TestData.viewModel).body
 
-      service.send(caseNumber, finalSubmission, submissionReference)(hc).futureValue
+      service.send(caseIdentifiers, finalSubmission, submissionReference, dmsQueue.queueName)(hc).futureValue
 
-      verify(mockViewModelService).viewModel(matches(caseNumber), eqTo(finalSubmission))
+      verify(mockViewModelService).viewModel(eqTo(caseIdentifiers), eqTo(finalSubmission))
       verify(mockFopService).render(eqTo(expectedXml))
       verify(mockDmsSubmissionConnector).submit(
         eqTo("someNino"),
         sourceCaptor.capture(),
         any(),
-        eqTo(submissionReference)
+        eqTo(submissionReference),
+        eqTo(dmsQueue.queueName)
       )(eqTo(hc))
 
       val result =
@@ -111,18 +114,18 @@ class DmsSubmissionServiceSpec
 
       when(mockFopService.render(any())).thenReturn(Future.failed(new RuntimeException()))
 
-      service.send(caseNumber, finalSubmission, submissionReference)(hc).failed.futureValue
+      service.send(caseIdentifiers, finalSubmission, submissionReference, dmsQueue.queueName)(hc).failed.futureValue
 
-      verify(mockDmsSubmissionConnector, never).submit(any(), any(), any(), any())(any())
+      verify(mockDmsSubmissionConnector, never).submit(any(), any(), any(), any(), any())(any())
     }
 
     "must fail if the dms submission connector fails" in {
 
       when(mockFopService.render(any())).thenReturn(Future.successful(Array.emptyByteArray))
-      when(mockDmsSubmissionConnector.submit(any(), any(), any(), any())(any()))
+      when(mockDmsSubmissionConnector.submit(any(), any(), any(), any(), any())(any()))
         .thenReturn(Future.failed(new RuntimeException()))
 
-      service.send(caseNumber, finalSubmission, submissionReference)(hc).failed.futureValue
+      service.send(caseIdentifiers, finalSubmission, submissionReference, dmsQueue.queueName)(hc).failed.futureValue
     }
   }
 }

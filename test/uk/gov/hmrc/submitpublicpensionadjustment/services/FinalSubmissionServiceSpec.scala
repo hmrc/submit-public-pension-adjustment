@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
-import org.mockito.ArgumentMatchers.{any, matches}
+import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.MockitoSugar
 import org.scalatest.BeforeAndAfterEach
@@ -26,7 +26,8 @@ import org.scalatest.matchers.must.Matchers
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
-import uk.gov.hmrc.submitpublicpensionadjustment.models.{AuditMetadata, Done, FinalSubmissionEvent}
+import uk.gov.hmrc.submitpublicpensionadjustment.models._
+import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.{Compensation, MiniRegime}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -42,12 +43,13 @@ class FinalSubmissionServiceSpec
   private val mockDmsSubmissionService       = mock[DmsSubmissionService]
   private val mockSubmissionReferenceService = mock[SubmissionReferenceService]
   private val mockAuditService               = mock[AuditService]
+  private val mockQueueLogicService          = mock[QueueLogicService]
 
   private val hc: HeaderCarrier = HeaderCarrier()
 
   private val service = new FinalSubmissionService(
     mockDmsSubmissionService,
-    mockSubmissionReferenceService,
+    mockQueueLogicService,
     mockAuditService
   )
 
@@ -55,6 +57,7 @@ class FinalSubmissionServiceSpec
     reset(
       mockDmsSubmissionService,
       mockSubmissionReferenceService,
+      mockQueueLogicService,
       mockAuditService
     )
     super.beforeEach()
@@ -64,9 +67,40 @@ class FinalSubmissionServiceSpec
 
     "must send to DMS and return a submissionReference" in {
 
-      when(mockSubmissionReferenceService.random()).thenReturn("submissionReference")
-      when(mockDmsSubmissionService.send(matches("caseNumber"), any(), matches("submissionReference"))(any()))
+      when(mockSubmissionReferenceService.random())
+        .thenReturn("submissionReference1")
+        .andThenAnswer("submissionReference2")
+
+      val queueReferences =
+        Seq(
+          QueueReference(Compensation("Compensation_Queue"), "submissionReference1"),
+          QueueReference(MiniRegime("MiniRegime_Queue"), "submissionReference2")
+        )
+
+      when(
+        mockDmsSubmissionService
+          .send(
+            eqTo(CaseIdentifiers("submissionReference1", queueReferences)),
+            any(),
+            eqTo("submissionReference1"),
+            eqTo("Compensation_Queue")
+          )(any())
+      )
         .thenReturn(Future.successful(Done))
+
+      when(
+        mockDmsSubmissionService
+          .send(
+            eqTo(CaseIdentifiers("submissionReference2", queueReferences)),
+            any(),
+            eqTo("submissionReference2"),
+            eqTo("MiniRegime_Queue")
+          )(any())
+      )
+        .thenReturn(Future.successful(Done))
+
+      when(mockQueueLogicService.computeQueueReferences(any()))
+        .thenReturn(queueReferences)
 
       val finalSubmission = TestData.finalSubmission
 
@@ -85,11 +119,29 @@ class FinalSubmissionServiceSpec
 
       val result = service.submit(finalSubmission, auditMetadata)(hc).futureValue
 
-      result mustEqual "submissionReference"
-      verify(mockDmsSubmissionService, times(1)).send(matches("caseNumber"), any(), matches("submissionReference"))(
-        any()
-      )
-      verify(mockAuditService, times(1)).auditSubmitRequest(eqTo(expectedAudit))(any())
+      result mustEqual Seq("submissionReference1", "submissionReference2")
+
+      verify(mockDmsSubmissionService, times(1))
+        .send(
+          eqTo(CaseIdentifiers("submissionReference1", queueReferences)),
+          any(),
+          eqTo("submissionReference1"),
+          eqTo("Compensation_Queue")
+        )(
+          any()
+        )
+
+      verify(mockDmsSubmissionService, times(1))
+        .send(
+          eqTo(CaseIdentifiers("submissionReference2", queueReferences)),
+          any(),
+          eqTo("submissionReference2"),
+          eqTo("MiniRegime_Queue")
+        )(
+          any()
+        )
+
+      verify(mockAuditService, times(2)).auditSubmitRequest(eqTo(expectedAudit))(any())
     }
   }
 }

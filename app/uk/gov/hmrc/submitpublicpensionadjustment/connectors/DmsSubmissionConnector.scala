@@ -30,7 +30,6 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models.Done
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.time.{Instant, LocalDateTime, ZoneOffset}
-import java.util.Base64
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -45,27 +44,24 @@ class DmsSubmissionConnector @Inject() (
 
   private val dmsSubmission: Service = configuration.get[Service]("microservice.services.dms-submission")
 
-  private val dmsSubmissionConfig: Configuration      =
+  private val dmsSubmissionConfig: Configuration =
     configuration.get[Configuration]("microservice.services.dms-submission")
-  private val callbackUrl: String                     = dmsSubmissionConfig.get[String]("callbackUrl")
-  private val source: String                          = dmsSubmissionConfig.get[String]("source")
-  private val formId: String                          = dmsSubmissionConfig.get[String]("formId")
-  private val base64EncodedClassificationType: String =
-    dmsSubmissionConfig.get[String]("base64EncodedClassificationType")
-  private val businessArea: String                    = dmsSubmissionConfig.get[String]("businessArea")
+  private val callbackUrl: String                = dmsSubmissionConfig.get[String]("callbackUrl")
+  private val source: String                     = dmsSubmissionConfig.get[String]("source")
+  private val formId: String                     = dmsSubmissionConfig.get[String]("formId")
+  private val businessArea: String               = dmsSubmissionConfig.get[String]("businessArea")
 
   def submit(
     customerId: String,
     pdf: Source[ByteString, _],
     timestamp: Instant,
-    submissionReference: String
+    submissionReference: String,
+    classificationType: String
   )(implicit hc: HeaderCarrier): Future[Done] = {
 
     val dateOfReceipt = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(
       LocalDateTime.ofInstant(timestamp.truncatedTo(ChronoUnit.SECONDS), ZoneOffset.UTC)
     )
-
-    val classificationType = DmsSubmissionConnector.base64Decode(base64EncodedClassificationType)
 
     logDiagnostics(submissionReference, source, formId, classificationType, businessArea, callbackUrl)
 
@@ -122,8 +118,4 @@ class DmsSubmissionConnector @Inject() (
     logger.info(
       s"submissionReference: $submissionReference, source:$source, formId:$formId, classificationType : $classificationType, businessArea:$businessArea, callbackUrl:$callbackUrl"
     )
-}
-
-object DmsSubmissionConnector {
-  def base64Decode(base64: String) = new String(Base64.getDecoder.decode(base64))
 }
