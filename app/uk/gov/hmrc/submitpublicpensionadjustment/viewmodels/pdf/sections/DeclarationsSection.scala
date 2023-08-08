@@ -33,15 +33,21 @@ case class DeclarationsSection(
 }
 
 object DeclarationsSection {
+  def build(finalSubmission: FinalSubmission): DeclarationsSection =
+    DeclarationsSection(
+      compensation = booleanToYesNo(finalSubmission.submissionInputs.declarations.compensation),
+      tax = booleanToYesNo(finalSubmission.submissionInputs.declarations.tax),
+      address = "Y", // Todo
+      contact = booleanToYesNo(finalSubmission.submissionInputs.declarations.contactDetails),
+      trueAndComplete = "Y",
+      onBehalfDeceased = optionBooleanToYesNo(finalSubmission.submissionInputs.declarations.claimOnBehalfOfDeceased),
+      deputyship = optionBooleanToYesNo(finalSubmission.submissionInputs.declarations.powerOfAttorney)
+    )
 
-  // TODO - Need to map values from final submission.
-  def build(finalSubmission: FinalSubmission): DeclarationsSection = DeclarationsSection(
-    compensation = "Y",
-    tax = "Y",
-    address = "Y",
-    contact = "Y",
-    trueAndComplete = "Y",
-    onBehalfDeceased = "Y",
-    deputyship = "Y"
-  )
+  private def booleanToYesNo(value: Boolean): String = if (value) "Y" else "N"
+
+  private def optionBooleanToYesNo(optValue: Option[Boolean]): String = optValue match {
+    case Some(true) => "Y"
+    case _          => "N"
+  }
 }

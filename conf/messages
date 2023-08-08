@@ -36,6 +36,7 @@ pdf.administrativeDetailsSection.ninoOrTrn = National Insurance number or altern
 pdf.administrativeDetailsSection.contactNumber = Contact number
 
 pdf.onBehalfOfSection.heading = Details of member you have lasting power of attorney or deputyship
+pdf.onBehalfOfSectionDeceased.heading = Details of deceased member you are making a calculation for
 pdf.onBehalfOfSection.firstName = First name
 pdf.onBehalfOfSection.surname = Surname
 pdf.onBehalfOfSection.dob = Date of birth

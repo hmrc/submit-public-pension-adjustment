@@ -53,36 +53,31 @@ case class TaxAdministrationFrameworkSection(
 }
 
 object TaxAdministrationFrameworkSection {
+  def build(finalSubmission: FinalSubmission): Seq[TaxAdministrationFrameworkSection] = {
+    val inDates = finalSubmission.calculation
+      .map(_.inDates)
+      .getOrElse(Seq.empty)
 
-  // TODO - Need to map values from final submission.
-  def build(finalSubmission: FinalSubmission): Seq[TaxAdministrationFrameworkSection] = Seq(
-    TaxAdministrationFrameworkSection(
-      relatingTo = Period._2018,
-      previousChargeAmount = "previousChargeAmount1",
-      whoChargePaidBy = "whoChargePaidBy",
-      previousChargePaidBySchemeName = "previousChargePaidBySchemeName1",
-      previousChargePaidByPstr = "previousChargePaidByPstr",
-      creditValue = "creditValue",
-      debitValue = "debitValue",
-      isSchemePayingCharge = "isSchemePayingCharge",
-      schemePaymentElectionDate = "schemePaymentElectionDate",
-      schemePayingChargeAmount = "schemePayingChargeAmount",
-      schemePayingPstr = "schemePayingPstr1",
-      schemePayingName = "schemePayingName1"
-    ),
-    TaxAdministrationFrameworkSection(
-      relatingTo = Period._2019,
-      previousChargeAmount = "previousChargeAmount2",
-      whoChargePaidBy = "whoChargePaidBy",
-      previousChargePaidBySchemeName = "previousChargePaidBySchemeName2",
-      previousChargePaidByPstr = "previousChargePaidByPstr",
-      creditValue = "creditValue",
-      debitValue = "debitValue",
-      isSchemePayingCharge = "isSchemePayingCharge",
-      schemePaymentElectionDate = "schemePaymentElectionDate",
-      schemePayingChargeAmount = "schemePayingChargeAmount",
-      schemePayingPstr = "schemePayingPstr2",
-      schemePayingName = "schemePayingName2"
-    )
-  )
+    inDates.map { inDateCalc =>
+      // val paymentElectionOpt = finalSubmission.submissionInputs.paymentElections.find(_.period == inDateCalc.period) // todo will change
+      // val electionSchemeCharge = paymentElectionOpt.flatMap(_.schemeCharge).getOrElse(throw new RuntimeException("No corresponding SchemeCharge found"))
+      TaxAdministrationFrameworkSection(
+        relatingTo = inDateCalc.period,
+        previousChargeAmount = "todo", // inputs or response
+        whoChargePaidBy =
+          "todo", // if (inDateCalc.chargePaidByMember > 0) "Member" else "Scheme", // in payment election
+        previousChargePaidBySchemeName =
+          "todo", // electionSchemeCharge.schemeDetails.schemeName, // calculation response
+        previousChargePaidByPstr = "todo", // electionSchemeCharge.schemeDetails.pstr.value, // inputs or response
+        creditValue = inDateCalc.memberCredit.toString,
+        debitValue = inDateCalc.debit.toString,
+        isSchemePayingCharge = "todo", // if (inDateCalc.chargePaidBySchemes > 0) "Yes" else "No",
+        schemePaymentElectionDate =
+          "todo", // electionSchemeCharge.paymentElectionDate.map(_.toString).getOrElse(""), //in submission inputs
+        schemePayingChargeAmount = "todo", // submission inputs how much the scheme pay
+        schemePayingPstr = "todo", // electionSchemeCharge.schemeDetails.pstr.value,
+        schemePayingName = "todo" // electionSchemeCharge.schemeDetails.schemeName // na
+      )
+    }
+  }
 }

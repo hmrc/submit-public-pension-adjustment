@@ -34,7 +34,7 @@
             @pdfSection(Some(viewModel.administrativeDetailsSection), Some("administrativeDetailsSection"))
             @line("","")
 
-            @pdfSection(viewModel.onBehalfOfSection, Some("onBehalfOfSection"))
+            @pdfSection(viewModel.onBehalfOfSection, if (viewModel.declarationsSection.onBehalfDeceased == "Y") Some("onBehalfOfSectionDeceased") else Some("onBehalfOfSection"))
             @line("","")
 
             @pdfSection(viewModel.lifetimeAllowanceSection, Some("lifetimeAllowanceSection"))

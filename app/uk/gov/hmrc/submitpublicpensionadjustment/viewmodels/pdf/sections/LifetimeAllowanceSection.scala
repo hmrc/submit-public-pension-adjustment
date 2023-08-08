@@ -70,26 +70,26 @@ object LifetimeAllowanceSection {
   // TODO - Need to map values from final submission.
   def build(finalSubmission: FinalSubmission): Option[LifetimeAllowanceSection] = Some(
     LifetimeAllowanceSection(
-      hadBce = "hadBce",
-      bceDate = "bceDate",
-      changeInLtaPercentage = "changeInLtaPercentage",
-      ltaChargeType = "ltaChargeType",
-      haveLtaProtectionOrEnhancement = "haveLtaProtectionOrEnhancement",
-      protectionType = "protectionType",
-      protectionReference = "protectionReference",
-      changeToProtectionType = "changeToProtectionType",
-      newProtectionTypeOrEnhancement = "newProtectionTypeOrEnhancement",
-      newProtectionTypeOrReference = "newProtectionTypeOrReference",
-      hadLtaCharge = "hadLtaCharge",
-      howExcessPaid = "howExcessPaid",
-      ltaChargeAmount = "ltaChargeAmount",
-      whoPaidLtaCharge = "whoPaidLtaCharge",
-      schemeThatPaidChargeName = "schemeThatPaidChargeName",
-      schemeThatPaidChargeTaxRef = "schemeThatPaidChargeTaxRef",
-      newLtaChargeValue = "newLtaChargeValue",
-      whoPayingExtraCharge = "whoPayingExtraCharge",
-      whoPayingExtraChargeSchemeName = "whoPayingExtraChargeSchemeName",
-      whoPayingExtraChargeTaxRef = "whoPayingExtraChargeTaxRef"
+      hadBce = "todo",
+      bceDate = "todo",
+      changeInLtaPercentage = "todo",
+      ltaChargeType = "todo",
+      haveLtaProtectionOrEnhancement = "todo",
+      protectionType = "todo",
+      protectionReference = "todo",
+      changeToProtectionType = "todo",
+      newProtectionTypeOrEnhancement = "todo",
+      newProtectionTypeOrReference = "todo",
+      hadLtaCharge = "todo",
+      howExcessPaid = "todo",
+      ltaChargeAmount = "todo",
+      whoPaidLtaCharge = "todo",
+      schemeThatPaidChargeName = "todo",
+      schemeThatPaidChargeTaxRef = "todo",
+      newLtaChargeValue = "todo",
+      whoPayingExtraCharge = "todo",
+      whoPayingExtraChargeSchemeName = "todo",
+      whoPayingExtraChargeTaxRef = "todo"
     )
   )
 }

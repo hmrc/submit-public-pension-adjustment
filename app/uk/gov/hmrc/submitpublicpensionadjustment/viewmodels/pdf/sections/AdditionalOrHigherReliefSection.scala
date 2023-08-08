@@ -26,12 +26,13 @@ case class AdditionalOrHigherReliefSection(amount: String, schemePayingName: Str
 
 object AdditionalOrHigherReliefSection {
 
-  // TODO - Need to map values from final submission.
-  def build(finalSubmission: FinalSubmission): Option[AdditionalOrHigherReliefSection] = Some(
-    AdditionalOrHigherReliefSection(
-      amount = "amount",
-      schemePayingName = "schemePayingName",
-      schemePayingPstr = "schemePayingPstr"
-    )
-  )
+  def build(finalSubmission: FinalSubmission): Option[AdditionalOrHigherReliefSection] =
+    finalSubmission.submissionInputs.schemeTaxRelief.map { relief =>
+      val schemeDetails = relief.individualSchemeIdentifier.relatedToScheme
+      AdditionalOrHigherReliefSection(
+        amount = relief.amount.toString,
+        schemePayingName = schemeDetails.schemeName,
+        schemePayingPstr = schemeDetails.pstr.value
+      )
+    }
 }

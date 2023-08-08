@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.Period
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{OutOfDatesTaxYearsCalculation, Period}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
 
@@ -46,27 +46,26 @@ case class CompensationSection(
 
 object CompensationSection {
 
-  // TODO - Need to map values from final submission.
-  def build(finalSubmission: FinalSubmission): Seq[CompensationSection] = Seq(
+  def build(finalSubmission: FinalSubmission): Seq[CompensationSection] = {
+    val outOfDates = finalSubmission.calculation
+      .map(_.outDates)
+      .getOrElse(Seq.empty)
+
+    outOfDates.map(buildFromOutOfDates)
+  }
+
+  private def buildFromOutOfDates(calc: OutOfDatesTaxYearsCalculation): CompensationSection =
     CompensationSection(
-      relatingTo = Period._2017,
-      directAmount = "1",
-      indirectAmount = "2",
-      revisedTaxChargeTotal = "3",
-      chargeYouPaid = "4",
-      chargeSchemePaid = "5",
-      originalSchemePaidChargeName = "originalSchemeName1",
-      originalSchemePaidChargePstr = "originalSchemePstr1"
-    ),
-    CompensationSection(
-      relatingTo = Period._2018,
-      directAmount = "1",
-      indirectAmount = "2",
-      revisedTaxChargeTotal = "3",
-      chargeYouPaid = "4",
-      chargeSchemePaid = "5",
-      originalSchemePaidChargeName = "originalSchemeName2",
-      originalSchemePaidChargePstr = "originalSchemePstr2"
+      relatingTo = calc.period,
+      directAmount = calc.directCompensation.toString,
+      indirectAmount = calc.indirectCompensation.toString,
+      revisedTaxChargeTotal = calc.revisedChargableAmountAfterTaxRate.toString,
+      chargeYouPaid = calc.chargePaidByMember.toString,
+      chargeSchemePaid = calc.chargePaidBySchemes.toString,
+      originalSchemePaidChargeName =
+        calc.taxYearSchemes.headOption.map(_.name).getOrElse(""), // todo list of each scheme in a sequence
+      originalSchemePaidChargePstr = calc.taxYearSchemes.headOption
+        .map(_.pensionSchemeTaxReference)
+        .getOrElse("") // todo list of each scheme in a sequence
     )
-  )
 }
