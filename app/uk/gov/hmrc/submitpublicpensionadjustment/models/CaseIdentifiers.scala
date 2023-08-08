@@ -16,4 +16,4 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models
 
-case class CaseIdentifiers(caseNumber: String, referenceAndQueues: Seq[QueueReference]) {}
+case class CaseIdentifiers(caseNumber: String, queueReferences: Seq[QueueReference]) {}

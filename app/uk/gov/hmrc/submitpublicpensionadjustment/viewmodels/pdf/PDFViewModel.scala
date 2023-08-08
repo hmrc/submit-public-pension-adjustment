@@ -23,6 +23,7 @@ import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections._
 
 case class PDFViewModel(
   caseNumber: String,
+  caseIdentificationSection: CaseIdentificationSection,
   administrativeDetailsSection: AdministrativeDetailsSection,
   onBehalfOfSection: Option[OnBehalfOfSection],
   lifetimeAllowanceSection: Option[LifetimeAllowanceSection],
@@ -37,7 +38,7 @@ case class PDFViewModel(
   def prettyPrint(messages: Messages): String = displayLines(messages).mkString("", "\n", "")
 
   private def displayLines(messages: Messages): Seq[String] =
-    Seq("Calculate your public service pension adjustment", caseNumber) ++
+    Seq("Calculate your public service pension adjustment") ++
       administrativeDetailsSection.displayLines(messages) ++
       optionalDisplayLines(messages, onBehalfOfSection) ++
       optionalDisplayLines(messages, lifetimeAllowanceSection) ++
@@ -59,6 +60,7 @@ object PDFViewModel {
   def build(caseIdentifiers: CaseIdentifiers, finalSubmission: FinalSubmission): PDFViewModel =
     PDFViewModel(
       caseIdentifiers.caseNumber,
+      CaseIdentificationSection.build(caseIdentifiers),
       AdministrativeDetailsSection.build(finalSubmission),
       OnBehalfOfSection.build(finalSubmission),
       LifetimeAllowanceSection.build(finalSubmission),
