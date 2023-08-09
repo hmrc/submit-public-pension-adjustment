@@ -40,7 +40,7 @@ class FinalSubmissionController @Inject() (
         finalSubmissionService
           .submit(finalSubmission, getAuditMetadata(identifiedRequest))
           .map { submissionReferences =>
-            Ok(Json.toJson(FinalSubmissionResponse(submissionReferences)))
+            Ok(Json.toJson(FinalSubmissionResponse(submissionReferences.userSubmissionReference)))
           }
       }
   }

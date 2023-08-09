@@ -102,6 +102,8 @@ class FinalSubmissionServiceSpec
       when(mockQueueLogicService.computeQueueReferences(any()))
         .thenReturn(queueReferences)
 
+      when(mockQueueLogicService.determineMostSignificantQueueReference(any())).thenReturn(queueReferences(0))
+
       val finalSubmission = TestData.finalSubmission
 
       val auditMetadata = AuditMetadata(
@@ -119,7 +121,7 @@ class FinalSubmissionServiceSpec
 
       val result = service.submit(finalSubmission, auditMetadata)(hc).futureValue
 
-      result mustEqual Seq("submissionReference1", "submissionReference2")
+      result mustEqual SubmissionReferences("submissionReference1", Seq("submissionReference1", "submissionReference2"))
 
       verify(mockDmsSubmissionService, times(1))
         .send(

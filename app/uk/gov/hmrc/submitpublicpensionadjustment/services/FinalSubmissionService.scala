@@ -34,15 +34,17 @@ class FinalSubmissionService @Inject() (
 
   def submit(finalSubmission: FinalSubmission, auditMetadata: AuditMetadata)(implicit
     hc: HeaderCarrier
-  ): Future[Seq[String]] = {
+  ): Future[SubmissionReferences] = {
 
     val queueReferences: Seq[QueueReference] = queueLogicService.computeQueueReferences(finalSubmission)
-    logger.info(s"queueReferences : $queueReferences")
+    val mostSignificantQueueReference        = queueLogicService.determineMostSignificantQueueReference(queueReferences)
+    logger.info(s"queueReferences : $queueReferences - mostSignificantQueueReference : $mostSignificantQueueReference")
 
     val responses: Seq[Future[String]] =
       sendToDms(finalSubmission, auditMetadata, queueReferences)
 
-    Future.sequence(responses)
+    val allSubmissionReferences: Future[Seq[String]] = Future.sequence(responses)
+    allSubmissionReferences.map(refs => SubmissionReferences(mostSignificantQueueReference.submissionReference, refs))
   }
 
   private def sendToDms(

@@ -18,7 +18,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.services
 
 import play.api.Configuration
 import uk.gov.hmrc.submitpublicpensionadjustment.models._
-import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.{Compensation, CompensationAmendment, DmsQueue, LTA, MiniRegime, MiniRegimeAmendment}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.dms._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 import uk.gov.hmrc.submitpublicpensionadjustment.services.QueueLogicService.base64Decode
 
@@ -35,6 +35,9 @@ class QueueLogicService @Inject() (
     AllPossibleQueues
       .filter(dmsQueue => dmsQueue.isRequired(finalSubmission))
       .map(requiredDmsQueue => QueueReference(requiredDmsQueue, submissionReferenceService.random()))
+
+  def determineMostSignificantQueueReference(queueReferences: Seq[QueueReference]): QueueReference =
+    queueReferences.toList.sortBy(qr => qr.dmsQueue.precedence).head
 
   private val AllPossibleQueues = Seq[DmsQueue](
     Compensation(queueName("compensationQueueBase64")),

@@ -18,9 +18,9 @@ package uk.gov.hmrc.submitpublicpensionadjustment.models
 
 import play.api.libs.json.{Json, OFormat}
 
-final case class FinalSubmissionResponse(userSubmissionReference: String)
+final case class SubmissionReferences(userSubmissionReference: String, allSubmissionReferences: Seq[String])
 
-object FinalSubmissionResponse {
+object SubmissionReferences {
 
-  implicit lazy val format: OFormat[FinalSubmissionResponse] = Json.format
+  implicit lazy val format: OFormat[SubmissionReferences] = Json.format
 }

@@ -57,6 +57,19 @@ class QueueLogicServiceSpec
 
   "QueueLogicService" - {
 
+    "must determine the most significant queue reference" in {
+      val queueReferences =
+        Seq(
+          QueueReference(Compensation("Compensation_Queue"), "submissionReference1"),
+          QueueReference(MiniRegime("MiniRegime_Queue"), "submissionReference2"),
+          QueueReference(LTA("LTA_Queue"), "submissionReference3")
+        )
+
+      val queueReference = queueLogicService().determineMostSignificantQueueReference(queueReferences)
+
+      queueReference mustBe QueueReference(MiniRegime("MiniRegime_Queue"), "submissionReference2")
+    }
+
     "must compute a list of queue references" in {
       val queueReferences: Seq[QueueReference] = queueLogicService().computeQueueReferences(TestData.finalSubmission)
 

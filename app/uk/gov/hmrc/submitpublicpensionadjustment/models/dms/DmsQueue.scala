@@ -21,6 +21,7 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSub
 sealed trait DmsQueue {
   def isRequired(finalSubmission: FinalSubmission): Boolean
   def queueName(): String
+  def precedence: Int
 
   def isResubmission(finalSubmission: FinalSubmission) =
     finalSubmission.calculationInputs.resubmission.isResubmission
@@ -40,28 +41,14 @@ sealed trait DmsQueue {
     }
 }
 
-case class Compensation(queueName: String) extends DmsQueue {
-  override def isRequired(finalSubmission: FinalSubmission): Boolean = if (isResubmission(finalSubmission)) {
-    false
-  } else {
-    compensationIsRequired(finalSubmission)
-  }
-}
-
-case class CompensationAmendment(queueName: String) extends DmsQueue {
-  override def isRequired(finalSubmission: FinalSubmission): Boolean = if (isResubmission(finalSubmission)) {
-    compensationIsRequired(finalSubmission)
-  } else {
-    false
-  }
-}
-
 case class MiniRegime(queueName: String) extends DmsQueue {
   override def isRequired(finalSubmission: FinalSubmission): Boolean = if (isResubmission(finalSubmission)) {
     false
   } else {
     miniRegimeIsRequired(finalSubmission)
   }
+
+  override def precedence: Int = 1
 }
 
 case class MiniRegimeAmendment(queueName: String) extends DmsQueue {
@@ -70,9 +57,33 @@ case class MiniRegimeAmendment(queueName: String) extends DmsQueue {
   } else {
     false
   }
+
+  override def precedence: Int = 2
+}
+
+case class Compensation(queueName: String) extends DmsQueue {
+  override def isRequired(finalSubmission: FinalSubmission): Boolean = if (isResubmission(finalSubmission)) {
+    false
+  } else {
+    compensationIsRequired(finalSubmission)
+  }
+
+  override def precedence: Int = 3
+}
+
+case class CompensationAmendment(queueName: String) extends DmsQueue {
+  override def isRequired(finalSubmission: FinalSubmission): Boolean = if (isResubmission(finalSubmission)) {
+    compensationIsRequired(finalSubmission)
+  } else {
+    false
+  }
+
+  override def precedence: Int = 4
 }
 
 case class LTA(queueName: String) extends DmsQueue {
   override def isRequired(finalSubmission: FinalSubmission): Boolean =
     finalSubmission.calculationInputs.lifeTimeAllowance.isDefined
+
+  override def precedence: Int = 5
 }
