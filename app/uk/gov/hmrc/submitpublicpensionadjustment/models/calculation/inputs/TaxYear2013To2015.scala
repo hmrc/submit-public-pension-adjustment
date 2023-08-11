@@ -39,7 +39,7 @@ object TaxYear2013To2015 {
           Reads(_ => JsError("taxYear must fall between `2013`-`2015`"))
       } andKeep {
       (
-        (__ \ "pIAPreRemedy").read[Int] and
+        (__ \ "pensionInputAmount").read[Int] and
           (__ \ "period").read[Period]
       )(TaxYear2013To2015.apply _)
     }
