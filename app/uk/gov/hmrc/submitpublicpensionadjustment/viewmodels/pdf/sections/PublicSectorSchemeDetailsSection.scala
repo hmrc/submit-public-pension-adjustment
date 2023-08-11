@@ -26,9 +26,14 @@ case class PublicSectorSchemeDetailsSection(schemeName: String, pstr: String, in
 
 object PublicSectorSchemeDetailsSection {
 
-  // TODO - Need to map values from final submission.
-  def build(finalSubmission: FinalSubmission): Seq[PublicSectorSchemeDetailsSection] = Seq(
-    PublicSectorSchemeDetailsSection("schemeName1", "pstr1", "indRef1"),
-    PublicSectorSchemeDetailsSection("schemeName2", "pstr2", "indRef2")
-  )
+  def build(finalSubmission: FinalSubmission): Seq[PublicSectorSchemeDetailsSection] =
+    finalSubmission.submissionInputs.calculationInputSchemeIdentifiers.map { schemeIdentifier =>
+      PublicSectorSchemeDetailsSection(
+        schemeName = schemeIdentifier.relatedToScheme.schemeName,
+        pstr = schemeIdentifier.relatedToScheme.pstr.value,
+        individualSchemeReference =
+          schemeIdentifier.reformReference.getOrElse(schemeIdentifier.legacyReference.getOrElse("")) // todo
+      )
+    }
+
 }

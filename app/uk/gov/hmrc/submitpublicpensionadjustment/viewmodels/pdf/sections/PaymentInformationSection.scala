@@ -25,8 +25,12 @@ case class PaymentInformationSection(accountName: String, sortCode: String, acco
 
 object PaymentInformationSection {
 
-  // TODO - Need to map values from final submission.
-  def build(finalSubmission: FinalSubmission): Option[PaymentInformationSection] = Some(
-    PaymentInformationSection(accountName = "accountName", sortCode = "sortCode", accountNumber = "accountNumber")
-  )
+  def build(finalSubmission: FinalSubmission): Option[PaymentInformationSection] =
+    finalSubmission.submissionInputs.bankAccountDetails.map { bankDetails =>
+      PaymentInformationSection(
+        accountName = bankDetails.accountName,
+        sortCode = bankDetails.sortCode,
+        accountNumber = bankDetails.accountNumber
+      )
+    }
 }

@@ -16,8 +16,11 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 
-import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
+import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.{FinalSubmission, OnBehalfOfMember, PersonalDetails}
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
+
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 case class OnBehalfOfSection(
   firstName: String,
@@ -43,21 +46,71 @@ case class OnBehalfOfSection(
     "ninoOrTrn"
   )
 }
-
 object OnBehalfOfSection {
 
-  // TODO - Need to map values from final submission.
-  def build(finalSubmission: FinalSubmission): Option[OnBehalfOfSection] = Some(
-    OnBehalfOfSection(
-      firstName = "firstName",
-      surname = "surname",
-      dob = "dob",
-      addressLine1 = "addressLine1",
-      addressLine2 = "addressLine2",
-      postCode = "postCode",
-      country = Some("country"),
-      utr = Some("utr"),
-      ninoOrTrn = "ninoOrTrn"
-    )
-  )
+  def build(finalSubmission: FinalSubmission): Option[OnBehalfOfSection] =
+    finalSubmission.submissionInputs.administrativeDetails.onBehalfOfMember.map { memberDetails =>
+      OnBehalfOfSection(
+        firstName = firstName(memberDetails),
+        surname = surname(memberDetails),
+        dob = dob(memberDetails),
+        addressLine1 = addressLine1(memberDetails),
+        addressLine2 = addressLine2(memberDetails),
+        postCode = postCode(memberDetails),
+        country = country(memberDetails),
+        utr = utr(memberDetails),
+        ninoOrTrn = ninoOrTrn(memberDetails)
+      )
+    }
+
+  private def firstName(onBehalfOfMember: OnBehalfOfMember) =
+    nameParts(onBehalfOfMember).dropRight(1).mkString(" ")
+
+  private def surname(onBehalfOfMember: OnBehalfOfMember) =
+    nameParts(onBehalfOfMember).last
+
+  private def nameParts(onBehalfOfMember: OnBehalfOfMember) =
+    onBehalfOfMember.memberPersonalDetails.fullName.split(" ")
+
+  private def dob(onBehalfOfMember: OnBehalfOfMember) = {
+    val dobOption = onBehalfOfMember.memberPersonalDetails.dateOfBirth
+    dobOption
+      .map(dob => DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone(ZoneId.systemDefault()).format(dob))
+      .getOrElse("")
+  }
+
+  private def addressLine1(onBehalfOfMember: OnBehalfOfMember): String =
+    onBehalfOfMember.memberPersonalDetails match {
+      case PersonalDetails(_, _, _, Some(address), None, _)              => address.addressLine1
+      case PersonalDetails(_, _, _, None, Some(internationalAddress), _) => internationalAddress.addressLine1
+      case _                                                             => ""
+    }
+
+  private def addressLine2(onBehalfOfMember: OnBehalfOfMember): String =
+    onBehalfOfMember.memberPersonalDetails match {
+      case PersonalDetails(_, _, _, Some(address), None, _)              => address.addressLine2.getOrElse("")
+      case PersonalDetails(_, _, _, None, Some(internationalAddress), _) =>
+        internationalAddress.addressLine2.getOrElse("")
+      case _                                                             => ""
+    }
+
+  private def postCode(onBehalfOfMember: OnBehalfOfMember): String        =
+    onBehalfOfMember.memberPersonalDetails match {
+      case PersonalDetails(_, _, _, Some(address), None, _)              => address.postCode
+      case PersonalDetails(_, _, _, None, Some(internationalAddress), _) => internationalAddress.postCode.getOrElse("")
+      case _                                                             => ""
+    }
+  private def country(onBehalfOfMember: OnBehalfOfMember): Option[String] =
+    onBehalfOfMember.memberPersonalDetails match {
+      case PersonalDetails(_, _, _, Some(_), None, _)                    => None
+      case PersonalDetails(_, _, _, None, Some(internationalAddress), _) => Some(internationalAddress.country)
+      case _                                                             => None
+    }
+
+  private def utr(onBehalfOfMember: OnBehalfOfMember): Option[String] =
+    onBehalfOfMember.taxIdentifiers.utr
+
+  private def ninoOrTrn(onBehalfOfMember: OnBehalfOfMember): String =
+    onBehalfOfMember.taxIdentifiers.nino.getOrElse(onBehalfOfMember.taxIdentifiers.trn.getOrElse(""))
+
 }
