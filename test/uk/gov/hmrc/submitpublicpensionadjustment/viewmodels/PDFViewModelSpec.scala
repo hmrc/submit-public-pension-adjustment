@@ -43,7 +43,6 @@ class PDFViewModelSpec extends AnyFreeSpec with Matchers with Logging {
   private val messages                                 = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
   private val fopService                               = app.injector.instanceOf[FopService]
 
-
   "PDFViewModel" - {
 
     "must support pretty printing to aid diagnostics" in {
@@ -56,9 +55,9 @@ class PDFViewModelSpec extends AnyFreeSpec with Matchers with Logging {
     }
 
     "must be constructed from a final submission and generate PDF" in {
-      val submissionReference = "submissionReference"
-      val dmsQueue = Compensation("Compensation_Queue")
-      val caseIdentifiers = CaseIdentifiers(submissionReference, Seq(QueueReference(dmsQueue, submissionReference)))
+      val submissionReference     = "submissionReference"
+      val dmsQueue                = Compensation("Compensation_Queue")
+      val caseIdentifiers         = CaseIdentifiers(submissionReference, Seq(QueueReference(dmsQueue, submissionReference)))
       val viewModel: PDFViewModel = PDFViewModel.build(caseIdentifiers, TestData.finalSubmission)
 
       viewModel.caseNumber mustBe submissionReference
