@@ -14,20 +14,6 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission
+package uk.gov.hmrc.submitpublicpensionadjustment.models
 
-import play.api.libs.json._
-
-case class SubmissionInputs(
-  administrativeDetails: AdministrativeDetails,
-  paymentElections: List[PaymentElection],
-  calculationInputSchemeIdentifiers: List[IndividualSchemeIdentifier],
-  schemeTaxRelief: Option[SchemeTaxRelief],
-  bankAccountDetails: Option[BankAccountDetails],
-  declarations: Declarations
-) {}
-
-object SubmissionInputs {
-
-  implicit lazy val formats: Format[SubmissionInputs] = Json.format
-}
+case class CaseIdentifiers(caseNumber: String, queueReferences: Seq[QueueReference]) {}

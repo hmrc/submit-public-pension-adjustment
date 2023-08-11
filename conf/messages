@@ -16,6 +16,13 @@ pdf.2019 = 18/19
 pdf.2020 = 19/20
 pdf.2021 = 20/21
 
+pdf.caseIdentificationSection.heading = Related references
+pdf.caseIdentificationSection.compensation = AA Compensation
+pdf.caseIdentificationSection.compensationAmendment = AA Compensation Amendment
+pdf.caseIdentificationSection.miniRegime = AA Mini-Regime
+pdf.caseIdentificationSection.miniRegimeAmendment = AA Mini-Regime Amendment
+pdf.caseIdentificationSection.lta = LTA
+
 pdf.administrativeDetailsSection.heading = Administrative details
 pdf.administrativeDetailsSection.firstName = First name
 pdf.administrativeDetailsSection.surname = Surname

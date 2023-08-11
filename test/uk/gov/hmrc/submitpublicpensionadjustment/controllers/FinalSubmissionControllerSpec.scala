@@ -33,7 +33,7 @@ import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
-import uk.gov.hmrc.submitpublicpensionadjustment.models.{AuditMetadata, FinalSubmissionResponse}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{AuditMetadata, FinalSubmissionResponse, SubmissionReferences}
 import uk.gov.hmrc.submitpublicpensionadjustment.services.FinalSubmissionService
 
 import scala.concurrent.Future
@@ -88,7 +88,7 @@ class FinalSubmissionControllerSpec
         )
 
       when(mockFinalSubmissionService.submit(any(), any())(any())) thenReturn Future.successful(
-        "submissionReference"
+        SubmissionReferences("ABCDEF123456", Seq("ABCDEF123456"))
       )
 
       val expectedMetadata = AuditMetadata(
@@ -106,7 +106,9 @@ class FinalSubmissionControllerSpec
       val result = route(app, request).value
 
       status(result) mustEqual OK
-      contentAsJson(result) mustEqual Json.toJson(FinalSubmissionResponse("submissionReference"))
+      contentAsJson(result) mustEqual Json.toJson(
+        FinalSubmissionResponse("ABCDEF123456")
+      )
       verify(mockFinalSubmissionService, times(1)).submit(eqTo(finalSubmission), eqTo(expectedMetadata))(
         any()
       )

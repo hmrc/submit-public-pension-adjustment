@@ -32,9 +32,10 @@ trait Section {
     fieldNames.map { fieldName =>
       val field: Field = getClass.getDeclaredField(fieldName)
       field.setAccessible(true)
+
       val displayValue = field.get(this) match {
         case Some(s: String) => s
-        case None            => ""
+        case None            => "Not applicable"
         case s: String       => s
         case _               => "error"
       }

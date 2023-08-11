@@ -68,16 +68,15 @@ class DmsSubmissionConnectorSpec
   private lazy val app: Application =
     new GuiceApplicationBuilder()
       .configure(
-        "microservice.services.dms-submission.port"                            -> wireMockServer.port,
-        "microservice.services.dms-submission.callbackUrl"                     -> "http://localhost/callback",
-        "microservice.services.dms-submission.store"                           -> "true",
-        "microservice.services.dms-submission.source"                          -> "source",
-        "microservice.services.dms-submission.formId"                          -> "formId",
-        "microservice.services.dms-submission.casKey"                          -> "casKey",
-        "microservice.services.dms-submission.base64EncodedClassificationType" -> "dGVzdA==",
-        "microservice.services.dms-submission.businessArea"                    -> "businessArea",
-        "internal-auth.token"                                                  -> "authKey",
-        "akka.stream.materializer.subscription-timeout.mode"                   -> "warn"
+        "microservice.services.dms-submission.port"          -> wireMockServer.port,
+        "microservice.services.dms-submission.callbackUrl"   -> "http://localhost/callback",
+        "microservice.services.dms-submission.store"         -> "true",
+        "microservice.services.dms-submission.source"        -> "source",
+        "microservice.services.dms-submission.formId"        -> "formId",
+        "microservice.services.dms-submission.casKey"        -> "casKey",
+        "microservice.services.dms-submission.businessArea"  -> "businessArea",
+        "internal-auth.token"                                -> "authKey",
+        "akka.stream.materializer.subscription-timeout.mode" -> "warn"
       )
       .build()
 
@@ -87,8 +86,7 @@ class DmsSubmissionConnectorSpec
 
     val source = Source.single(ByteString.fromString("SomePdfBytes"))
 
-    val nino = "someNino"
-
+    val nino                = "someNino"
     val submissionReference = "submissionReference"
 
     val timestamp = LocalDateTime
@@ -112,7 +110,7 @@ class DmsSubmissionConnectorSpec
           )
           .withMultipartRequestBody(aMultipart().withName("metadata.formId").withBody(equalTo("formId")))
           .withMultipartRequestBody(aMultipart().withName("metadata.customerId").withBody(equalTo("someNino")))
-          .withMultipartRequestBody(aMultipart().withName("metadata.classificationType").withBody(equalTo("test")))
+          .withMultipartRequestBody(aMultipart().withName("metadata.classificationType").withBody(equalTo("Queue_1")))
           .withMultipartRequestBody(aMultipart().withName("metadata.businessArea").withBody(equalTo("businessArea")))
           .withMultipartRequestBody(
             aMultipart()
@@ -128,7 +126,7 @@ class DmsSubmissionConnectorSpec
           )
       )
 
-      connector.submit(nino, source, timestamp, submissionReference)(hc).futureValue
+      connector.submit(nino, source, timestamp, submissionReference, "Queue_1")(hc).futureValue
     }
 
     "must fail when the server returns another status" in {
@@ -141,7 +139,7 @@ class DmsSubmissionConnectorSpec
           )
       )
 
-      connector.submit(nino, source, timestamp, submissionReference)(hc).failed.futureValue
+      connector.submit(nino, source, timestamp, submissionReference, "Queue_1")(hc).failed.futureValue
     }
   }
 }

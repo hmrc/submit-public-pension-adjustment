@@ -23,6 +23,7 @@ import play.api.i18n.MessagesApi
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
+import uk.gov.hmrc.submitpublicpensionadjustment.models.CaseIdentifiers
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.PDFViewModel
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.{AdministrativeDetailsSection, DeclarationsSection}
 
@@ -45,7 +46,10 @@ class PDFViewModelSpec extends AnyFreeSpec with Matchers with Logging {
     }
 
     "must be constructed from a minimal final submission" in {
-      val viewModel: PDFViewModel = PDFViewModel.build("1234", TestData.finalSubmission)
+
+      val caseIdentifiers = CaseIdentifiers("1234", Seq())
+
+      val viewModel: PDFViewModel = PDFViewModel.build(caseIdentifiers, TestData.finalSubmission)
 
       viewModel.caseNumber mustBe "1234"
 

@@ -16,14 +16,14 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment
 
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{CalculationInputs, Resubmission}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{CalculationInputs, LifeTimeAllowance, Resubmission}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission._
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.PDFViewModel
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.{AdministrativeDetailsSection, DeclarationsSection, PaymentInformationSection}
+import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.{AdministrativeDetailsSection, CaseIdentificationSection, DeclarationsSection, PaymentInformationSection}
 
 object TestData {
 
-  val calculationInputs = CalculationInputs(Resubmission(false, None), None, None)
+  val calculationInputs = CalculationInputs(Resubmission(false, None), None, Some(LifeTimeAllowance("placeholder")))
 
   val administrativeDetails = AdministrativeDetails(
     ClaimantDetails(
@@ -49,7 +49,7 @@ object TestData {
   )
 
   val submissionInputs: SubmissionInputs =
-    SubmissionInputs("caseNumber", administrativeDetails, List.empty, List.empty, None, None, declarations)
+    SubmissionInputs(administrativeDetails, List.empty, List.empty, None, None, declarations)
 
   val finalSubmission = FinalSubmission(calculationInputs, None, submissionInputs)
 
@@ -68,6 +68,7 @@ object TestData {
 
   val viewModel = PDFViewModel(
     "caseNumber",
+    CaseIdentificationSection(Some("compRef"), None, Some("miniRegimeRef"), None, Some("ltaRef")),
     administrativeDetailsSection,
     None,
     None,
