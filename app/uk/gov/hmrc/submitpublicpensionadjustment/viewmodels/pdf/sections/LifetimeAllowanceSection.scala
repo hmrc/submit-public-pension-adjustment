@@ -66,30 +66,33 @@ case class LifetimeAllowanceSection(
 }
 
 object LifetimeAllowanceSection {
-
-  // TODO - Need to map values from final submission.
-  def build(finalSubmission: FinalSubmission): Option[LifetimeAllowanceSection] = Some(
-    LifetimeAllowanceSection(
-      hadBce = "todo",
-      bceDate = "todo",
-      changeInLtaPercentage = "todo",
-      ltaChargeType = "todo",
-      haveLtaProtectionOrEnhancement = "todo",
-      protectionType = "todo",
-      protectionReference = "todo",
-      changeToProtectionType = "todo",
-      newProtectionTypeOrEnhancement = "todo",
-      newProtectionTypeOrReference = "todo",
-      hadLtaCharge = "todo",
-      howExcessPaid = "todo",
-      ltaChargeAmount = "todo",
-      whoPaidLtaCharge = "todo",
-      schemeThatPaidChargeName = "todo",
-      schemeThatPaidChargeTaxRef = "todo",
-      newLtaChargeValue = "todo",
-      whoPayingExtraCharge = "todo",
-      whoPayingExtraChargeSchemeName = "todo",
-      whoPayingExtraChargeTaxRef = "todo"
-    )
-  )
+  def build(finalSubmission: FinalSubmission): Option[LifetimeAllowanceSection] =
+    finalSubmission.calculationInputs.lifeTimeAllowance match {
+      case Some(_) =>
+        Some(
+          LifetimeAllowanceSection(
+            hadBce = "todo",
+            bceDate = "todo",
+            changeInLtaPercentage = "todo",
+            ltaChargeType = "todo",
+            haveLtaProtectionOrEnhancement = "todo",
+            protectionType = "todo",
+            protectionReference = "todo",
+            changeToProtectionType = "todo",
+            newProtectionTypeOrEnhancement = "todo",
+            newProtectionTypeOrReference = "todo",
+            hadLtaCharge = "todo",
+            howExcessPaid = "todo",
+            ltaChargeAmount = "todo",
+            whoPaidLtaCharge = "todo",
+            schemeThatPaidChargeName = "todo",
+            schemeThatPaidChargeTaxRef = "todo",
+            newLtaChargeValue = "todo",
+            whoPayingExtraCharge = "todo",
+            whoPayingExtraChargeSchemeName = "todo",
+            whoPayingExtraChargeTaxRef = "todo"
+          )
+        )
+      case _       => None
+    }
 }
