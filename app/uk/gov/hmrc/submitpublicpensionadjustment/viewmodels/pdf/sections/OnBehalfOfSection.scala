@@ -111,6 +111,6 @@ object OnBehalfOfSection {
     onBehalfOfMember.taxIdentifiers.utr
 
   private def ninoOrTrn(onBehalfOfMember: OnBehalfOfMember): String =
-    onBehalfOfMember.taxIdentifiers.nino.getOrElse(onBehalfOfMember.taxIdentifiers.trn.getOrElse(""))
+    onBehalfOfMember.taxIdentifiers.nino.getOrElse(onBehalfOfMember.taxIdentifiers.trn.getOrElse("Not entered"))
 
 }

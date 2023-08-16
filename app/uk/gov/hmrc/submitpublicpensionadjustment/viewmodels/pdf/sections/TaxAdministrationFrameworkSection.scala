@@ -69,8 +69,8 @@ object TaxAdministrationFrameworkSection {
         previousChargePaidBySchemeName =
           "todo", // electionSchemeCharge.schemeDetails.schemeName, // calculation response
         previousChargePaidByPstr = "todo", // electionSchemeCharge.schemeDetails.pstr.value, // inputs or response
-        creditValue = inDateCalc.memberCredit.toString,
-        debitValue = inDateCalc.debit.toString,
+        creditValue = "£" + inDateCalc.memberCredit.toString,
+        debitValue = "£" + inDateCalc.debit.toString,
         isSchemePayingCharge = "todo", // if (inDateCalc.chargePaidBySchemes > 0) "Yes" else "No",
         schemePaymentElectionDate =
           "todo", // electionSchemeCharge.paymentElectionDate.map(_.toString).getOrElse(""), //in submission inputs

@@ -68,13 +68,13 @@ object AdministrativeDetailsSection {
   private def firstName(finalSubmission: FinalSubmission) =
     nameParts(finalSubmission).dropRight(1).mkString(" ")
 
-  private def surname(finalSubmission: FinalSubmission) =
+  private def surname(finalSubmission: FinalSubmission): String =
     nameParts(finalSubmission).last
 
-  private def nameParts(finalSubmission: FinalSubmission) =
+  private def nameParts(finalSubmission: FinalSubmission): Array[String] =
     finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails.fullName.split(" ")
 
-  private def dob(finalSubmission: FinalSubmission) = {
+  private def dob(finalSubmission: FinalSubmission): String = {
     val dobOption =
       finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails.dateOfBirth
     dobOption
@@ -117,11 +117,11 @@ object AdministrativeDetailsSection {
   private def ninoOrTrn(finalSubmission: FinalSubmission): String = {
     val taxIds = finalSubmission.submissionInputs.administrativeDetails.claimantDetails.taxIdentifiers
     // Todo Check if this is correct
-    taxIds.nino.getOrElse(taxIds.trn.getOrElse(""))
+    taxIds.nino.getOrElse("Not entered")
   }
 
   private def contactNumber(finalSubmission: FinalSubmission): String =
     finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails.contactPhoneNumber
-      .getOrElse("")
+      .getOrElse("Not entered")
 
 }

@@ -57,11 +57,11 @@ object CompensationSection {
   private def buildFromOutOfDates(calc: OutOfDatesTaxYearsCalculation): CompensationSection =
     CompensationSection(
       relatingTo = calc.period,
-      directAmount = calc.directCompensation.toString,
-      indirectAmount = calc.indirectCompensation.toString,
-      revisedTaxChargeTotal = calc.revisedChargableAmountAfterTaxRate.toString,
-      chargeYouPaid = calc.chargePaidByMember.toString,
-      chargeSchemePaid = calc.chargePaidBySchemes.toString,
+      directAmount = "£" + calc.directCompensation.toString,
+      indirectAmount = "£" + calc.indirectCompensation.toString,
+      revisedTaxChargeTotal = "£" + calc.revisedChargableAmountAfterTaxRate.toString,
+      chargeYouPaid = "£" + calc.chargePaidByMember.toString,
+      chargeSchemePaid = "£" + calc.chargePaidBySchemes.toString,
       originalSchemePaidChargeName =
         calc.taxYearSchemes.headOption.map(_.name).getOrElse(""), // todo list of each scheme in a sequence
       originalSchemePaidChargePstr = calc.taxYearSchemes.headOption

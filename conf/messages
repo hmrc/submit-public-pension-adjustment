@@ -32,7 +32,7 @@ pdf.administrativeDetailsSection.addressLine2 = Address line 2
 pdf.administrativeDetailsSection.postCode = Postcode
 pdf.administrativeDetailsSection.country = Country
 pdf.administrativeDetailsSection.utr = Unique Taxpayer Reference (UTR)
-pdf.administrativeDetailsSection.ninoOrTrn = National Insurance number or alternative identifier (TRN)
+pdf.administrativeDetailsSection.ninoOrTrn = National Insurance number
 pdf.administrativeDetailsSection.contactNumber = Contact number
 
 pdf.onBehalfOfSection.heading = Details of member you have lasting power of attorney or deputyship
@@ -52,6 +52,8 @@ pdf.lifetimeAllowanceSection.heading= Lifetime Allowance
 pdf.publicSectorSchemeDetailsSection.heading = Public sector pension scheme details
 pdf.publicSectorSchemeDetailsSection.schemeName = Name of pension scheme
 pdf.publicSectorSchemeDetailsSection.pstr = PSTR
+pdf.publicSectorSchemeDetailsSection.reformReference = Member's reform individual pension scheme reference
+pdf.publicSectorSchemeDetailsSection.legacyReference = Member's legacy individual pension scheme reference
 pdf.publicSectorSchemeDetailsSection.individualSchemeReference = Member's individual pension scheme reference
 
 pdf.compensationSection.heading = Compensation
