@@ -48,7 +48,7 @@ case class AdministrativeDetailsSection(
     "contactNumber"
   )
 }
-
+//Not entered for everything not ententered
 object AdministrativeDetailsSection {
 
   def build(finalSubmission: FinalSubmission): AdministrativeDetailsSection =
@@ -79,7 +79,7 @@ object AdministrativeDetailsSection {
       finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails.dateOfBirth
     dobOption
       .map(dob => DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone(ZoneId.systemDefault()).format(dob))
-      .getOrElse("")
+      .getOrElse("Not Entered")
   }
 
   private def addressLine1(finalSubmission: FinalSubmission): String =
@@ -102,11 +102,11 @@ object AdministrativeDetailsSection {
       case PersonalDetails(_, _, _, Some(address), None, _)              => address.postCode
       case PersonalDetails(_, _, _, None, Some(internationalAddress), _) => internationalAddress.postCode.getOrElse("")
       case _                                                             => ""
-    }
+    }//postal code for international
 
   private def country(finalSubmission: FinalSubmission): Option[String] =
     finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails match {
-      case PersonalDetails(_, _, _, Some(_), None, _)                    => None
+      case PersonalDetails(_, _, _, Some(_), None, _)                    => Some("United Kingdom")
       case PersonalDetails(_, _, _, None, Some(internationalAddress), _) => Some(internationalAddress.country)
       case _                                                             => None
     }

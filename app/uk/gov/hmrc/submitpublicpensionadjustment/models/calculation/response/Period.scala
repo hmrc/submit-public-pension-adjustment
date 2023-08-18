@@ -20,8 +20,26 @@ import play.api.Logging
 import play.api.libs.json._
 
 import scala.util.{Failure, Success, Try}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{Period => InputsPeriod}
 
-sealed trait Period
+sealed trait Period {
+
+  def toCalculationInputsPeriod: InputsPeriod =
+    this match {
+      case Period._2013              => InputsPeriod._2013
+      case Period._2014              => InputsPeriod._2014
+      case Period._2015              => InputsPeriod._2015
+      case Period._2016PreAlignment  => InputsPeriod._2016PreAlignment
+      case Period._2016PostAlignment => InputsPeriod._2016PostAlignment
+      case Period._2017              => InputsPeriod._2017
+      case Period._2018              => InputsPeriod._2018
+      case Period._2019              => InputsPeriod._2019
+      case Period._2020              => InputsPeriod._2020
+      case Period._2021              => InputsPeriod._2021
+      case Period._2022              => InputsPeriod._2022
+      case Period._2023              => InputsPeriod._2023
+    }
+}
 
 object Period extends Logging {
 

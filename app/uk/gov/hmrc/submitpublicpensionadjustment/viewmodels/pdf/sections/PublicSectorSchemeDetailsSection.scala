@@ -21,7 +21,7 @@ import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
 
 case class PublicSectorSchemeDetailsSection(schemeName: String, pstr: String, reformReference: String, legacyReference: String)
     extends Section {
-  override def orderedFieldNames(): Seq[String] = Seq("schemeName", "pstr", "individualSchemeReference")
+  override def orderedFieldNames(): Seq[String] = Seq("schemeName", "pstr", "reformReference", "legacyReference")
 }
 
 object PublicSectorSchemeDetailsSection {

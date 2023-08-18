@@ -18,6 +18,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf
 
 import play.api.i18n.Messages
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.Period
+import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.CompensationSection
 
 import java.lang.reflect.Field
 
@@ -29,18 +30,15 @@ trait Section {
   def rows(messages: Messages): Seq[Row] = {
     val fieldNames: Seq[String] = orderedFieldNames()
 
-    fieldNames.map { fieldName =>
-      val field: Field = getClass.getDeclaredField(fieldName)
-      field.setAccessible(true)
-
-      val displayValue = field.get(this) match {
+    def getDisplayLabelAndValue(fieldName: String, fieldValue: Any): (String, String) = {
+      val displayValue = fieldValue match {
         case Some(s: String) => s
         case None            => "Not applicable"
         case s: String       => s
         case _               => "error"
       }
 
-      val baseDataLabel = messages(s"$messagePrefix.${field.getName}")
+      val baseDataLabel = messages(s"$messagePrefix.$fieldName")
 
       val displayLabel = period() match {
         case Some(period) =>
@@ -49,7 +47,24 @@ trait Section {
         case None         => baseDataLabel
       }
 
-      Row(displayLabel, displayValue)
+      (displayLabel, displayValue)
+    }
+
+    val regularRows = fieldNames.flatMap { fieldName =>
+      val field: Field = getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      val fieldValue = field.get(this)
+      Some(Row.tupled(getDisplayLabelAndValue(fieldName, fieldValue)))
+    }
+
+    this match {
+      case compensationSection: CompensationSection =>
+        val additionalRows = compensationSection.additionalRows.map {
+          case (label, value) => Row.tupled(getDisplayLabelAndValue(label, value))
+        }
+        regularRows ++ additionalRows
+
+      case _ => regularRows
     }
   }
 
