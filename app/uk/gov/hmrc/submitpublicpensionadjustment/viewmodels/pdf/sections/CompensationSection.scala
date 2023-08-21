@@ -31,11 +31,8 @@ case class CompensationSection(
   additionalRows: Seq[(String, String)] = Seq()
 ) extends Section {
 
-  override def orderedFieldNames(): Seq[String] = Seq(
-    "directAmount",
-    "indirectAmount",
-    "revisedTaxChargeTotal",
-    "chargeYouPaid")
+  override def orderedFieldNames(): Seq[String] =
+    Seq("directAmount", "indirectAmount", "revisedTaxChargeTotal", "chargeYouPaid")
 
   override def period() = Some(relatingTo)
 }
@@ -50,22 +47,25 @@ object CompensationSection {
     outOfDates.map(calc => buildFromOutOfDates(calc, finalSubmission))
   }
 
-  private def buildFromOutOfDates(calc: OutOfDatesTaxYearsCalculation, finalSubmission: FinalSubmission): CompensationSection = {
+  private def buildFromOutOfDates(
+    calc: OutOfDatesTaxYearsCalculation,
+    finalSubmission: FinalSubmission
+  ): CompensationSection = {
     val taxYearSchemesAdditionalRows = for {
-      taxYear <- finalSubmission.calculationInputs.annualAllowance.map(_.taxYears).getOrElse(List()).collect { case ty: TaxYear2016To2023 => ty }
+      taxYear <- finalSubmission.calculationInputs.annualAllowance.map(_.taxYears).getOrElse(List()).collect {
+                   case ty: TaxYear2016To2023 => ty
+                 }
       if taxYear.period == calc.period.toCalculationInputsPeriod
-      scheme <- taxYear match {
-        case ny: NormalTaxYear => ny.taxYearSchemes
-        case ifaty: InitialFlexiblyAccessedTaxYear => ifaty.taxYearSchemes
-        case pfaty: PostFlexiblyAccessedTaxYear => pfaty.taxYearSchemes
-      }
-    } yield {
-      Seq(
-        ("chargeSchemePaid", "£" + scheme.chargePaidByScheme.toString),
-        ("originalSchemePaidChargeName", scheme.name),
-        ("originalSchemePaidChargePstr", scheme.pensionSchemeTaxReference)
-      )
-    }
+      scheme  <- taxYear match {
+                   case ny: NormalTaxYear                     => ny.taxYearSchemes
+                   case ifaty: InitialFlexiblyAccessedTaxYear => ifaty.taxYearSchemes
+                   case pfaty: PostFlexiblyAccessedTaxYear    => pfaty.taxYearSchemes
+                 }
+    } yield Seq(
+      ("chargeSchemePaid", "£" + scheme.chargePaidByScheme.toString),
+      ("originalSchemePaidChargeName", scheme.name),
+      ("originalSchemePaidChargePstr", scheme.pensionSchemeTaxReference)
+    )
 
     CompensationSection(
       relatingTo = calc.period,

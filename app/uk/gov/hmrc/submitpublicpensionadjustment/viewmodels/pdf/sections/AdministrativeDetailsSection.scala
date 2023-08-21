@@ -102,7 +102,7 @@ object AdministrativeDetailsSection {
       case PersonalDetails(_, _, _, Some(address), None, _)              => address.postCode
       case PersonalDetails(_, _, _, None, Some(internationalAddress), _) => internationalAddress.postCode.getOrElse("")
       case _                                                             => ""
-    }//postal code for international
+    } // postal code for international
 
   private def country(finalSubmission: FinalSubmission): Option[String] =
     finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails match {

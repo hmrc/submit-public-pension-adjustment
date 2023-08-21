@@ -16,9 +16,12 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 
+import cats.implicits.toFunctorOps
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.Period
-import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
+import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.{FinalSubmission, PersonalCharge, SchemeCharge}
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
+
+import java.time.format.DateTimeFormatter
 
 case class TaxAdministrationFrameworkSection(
   relatingTo: Period,
@@ -59,24 +62,48 @@ object TaxAdministrationFrameworkSection {
       .getOrElse(Seq.empty)
 
     inDates.map { inDateCalc =>
-      // val paymentElectionOpt = finalSubmission.submissionInputs.paymentElections.find(_.period == inDateCalc.period) // todo will change
-      // val electionSchemeCharge = paymentElectionOpt.flatMap(_.schemeCharge).getOrElse(throw new RuntimeException("No corresponding SchemeCharge found"))
+      val paymentElectionOpt                             = finalSubmission.submissionInputs.paymentElections.find(
+        _.period == inDateCalc.period.toCalculationInputsPeriod
+      )
+      val electionSchemeCharge: Option[SchemeCharge]     = paymentElectionOpt.flatMap(_.schemeCharge)
+      val electionPersonalCharge: Option[PersonalCharge] = paymentElectionOpt.flatMap(_.personalCharge)
+      val dateFormatter                                  = DateTimeFormatter.ofPattern("dd/MM/yyyy")
       TaxAdministrationFrameworkSection(
         relatingTo = inDateCalc.period,
-        previousChargeAmount = "todo", // inputs or response
-        whoChargePaidBy =
-          "todo", // if (inDateCalc.chargePaidByMember > 0) "Member" else "Scheme", // in payment election
-        previousChargePaidBySchemeName =
-          "todo", // electionSchemeCharge.schemeDetails.schemeName, // calculation response
-        previousChargePaidByPstr = "todo", // electionSchemeCharge.schemeDetails.pstr.value, // inputs or response
+        previousChargeAmount =
+          inDateCalc.chargePaidBySchemes.toString, // There is a List[TaxYearScheme] in inputs, which one do I map..
+        whoChargePaidBy = if (electionSchemeCharge.isDefined && electionPersonalCharge.isDefined) { "Both" }
+        else if (electionSchemeCharge.isDefined) { "Scheme" }
+        else if (electionPersonalCharge.isDefined) { "Member" }
+        else "None",
+        previousChargePaidBySchemeName = electionSchemeCharge
+          .map(_.schemeDetails)
+          .map(_.schemeName)
+          .getOrElse("Not applicable"),
+        previousChargePaidByPstr = electionSchemeCharge
+          .map(_.schemeDetails)
+          .map(_.pstr.value)
+          .getOrElse("Not applicable"),
         creditValue = "£" + inDateCalc.memberCredit.toString,
         debitValue = "£" + inDateCalc.debit.toString,
-        isSchemePayingCharge = "todo", // if (inDateCalc.chargePaidBySchemes > 0) "Yes" else "No",
-        schemePaymentElectionDate =
-          "todo", // electionSchemeCharge.paymentElectionDate.map(_.toString).getOrElse(""), //in submission inputs
-        schemePayingChargeAmount = "todo", // submission inputs how much the scheme pay
-        schemePayingPstr = "todo", // electionSchemeCharge.schemeDetails.pstr.value,
-        schemePayingName = "todo" // electionSchemeCharge.schemeDetails.schemeName // na
+        isSchemePayingCharge = if (electionSchemeCharge.isDefined) "Yes" else "No",
+        schemePaymentElectionDate = electionSchemeCharge
+          .flatMap(_.paymentElectionDate)
+          .map(date => dateFormatter.format(date))
+          .getOrElse(
+            "Not Entered"
+          ),
+        schemePayingChargeAmount = electionSchemeCharge
+          .map(_.amount.toString)
+          .getOrElse("Not applicable"),
+        schemePayingPstr = electionSchemeCharge
+          .map(_.schemeDetails)
+          .map(_.pstr.value)
+          .getOrElse("Not applicable"),
+        schemePayingName = electionSchemeCharge
+          .map(_.schemeDetails)
+          .map(_.schemeName)
+          .getOrElse("Not applicable")
       )
     }
   }

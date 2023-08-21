@@ -19,8 +19,12 @@ package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
 
-case class PublicSectorSchemeDetailsSection(schemeName: String, pstr: String, reformReference: String, legacyReference: String)
-    extends Section {
+case class PublicSectorSchemeDetailsSection(
+  schemeName: String,
+  pstr: String,
+  reformReference: String,
+  legacyReference: String
+) extends Section {
   override def orderedFieldNames(): Seq[String] = Seq("schemeName", "pstr", "reformReference", "legacyReference")
 }
 
@@ -31,8 +35,7 @@ object PublicSectorSchemeDetailsSection {
       PublicSectorSchemeDetailsSection(
         schemeName = schemeIdentifier.relatedToScheme.schemeName,
         pstr = schemeIdentifier.relatedToScheme.pstr.value,
-        reformReference =
-          schemeIdentifier.reformReference.getOrElse("Not applicable"),
+        reformReference = schemeIdentifier.reformReference.getOrElse("Not applicable"),
         legacyReference = schemeIdentifier.legacyReference.getOrElse("Not applicable")
       )
     }

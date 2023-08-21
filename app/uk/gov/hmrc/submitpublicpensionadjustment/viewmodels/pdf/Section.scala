@@ -53,14 +53,14 @@ trait Section {
     val regularRows = fieldNames.flatMap { fieldName =>
       val field: Field = getClass.getDeclaredField(fieldName)
       field.setAccessible(true)
-      val fieldValue = field.get(this)
+      val fieldValue   = field.get(this)
       Some(Row.tupled(getDisplayLabelAndValue(fieldName, fieldValue)))
     }
 
     this match {
       case compensationSection: CompensationSection =>
-        val additionalRows = compensationSection.additionalRows.map {
-          case (label, value) => Row.tupled(getDisplayLabelAndValue(label, value))
+        val additionalRows = compensationSection.additionalRows.map { case (label, value) =>
+          Row.tupled(getDisplayLabelAndValue(label, value))
         }
         regularRows ++ additionalRows
 

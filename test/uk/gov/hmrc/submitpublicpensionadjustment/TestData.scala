@@ -17,8 +17,8 @@
 package uk.gov.hmrc.submitpublicpensionadjustment
 
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{PSTR, UkAddress}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, LifeTimeAllowance, Period => InputPeriod, TaxYear2016To2023, Resubmission => inputsResubmission}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, TaxYearScheme, TotalAmounts, Period => ResponsePeriod, Resubmission => responseResubmission}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, LifeTimeAllowance, Period => InputPeriod, Resubmission => inputsResubmission, TaxYear2016To2023}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, Period => ResponsePeriod, Resubmission => responseResubmission, TaxYearScheme, TotalAmounts}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.OnBehalfOfMemberType.Deceased
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission._
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.PDFViewModel
@@ -29,29 +29,37 @@ import java.time.LocalDate
 object TestData {
 
   val testTaxYearSchemeData2018 = List(
-    TaxYearScheme(name = "TestName2018",
+    TaxYearScheme(
+      name = "TestName2018",
       pensionSchemeTaxReference = "TestTaxRef",
       originalPensionInputAmount = 999,
       revisedPensionInputAmount = 991,
-      chargePaidByScheme = 992),
-    TaxYearScheme(name = "TestName22018",
+      chargePaidByScheme = 992
+    ),
+    TaxYearScheme(
+      name = "TestName22018",
       pensionSchemeTaxReference = "TestTaxRef",
       originalPensionInputAmount = 999,
       revisedPensionInputAmount = 991,
-      chargePaidByScheme = 992)
+      chargePaidByScheme = 992
+    )
   )
 
   val testTaxYearSchemeData2017 = List(
-    TaxYearScheme(name = "TestName2017",
+    TaxYearScheme(
+      name = "TestName2017",
       pensionSchemeTaxReference = "TestTaxRef2017",
       originalPensionInputAmount = 999,
       revisedPensionInputAmount = 991,
-      chargePaidByScheme = 992),
-    TaxYearScheme(name = "TestName2222017",
+      chargePaidByScheme = 992
+    ),
+    TaxYearScheme(
+      name = "TestName2222017",
       pensionSchemeTaxReference = "TestTaxRef",
       originalPensionInputAmount = 999,
       revisedPensionInputAmount = 991,
-      chargePaidByScheme = 992)
+      chargePaidByScheme = 992
+    )
   )
 
   // Sample data for TaxYear2016To2023 using NormalTaxYear
@@ -71,13 +79,16 @@ object TestData {
     period = InputPeriod._2017
   )
 
-
-  val calculationInputs = CalculationInputs(inputsResubmission(false, None), Some(
-    AnnualAllowance(
-      scottishTaxYears = List(),
-      taxYears = List(taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
-    )
-  ), Some(LifeTimeAllowance("test")))
+  val calculationInputs = CalculationInputs(
+    inputsResubmission(false, None),
+    Some(
+      AnnualAllowance(
+        scottishTaxYears = List(),
+        taxYears = List(taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
+      )
+    ),
+    None
+  )
 
   // OnBehalfOfSection
 
@@ -156,11 +167,16 @@ object TestData {
       accountNumber = "TestAccountNumber"
     )
   )
+  val schemeDetails: SchemeDetails                   = SchemeDetails(schemeName = "TestSceme", pstr = PSTR("schemePstr"))
+
+  val schemeCharge: Option[SchemeCharge] = Some(SchemeCharge(amount = 10, schemeDetails = schemeDetails, None, None))
+
+  val paymentElection: PaymentElection = PaymentElection(period = InputPeriod._2017, None, schemeCharge)
 
   val submissionInputs: SubmissionInputs =
     SubmissionInputs(
       administrativeDetails,
-      List.empty,
+      List(paymentElection),
       List(individualSchemeIdentifier),
       schemeTaxRelief,
       bankAccountDetails,
