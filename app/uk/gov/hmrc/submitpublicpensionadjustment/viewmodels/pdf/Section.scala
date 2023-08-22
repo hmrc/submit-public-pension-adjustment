@@ -58,18 +58,18 @@ trait Section {
     }
 
     this match {
-      case compensationSection: CompensationSection =>
+      case compensationSection: CompensationSection                             =>
         val additionalRows = compensationSection.additionalRows.map { case (label, value) =>
           Row.tupled(getDisplayLabelAndValue(label, value))
         }
         regularRows ++ additionalRows
       case taxAdministrationFrameworkSection: TaxAdministrationFrameworkSection =>
-        val additionalRows = taxAdministrationFrameworkSection.additionalRows.map { case (label, value) =>
+        val additionalRows          = taxAdministrationFrameworkSection.additionalRows.map { case (label, value) =>
           Row.tupled(getDisplayLabelAndValue(label, value))
         }
         val (firstPart, secondPart) = regularRows.splitAt(2)
         firstPart ++ additionalRows ++ secondPart
-      case _ => regularRows
+      case _                                                                    => regularRows
     }
   }
 

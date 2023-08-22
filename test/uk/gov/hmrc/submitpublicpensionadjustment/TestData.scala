@@ -282,6 +282,6 @@ object TestData {
     Some(
       PaymentInformationSection(accountName = "accountName", sortCode = "sortCode", accountNumber = "accountNumber")
     ),
-    DeclarationsSection("Y", "Y", "Y", "Y")
+    DeclarationsSection("Y", "Y", "Y", "Y", "Y")
   )
 }

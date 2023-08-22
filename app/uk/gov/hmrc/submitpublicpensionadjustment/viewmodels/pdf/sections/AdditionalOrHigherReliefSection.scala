@@ -30,9 +30,9 @@ object AdditionalOrHigherReliefSection {
     finalSubmission.submissionInputs.schemeTaxRelief.map { relief =>
       val schemeDetails = relief.individualSchemeIdentifier.relatedToScheme
       AdditionalOrHigherReliefSection(
-        amount = relief.amount.toString,
+        amount = s"£${relief.amount.toString}",
         schemePayingName = schemeDetails.schemeName,
-        schemePayingPstr = s"£${schemeDetails.pstr.value}"
+        schemePayingPstr = schemeDetails.pstr.value
       )
     }
 }

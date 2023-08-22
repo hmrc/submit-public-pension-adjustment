@@ -30,7 +30,7 @@ object TaxYear2016To2023 {
     pensionInputAmount: Int,
     taxYearSchemes: List[TaxYearScheme],
     totalIncome: Int,
-    chargePaidByMember: Int, //Sum of this + TaxYearSchemes
+    chargePaidByMember: Int,
     period: Period,
     income: Option[Income] = None
   ) extends TaxYear2016To2023

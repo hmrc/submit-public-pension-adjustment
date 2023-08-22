@@ -39,16 +39,23 @@ object CaseIdentificationSection {
     CaseIdentificationSection(
       caseIdentifiers.queueReferences
         .find(qr => qr.dmsQueue.isInstanceOf[Compensation])
-        .map(qr => qr.submissionReference).getOrElse("Not Applicable"),
+        .map(qr => qr.submissionReference)
+        .getOrElse("Not Applicable"),
       caseIdentifiers.queueReferences
         .find(qr => qr.dmsQueue.isInstanceOf[CompensationAmendment])
-        .map(qr => qr.submissionReference).getOrElse("Not Applicable"),
+        .map(qr => qr.submissionReference)
+        .getOrElse("Not Applicable"),
       caseIdentifiers.queueReferences
         .find(qr => qr.dmsQueue.isInstanceOf[MiniRegime])
-        .map(qr => qr.submissionReference).getOrElse("Not Applicable"),
+        .map(qr => qr.submissionReference)
+        .getOrElse("Not Applicable"),
       caseIdentifiers.queueReferences
         .find(qr => qr.dmsQueue.isInstanceOf[MiniRegimeAmendment])
-        .map(qr => qr.submissionReference).getOrElse("Not Applicable"),
-      caseIdentifiers.queueReferences.find(qr => qr.dmsQueue.isInstanceOf[LTA]).map(qr => qr.submissionReference).getOrElse("Not Applicable")
+        .map(qr => qr.submissionReference)
+        .getOrElse("Not Applicable"),
+      caseIdentifiers.queueReferences
+        .find(qr => qr.dmsQueue.isInstanceOf[LTA])
+        .map(qr => qr.submissionReference)
+        .getOrElse("Not Applicable")
     )
 }
