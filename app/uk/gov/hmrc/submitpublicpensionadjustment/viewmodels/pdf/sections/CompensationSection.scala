@@ -51,30 +51,44 @@ object CompensationSection {
     calc: OutOfDatesTaxYearsCalculation,
     finalSubmission: FinalSubmission
   ): CompensationSection = {
-    val taxYearSchemesAdditionalRows = for {
+    CompensationSection(
+      relatingTo = calc.period,
+      directAmount = s"£${calc.directCompensation.toString}",
+      indirectAmount = s"£${calc.indirectCompensation.toString}",
+      revisedTaxChargeTotal = s"£${calc.revisedChargableAmountAfterTaxRate.toString}",
+      chargeYouPaid = s"£${calc.chargePaidByMember.toString}",
+      additionalRows = getAdditionalRows(finalSubmission, calc).flatten
+    )
+  }
+
+  private def getAdditionalRows(finalSubmission: FinalSubmission, outDateCalc: OutOfDatesTaxYearsCalculation): Seq[Seq[(String, String)]] = {
+    val additionalRows = for {
       taxYear <- finalSubmission.calculationInputs.annualAllowance.map(_.taxYears).getOrElse(List()).collect {
-                   case ty: TaxYear2016To2023 => ty
-                 }
-      if taxYear.period == calc.period.toCalculationInputsPeriod
-      scheme  <- taxYear match {
-                   case ny: NormalTaxYear                     => ny.taxYearSchemes
-                   case ifaty: InitialFlexiblyAccessedTaxYear => ifaty.taxYearSchemes
-                   case pfaty: PostFlexiblyAccessedTaxYear    => pfaty.taxYearSchemes
-                 }
+        case ty: TaxYear2016To2023 => ty
+      }
+      if taxYear.period == outDateCalc.period.toCalculationInputsPeriod
+      scheme <- taxYear match {
+        case ny: NormalTaxYear => ny.taxYearSchemes
+        case ifaty: InitialFlexiblyAccessedTaxYear => ifaty.taxYearSchemes
+        case pfaty: PostFlexiblyAccessedTaxYear => pfaty.taxYearSchemes
+      }
     } yield Seq(
-      ("chargeSchemePaid", "£" + scheme.chargePaidByScheme.toString),
+      ("scheme", ""),
+      ("chargeSchemePaid", s"£${scheme.chargePaidByScheme}"),
       ("originalSchemePaidChargeName", scheme.name),
       ("originalSchemePaidChargePstr", scheme.pensionSchemeTaxReference)
     )
 
-    CompensationSection(
-      relatingTo = calc.period,
-      directAmount = "£" + calc.directCompensation.toString,
-      indirectAmount = "£" + calc.indirectCompensation.toString,
-      revisedTaxChargeTotal = "£" + calc.revisedChargableAmountAfterTaxRate.toString,
-      chargeYouPaid = "£" + calc.chargePaidByMember.toString,
-      additionalRows = taxYearSchemesAdditionalRows.flatten
-    )
+    indexAdditionalRows(additionalRows)
+  }
+
+  private def indexAdditionalRows(additionalRows: Seq[Seq[(String, String)]]): Seq[Seq[(String, String)]] = {
+    additionalRows.zipWithIndex.map { case (row, index) =>
+      row.map {
+        case ("scheme", "") => ("scheme", (index + 1).toString)
+        case other => other
+      }
+    }
   }
 
 }

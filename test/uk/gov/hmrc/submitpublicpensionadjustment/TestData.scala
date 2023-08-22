@@ -34,14 +34,14 @@ object TestData {
       pensionSchemeTaxReference = "TestTaxRef",
       originalPensionInputAmount = 999,
       revisedPensionInputAmount = 991,
-      chargePaidByScheme = 992
+      chargePaidByScheme = 100
     ),
     TaxYearScheme(
       name = "TestName22018",
       pensionSchemeTaxReference = "TestTaxRef",
       originalPensionInputAmount = 999,
       revisedPensionInputAmount = 991,
-      chargePaidByScheme = 992
+      chargePaidByScheme = 100
     )
   )
 
@@ -51,14 +51,14 @@ object TestData {
       pensionSchemeTaxReference = "TestTaxRef2017",
       originalPensionInputAmount = 999,
       revisedPensionInputAmount = 991,
-      chargePaidByScheme = 992
+      chargePaidByScheme = 100
     ),
     TaxYearScheme(
       name = "TestName2222017",
       pensionSchemeTaxReference = "TestTaxRef",
       originalPensionInputAmount = 999,
       revisedPensionInputAmount = 991,
-      chargePaidByScheme = 992
+      chargePaidByScheme = 100
     )
   )
 
@@ -75,7 +75,7 @@ object TestData {
     pensionInputAmount = 5000,
     taxYearSchemes = testTaxYearSchemeData2017,
     totalIncome = 100000,
-    chargePaidByMember = 1500,
+    chargePaidByMember = 100,
     period = InputPeriod._2017
   )
 
@@ -214,7 +214,7 @@ object TestData {
     schemeCredit = 150,
     debit = 25,
     chargePaidByMember = 50,
-    chargePaidBySchemes = 75,
+    chargePaidBySchemes = 100,
     revisedChargableAmountBeforeTaxRate = 300,
     revisedChargableAmountAfterTaxRate = 270,
     unusedAnnualAllowance = 20,
@@ -227,11 +227,11 @@ object TestData {
     schemeCredit = 1141550,
     debit = 636,
     chargePaidByMember = 5033,
-    chargePaidBySchemes = 2626,
+    chargePaidBySchemes = 100,
     revisedChargableAmountBeforeTaxRate = 4453,
     revisedChargableAmountAfterTaxRate = 3414,
     unusedAnnualAllowance = 151525,
-    taxYearSchemes = List(InDatesTaxYearSchemeCalculation("Scheme B2018", "PSTR4562018", 1002018))
+    taxYearSchemes = List(InDatesTaxYearSchemeCalculation("Scheme B2018", "PSTR4562018", 100))
   )
 
   val calculationResponse: Some[CalculationResponse] =
@@ -252,9 +252,13 @@ object TestData {
     dob = "dob",
     addressLine1 = "addressLine1",
     addressLine2 = "addressLine2",
-    postCode = "postCode",
-    country = Some("country"),
-    utr = Some("utr"),
+    postCode = Some("postCode"),
+    country = "country",
+    utr = "utr",
+    townOrCity = "town",
+    county = Some("county"),
+    postalCode = Some("postalCode"),
+    stateOrRegion = Some("state"),
     ninoOrTrn = "ninoOrTrn",
     contactNumber = "contactNumber"
   )
@@ -267,7 +271,7 @@ object TestData {
 
   val viewModel = PDFViewModel(
     "caseNumber",
-    CaseIdentificationSection(Some("compRef"), None, Some("miniRegimeRef"), None, Some("ltaRef")),
+    CaseIdentificationSection("compRef", "CompensationAmendment", "miniRegimeRef", "Adjustment", "ltaRef"),
     administrativeDetailsSection,
     None,
     None,
@@ -278,6 +282,6 @@ object TestData {
     Some(
       PaymentInformationSection(accountName = "accountName", sortCode = "sortCode", accountNumber = "accountNumber")
     ),
-    DeclarationsSection("Y", "Y", "Y", "Y", "Y", "Y", "Y")
+    DeclarationsSection("Y", "Y", "Y", "Y")
   )
 }

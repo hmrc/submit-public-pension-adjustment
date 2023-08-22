@@ -21,11 +21,11 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models.dms._
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
 
 case class CaseIdentificationSection(
-  compensation: Option[String],
-  compensationAmendment: Option[String],
-  miniRegime: Option[String],
-  miniRegimeAmendment: Option[String],
-  lta: Option[String]
+  compensation: String,
+  compensationAmendment: String,
+  miniRegime: String,
+  miniRegimeAmendment: String,
+  lta: String
 ) extends Section {
 
   override def orderedFieldNames(): Seq[String] =
@@ -39,16 +39,16 @@ object CaseIdentificationSection {
     CaseIdentificationSection(
       caseIdentifiers.queueReferences
         .find(qr => qr.dmsQueue.isInstanceOf[Compensation])
-        .map(qr => qr.submissionReference),
+        .map(qr => qr.submissionReference).getOrElse("Not Applicable"),
       caseIdentifiers.queueReferences
         .find(qr => qr.dmsQueue.isInstanceOf[CompensationAmendment])
-        .map(qr => qr.submissionReference),
+        .map(qr => qr.submissionReference).getOrElse("Not Applicable"),
       caseIdentifiers.queueReferences
         .find(qr => qr.dmsQueue.isInstanceOf[MiniRegime])
-        .map(qr => qr.submissionReference),
+        .map(qr => qr.submissionReference).getOrElse("Not Applicable"),
       caseIdentifiers.queueReferences
         .find(qr => qr.dmsQueue.isInstanceOf[MiniRegimeAmendment])
-        .map(qr => qr.submissionReference),
-      caseIdentifiers.queueReferences.find(qr => qr.dmsQueue.isInstanceOf[LTA]).map(qr => qr.submissionReference)
+        .map(qr => qr.submissionReference).getOrElse("Not Applicable"),
+      caseIdentifiers.queueReferences.find(qr => qr.dmsQueue.isInstanceOf[LTA]).map(qr => qr.submissionReference).getOrElse("Not Applicable")
     )
 }

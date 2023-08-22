@@ -32,7 +32,7 @@ object AdditionalOrHigherReliefSection {
       AdditionalOrHigherReliefSection(
         amount = relief.amount.toString,
         schemePayingName = schemeDetails.schemeName,
-        schemePayingPstr = "£" + schemeDetails.pstr.value
+        schemePayingPstr = s"£${schemeDetails.pstr.value}"
       )
     }
 }

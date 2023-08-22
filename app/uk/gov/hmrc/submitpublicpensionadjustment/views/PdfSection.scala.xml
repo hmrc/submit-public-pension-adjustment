@@ -14,6 +14,10 @@
             </fo:block>
         }
 
-        @section.rows(messages).map { row => @line(row.displayLabel, row.displayValue) }
+        @section.rows(messages).map { row =>
+            @if(row.displayValue != "deleteRow") {
+                @line(row.displayLabel, row.displayValue)
+            }
+        }
     }
 }

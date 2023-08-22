@@ -18,7 +18,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf
 
 import play.api.i18n.Messages
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.Period
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.CompensationSection
+import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.{CompensationSection, TaxAdministrationFrameworkSection}
 
 import java.lang.reflect.Field
 
@@ -33,7 +33,7 @@ trait Section {
     def getDisplayLabelAndValue(fieldName: String, fieldValue: Any): (String, String) = {
       val displayValue = fieldValue match {
         case Some(s: String) => s
-        case None            => "Not applicable"
+        case None            => "deleteRow"
         case s: String       => s
         case _               => "error"
       }
@@ -63,7 +63,12 @@ trait Section {
           Row.tupled(getDisplayLabelAndValue(label, value))
         }
         regularRows ++ additionalRows
-
+      case taxAdministrationFrameworkSection: TaxAdministrationFrameworkSection =>
+        val additionalRows = taxAdministrationFrameworkSection.additionalRows.map { case (label, value) =>
+          Row.tupled(getDisplayLabelAndValue(label, value))
+        }
+        val (firstPart, secondPart) = regularRows.splitAt(2)
+        firstPart ++ additionalRows ++ secondPart
       case _ => regularRows
     }
   }
