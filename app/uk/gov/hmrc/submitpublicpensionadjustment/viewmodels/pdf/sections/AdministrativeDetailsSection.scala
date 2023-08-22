@@ -104,7 +104,7 @@ object AdministrativeDetailsSection {
     finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails match {
       case PersonalDetails(_, _, _, Some(address), None, _)              => address.addressLine2.getOrElse("Not Entered")
       case PersonalDetails(_, _, _, None, Some(internationalAddress), _) =>
-        internationalAddress.addressLine2.getOrElse("")
+        internationalAddress.addressLine2.getOrElse("Not Entered")
       case _                                                             => "Not Entered"
     }
 
@@ -162,8 +162,12 @@ object AdministrativeDetailsSection {
     taxIds.nino.getOrElse("Not Entered")
   }
 
-  private def contactNumber(finalSubmission: FinalSubmission): String =
-    finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails.contactPhoneNumber
-      .getOrElse("Not Entered")
+  private def contactNumber(finalSubmission: FinalSubmission): String = {
+    val number =
+      finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails.contactPhoneNumber
+        .getOrElse("Not Entered")
+
+    if (number == "") "Not Entered" else number
+  }
 
 }

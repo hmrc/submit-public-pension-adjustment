@@ -35,8 +35,12 @@ object PublicSectorSchemeDetailsSection {
       PublicSectorSchemeDetailsSection(
         schemeName = schemeIdentifier.relatedToScheme.schemeName,
         pstr = schemeIdentifier.relatedToScheme.pstr.value,
-        reformReference = schemeIdentifier.reformReference.getOrElse("Not Entered"),
-        legacyReference = schemeIdentifier.legacyReference.getOrElse("Not Applicable")
+        reformReference =
+          if (schemeIdentifier.reformReference.getOrElse("Not Entered") == "") "Not Entered"
+          else schemeIdentifier.reformReference.getOrElse("Not Entered"),
+        legacyReference =
+          if (schemeIdentifier.legacyReference.getOrElse("Not Entered") == "") "Not Entered"
+          else schemeIdentifier.legacyReference.getOrElse("Not Entered")
       )
     }
 

@@ -62,7 +62,6 @@ object TestData {
     )
   )
 
-  // Sample data for TaxYear2016To2023 using NormalTaxYear
   val taxYear2016To2023SampleData2018 = TaxYear2016To2023.NormalTaxYear(
     pensionInputAmount = 5000,
     taxYearSchemes = testTaxYearSchemeData2018,
@@ -122,9 +121,9 @@ object TestData {
           )
         ),
         internationalAddress = None,
-        contactPhoneNumber = None
+        contactPhoneNumber = Some("1234567890")
       ),
-      TaxIdentifiers(Some("someNino"), None, None)
+      TaxIdentifiers(Some("someNino"), None, Some("someUtr"))
     ),
     Some(onBehalfOfMemberDetails)
   )
@@ -141,7 +140,7 @@ object TestData {
 
   val individualSchemeIdentifier = IndividualSchemeIdentifier(
     relatedToScheme = SchemeDetails(schemeName = "TestScheme", pstr = PSTR("TestPSTR")),
-    legacyReference = None,
+    legacyReference = Some("legacyReference"),
     reformReference = Some("reformReference")
   )
 
@@ -169,7 +168,9 @@ object TestData {
   )
   val schemeDetails: SchemeDetails                   = SchemeDetails(schemeName = "TestSceme", pstr = PSTR("schemePstr"))
 
-  val schemeCharge: Option[SchemeCharge] = Some(SchemeCharge(amount = 10, schemeDetails = schemeDetails, None, None))
+  val schemeCharge: Option[SchemeCharge] = Some(
+    SchemeCharge(amount = 10, schemeDetails = schemeDetails, Some(LocalDate.of(2017, 1, 13)), None)
+  )
 
   val paymentElection: PaymentElection = PaymentElection(period = InputPeriod._2017, None, schemeCharge)
 
@@ -185,7 +186,7 @@ object TestData {
 
   // CompensationSection
   val outOfDatesCalculation2017 = OutOfDatesTaxYearsCalculation(
-    period = ResponsePeriod.Year(2017),
+    period = ResponsePeriod._2017,
     directCompensation = 100,
     indirectCompensation = 200,
     chargePaidByMember = 50,
@@ -226,7 +227,7 @@ object TestData {
     memberCredit = 3526,
     schemeCredit = 1141550,
     debit = 636,
-    chargePaidByMember = 5033,
+    chargePaidByMember = 0,
     chargePaidBySchemes = 100,
     revisedChargableAmountBeforeTaxRate = 4453,
     revisedChargableAmountAfterTaxRate = 3414,

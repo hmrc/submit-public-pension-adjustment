@@ -72,10 +72,11 @@ object TaxAdministrationFrameworkSection {
       TaxAdministrationFrameworkSection(
         relatingTo = inDateCalc.period,
         previousChargeAmount = s"£${previousChargeAmount.toString}",
-        whoChargePaidBy = getWhoChargePaidBy(electionSchemeCharge, electionPersonalCharge),
-        creditValue = s"£${inDateCalc.memberCredit}",
+        whoChargePaidBy = getWhoChargePaidBy(inDateCalc),
+        creditValue = s"£${inDateCalc.memberCredit + inDateCalc.schemeCredit}",
         debitValue = s"£${inDateCalc.debit}",
-        isSchemePayingCharge = if (electionSchemeCharge.isDefined) "Yes" else "No",
+        isSchemePayingCharge =
+          if (electionSchemeCharge.map(_.amount).getOrElse(0) > 0) "Yes" else "No", // todo is this right?
         schemePaymentElectionDate = getSchemePaymentElectionDate(electionSchemeCharge, dateFormatter),
         schemePayingChargeAmount = electionSchemeCharge.map(_.amount.toString).getOrElse("Not Applicable"),
         schemePayingPstr = electionSchemeCharge.map(_.schemeDetails.pstr.value).getOrElse("Not Applicable"),
@@ -139,13 +140,10 @@ object TaxAdministrationFrameworkSection {
       }
     }
 
-  private def getWhoChargePaidBy(
-    electionSchemeCharge: Option[SchemeCharge],
-    electionPersonalCharge: Option[PersonalCharge]
-  ): String =
-    if (electionSchemeCharge.isDefined && electionPersonalCharge.isDefined) "Both"
-    else if (electionSchemeCharge.isDefined) "Scheme"
-    else if (electionPersonalCharge.isDefined) "Member"
+  private def getWhoChargePaidBy(inDateCalc: InDatesTaxYearsCalculation): String =
+    if (inDateCalc.chargePaidByMember > 0 && inDateCalc.chargePaidBySchemes > 0) "Both"
+    else if (inDateCalc.chargePaidBySchemes > 0) "Scheme"
+    else if (inDateCalc.chargePaidByMember > 0) "Member"
     else "None"
 
   private def getSchemePaymentElectionDate(

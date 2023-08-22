@@ -74,9 +74,9 @@ class PDFViewModelSpec extends AnyFreeSpec with Matchers with Logging {
         postCode = Some("Postcode"),
         postalCode = None,
         country = "United Kingdom",
-        utr = "Not Entered",
+        utr = "someUtr",
         ninoOrTrn = "someNino",
-        contactNumber = "Not Entered"
+        contactNumber = "1234567890"
       )
 
       viewModel.publicSectorSchemeDetailsSections mustBe Seq(
@@ -84,13 +84,13 @@ class PDFViewModelSpec extends AnyFreeSpec with Matchers with Logging {
           schemeName = "TestScheme",
           pstr = "TestPSTR",
           reformReference = "reformReference",
-          legacyReference = "Not Applicable"
+          legacyReference = "legacyReference"
         )
       )
 
       viewModel.compensationSections mustBe Seq(
         CompensationSection(
-          relatingTo = ResponsePeriod.Year(2017),
+          relatingTo = ResponsePeriod._2017,
           directAmount = "£100",
           indirectAmount = "£200",
           revisedTaxChargeTotal = "£270",
@@ -137,7 +137,7 @@ class PDFViewModelSpec extends AnyFreeSpec with Matchers with Logging {
         TaxAdministrationFrameworkSection(
           relatingTo = ResponsePeriod._2017,
           previousChargeAmount = "£300",
-          whoChargePaidBy = "Scheme",
+          whoChargePaidBy = "Both",
           additionalRows = Seq(
             ("scheme", "1"),
             ("previousChargePaidBySchemeName", "TestName2017"),
@@ -146,10 +146,10 @@ class PDFViewModelSpec extends AnyFreeSpec with Matchers with Logging {
             ("previousChargePaidBySchemeName", "TestName2222017"),
             ("previousChargePaidByPstr", "TestTaxRef")
           ),
-          creditValue = "£50",
+          creditValue = "£200",
           debitValue = "£25",
           isSchemePayingCharge = "Yes",
-          schemePaymentElectionDate = "Not Applicable",
+          schemePaymentElectionDate = "13/01/2017",
           schemePayingChargeAmount = "10",
           schemePayingPstr = "schemePstr",
           schemePayingName = "TestSceme"
@@ -157,7 +157,7 @@ class PDFViewModelSpec extends AnyFreeSpec with Matchers with Logging {
         TaxAdministrationFrameworkSection(
           relatingTo = ResponsePeriod._2018,
           previousChargeAmount = "£1700",
-          whoChargePaidBy = "None",
+          whoChargePaidBy = "Scheme",
           additionalRows = Seq(
             ("scheme", "1"),
             ("previousChargePaidBySchemeName", "TestName2018"),
@@ -166,7 +166,7 @@ class PDFViewModelSpec extends AnyFreeSpec with Matchers with Logging {
             ("previousChargePaidBySchemeName", "TestName22018"),
             ("previousChargePaidByPstr", "TestTaxRef")
           ),
-          creditValue = "£3526",
+          creditValue = "£1145076",
           debitValue = "£636",
           isSchemePayingCharge = "No",
           schemePaymentElectionDate = "Not Applicable",
