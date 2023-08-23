@@ -151,8 +151,10 @@ object OnBehalfOfSection {
       case _                                                             => "United Kingdom"
     }
 
-  private def utr(onBehalfOfMember: OnBehalfOfMember): String =
-    onBehalfOfMember.taxIdentifiers.utr.getOrElse("Not Entered")
+  private def utr(onBehalfOfMember: OnBehalfOfMember): String = {
+    val utr = onBehalfOfMember.taxIdentifiers.utr.getOrElse("Not Entered")
+    if (utr == "") "Not Entered" else utr
+  }
 
   private def ninoOrTrn(onBehalfOfMember: OnBehalfOfMember): String =
     onBehalfOfMember.taxIdentifiers.nino.getOrElse(onBehalfOfMember.taxIdentifiers.trn.getOrElse("Not Entered"))

@@ -154,8 +154,11 @@ object AdministrativeDetailsSection {
       case _                                                             => "United Kingdom"
     }
 
-  private def utr(finalSubmission: FinalSubmission): String =
-    finalSubmission.submissionInputs.administrativeDetails.claimantDetails.taxIdentifiers.utr.getOrElse("Not Entered")
+  private def utr(finalSubmission: FinalSubmission): String = {
+    val utr =
+      finalSubmission.submissionInputs.administrativeDetails.claimantDetails.taxIdentifiers.utr.getOrElse("Not Entered")
+    if (utr == "") "Not Entered" else utr
+  }
 
   private def ninoOrTrn(finalSubmission: FinalSubmission): String = {
     val taxIds = finalSubmission.submissionInputs.administrativeDetails.claimantDetails.taxIdentifiers
