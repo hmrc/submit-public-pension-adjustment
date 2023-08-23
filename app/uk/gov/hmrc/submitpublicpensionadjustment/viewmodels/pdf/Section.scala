@@ -30,42 +30,23 @@ trait Section {
   def rows(messages: Messages): Seq[Row] = {
     val fieldNames: Seq[String] = orderedFieldNames()
 
-    def getDisplayLabelAndValue(fieldName: String, fieldValue: Any): (String, String) = {
-      val displayValue = fieldValue match {
-        case Some(s: String) => s
-        case None            => "deleteRow"
-        case s: String       => s
-        case _               => "error"
-      }
-
-      val baseDataLabel = messages(s"$messagePrefix.$fieldName")
-
-      val displayLabel = period() match {
-        case Some(period) =>
-          val periodLabel = messages(s"pdf.${period.toString}")
-          baseDataLabel.replace("$period", periodLabel)
-        case None         => baseDataLabel
-      }
-
-      (displayLabel, displayValue)
-    }
-
     val regularRows = fieldNames.flatMap { fieldName =>
       val field: Field = getClass.getDeclaredField(fieldName)
       field.setAccessible(true)
       val fieldValue   = field.get(this)
-      Some(Row.tupled(getDisplayLabelAndValue(fieldName, fieldValue)))
+      Some(getDisplayLabelAndValue(messages, fieldName, fieldValue))
     }
 
+    // Add additionalRows to special cases
     this match {
       case compensationSection: CompensationSection                             =>
         val additionalRows = compensationSection.additionalRows.map { case (label, value) =>
-          Row.tupled(getDisplayLabelAndValue(label, value))
+          getDisplayLabelAndValue(messages, label, value)
         }
         regularRows ++ additionalRows
       case taxAdministrationFrameworkSection: TaxAdministrationFrameworkSection =>
         val additionalRows          = taxAdministrationFrameworkSection.additionalRows.map { case (label, value) =>
-          Row.tupled(getDisplayLabelAndValue(label, value))
+          getDisplayLabelAndValue(messages, label, value)
         }
         val (firstPart, secondPart) = regularRows.splitAt(2)
         firstPart ++ additionalRows ++ secondPart
@@ -79,4 +60,24 @@ trait Section {
 
   def displayLines(messages: Messages): Seq[String] =
     rows(messages).map(row => row.displayLabel + " : " + row.displayValue)
+
+  def getDisplayLabelAndValue(messages: Messages, fieldName: String, fieldValue: Any): Row = {
+    val displayValue = fieldValue match {
+      case Some(s: String) => s
+      case None            => "deleteRow"
+      case s: String       => s
+      case _               => "error"
+    }
+
+    val baseDataLabel = messages(s"$messagePrefix.$fieldName")
+
+    val displayLabel = period() match {
+      case Some(period) =>
+        val periodLabel = messages(s"pdf.${period.toString}")
+        baseDataLabel.replace("$period", periodLabel)
+      case None         => baseDataLabel
+    }
+
+    Row(displayLabel, displayValue)
+  }
 }

@@ -89,8 +89,6 @@ object TestData {
     None
   )
 
-  // OnBehalfOfSection
-
   val onBehalfOfMemberDetails = OnBehalfOfMember(
     memberPersonalDetails = PersonalDetails(
       fullName = "FirstName Surname",
@@ -127,8 +125,8 @@ object TestData {
     ),
     Some(onBehalfOfMemberDetails)
   )
-  // DeclarationsSection
-  val declarations          = Declarations(
+
+  val declarations = Declarations(
     compensation = true,
     tax = true,
     contactDetails = true,
@@ -136,15 +134,11 @@ object TestData {
     claimOnBehalfOfDeceased = Some(false)
   )
 
-  // PublicSectorSchemeDetailsSection
-
   val individualSchemeIdentifier = IndividualSchemeIdentifier(
     relatedToScheme = SchemeDetails(schemeName = "TestScheme", pstr = PSTR("TestPSTR")),
     legacyReference = Some("legacyReference"),
     reformReference = Some("reformReference")
   )
-
-  // AditionalOrHigherRefliefSection
 
   val schemeTaxRelief = Some(
     SchemeTaxRelief(
@@ -156,8 +150,6 @@ object TestData {
       )
     )
   )
-
-  // PaymentInformationSection
 
   val bankAccountDetails: Option[BankAccountDetails] = Some(
     BankAccountDetails(
@@ -184,7 +176,6 @@ object TestData {
       declarations
     )
 
-  // CompensationSection
   val outOfDatesCalculation2017 = OutOfDatesTaxYearsCalculation(
     period = ResponsePeriod._2017,
     directCompensation = 100,
