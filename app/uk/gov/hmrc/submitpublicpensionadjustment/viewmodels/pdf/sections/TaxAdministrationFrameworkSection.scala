@@ -76,7 +76,7 @@ object TaxAdministrationFrameworkSection {
         creditValue = s"£${inDateCalc.memberCredit + inDateCalc.schemeCredit}",
         debitValue = s"£${inDateCalc.debit}",
         isSchemePayingCharge =
-          if (electionSchemeCharge.map(_.amount).getOrElse(0) > 0) "Yes" else "No", // todo is this right?
+          if (electionSchemeCharge.map(_.amount).getOrElse(0) > 0) "Yes" else "No",
         schemePaymentElectionDate = getSchemePaymentElectionDate(electionSchemeCharge, dateFormatter),
         schemePayingChargeAmount = electionSchemeCharge.map(_.amount.toString).getOrElse("Not Applicable"),
         schemePayingPstr = electionSchemeCharge.map(_.schemeDetails.pstr.value).getOrElse("Not Applicable"),
