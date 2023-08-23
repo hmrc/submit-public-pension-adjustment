@@ -88,7 +88,7 @@ object OnBehalfOfSection {
     val dobOption = onBehalfOfMember.memberPersonalDetails.dateOfBirth
     dobOption
       .map(dob => DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone(ZoneId.systemDefault()).format(dob))
-      .getOrElse("")
+      .getOrElse("Not Entered")
   }
 
   private def addressLine1(onBehalfOfMember: OnBehalfOfMember): String =
@@ -102,7 +102,7 @@ object OnBehalfOfSection {
     onBehalfOfMember.memberPersonalDetails match {
       case PersonalDetails(_, _, _, Some(address), None, _)              => address.addressLine2.getOrElse("Not Entered")
       case PersonalDetails(_, _, _, None, Some(internationalAddress), _) =>
-        internationalAddress.addressLine2.getOrElse("")
+        internationalAddress.addressLine2.getOrElse("Not Entered")
       case _                                                             => "Not Entered"
     }
 
