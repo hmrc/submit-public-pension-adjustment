@@ -19,7 +19,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023.{InitialFlexiblyAccessedTaxYear, NormalTaxYear, PostFlexiblyAccessedTaxYear}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{InDatesTaxYearsCalculation, Period}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.{FinalSubmission, PersonalCharge, SchemeCharge}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.{FinalSubmission, SchemeCharge}
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
 
 import java.time.format.DateTimeFormatter
@@ -63,8 +63,7 @@ object TaxAdministrationFrameworkSection {
       val paymentElectionOpt = finalSubmission.submissionInputs.paymentElections
         .find(_.period == inDateCalc.period.toCalculationInputsPeriod)
 
-      val electionSchemeCharge   = paymentElectionOpt.flatMap(_.schemeCharge)
-      val electionPersonalCharge = paymentElectionOpt.flatMap(_.personalCharge)
+      val electionSchemeCharge = paymentElectionOpt.flatMap(_.schemeCharge)
 
       val relevantTaxYear      = findRelevantTaxYear(finalSubmission, inDateCalc)
       val previousChargeAmount = calculatePreviousChargeAmount(relevantTaxYear)
@@ -75,8 +74,7 @@ object TaxAdministrationFrameworkSection {
         whoChargePaidBy = getWhoChargePaidBy(inDateCalc),
         creditValue = s"£${inDateCalc.memberCredit + inDateCalc.schemeCredit}",
         debitValue = s"£${inDateCalc.debit}",
-        isSchemePayingCharge =
-          if (electionSchemeCharge.map(_.amount).getOrElse(0) > 0) "Yes" else "No",
+        isSchemePayingCharge = if (electionSchemeCharge.map(_.amount).getOrElse(0) > 0) "Yes" else "No",
         schemePaymentElectionDate = getSchemePaymentElectionDate(electionSchemeCharge, dateFormatter),
         schemePayingChargeAmount = electionSchemeCharge.map(_.amount.toString).getOrElse("Not Applicable"),
         schemePayingPstr = electionSchemeCharge.map(_.schemeDetails.pstr.value).getOrElse("Not Applicable"),
