@@ -17,7 +17,7 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
+import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Section}
 
 case class LifetimeAllowanceSection(
   hadBce: String,
@@ -68,15 +68,15 @@ case class LifetimeAllowanceSection(
 object LifetimeAllowanceSection {
   def build(finalSubmission: FinalSubmission): Option[LifetimeAllowanceSection] =
     finalSubmission.calculationInputs.lifeTimeAllowance match {
-      case Some(_) =>
+      case Some(ltaInputs) =>
         Some(
           LifetimeAllowanceSection(
-            hadBce = "todo",
-            bceDate = "todo",
-            changeInLtaPercentage = "todo",
-            ltaChargeType = "todo",
-            haveLtaProtectionOrEnhancement = "todo",
-            protectionType = "todo",
+            hadBce = "Yes",
+            bceDate = Formatting.format(ltaInputs.benefitCrystallisationEventDate),
+            changeInLtaPercentage = "Yes",
+            ltaChargeType = Formatting.format(ltaInputs.changeInTaxCharge),
+            haveLtaProtectionOrEnhancement = ltaInputs.lifetimeAllowanceProtectionOrEnhancements.toString,
+            protectionType = ltaInputs.protectionType.toString,
             protectionReference = "todo",
             changeToProtectionType = "todo",
             newProtectionTypeOrEnhancement = "todo",
@@ -93,6 +93,6 @@ object LifetimeAllowanceSection {
             whoPayingExtraChargeTaxRef = "todo"
           )
         )
-      case _       => None
+      case _               => None
     }
 }

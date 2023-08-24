@@ -17,10 +17,7 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.{FinalSubmission, OnBehalfOfMember, PersonalDetails}
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
-
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
+import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Section}
 
 case class OnBehalfOfSection(
   firstName: String,
@@ -87,7 +84,7 @@ object OnBehalfOfSection {
   private def dob(onBehalfOfMember: OnBehalfOfMember) = {
     val dobOption = onBehalfOfMember.memberPersonalDetails.dateOfBirth
     dobOption
-      .map(dob => DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone(ZoneId.systemDefault()).format(dob))
+      .map(dob => Formatting.format(dob))
       .getOrElse("Not Entered")
   }
 

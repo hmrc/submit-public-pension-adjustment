@@ -20,9 +20,7 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYe
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023.{InitialFlexiblyAccessedTaxYear, NormalTaxYear, PostFlexiblyAccessedTaxYear}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{InDatesTaxYearsCalculation, Period}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.{FinalSubmission, SchemeCharge}
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
-
-import java.time.format.DateTimeFormatter
+import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Section}
 
 case class TaxAdministrationFrameworkSection(
   relatingTo: Period,
@@ -58,8 +56,6 @@ object TaxAdministrationFrameworkSection {
     val inDates = finalSubmission.calculation.map(_.inDates).getOrElse(Seq.empty)
 
     inDates.map { inDateCalc =>
-      val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-
       val paymentElectionOpt = finalSubmission.submissionInputs.paymentElections
         .find(_.period == inDateCalc.period.toCalculationInputsPeriod)
 
@@ -75,7 +71,7 @@ object TaxAdministrationFrameworkSection {
         creditValue = s"£${inDateCalc.memberCredit + inDateCalc.schemeCredit}",
         debitValue = s"£${inDateCalc.debit}",
         isSchemePayingCharge = if (electionSchemeCharge.map(_.amount).getOrElse(0) > 0) "Yes" else "No",
-        schemePaymentElectionDate = getSchemePaymentElectionDate(electionSchemeCharge, dateFormatter),
+        schemePaymentElectionDate = getSchemePaymentElectionDate(electionSchemeCharge),
         schemePayingChargeAmount = electionSchemeCharge.map(_.amount.toString).getOrElse("Not Applicable"),
         schemePayingPstr = electionSchemeCharge.map(_.schemeDetails.pstr.value).getOrElse("Not Applicable"),
         schemePayingName = electionSchemeCharge.map(_.schemeDetails.schemeName).getOrElse("Not Applicable"),
@@ -145,12 +141,11 @@ object TaxAdministrationFrameworkSection {
     else "None"
 
   private def getSchemePaymentElectionDate(
-    electionSchemeCharge: Option[SchemeCharge],
-    dateFormatter: DateTimeFormatter
+    electionSchemeCharge: Option[SchemeCharge]
   ): String =
     electionSchemeCharge
       .flatMap(_.paymentElectionDate)
-      .map(date => dateFormatter.format(date))
+      .map(date => Formatting.format(date))
       .orElse(
         electionSchemeCharge
           .flatMap(_.estimatedPaymentElectionQuarter)
