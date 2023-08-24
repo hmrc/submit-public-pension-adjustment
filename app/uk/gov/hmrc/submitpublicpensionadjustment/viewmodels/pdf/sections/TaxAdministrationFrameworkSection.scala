@@ -16,16 +16,19 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.Period
-import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023.{InitialFlexiblyAccessedTaxYear, NormalTaxYear, PostFlexiblyAccessedTaxYear}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{InDatesTaxYearsCalculation, Period}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.{FinalSubmission, SchemeCharge}
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
+
+import java.time.format.DateTimeFormatter
 
 case class TaxAdministrationFrameworkSection(
   relatingTo: Period,
   previousChargeAmount: String,
   whoChargePaidBy: String,
-  previousChargePaidBySchemeName: String,
-  previousChargePaidByPstr: String,
+  additionalRows: Seq[(String, String)] = Seq(),
   creditValue: String,
   debitValue: String,
   isSchemePayingCharge: String,
@@ -38,8 +41,6 @@ case class TaxAdministrationFrameworkSection(
   override def orderedFieldNames(): Seq[String] = Seq(
     "previousChargeAmount",
     "whoChargePaidBy",
-    "previousChargePaidBySchemeName",
-    "previousChargePaidByPstr",
     "creditValue",
     "debitValue",
     "isSchemePayingCharge",
@@ -54,30 +55,105 @@ case class TaxAdministrationFrameworkSection(
 
 object TaxAdministrationFrameworkSection {
   def build(finalSubmission: FinalSubmission): Seq[TaxAdministrationFrameworkSection] = {
-    val inDates = finalSubmission.calculation
-      .map(_.inDates)
-      .getOrElse(Seq.empty)
+    val inDates = finalSubmission.calculation.map(_.inDates).getOrElse(Seq.empty)
 
     inDates.map { inDateCalc =>
-      // val paymentElectionOpt = finalSubmission.submissionInputs.paymentElections.find(_.period == inDateCalc.period) // todo will change
-      // val electionSchemeCharge = paymentElectionOpt.flatMap(_.schemeCharge).getOrElse(throw new RuntimeException("No corresponding SchemeCharge found"))
+      val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+      val paymentElectionOpt = finalSubmission.submissionInputs.paymentElections
+        .find(_.period == inDateCalc.period.toCalculationInputsPeriod)
+
+      val electionSchemeCharge = paymentElectionOpt.flatMap(_.schemeCharge)
+
+      val relevantTaxYear      = findRelevantTaxYear(finalSubmission, inDateCalc)
+      val previousChargeAmount = calculatePreviousChargeAmount(relevantTaxYear)
+
       TaxAdministrationFrameworkSection(
         relatingTo = inDateCalc.period,
-        previousChargeAmount = "todo", // inputs or response
-        whoChargePaidBy =
-          "todo", // if (inDateCalc.chargePaidByMember > 0) "Member" else "Scheme", // in payment election
-        previousChargePaidBySchemeName =
-          "todo", // electionSchemeCharge.schemeDetails.schemeName, // calculation response
-        previousChargePaidByPstr = "todo", // electionSchemeCharge.schemeDetails.pstr.value, // inputs or response
-        creditValue = inDateCalc.memberCredit.toString,
-        debitValue = inDateCalc.debit.toString,
-        isSchemePayingCharge = "todo", // if (inDateCalc.chargePaidBySchemes > 0) "Yes" else "No",
-        schemePaymentElectionDate =
-          "todo", // electionSchemeCharge.paymentElectionDate.map(_.toString).getOrElse(""), //in submission inputs
-        schemePayingChargeAmount = "todo", // submission inputs how much the scheme pay
-        schemePayingPstr = "todo", // electionSchemeCharge.schemeDetails.pstr.value,
-        schemePayingName = "todo" // electionSchemeCharge.schemeDetails.schemeName // na
+        previousChargeAmount = s"£${previousChargeAmount.toString}",
+        whoChargePaidBy = getWhoChargePaidBy(inDateCalc),
+        creditValue = s"£${inDateCalc.memberCredit + inDateCalc.schemeCredit}",
+        debitValue = s"£${inDateCalc.debit}",
+        isSchemePayingCharge = if (electionSchemeCharge.map(_.amount).getOrElse(0) > 0) "Yes" else "No",
+        schemePaymentElectionDate = getSchemePaymentElectionDate(electionSchemeCharge, dateFormatter),
+        schemePayingChargeAmount = electionSchemeCharge.map(_.amount.toString).getOrElse("Not Applicable"),
+        schemePayingPstr = electionSchemeCharge.map(_.schemeDetails.pstr.value).getOrElse("Not Applicable"),
+        schemePayingName = electionSchemeCharge.map(_.schemeDetails.schemeName).getOrElse("Not Applicable"),
+        additionalRows = getAdditionalRows(finalSubmission, inDateCalc).flatten
       )
     }
   }
+
+  private def findRelevantTaxYear(
+    finalSubmission: FinalSubmission,
+    inDateCalc: InDatesTaxYearsCalculation
+  ): Option[TaxYear2016To2023] = {
+    val relevantTaxYears = finalSubmission.calculationInputs.annualAllowance.map(_.taxYears).getOrElse(List())
+    relevantTaxYears
+      .collect { case ty: TaxYear2016To2023 => ty }
+      .find(_.period == inDateCalc.period.toCalculationInputsPeriod)
+  }
+
+  private def calculatePreviousChargeAmount(relevantTaxYear: Option[TaxYear2016To2023]): Int =
+    relevantTaxYear match {
+      case Some(ty) =>
+        ty match {
+          case ny: NormalTaxYear                     => ny.chargePaidByMember + ny.taxYearSchemes.map(_.chargePaidByScheme).sum
+          case ifaty: InitialFlexiblyAccessedTaxYear =>
+            ifaty.chargePaidByMember + ifaty.taxYearSchemes.map(_.chargePaidByScheme).sum
+          case pfaty: PostFlexiblyAccessedTaxYear    =>
+            pfaty.chargePaidByMember + pfaty.taxYearSchemes.map(_.chargePaidByScheme).sum
+        }
+      case None     => 0
+    }
+
+  private def getAdditionalRows(
+    finalSubmission: FinalSubmission,
+    inDateCalc: InDatesTaxYearsCalculation
+  ): Seq[Seq[(String, String)]] = {
+    val additionalRows = for {
+      taxYear <- finalSubmission.calculationInputs.annualAllowance.map(_.taxYears).getOrElse(List()).collect {
+                   case ty: TaxYear2016To2023 => ty
+                 }
+      if taxYear.period == inDateCalc.period.toCalculationInputsPeriod
+      scheme  <- taxYear match {
+                   case ny: NormalTaxYear                     => ny.taxYearSchemes
+                   case ifaty: InitialFlexiblyAccessedTaxYear => ifaty.taxYearSchemes
+                   case pfaty: PostFlexiblyAccessedTaxYear    => pfaty.taxYearSchemes
+                 }
+    } yield Seq(
+      ("scheme", ""),
+      ("previousChargePaidBySchemeName", scheme.name),
+      ("previousChargePaidByPstr", scheme.pensionSchemeTaxReference)
+    )
+
+    indexAdditionalRows(additionalRows)
+  }
+
+  private def indexAdditionalRows(additionalRows: Seq[Seq[(String, String)]]): Seq[Seq[(String, String)]] =
+    additionalRows.zipWithIndex.map { case (row, index) =>
+      row.map {
+        case ("scheme", "") => ("scheme", (index + 1).toString)
+        case other          => other
+      }
+    }
+
+  private def getWhoChargePaidBy(inDateCalc: InDatesTaxYearsCalculation): String =
+    if (inDateCalc.chargePaidByMember > 0 && inDateCalc.chargePaidBySchemes > 0) "Both"
+    else if (inDateCalc.chargePaidBySchemes > 0) "Scheme"
+    else if (inDateCalc.chargePaidByMember > 0) "Member"
+    else "None"
+
+  private def getSchemePaymentElectionDate(
+    electionSchemeCharge: Option[SchemeCharge],
+    dateFormatter: DateTimeFormatter
+  ): String =
+    electionSchemeCharge
+      .flatMap(_.paymentElectionDate)
+      .map(date => dateFormatter.format(date))
+      .orElse(
+        electionSchemeCharge
+          .flatMap(_.estimatedPaymentElectionQuarter)
+      )
+      .getOrElse("Not Applicable")
 }

@@ -26,9 +26,9 @@ import play.api.i18n.MessagesApi
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
-import uk.gov.hmrc.submitpublicpensionadjustment.models.{CaseIdentifiers, QueueReference}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.Period
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{Period => ResponsePeriod}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.Compensation
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{CaseIdentifiers, QueueReference}
 import uk.gov.hmrc.submitpublicpensionadjustment.services.FopService
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.PDFViewModel
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections._
@@ -68,39 +68,111 @@ class PDFViewModelSpec extends AnyFreeSpec with Matchers with Logging {
         dob = "13/01/1920",
         addressLine1 = "testLine1",
         addressLine2 = "testLine2",
-        postCode = "Postcode",
-        country = None,
-        utr = None,
+        townOrCity = "TestCity",
+        county = Some("TestCounty"),
+        stateOrRegion = None,
+        postCode = Some("Postcode"),
+        postalCode = None,
+        country = "United Kingdom",
+        utr = "someUtr",
         ninoOrTrn = "someNino",
-        contactNumber = ""
+        contactNumber = "1234567890"
       )
 
       viewModel.publicSectorSchemeDetailsSections mustBe Seq(
         PublicSectorSchemeDetailsSection(
           schemeName = "TestScheme",
           pstr = "TestPSTR",
-          individualSchemeReference = "reformReference"
+          reformReference = "reformReference",
+          legacyReference = "legacyReference"
         )
       )
 
       viewModel.compensationSections mustBe Seq(
         CompensationSection(
-          relatingTo = Period.Year(2017),
-          directAmount = "100",
-          indirectAmount = "200",
-          revisedTaxChargeTotal = "270",
-          chargeYouPaid = "50",
-          chargeSchemePaid = "75",
-          originalSchemePaidChargeName = "Scheme A",
-          originalSchemePaidChargePstr = "PSTR123"
+          relatingTo = ResponsePeriod._2017,
+          directAmount = "£100",
+          indirectAmount = "£200",
+          revisedTaxChargeTotal = "£270",
+          chargeYouPaid = "£50",
+          additionalRows = Seq(
+            ("scheme", "1"),
+            ("chargeSchemePaid", "£100"),
+            ("originalSchemePaidChargeName", "TestName2017"),
+            ("originalSchemePaidChargePstr", "TestTaxRef2017"),
+            ("scheme", "2"),
+            ("chargeSchemePaid", "£100"),
+            ("originalSchemePaidChargeName", "TestName2222017"),
+            ("originalSchemePaidChargePstr", "TestTaxRef")
+          )
+        ),
+        CompensationSection(
+          ResponsePeriod.Year(2018),
+          "£1002018",
+          "£2002018",
+          "£2702018",
+          "£502018",
+          Seq(
+            ("scheme", "1"),
+            ("chargeSchemePaid", "£100"),
+            ("originalSchemePaidChargeName", "TestName2018"),
+            ("originalSchemePaidChargePstr", "TestTaxRef"),
+            ("scheme", "2"),
+            ("chargeSchemePaid", "£100"),
+            ("originalSchemePaidChargeName", "TestName22018"),
+            ("originalSchemePaidChargePstr", "TestTaxRef")
+          )
         )
       )
 
       viewModel.additionalOrHigherReliefSection mustBe Some(
         AdditionalOrHigherReliefSection(
-          amount = "1000",
+          amount = "£1000",
           schemePayingName = "SchemeA",
           schemePayingPstr = "schemePstr"
+        )
+      )
+
+      viewModel.taxAdministrationFrameworkSections mustBe Seq(
+        TaxAdministrationFrameworkSection(
+          relatingTo = ResponsePeriod._2017,
+          previousChargeAmount = "£300",
+          whoChargePaidBy = "Both",
+          additionalRows = Seq(
+            ("scheme", "1"),
+            ("previousChargePaidBySchemeName", "TestName2017"),
+            ("previousChargePaidByPstr", "TestTaxRef2017"),
+            ("scheme", "2"),
+            ("previousChargePaidBySchemeName", "TestName2222017"),
+            ("previousChargePaidByPstr", "TestTaxRef")
+          ),
+          creditValue = "£200",
+          debitValue = "£25",
+          isSchemePayingCharge = "Yes",
+          schemePaymentElectionDate = "13/01/2017",
+          schemePayingChargeAmount = "10",
+          schemePayingPstr = "schemePstr",
+          schemePayingName = "TestSceme"
+        ),
+        TaxAdministrationFrameworkSection(
+          relatingTo = ResponsePeriod._2018,
+          previousChargeAmount = "£1700",
+          whoChargePaidBy = "Scheme",
+          additionalRows = Seq(
+            ("scheme", "1"),
+            ("previousChargePaidBySchemeName", "TestName2018"),
+            ("previousChargePaidByPstr", "TestTaxRef"),
+            ("scheme", "2"),
+            ("previousChargePaidBySchemeName", "TestName22018"),
+            ("previousChargePaidByPstr", "TestTaxRef")
+          ),
+          creditValue = "£1145076",
+          debitValue = "£636",
+          isSchemePayingCharge = "No",
+          schemePaymentElectionDate = "Not Applicable",
+          schemePayingChargeAmount = "Not Applicable",
+          schemePayingPstr = "Not Applicable",
+          schemePayingName = "Not Applicable"
         )
       )
 
@@ -111,9 +183,13 @@ class PDFViewModelSpec extends AnyFreeSpec with Matchers with Logging {
           dob = "13/01/1920",
           addressLine1 = "Behalf Address 1",
           addressLine2 = "Behalf Address 2",
-          postCode = "Postcode",
-          country = None,
-          utr = Some("someUTR"),
+          townOrCity = "City",
+          county = Some("County"),
+          stateOrRegion = None,
+          postCode = Some("Postcode"),
+          postalCode = None,
+          country = "United Kingdom",
+          utr = "someUTR",
           ninoOrTrn = "someNino"
         )
       )
@@ -126,7 +202,7 @@ class PDFViewModelSpec extends AnyFreeSpec with Matchers with Logging {
         )
       )
 
-      viewModel.declarationsSection mustBe DeclarationsSection("Y", "Y", "Y", "Y", "Y", "N", "N")
+      viewModel.declarationsSection mustBe DeclarationsSection("Y", "Y", "Y", "N", "N")
 
       val view      = app.injector.instanceOf[FinalSubmissionPdf]
       val xmlString = view.render(viewModel, messages).body

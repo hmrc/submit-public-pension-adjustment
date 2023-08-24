@@ -19,9 +19,13 @@ package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
 
-case class PublicSectorSchemeDetailsSection(schemeName: String, pstr: String, individualSchemeReference: String)
-    extends Section {
-  override def orderedFieldNames(): Seq[String] = Seq("schemeName", "pstr", "individualSchemeReference")
+case class PublicSectorSchemeDetailsSection(
+  schemeName: String,
+  pstr: String,
+  reformReference: String,
+  legacyReference: String
+) extends Section {
+  override def orderedFieldNames(): Seq[String] = Seq("schemeName", "pstr", "reformReference", "legacyReference")
 }
 
 object PublicSectorSchemeDetailsSection {
@@ -31,8 +35,12 @@ object PublicSectorSchemeDetailsSection {
       PublicSectorSchemeDetailsSection(
         schemeName = schemeIdentifier.relatedToScheme.schemeName,
         pstr = schemeIdentifier.relatedToScheme.pstr.value,
-        individualSchemeReference =
-          schemeIdentifier.reformReference.getOrElse(schemeIdentifier.legacyReference.getOrElse("")) // todo
+        reformReference =
+          if (schemeIdentifier.reformReference.getOrElse("Not Entered") == "") "Not Entered"
+          else schemeIdentifier.reformReference.getOrElse("Not Entered"),
+        legacyReference =
+          if (schemeIdentifier.legacyReference.getOrElse("Not Entered") == "") "Not Entered"
+          else schemeIdentifier.legacyReference.getOrElse("Not Entered")
       )
     }
 

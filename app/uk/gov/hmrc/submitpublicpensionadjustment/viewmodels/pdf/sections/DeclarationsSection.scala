@@ -22,14 +22,12 @@ import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
 case class DeclarationsSection(
   compensation: String,
   tax: String,
-  address: String,
-  contact: String,
   trueAndComplete: String,
   onBehalfDeceased: String,
   deputyship: String
 ) extends Section {
   override def orderedFieldNames(): Seq[String] =
-    Seq("compensation", "tax", "address", "contact", "trueAndComplete", "onBehalfDeceased", "deputyship")
+    Seq("compensation", "tax", "trueAndComplete", "onBehalfDeceased", "deputyship")
 }
 
 object DeclarationsSection {
@@ -37,8 +35,6 @@ object DeclarationsSection {
     DeclarationsSection(
       compensation = booleanToYesNo(finalSubmission.submissionInputs.declarations.compensation),
       tax = booleanToYesNo(finalSubmission.submissionInputs.declarations.tax),
-      address = "Y", // Todo
-      contact = booleanToYesNo(finalSubmission.submissionInputs.declarations.contactDetails),
       trueAndComplete = "Y",
       onBehalfDeceased = optionBooleanToYesNo(finalSubmission.submissionInputs.declarations.claimOnBehalfOfDeceased),
       deputyship = optionBooleanToYesNo(finalSubmission.submissionInputs.declarations.powerOfAttorney)

@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023.{InitialFlexiblyAccessedTaxYear, NormalTaxYear, PostFlexiblyAccessedTaxYear}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{OutOfDatesTaxYearsCalculation, Period}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
@@ -26,20 +28,11 @@ case class CompensationSection(
   indirectAmount: String,
   revisedTaxChargeTotal: String,
   chargeYouPaid: String,
-  chargeSchemePaid: String,
-  originalSchemePaidChargeName: String,
-  originalSchemePaidChargePstr: String
+  additionalRows: Seq[(String, String)] = Seq()
 ) extends Section {
 
-  override def orderedFieldNames(): Seq[String] = Seq(
-    "directAmount",
-    "indirectAmount",
-    "revisedTaxChargeTotal",
-    "chargeYouPaid",
-    "chargeSchemePaid",
-    "originalSchemePaidChargeName",
-    "originalSchemePaidChargePstr"
-  )
+  override def orderedFieldNames(): Seq[String] =
+    Seq("directAmount", "indirectAmount", "revisedTaxChargeTotal", "chargeYouPaid")
 
   override def period() = Some(relatingTo)
 }
@@ -51,21 +44,52 @@ object CompensationSection {
       .map(_.outDates)
       .getOrElse(Seq.empty)
 
-    outOfDates.map(buildFromOutOfDates)
+    outOfDates.map(calc => buildFromOutOfDates(calc, finalSubmission))
   }
 
-  private def buildFromOutOfDates(calc: OutOfDatesTaxYearsCalculation): CompensationSection =
+  private def buildFromOutOfDates(
+    calc: OutOfDatesTaxYearsCalculation,
+    finalSubmission: FinalSubmission
+  ): CompensationSection =
     CompensationSection(
       relatingTo = calc.period,
-      directAmount = calc.directCompensation.toString,
-      indirectAmount = calc.indirectCompensation.toString,
-      revisedTaxChargeTotal = calc.revisedChargableAmountAfterTaxRate.toString,
-      chargeYouPaid = calc.chargePaidByMember.toString,
-      chargeSchemePaid = calc.chargePaidBySchemes.toString,
-      originalSchemePaidChargeName =
-        calc.taxYearSchemes.headOption.map(_.name).getOrElse(""), // todo list of each scheme in a sequence
-      originalSchemePaidChargePstr = calc.taxYearSchemes.headOption
-        .map(_.pensionSchemeTaxReference)
-        .getOrElse("") // todo list of each scheme in a sequence
+      directAmount = s"£${calc.directCompensation.toString}",
+      indirectAmount = s"£${calc.indirectCompensation.toString}",
+      revisedTaxChargeTotal = s"£${calc.revisedChargableAmountAfterTaxRate.toString}",
+      chargeYouPaid = s"£${calc.chargePaidByMember.toString}",
+      additionalRows = getAdditionalRows(finalSubmission, calc).flatten
     )
+
+  private def getAdditionalRows(
+    finalSubmission: FinalSubmission,
+    outDateCalc: OutOfDatesTaxYearsCalculation
+  ): Seq[Seq[(String, String)]] = {
+    val additionalRows = for {
+      taxYear <- finalSubmission.calculationInputs.annualAllowance.map(_.taxYears).getOrElse(List()).collect {
+                   case ty: TaxYear2016To2023 => ty
+                 }
+      if taxYear.period == outDateCalc.period.toCalculationInputsPeriod
+      scheme  <- taxYear match {
+                   case ny: NormalTaxYear                     => ny.taxYearSchemes
+                   case ifaty: InitialFlexiblyAccessedTaxYear => ifaty.taxYearSchemes
+                   case pfaty: PostFlexiblyAccessedTaxYear    => pfaty.taxYearSchemes
+                 }
+    } yield Seq(
+      ("scheme", ""),
+      ("chargeSchemePaid", s"£${scheme.chargePaidByScheme}"),
+      ("originalSchemePaidChargeName", scheme.name),
+      ("originalSchemePaidChargePstr", scheme.pensionSchemeTaxReference)
+    )
+
+    indexAdditionalRows(additionalRows)
+  }
+
+  private def indexAdditionalRows(additionalRows: Seq[Seq[(String, String)]]): Seq[Seq[(String, String)]] =
+    additionalRows.zipWithIndex.map { case (row, index) =>
+      row.map {
+        case ("scheme", "") => ("scheme", (index + 1).toString)
+        case other          => other
+      }
+    }
+
 }
