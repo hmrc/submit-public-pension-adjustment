@@ -94,8 +94,11 @@ object TestData {
       fullName = "FirstName Surname",
       alternateName = None,
       dateOfBirth = Some(LocalDate.of(1920, 1, 13)),
-      address = Some(UkAddress("Behalf Address 1", Some("Behalf Address 2"), "City", Some("County"), "Postcode")),
-      internationalAddress = None,
+      None,
+      None,
+      pensionSchemeMemberAddress =
+        Some(UkAddress("Behalf Address 1", Some("Behalf Address 2"), "City", Some("County"), "Postcode")),
+      None,
       contactPhoneNumber = Some("1234567890")
     ),
     taxIdentifiers = TaxIdentifiers(Some("someNino"), None, Some("someUTR")),
@@ -118,7 +121,9 @@ object TestData {
             "Postcode"
           )
         ),
-        internationalAddress = None,
+        None,
+        None,
+        None,
         contactPhoneNumber = Some("1234567890")
       ),
       TaxIdentifiers(Some("someNino"), None, Some("someUtr"))

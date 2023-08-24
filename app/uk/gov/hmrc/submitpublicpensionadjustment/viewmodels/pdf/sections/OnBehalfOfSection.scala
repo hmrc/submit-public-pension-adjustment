@@ -93,62 +93,62 @@ object OnBehalfOfSection {
 
   private def addressLine1(onBehalfOfMember: OnBehalfOfMember): String =
     onBehalfOfMember.memberPersonalDetails match {
-      case PersonalDetails(_, _, _, Some(address), None, _)              => address.addressLine1
-      case PersonalDetails(_, _, _, None, Some(internationalAddress), _) => internationalAddress.addressLine1
-      case _                                                             => "Not Entered"
+      case PersonalDetails(_, _, _, _, _, Some(address), None, _)              => address.addressLine1
+      case PersonalDetails(_, _, _, _, _, None, Some(internationalAddress), _) => internationalAddress.addressLine1
+      case _                                                                   => "Not Entered"
     }
 
   private def addressLine2(onBehalfOfMember: OnBehalfOfMember): String =
     onBehalfOfMember.memberPersonalDetails match {
-      case PersonalDetails(_, _, _, Some(address), None, _)              => address.addressLine2.getOrElse("Not Entered")
-      case PersonalDetails(_, _, _, None, Some(internationalAddress), _) =>
+      case PersonalDetails(_, _, _, _, _, Some(address), None, _)              => address.addressLine2.getOrElse("Not Entered")
+      case PersonalDetails(_, _, _, _, _, None, Some(internationalAddress), _) =>
         internationalAddress.addressLine2.getOrElse("Not Entered")
-      case _                                                             => "Not Entered"
+      case _                                                                   => "Not Entered"
     }
 
   private def townOrCity(onBehalfOfMember: OnBehalfOfMember): String =
     onBehalfOfMember.memberPersonalDetails match {
-      case PersonalDetails(_, _, _, Some(address), None, _)              => address.townOrCity
-      case PersonalDetails(_, _, _, None, Some(internationalAddress), _) =>
+      case PersonalDetails(_, _, _, _, _, Some(address), None, _)              => address.townOrCity
+      case PersonalDetails(_, _, _, _, _, None, Some(internationalAddress), _) =>
         internationalAddress.townOrCity
-      case _                                                             => "Not Entered"
+      case _                                                                   => "Not Entered"
     }
 
   private def county(onBehalfOfMember: OnBehalfOfMember): Option[String] =
     onBehalfOfMember.memberPersonalDetails match {
-      case PersonalDetails(_, _, _, Some(address), None, _) => address.county
-      case PersonalDetails(_, _, _, None, Some(_), _)       =>
+      case PersonalDetails(_, _, _, _, _, Some(address), None, _) => address.county
+      case PersonalDetails(_, _, _, _, _, None, Some(_), _)       =>
         None
-      case _                                                => Some("Not Entered")
+      case _                                                      => Some("Not Entered")
     }
 
   private def stateOrRegion(onBehalfOfMember: OnBehalfOfMember): Option[String] =
     onBehalfOfMember.memberPersonalDetails match {
-      case PersonalDetails(_, _, _, Some(_), None, _)                    => None
-      case PersonalDetails(_, _, _, None, Some(internationalAddress), _) =>
+      case PersonalDetails(_, _, _, _, _, Some(_), None, _)                    => None
+      case PersonalDetails(_, _, _, _, _, None, Some(internationalAddress), _) =>
         internationalAddress.stateOrRegion
-      case _                                                             => Some("Not Entered")
+      case _                                                                   => Some("Not Entered")
     }
 
   private def postCode(onBehalfOfMember: OnBehalfOfMember): Option[String] =
     onBehalfOfMember.memberPersonalDetails match {
-      case PersonalDetails(_, _, _, Some(address), None, _) => Some(address.postCode)
-      case PersonalDetails(_, _, _, None, Some(_), _)       => None
-      case _                                                => Some("Not Entered")
+      case PersonalDetails(_, _, _, _, _, Some(address), None, _) => Some(address.postCode)
+      case PersonalDetails(_, _, _, _, _, None, Some(_), _)       => None
+      case _                                                      => Some("Not Entered")
     }
 
   private def postalCode(onBehalfOfMember: OnBehalfOfMember): Option[String] =
     onBehalfOfMember.memberPersonalDetails match {
-      case PersonalDetails(_, _, _, Some(_), None, _)                    => None
-      case PersonalDetails(_, _, _, None, Some(internationalAddress), _) =>
+      case PersonalDetails(_, _, _, _, _, Some(_), None, _)                    => None
+      case PersonalDetails(_, _, _, _, _, None, Some(internationalAddress), _) =>
         internationalAddress.postCode
-      case _                                                             => Some("Not Entered")
+      case _                                                                   => Some("Not Entered")
     }
   private def country(onBehalfOfMember: OnBehalfOfMember): String            =
     onBehalfOfMember.memberPersonalDetails match {
-      case PersonalDetails(_, _, _, Some(_), None, _)                    => "United Kingdom"
-      case PersonalDetails(_, _, _, None, Some(internationalAddress), _) => internationalAddress.country
-      case _                                                             => "United Kingdom"
+      case PersonalDetails(_, _, _, _, _, Some(_), None, _)                    => "United Kingdom"
+      case PersonalDetails(_, _, _, _, _, None, Some(internationalAddress), _) => internationalAddress.country
+      case _                                                                   => "United Kingdom"
     }
 
   private def utr(onBehalfOfMember: OnBehalfOfMember): String = {
