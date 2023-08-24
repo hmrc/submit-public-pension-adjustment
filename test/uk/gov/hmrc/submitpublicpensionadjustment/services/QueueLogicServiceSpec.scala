@@ -26,10 +26,12 @@ import play.api.{Configuration, Logging}
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData.submissionInputs
 import uk.gov.hmrc.submitpublicpensionadjustment.models.QueueReference
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{CalculationInputs, LifeTimeAllowance, Resubmission => InputsResubmission}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{CalculationInputs, ChangeInTaxCharge, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LtaPensionSchemeDetails, LtaProtectionOrEnhancements, ProtectionType, Resubmission => InputsResubmission, SchemeNameAndTaxRef, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
+
+import java.time.LocalDate
 
 class QueueLogicServiceSpec
     extends AnyFreeSpec
@@ -274,7 +276,28 @@ class QueueLogicServiceSpec
 
       val resubmission = false
 
-      val lta = Some(LifeTimeAllowance("placeHolder"))
+      val lta = Some(
+        LifeTimeAllowance(
+          true,
+          LocalDate.of(2018, 6, 19),
+          true,
+          ChangeInTaxCharge.IncreasedCharge,
+          LtaProtectionOrEnhancements.Enhancements,
+          ProtectionType.FixedProtection2014,
+          "BGDJ39GBJ",
+          true,
+          Some(WhatNewProtectionTypeEnhancement.EnhancedProtection),
+          Some("SZLN694GHL"),
+          true,
+          Some(ExcessLifetimeAllowancePaid.Annualpayment),
+          Some(12000),
+          Some(WhoPaidLTACharge.PensionScheme),
+          Some(SchemeNameAndTaxRef("Scheme 1", "35678425RT")),
+          16000,
+          Some(WhoPayingExtraLtaCharge.PensionScheme),
+          Some(LtaPensionSchemeDetails("Scheme 2", "7878425NS"))
+        )
+      )
 
       val calculationResponse: CalculationResponse = calculationResponseWith(
         directCompensation = 1,
