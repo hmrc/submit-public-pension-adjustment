@@ -17,7 +17,7 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
+import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Section}
 
 case class LifetimeAllowanceSection(
   hadBce: String,
@@ -68,31 +68,39 @@ case class LifetimeAllowanceSection(
 object LifetimeAllowanceSection {
   def build(finalSubmission: FinalSubmission): Option[LifetimeAllowanceSection] =
     finalSubmission.calculationInputs.lifeTimeAllowance match {
-      case Some(_) =>
+      case Some(ltaInputs) =>
         Some(
           LifetimeAllowanceSection(
-            hadBce = "todo",
-            bceDate = "todo",
-            changeInLtaPercentage = "todo",
-            ltaChargeType = "todo",
-            haveLtaProtectionOrEnhancement = "todo",
-            protectionType = "todo",
-            protectionReference = "todo",
-            changeToProtectionType = "todo",
-            newProtectionTypeOrEnhancement = "todo",
-            newProtectionTypeOrReference = "todo",
-            hadLtaCharge = "todo",
-            howExcessPaid = "todo",
-            ltaChargeAmount = "todo",
-            whoPaidLtaCharge = "todo",
-            schemeThatPaidChargeName = "todo",
-            schemeThatPaidChargeTaxRef = "todo",
-            newLtaChargeValue = "todo",
-            whoPayingExtraCharge = "todo",
-            whoPayingExtraChargeSchemeName = "todo",
-            whoPayingExtraChargeTaxRef = "todo"
+            hadBce = "Yes",
+            bceDate = Formatting.format(ltaInputs.benefitCrystallisationEventDate),
+            changeInLtaPercentage = "Yes",
+            ltaChargeType = Formatting.format(ltaInputs.changeInTaxCharge),
+            haveLtaProtectionOrEnhancement = Formatting.format(ltaInputs.lifetimeAllowanceProtectionOrEnhancements),
+            protectionType = Formatting.format(ltaInputs.protectionType),
+            protectionReference = ltaInputs.protectionReference,
+            changeToProtectionType = Formatting.format(ltaInputs.protectionTypeOrEnhancementChangedFlag),
+            newProtectionTypeOrEnhancement = Formatting.format(ltaInputs.newProtectionTypeOrEnhancement),
+            newProtectionTypeOrReference =
+              ltaInputs.newProtectionTypeOrEnhancementReference.getOrElse("Not Applicable"),
+            hadLtaCharge = Formatting.format(ltaInputs.previousLifetimeAllowanceChargeFlag),
+            howExcessPaid =
+              Formatting.formatExcessLifetimeAllowancePaid(ltaInputs.previousLifetimeAllowanceChargePaymentMethod),
+            ltaChargeAmount =
+              ltaInputs.previousLifetimeAllowanceChargeAmount.map(v => s"£$v").getOrElse("Not Applicable"),
+            whoPaidLtaCharge = Formatting.formatWhoPaidLTACharge(ltaInputs.previousLifetimeAllowanceChargePaidBy),
+            schemeThatPaidChargeName =
+              ltaInputs.previousLifetimeAllowanceChargeSchemeNameAndTaxRef.map(_.name).getOrElse("Not Applicable"),
+            schemeThatPaidChargeTaxRef =
+              ltaInputs.previousLifetimeAllowanceChargeSchemeNameAndTaxRef.map(_.taxRef).getOrElse("Not Applicable"),
+            newLtaChargeValue = s"£${ltaInputs.newLifetimeAllowanceChargeAmount}",
+            whoPayingExtraCharge =
+              Formatting.formatWhoPayingExtraLtaCharge(ltaInputs.newLifetimeAllowanceChargeWillBePaidBy),
+            whoPayingExtraChargeSchemeName =
+              ltaInputs.newLifetimeAllowanceChargeSchemeNameAndTaxRef.map(_.name).getOrElse("Not Applicable"),
+            whoPayingExtraChargeTaxRef =
+              ltaInputs.newLifetimeAllowanceChargeSchemeNameAndTaxRef.map(_.taxRef).getOrElse("Not Applicable")
           )
         )
-      case _       => None
+      case _               => None
     }
 }

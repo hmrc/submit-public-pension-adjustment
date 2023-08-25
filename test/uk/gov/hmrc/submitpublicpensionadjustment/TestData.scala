@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment
 
-import uk.gov.hmrc.submitpublicpensionadjustment.models.{PSTR, UkAddress}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, LifeTimeAllowance, Period => InputPeriod, Resubmission => inputsResubmission, TaxYear2016To2023}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, ChangeInTaxCharge, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LtaPensionSchemeDetails, LtaProtectionOrEnhancements, Period => InputPeriod, ProtectionType, Resubmission => inputsResubmission, SchemeNameAndTaxRef, TaxYear2016To2023, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, Period => ResponsePeriod, Resubmission => responseResubmission, TaxYearScheme, TotalAmounts}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.OnBehalfOfMemberType.Deceased
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission._
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{PSTR, UkAddress}
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.PDFViewModel
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.{AdditionalOrHigherReliefSection, AdministrativeDetailsSection, CaseIdentificationSection, DeclarationsSection, PaymentInformationSection}
+import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections._
 
 import java.time.LocalDate
 
@@ -76,6 +76,27 @@ object TestData {
     totalIncome = 100000,
     chargePaidByMember = 100,
     period = InputPeriod._2017
+  )
+
+  val lifeTimeAllowance = LifeTimeAllowance(
+    benefitCrystallisationEventFlag = true,
+    benefitCrystallisationEventDate = LocalDate.of(2017, 1, 30),
+    changeInLifetimeAllowancePercentageInformedFlag = true,
+    changeInTaxCharge = ChangeInTaxCharge.NewCharge,
+    lifetimeAllowanceProtectionOrEnhancements = LtaProtectionOrEnhancements.Protection,
+    protectionType = ProtectionType.PrimaryProtection,
+    protectionReference = "originalReference",
+    protectionTypeOrEnhancementChangedFlag = true,
+    newProtectionTypeOrEnhancement = Some(WhatNewProtectionTypeEnhancement.EnhancedProtection),
+    newProtectionTypeOrEnhancementReference = Some("newReference"),
+    previousLifetimeAllowanceChargeFlag = true,
+    previousLifetimeAllowanceChargePaymentMethod = Some(ExcessLifetimeAllowancePaid.Lumpsum),
+    previousLifetimeAllowanceChargeAmount = Some(10000),
+    previousLifetimeAllowanceChargePaidBy = Some(WhoPaidLTACharge.PensionScheme),
+    previousLifetimeAllowanceChargeSchemeNameAndTaxRef = Some(SchemeNameAndTaxRef("Scheme1", "pstr1")),
+    newLifetimeAllowanceChargeAmount = 20000,
+    newLifetimeAllowanceChargeWillBePaidBy = Some(WhoPayingExtraLtaCharge.PensionScheme),
+    newLifetimeAllowanceChargeSchemeNameAndTaxRef = Some(LtaPensionSchemeDetails("Scheme2", "pstr2"))
   )
 
   val calculationInputs = CalculationInputs(
