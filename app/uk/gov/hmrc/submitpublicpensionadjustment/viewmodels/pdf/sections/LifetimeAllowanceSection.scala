@@ -65,6 +65,29 @@ case class LifetimeAllowanceSection(
   )
 }
 
+/*
+case class LifeTimeAllowance(
+  benefitCrystallisationEventFlag: Boolean,
+  benefitCrystallisationEventDate: LocalDate,
+  changeInLifetimeAllowancePercentageInformedFlag: Boolean,
+  changeInTaxCharge: ChangeInTaxCharge,
+  lifetimeAllowanceProtectionOrEnhancements: LtaProtectionOrEnhancements,
+  protectionType: ProtectionType,
+  protectionReference: String,
+  protectionTypeOrEnhancementChangedFlag: Boolean,
+  newProtectionTypeOrEnhancement: Option[WhatNewProtectionTypeEnhancement],
+  newProtectionTypeOrEnhancementReference: Option[String],
+  previousLifetimeAllowanceChargeFlag: Boolean,
+  previousLifetimeAllowanceChargePaymentMethod: Option[ExcessLifetimeAllowancePaid],
+  previousLifetimeAllowanceChargeAmount: Option[Int],
+  previousLifetimeAllowanceChargePaidBy: Option[WhoPaidLTACharge],
+  previousLifetimeAllowanceChargeSchemeNameAndTaxRef: Option[SchemeNameAndTaxRef],
+  newLifetimeAllowanceChargeAmount: Int,
+  newLifetimeAllowanceChargeWillBePaidBy: Option[WhoPayingExtraLtaCharge],
+  newLifetimeAllowanceChargeSchemeNameAndTaxRef: Option[LtaPensionSchemeDetails]
+)
+ */
+
 object LifetimeAllowanceSection {
   def build(finalSubmission: FinalSubmission): Option[LifetimeAllowanceSection] =
     finalSubmission.calculationInputs.lifeTimeAllowance match {
@@ -75,22 +98,30 @@ object LifetimeAllowanceSection {
             bceDate = Formatting.format(ltaInputs.benefitCrystallisationEventDate),
             changeInLtaPercentage = "Yes",
             ltaChargeType = Formatting.format(ltaInputs.changeInTaxCharge),
-            haveLtaProtectionOrEnhancement = ltaInputs.lifetimeAllowanceProtectionOrEnhancements.toString,
-            protectionType = ltaInputs.protectionType.toString,
-            protectionReference = "todo",
-            changeToProtectionType = "todo",
-            newProtectionTypeOrEnhancement = "todo",
-            newProtectionTypeOrReference = "todo",
-            hadLtaCharge = "todo",
-            howExcessPaid = "todo",
-            ltaChargeAmount = "todo",
-            whoPaidLtaCharge = "todo",
-            schemeThatPaidChargeName = "todo",
-            schemeThatPaidChargeTaxRef = "todo",
-            newLtaChargeValue = "todo",
-            whoPayingExtraCharge = "todo",
-            whoPayingExtraChargeSchemeName = "todo",
-            whoPayingExtraChargeTaxRef = "todo"
+            haveLtaProtectionOrEnhancement = Formatting.format(ltaInputs.lifetimeAllowanceProtectionOrEnhancements),
+            protectionType = Formatting.format(ltaInputs.protectionType),
+            protectionReference = ltaInputs.protectionReference,
+            changeToProtectionType = Formatting.format(ltaInputs.protectionTypeOrEnhancementChangedFlag),
+            newProtectionTypeOrEnhancement = Formatting.format(ltaInputs.newProtectionTypeOrEnhancement),
+            newProtectionTypeOrReference =
+              ltaInputs.newProtectionTypeOrEnhancementReference.getOrElse("Not Applicable"),
+            hadLtaCharge = Formatting.format(ltaInputs.previousLifetimeAllowanceChargeFlag),
+            howExcessPaid =
+              Formatting.formatExcessLifetimeAllowancePaid(ltaInputs.previousLifetimeAllowanceChargePaymentMethod),
+            ltaChargeAmount =
+              ltaInputs.previousLifetimeAllowanceChargeAmount.map(v => s"£$v").getOrElse("Not Applicable"),
+            whoPaidLtaCharge = Formatting.formatWhoPaidLTACharge(ltaInputs.previousLifetimeAllowanceChargePaidBy),
+            schemeThatPaidChargeName =
+              ltaInputs.previousLifetimeAllowanceChargeSchemeNameAndTaxRef.map(_.name).getOrElse("Not Applicable"),
+            schemeThatPaidChargeTaxRef =
+              ltaInputs.previousLifetimeAllowanceChargeSchemeNameAndTaxRef.map(_.taxRef).getOrElse("Not Applicable"),
+            newLtaChargeValue = s"£${ltaInputs.newLifetimeAllowanceChargeAmount}",
+            whoPayingExtraCharge =
+              Formatting.formatWhoPayingExtraLtaCharge(ltaInputs.newLifetimeAllowanceChargeWillBePaidBy),
+            whoPayingExtraChargeSchemeName =
+              ltaInputs.newLifetimeAllowanceChargeSchemeNameAndTaxRef.map(_.name).getOrElse("Not Applicable"),
+            whoPayingExtraChargeTaxRef =
+              ltaInputs.newLifetimeAllowanceChargeSchemeNameAndTaxRef.map(_.taxRef).getOrElse("Not Applicable")
           )
         )
       case _               => None
