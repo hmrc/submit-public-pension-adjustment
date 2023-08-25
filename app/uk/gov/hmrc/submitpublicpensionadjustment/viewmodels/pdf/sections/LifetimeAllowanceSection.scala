@@ -65,29 +65,6 @@ case class LifetimeAllowanceSection(
   )
 }
 
-/*
-case class LifeTimeAllowance(
-  benefitCrystallisationEventFlag: Boolean,
-  benefitCrystallisationEventDate: LocalDate,
-  changeInLifetimeAllowancePercentageInformedFlag: Boolean,
-  changeInTaxCharge: ChangeInTaxCharge,
-  lifetimeAllowanceProtectionOrEnhancements: LtaProtectionOrEnhancements,
-  protectionType: ProtectionType,
-  protectionReference: String,
-  protectionTypeOrEnhancementChangedFlag: Boolean,
-  newProtectionTypeOrEnhancement: Option[WhatNewProtectionTypeEnhancement],
-  newProtectionTypeOrEnhancementReference: Option[String],
-  previousLifetimeAllowanceChargeFlag: Boolean,
-  previousLifetimeAllowanceChargePaymentMethod: Option[ExcessLifetimeAllowancePaid],
-  previousLifetimeAllowanceChargeAmount: Option[Int],
-  previousLifetimeAllowanceChargePaidBy: Option[WhoPaidLTACharge],
-  previousLifetimeAllowanceChargeSchemeNameAndTaxRef: Option[SchemeNameAndTaxRef],
-  newLifetimeAllowanceChargeAmount: Int,
-  newLifetimeAllowanceChargeWillBePaidBy: Option[WhoPayingExtraLtaCharge],
-  newLifetimeAllowanceChargeSchemeNameAndTaxRef: Option[LtaPensionSchemeDetails]
-)
- */
-
 object LifetimeAllowanceSection {
   def build(finalSubmission: FinalSubmission): Option[LifetimeAllowanceSection] =
     finalSubmission.calculationInputs.lifeTimeAllowance match {
