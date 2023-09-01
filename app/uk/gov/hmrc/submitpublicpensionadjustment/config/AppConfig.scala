@@ -23,4 +23,6 @@ import play.api.Configuration
 class AppConfig @Inject() (config: Configuration) {
 
   val appName: String = config.get[String]("appName")
+
+  val submissionAuditEventName = config.get[String]("auditing.submission-request-event-name")
 }

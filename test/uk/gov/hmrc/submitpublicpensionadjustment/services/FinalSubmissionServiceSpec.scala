@@ -112,7 +112,7 @@ class FinalSubmissionServiceSpec
         credentialRole = None
       )
 
-      val expectedAudit = FinalSubmissionEvent(
+      val expectedAudit = SubmissionAuditEvent(
         internalId = "internalId",
         affinityGroup = AffinityGroup.Individual,
         credentialRole = None,
