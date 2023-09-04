@@ -18,16 +18,18 @@ package uk.gov.hmrc.submitpublicpensionadjustment.services
 
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
-import uk.gov.hmrc.submitpublicpensionadjustment.models.FinalSubmissionEvent
+import uk.gov.hmrc.submitpublicpensionadjustment.config.AppConfig
+import uk.gov.hmrc.submitpublicpensionadjustment.models.SubmissionAuditEvent
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
 class AuditService @Inject() (
-  auditConnector: AuditConnector
+  auditConnector: AuditConnector,
+  appConfig: AppConfig
 )(implicit ec: ExecutionContext) {
 
-  def auditSubmitRequest(event: FinalSubmissionEvent)(implicit hc: HeaderCarrier): Unit =
-    auditConnector.sendExplicitAudit("FinalSubmission", event)
+  def auditSubmitRequest(event: SubmissionAuditEvent)(implicit hc: HeaderCarrier): Unit =
+    auditConnector.sendExplicitAudit(appConfig.submissionAuditEventName, event)
 }

@@ -20,14 +20,14 @@ import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.auth.core.{AffinityGroup, CredentialRole}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 
-final case class FinalSubmissionEvent(
+final case class SubmissionAuditEvent(
   internalId: String,
   affinityGroup: AffinityGroup,
   credentialRole: Option[CredentialRole],
   finalSubmission: FinalSubmission
 )
 
-object FinalSubmissionEvent {
+object SubmissionAuditEvent {
 
-  implicit lazy val format: OFormat[FinalSubmissionEvent] = Json.format
+  implicit lazy val format: OFormat[SubmissionAuditEvent] = Json.format
 }

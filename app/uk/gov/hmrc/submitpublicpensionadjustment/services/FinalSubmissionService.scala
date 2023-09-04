@@ -70,8 +70,8 @@ class FinalSubmissionService @Inject() (
     responses
   }
 
-  private def buildAudit(finalSubmission: FinalSubmission, auditMetadata: AuditMetadata): FinalSubmissionEvent =
-    FinalSubmissionEvent(
+  private def buildAudit(finalSubmission: FinalSubmission, auditMetadata: AuditMetadata): SubmissionAuditEvent =
+    SubmissionAuditEvent(
       internalId = auditMetadata.internalId,
       affinityGroup = auditMetadata.affinityGroup,
       credentialRole = auditMetadata.credentialRole,
