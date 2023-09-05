@@ -19,7 +19,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.config
 import org.apache.fop.apps.FopFactory
 import play.api.inject.Binding
 import play.api.{Configuration, Environment}
-import uk.gov.hmrc.submitpublicpensionadjustment.services.{DefaultDmsSubmissionService, DmsSubmissionService, NoOpDmsSubmissionService}
+import uk.gov.hmrc.submitpublicpensionadjustment.services.{CreateLocalPdfDmsSubmissionService, DefaultDmsSubmissionService, DmsSubmissionService, NoOpDmsSubmissionService}
 
 import java.time.Clock
 
@@ -35,7 +35,13 @@ class Module extends play.api.inject.Module {
     val dmsSubmissionServiceBinding: Binding[DmsSubmissionService] =
       if (configuration.get[Boolean]("dms-submission.enabled")) {
         bind[DmsSubmissionService].to[DefaultDmsSubmissionService].eagerly()
-      } else bind[DmsSubmissionService].to[NoOpDmsSubmissionService].eagerly()
+      } else {
+        if (configuration.get[Boolean]("dms-submission.createLocalPdf")) {
+          bind[DmsSubmissionService].to[CreateLocalPdfDmsSubmissionService].eagerly()
+        } else {
+          bind[DmsSubmissionService].to[NoOpDmsSubmissionService].eagerly()
+        }
+      }
 
     Seq(
       bind[AppConfig].toSelf.eagerly(),
