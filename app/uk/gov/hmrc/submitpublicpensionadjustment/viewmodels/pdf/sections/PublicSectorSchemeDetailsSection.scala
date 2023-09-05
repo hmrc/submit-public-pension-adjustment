@@ -17,7 +17,7 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
+import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Section}
 
 case class PublicSectorSchemeDetailsSection(
   schemeName: String,
@@ -28,20 +28,15 @@ case class PublicSectorSchemeDetailsSection(
   override def orderedFieldNames(): Seq[String] = Seq("schemeName", "pstr", "reformReference", "legacyReference")
 }
 
-object PublicSectorSchemeDetailsSection {
+object PublicSectorSchemeDetailsSection extends Formatting {
 
   def build(finalSubmission: FinalSubmission): Seq[PublicSectorSchemeDetailsSection] =
     finalSubmission.submissionInputs.calculationInputSchemeIdentifiers.map { schemeIdentifier =>
       PublicSectorSchemeDetailsSection(
         schemeName = schemeIdentifier.relatedToScheme.schemeName,
         pstr = schemeIdentifier.relatedToScheme.pstr.value,
-        reformReference =
-          if (schemeIdentifier.reformReference.getOrElse("Not Entered") == "") "Not Entered"
-          else schemeIdentifier.reformReference.getOrElse("Not Entered"),
-        legacyReference =
-          if (schemeIdentifier.legacyReference.getOrElse("Not Entered") == "") "Not Entered"
-          else schemeIdentifier.legacyReference.getOrElse("Not Entered")
+        reformReference = formatString(schemeIdentifier.reformReference),
+        legacyReference = formatString(schemeIdentifier.legacyReference)
       )
     }
-
 }

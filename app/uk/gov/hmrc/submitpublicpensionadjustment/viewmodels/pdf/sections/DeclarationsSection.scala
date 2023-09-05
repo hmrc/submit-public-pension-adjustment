@@ -17,7 +17,7 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
+import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Section}
 
 case class DeclarationsSection(
   compensation: String,
@@ -30,20 +30,13 @@ case class DeclarationsSection(
     Seq("compensation", "tax", "trueAndComplete", "onBehalfDeceased", "deputyship")
 }
 
-object DeclarationsSection {
+object DeclarationsSection extends Formatting {
   def build(finalSubmission: FinalSubmission): DeclarationsSection =
     DeclarationsSection(
-      compensation = booleanToYesNo(finalSubmission.submissionInputs.declarations.compensation),
-      tax = booleanToYesNo(finalSubmission.submissionInputs.declarations.tax),
-      trueAndComplete = "Y",
-      onBehalfDeceased = optionBooleanToYesNo(finalSubmission.submissionInputs.declarations.claimOnBehalfOfDeceased),
-      deputyship = optionBooleanToYesNo(finalSubmission.submissionInputs.declarations.powerOfAttorney)
+      compensation = format(finalSubmission.submissionInputs.declarations.compensation),
+      tax = format(finalSubmission.submissionInputs.declarations.tax),
+      trueAndComplete = format(true),
+      onBehalfDeceased = formatBoolean(finalSubmission.submissionInputs.declarations.claimOnBehalfOfDeceased),
+      deputyship = formatBoolean(finalSubmission.submissionInputs.declarations.powerOfAttorney)
     )
-
-  private def booleanToYesNo(value: Boolean): String = if (value) "Y" else "N"
-
-  private def optionBooleanToYesNo(optValue: Option[Boolean]): String = optValue match {
-    case Some(true) => "Y"
-    case _          => "N"
-  }
 }

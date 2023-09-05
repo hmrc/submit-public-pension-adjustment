@@ -53,7 +53,7 @@ case class AdministrativeDetailsSection(
     "contactNumber"
   )
 }
-object AdministrativeDetailsSection {
+object AdministrativeDetailsSection extends Formatting {
 
   def build(finalSubmission: FinalSubmission): AdministrativeDetailsSection =
     AdministrativeDetailsSection(
@@ -86,23 +86,23 @@ object AdministrativeDetailsSection {
     val dobOption =
       finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails.dateOfBirth
     dobOption
-      .map(dob => Formatting.format(dob))
-      .getOrElse("Not Entered")
+      .map(dob => format(dob))
+      .getOrElse(NotEntered)
   }
 
   private def addressLine1(finalSubmission: FinalSubmission): String =
     finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails match {
       case PersonalDetails(_, _, _, Some(address), None, _, _, _)              => address.addressLine1
       case PersonalDetails(_, _, _, None, Some(internationalAddress), _, _, _) => internationalAddress.addressLine1
-      case _                                                                   => "Not Entered"
+      case _                                                                   => NotEntered
     }
 
   private def addressLine2(finalSubmission: FinalSubmission): String =
     finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails match {
-      case PersonalDetails(_, _, _, Some(address), None, _, _, _)              => address.addressLine2.getOrElse("Not Entered")
+      case PersonalDetails(_, _, _, Some(address), None, _, _, _)              => address.addressLine2.getOrElse(NotEntered)
       case PersonalDetails(_, _, _, None, Some(internationalAddress), _, _, _) =>
-        internationalAddress.addressLine2.getOrElse("Not Entered")
-      case _                                                                   => "Not Entered"
+        internationalAddress.addressLine2.getOrElse(NotEntered)
+      case _                                                                   => NotEntered
     }
 
   private def townOrCity(finalSubmission: FinalSubmission): String =
@@ -110,7 +110,7 @@ object AdministrativeDetailsSection {
       case PersonalDetails(_, _, _, Some(address), None, _, _, _)              => address.townOrCity
       case PersonalDetails(_, _, _, None, Some(internationalAddress), _, _, _) =>
         internationalAddress.townOrCity
-      case _                                                                   => "Not Entered"
+      case _                                                                   => NotEntered
     }
 
   private def county(finalSubmission: FinalSubmission): Option[String] =
@@ -118,7 +118,7 @@ object AdministrativeDetailsSection {
       case PersonalDetails(_, _, _, Some(address), None, _, _, _) => address.county
       case PersonalDetails(_, _, _, None, Some(_), _, _, _)       =>
         None
-      case _                                                      => Some("Not Entered")
+      case _                                                      => Some(NotEntered)
     }
 
   private def stateOrRegion(finalSubmission: FinalSubmission): Option[String] =
@@ -126,14 +126,14 @@ object AdministrativeDetailsSection {
       case PersonalDetails(_, _, _, Some(_), None, _, _, _)                    => None
       case PersonalDetails(_, _, _, None, Some(internationalAddress), _, _, _) =>
         internationalAddress.stateOrRegion
-      case _                                                                   => Some("Not Entered")
+      case _                                                                   => Some(NotEntered)
     }
 
   private def postCode(finalSubmission: FinalSubmission): Option[String] =
     finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails match {
       case PersonalDetails(_, _, _, Some(address), None, _, _, _) => Some(address.postCode)
       case PersonalDetails(_, _, _, None, Some(_), _, _, _)       => None
-      case _                                                      => Some("Not Entered")
+      case _                                                      => Some(NotEntered)
     }
 
   private def postalCode(finalSubmission: FinalSubmission): Option[String] =
@@ -141,33 +141,24 @@ object AdministrativeDetailsSection {
       case PersonalDetails(_, _, _, Some(_), None, _, _, _)                    => None
       case PersonalDetails(_, _, _, None, Some(internationalAddress), _, _, _) =>
         internationalAddress.postCode
-      case _                                                                   => Some("Not Entered")
+      case _                                                                   => Some(NotEntered)
     }
 
   private def country(finalSubmission: FinalSubmission): String =
     finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails match {
-      case PersonalDetails(_, _, _, Some(_), None, _, _, _)                    => "United Kingdom"
+      case PersonalDetails(_, _, _, Some(_), None, _, _, _)                    => UnitedKingdom
       case PersonalDetails(_, _, _, None, Some(internationalAddress), _, _, _) => internationalAddress.country
-      case _                                                                   => "United Kingdom"
+      case _                                                                   => UnitedKingdom
     }
 
-  private def utr(finalSubmission: FinalSubmission): String = {
-    val utr =
-      finalSubmission.submissionInputs.administrativeDetails.claimantDetails.taxIdentifiers.utr.getOrElse("Not Entered")
-    if (utr == "") "Not Entered" else utr
-  }
+  private def utr(finalSubmission: FinalSubmission): String =
+    formatString(finalSubmission.submissionInputs.administrativeDetails.claimantDetails.taxIdentifiers.utr)
 
-  private def ninoOrTrn(finalSubmission: FinalSubmission): String = {
-    val taxIds = finalSubmission.submissionInputs.administrativeDetails.claimantDetails.taxIdentifiers
-    taxIds.nino.getOrElse("Not Entered")
-  }
+  private def ninoOrTrn(finalSubmission: FinalSubmission): String =
+    formatString(finalSubmission.submissionInputs.administrativeDetails.claimantDetails.taxIdentifiers.nino)
 
-  private def contactNumber(finalSubmission: FinalSubmission): String = {
-    val number =
+  private def contactNumber(finalSubmission: FinalSubmission): String =
+    formatString(
       finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails.contactPhoneNumber
-        .getOrElse("Not Entered")
-
-    if (number == "") "Not Entered" else number
-  }
-
+    )
 }

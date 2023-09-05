@@ -17,20 +17,20 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
+import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Section}
 
 case class AdditionalOrHigherReliefSection(amount: String, schemePayingName: String, schemePayingPstr: String)
     extends Section {
   override def orderedFieldNames(): Seq[String] = Seq("amount", "schemePayingName", "schemePayingPstr")
 }
 
-object AdditionalOrHigherReliefSection {
+object AdditionalOrHigherReliefSection extends Formatting {
 
   def build(finalSubmission: FinalSubmission): Option[AdditionalOrHigherReliefSection] =
     finalSubmission.submissionInputs.schemeTaxRelief.map { relief =>
       val schemeDetails = relief.individualSchemeIdentifier.relatedToScheme
       AdditionalOrHigherReliefSection(
-        amount = s"£${relief.amount.toString}",
+        amount = formatPoundsAmount(relief.amount),
         schemePayingName = schemeDetails.schemeName,
         schemePayingPstr = schemeDetails.pstr.value
       )

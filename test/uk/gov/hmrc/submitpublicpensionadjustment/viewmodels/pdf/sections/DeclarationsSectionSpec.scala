@@ -14,6 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf
+package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 
-case class Row(displayLabel: String, displayValue: String, indent: Boolean) {}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers
+import play.api.Logging
+import uk.gov.hmrc.submitpublicpensionadjustment.TestData
+
+class DeclarationsSectionSpec extends AnyFreeSpec with Matchers with Logging {
+
+  "section must be constructed based on final submission" in {
+
+    val sections = DeclarationsSection.build(TestData.finalSubmission)
+
+    sections mustBe DeclarationsSection("Yes", "Yes", "Yes", "No", "No")
+  }
+}

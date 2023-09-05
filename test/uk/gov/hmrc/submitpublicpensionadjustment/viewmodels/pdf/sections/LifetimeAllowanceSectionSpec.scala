@@ -25,7 +25,7 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSub
 
 class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Logging {
 
-  "must build LTA section based on calculation inputs" in {
+  "section must be constructed based on final submission" in {
     val calculationInputs = CalculationInputs(
       inputsResubmission(false, None),
       None,

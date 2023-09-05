@@ -79,6 +79,11 @@ pdf.compensationSection.chargeSchemePaid = How much of the charge did your pensi
 pdf.compensationSection.originalSchemePaidChargeName = Name of scheme originally paid charge $period
 pdf.compensationSection.originalSchemePaidChargePstr = PSTR of scheme originally paid charge $period
 
+pdf.compensationSection.schemePaidChargeDetailsSubSection.scheme = Scheme
+pdf.compensationSection.schemePaidChargeDetailsSubSection.amount = How much of the charge did your pension scheme pay?
+pdf.compensationSection.schemePaidChargeDetailsSubSection.name = Name of scheme originally paid charge $period
+pdf.compensationSection.schemePaidChargeDetailsSubSection.reference = PSTR of scheme originally paid charge $period
+
 pdf.taxAdministrationFrameworkSection.heading = Tax administration framework
 
 pdf.taxAdministrationFrameworkSection.previousChargeAmount = Value of previous charge for $period
@@ -93,6 +98,10 @@ pdf.taxAdministrationFrameworkSection.schemePaymentElectionDate = Date of electi
 pdf.taxAdministrationFrameworkSection.schemePayingChargeAmount = Value scheme is paying
 pdf.taxAdministrationFrameworkSection.schemePayingPstr = PSTR of scheme paying
 pdf.taxAdministrationFrameworkSection.schemePayingName = Name of scheme paying
+
+pdf.taxAdministrationFrameworkSection.schemeDetailsSubSection.scheme = Scheme
+pdf.taxAdministrationFrameworkSection.schemeDetailsSubSection.name = Name of scheme
+pdf.taxAdministrationFrameworkSection.schemeDetailsSubSection.reference = PSTR of scheme
 
 pdf.additionalOrHigherReliefSection.heading = Are you claiming for higher or additional rate tax relief?
 pdf.additionalOrHigherReliefSection.amount = Amount

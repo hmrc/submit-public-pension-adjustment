@@ -21,16 +21,10 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{Chan
 import java.time.format.DateTimeFormatter
 import java.time.{LocalDate, ZoneId}
 
-object Formatting {
+trait Formatting {
 
   def format(dob: LocalDate): String =
     DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone(ZoneId.systemDefault()).format(dob)
-
-  def format(flag: Boolean): String =
-    if (flag)
-      "Yes"
-    else
-      "No"
 
   def format(changeInTaxCharge: ChangeInTaxCharge): String = changeInTaxCharge match {
     case ChangeInTaxCharge.NewCharge       => "New"
@@ -68,27 +62,52 @@ object Formatting {
       case Some(WhatNewProtectionTypeEnhancement.IndividualProtection2016) => "Individual protection 2016"
       case Some(WhatNewProtectionTypeEnhancement.InternationalEnhancement) => "International enhancement"
       case Some(WhatNewProtectionTypeEnhancement.PensionCredit)            => "Pension credit"
-      case _                                                               => "Not Applicable"
+      case _                                                               => NotApplicable
     }
+
+  def formatBoolean(optValue: Option[Boolean]): String = optValue match {
+    case Some(true) => "Yes"
+    case _          => "No"
+  }
 
   def formatExcessLifetimeAllowancePaid(excessLifetimeAllowancePaid: Option[ExcessLifetimeAllowancePaid]): String =
     excessLifetimeAllowancePaid match {
       case Some(ExcessLifetimeAllowancePaid.Annualpayment) => "Annual payment"
       case Some(ExcessLifetimeAllowancePaid.Lumpsum)       => "Lumpsum"
-      case _                                               => "Not Applicable"
+      case _                                               => NotApplicable
     }
 
   def formatWhoPaidLTACharge(whoPaidLTACharge: Option[WhoPaidLTACharge]): String =
     whoPaidLTACharge match {
       case Some(WhoPaidLTACharge.You)           => "Member"
       case Some(WhoPaidLTACharge.PensionScheme) => "Scheme"
-      case _                                    => "Not Applicable"
+      case _                                    => NotApplicable
     }
 
   def formatWhoPayingExtraLtaCharge(whoPayingExtraLtaCharge: Option[WhoPayingExtraLtaCharge]): String =
     whoPayingExtraLtaCharge match {
       case Some(WhoPayingExtraLtaCharge.You)           => "Member"
       case Some(WhoPayingExtraLtaCharge.PensionScheme) => "Scheme"
-      case _                                           => "Not Applicable"
+      case _                                           => NotApplicable
     }
+
+  def formatString(optValue: Option[String]) =
+    optValue match {
+      case Some("")    => NotEntered
+      case Some(value) => value
+      case None        => NotEntered
+    }
+
+  def format(value: Boolean): String = formatBoolean(Some(value))
+
+  def formatPoundsAmount(amount: Int): String = s"£${amount.toString}"
+
+  val NotEntered    = "Not entered"
+  val NotApplicable = "Not Applicable"
+  val UnitedKingdom = "United Kingdom"
+
+  val WhoPaidScheme = "Scheme"
+  val WhoPaidMember = "Member"
+  val WhoPaidBoth   = "Both"
+  val WhoPaidNone   = "None"
 }

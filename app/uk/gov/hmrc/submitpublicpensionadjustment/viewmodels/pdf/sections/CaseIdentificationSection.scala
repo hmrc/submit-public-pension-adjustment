@@ -18,7 +18,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 
 import uk.gov.hmrc.submitpublicpensionadjustment.models.CaseIdentifiers
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms._
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
+import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Section}
 
 case class CaseIdentificationSection(
   compensation: String,
@@ -33,29 +33,29 @@ case class CaseIdentificationSection(
 
 }
 
-object CaseIdentificationSection {
+object CaseIdentificationSection extends Formatting {
 
   def build(caseIdentifiers: CaseIdentifiers): CaseIdentificationSection =
     CaseIdentificationSection(
       caseIdentifiers.queueReferences
         .find(qr => qr.dmsQueue.isInstanceOf[Compensation])
         .map(qr => qr.submissionReference)
-        .getOrElse("Not Applicable"),
+        .getOrElse(NotApplicable),
       caseIdentifiers.queueReferences
         .find(qr => qr.dmsQueue.isInstanceOf[CompensationAmendment])
         .map(qr => qr.submissionReference)
-        .getOrElse("Not Applicable"),
+        .getOrElse(NotApplicable),
       caseIdentifiers.queueReferences
         .find(qr => qr.dmsQueue.isInstanceOf[MiniRegime])
         .map(qr => qr.submissionReference)
-        .getOrElse("Not Applicable"),
+        .getOrElse(NotApplicable),
       caseIdentifiers.queueReferences
         .find(qr => qr.dmsQueue.isInstanceOf[MiniRegimeAmendment])
         .map(qr => qr.submissionReference)
-        .getOrElse("Not Applicable"),
+        .getOrElse(NotApplicable),
       caseIdentifiers.queueReferences
         .find(qr => qr.dmsQueue.isInstanceOf[LTA])
         .map(qr => qr.submissionReference)
-        .getOrElse("Not Applicable")
+        .getOrElse(NotApplicable)
     )
 }

@@ -29,16 +29,16 @@
             </fo:block>
 
             @pdfSection(Some(viewModel.caseIdentificationSection), Some("caseIdentificationSection"))
-            @line("","")
+            @line("","",false)
 
             @pdfSection(Some(viewModel.administrativeDetailsSection), Some("administrativeDetailsSection"))
-            @line("","")
+            @line("","",false)
 
             @pdfSection(viewModel.onBehalfOfSection, if (viewModel.declarationsSection.onBehalfDeceased == "Y") Some("onBehalfOfSectionDeceased") else Some("onBehalfOfSection"))
-            @line("","")
+            @line("","",false)
 
             @pdfSection(viewModel.lifetimeAllowanceSection, Some("lifetimeAllowanceSection"))
-            @line("","")
+            @line("","",false)
 
             <fo:block role="H3" id="publicSectorSchemeDetailsSection" font-size="14pt" font-weight="bold" margin-bottom="0.5cm">
                 @messages("pdf.publicSectorSchemeDetailsSection.heading")
@@ -48,7 +48,7 @@
                     @pdfSection(Some(section), None)
                 }
             }
-            @line("","")
+            @line("","",false)
 
             <fo:block role="H3" id="compensationSection" font-size="14pt" font-weight="bold" margin-bottom="0.5cm">
                 @messages("pdf.compensationSection.heading")
@@ -58,7 +58,7 @@
                     @pdfSection(Some(section), None)
                 }
             }
-            @line("","")
+            @line("","",false)
 
             <fo:block role="H3" id="taxAdministrationFrameworkSection" font-size="14pt" font-weight="bold" margin-bottom="0.5cm">
                 @messages("pdf.taxAdministrationFrameworkSection.heading")
@@ -68,18 +68,18 @@
                     @pdfSection(Some(section), None)
                 }
             }
-            @line("","")
+            @line("","",false)
 
             @pdfSection(viewModel.additionalOrHigherReliefSection, Some("additionalOrHigherReliefSection"))
-            @line("","")
+            @line("","",false)
 
             @pdfSection(viewModel.paymentInformationSection, Some("paymentInformationSection"))
-            @line("","")
+            @line("","",false)
 
             @pdfSection(Some(viewModel.declarationsSection), Some("declarationsSection"))
-            @line("","")
+            @line("","",false)
 
-            @line(messages("pdf.submitted"), DateTimeFormatter.ofPattern("d MMMM yyyy - kk:mm").withZone(ZoneId.systemDefault()).format(Instant.now))
+            @line(messages("pdf.submitted"), DateTimeFormatter.ofPattern("d MMMM yyyy - kk:mm").withZone(ZoneId.systemDefault()).format(Instant.now),false)
 
             <fo:block id="FinalElement">
 

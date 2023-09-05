@@ -18,39 +18,22 @@ package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf
 
 import play.api.i18n.Messages
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.Period
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.{CompensationSection, TaxAdministrationFrameworkSection}
 
 import java.lang.reflect.Field
 
 trait Section {
 
-  private val messagePrefix =
+  def messagePrefix =
     s"pdf.${getClass.getSimpleName.substring(0, 1).toLowerCase() + getClass.getSimpleName.substring(1)}"
 
   def rows(messages: Messages): Seq[Row] = {
     val fieldNames: Seq[String] = orderedFieldNames()
 
-    val regularRows = fieldNames.flatMap { fieldName =>
+    fieldNames.flatMap { fieldName =>
       val field: Field = getClass.getDeclaredField(fieldName)
       field.setAccessible(true)
       val fieldValue   = field.get(this)
-      Some(getDisplayLabelAndValue(messages, fieldName, fieldValue))
-    }
-
-    // Add additionalRows to special cases
-    this match {
-      case compensationSection: CompensationSection                             =>
-        val additionalRows = compensationSection.additionalRows.map { case (label, value) =>
-          getDisplayLabelAndValue(messages, label, value)
-        }
-        regularRows ++ additionalRows
-      case taxAdministrationFrameworkSection: TaxAdministrationFrameworkSection =>
-        val additionalRows          = taxAdministrationFrameworkSection.additionalRows.map { case (label, value) =>
-          getDisplayLabelAndValue(messages, label, value)
-        }
-        val (firstPart, secondPart) = regularRows.splitAt(2)
-        firstPart ++ additionalRows ++ secondPart
-      case _                                                                    => regularRows
+      getDisplayLabelAndValue(messages, fieldName, fieldValue, false)
     }
   }
 
@@ -61,23 +44,26 @@ trait Section {
   def displayLines(messages: Messages): Seq[String] =
     rows(messages).map(row => row.displayLabel + " : " + row.displayValue)
 
-  def getDisplayLabelAndValue(messages: Messages, fieldName: String, fieldValue: Any): Row = {
-    val displayValue = fieldValue match {
-      case Some(s: String) => s
-      case None            => "deleteRow"
-      case s: String       => s
-      case _               => "error"
-    }
+  def getDisplayLabelAndValue(messages: Messages, fieldName: String, fieldValue: Any, indent: Boolean): Option[Row] = {
 
+    val label: String = displayLabel(messages, fieldName)
+
+    fieldValue match {
+      case Some(value: String) => Some(Row(label, value, indent))
+      case None                => None
+      case value: String       => Some(Row(label, value, indent))
+      case _                   => Some(Row(label, "error", indent))
+    }
+  }
+
+  def displayLabel(messages: Messages, fieldName: String): String = {
     val baseDataLabel = messages(s"$messagePrefix.$fieldName")
 
-    val displayLabel = period() match {
+    period() match {
       case Some(period) =>
         val periodLabel = messages(s"pdf.${period.toString}")
         baseDataLabel.replace("$period", periodLabel)
       case None         => baseDataLabel
     }
-
-    Row(displayLabel, displayValue)
   }
 }
