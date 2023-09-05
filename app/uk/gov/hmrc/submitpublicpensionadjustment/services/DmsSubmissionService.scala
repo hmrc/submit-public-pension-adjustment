@@ -22,12 +22,11 @@ import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.connectors.DmsSubmissionConnector
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
-import uk.gov.hmrc.submitpublicpensionadjustment.models.{CaseIdentifiers, Done, QueueReference}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{CaseIdentifiers, Done}
 import uk.gov.hmrc.submitpublicpensionadjustment.views.xml.FinalSubmissionPdf
 
 import java.nio.file.{Files, Paths}
 import java.time.Instant
-import java.util.UUID
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -78,10 +77,7 @@ class CreateLocalPdfDmsSubmissionService @Inject() (
     hc: HeaderCarrier
   ): Future[Done] = {
 
-    val uniqueId       = caseIdentifiers.queueReferences.foldLeft("test")((acc: String, queueReference: QueueReference) =>
-      s"${acc}_${queueReference.submissionReference}"
-    )
-    val fileName       = s"test/output/$uniqueId.pdf"
+    val fileName       = s"test/output/${caseIdentifiers.caseNumber}.pdf"
     val pdfBytesFuture =
       fopService.render(pdfTemplate(viewModelService.viewModel(caseIdentifiers, finalSubmission)).body)
     pdfBytesFuture.map { pdfBytes =>
