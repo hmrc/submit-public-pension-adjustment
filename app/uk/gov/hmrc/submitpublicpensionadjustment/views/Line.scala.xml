@@ -1,24 +1,15 @@
 @this()
 
-        @(key: String, value: String)(implicit messages: Messages)
+        @(key: String, value: String, indent: Boolean)(implicit messages: Messages)
 
-        @defining(if (
-            key == messages("pdf.taxAdministrationFrameworkSection.previousChargePaidBySchemeName") ||
-            key == messages("pdf.taxAdministrationFrameworkSection.previousChargePaidByPstr") ||
-            key == messages("pdf.compensationSection.chargeSchemePaid") ||
-            key.contains(messages("pdf.compensationSection.originalSchemePaidChargeName").split(" ").dropRight(1).mkString(" ")) ||
-            key.contains(messages("pdf.compensationSection.originalSchemePaidChargePstr").split(" ").dropRight(1).mkString(" "))
-        )
-        "1cm" else "0cm"
-        ) { indent =>
-
+        @defining(if (indent) "1cm" else "0cm") { indent =>
 <fo:block border-bottom-width="1pt" border-bottom-style="solid" margin-top="1mm" margin-bottom="1mm" border-bottom-color="gray" padding-top="1mm" padding-bottom="1mm">
     <fo:inline-container width="5cm">
-        <fo:block margin-left="@indent" font-weight="bold">@messages(key)</fo:block>
+       <!-- key --><fo:block margin-left="@indent" font-weight="bold">@messages(key)</fo:block>
     </fo:inline-container>
     <fo:inline-container width="12cm" margin-left="1cm">
         @value.split('\n').map { line =>
-        <fo:block margin-left="@indent" margin-bottom="3mm">@(line)</fo:block>
+        <!-- value --><fo:block margin-left="@indent" margin-bottom="3mm">@(line)</fo:block>
         }
     </fo:inline-container>
 </fo:block>

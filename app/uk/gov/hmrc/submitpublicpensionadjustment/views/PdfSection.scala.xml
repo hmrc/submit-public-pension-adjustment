@@ -9,15 +9,9 @@
 @sectionOption.map { section =>
     {
         @sectionIdOption.map { sectionId =>
-            <fo:block role="H3" id="@sectionId" font-size="14pt" font-weight="bold" margin-bottom="0.5cm">
-                @messages("pdf." + sectionId + ".heading")
-            </fo:block>
+            <!-- heading --><fo:block role="H3" id="@sectionId" font-size="14pt" font-weight="bold" margin-bottom="0.5cm"> @messages("pdf." + sectionId + ".heading")</fo:block>
         }
 
-        @section.rows(messages).map { row =>
-            @if(row.displayValue != "deleteRow") {
-                @line(row.displayLabel, row.displayValue)
-            }
-        }
+        @section.rows(messages).map { row => @line(row.displayLabel, row.displayValue, row.indent) }
     }
 }

@@ -1,0 +1,93 @@
+Calculate your public service pension adjustment
+First name : FirstName
+Surname : Surname
+Date of birth : 13/01/1920
+Address line 1 : testLine1
+Address line 2 : testLine2
+Town/City : TestCity
+County : TestCounty
+Postcode : Postcode
+Country : United Kingdom
+Unique Taxpayer Reference (UTR) : someUtr
+National Insurance number : someNino
+Contact number : 1234567890
+First name : FirstName
+Surname : Surname
+Date of birth : 13/01/1920
+Address line 1 : Behalf Address 1
+Address line 2 : Behalf Address 2
+Town/City : City
+County : County
+Postcode : Postcode
+Country : United Kingdom
+Unique Taxpayer Reference (UTR) : someUTR
+National Insurance number or alternative identifier (TRN) : someNino
+Name of pension scheme : TestScheme
+PSTR : TestPSTR
+Members reform individual pension scheme reference : reformReference
+Members legacy individual pension scheme reference : legacyReference
+Amount of direct compensation 16/17 : £100
+Amount of indirect compensation 16/17 : £200
+Revised tax charge total 16/17 : £270
+How much of the charge did you pay? : £50
+Scheme : 1
+How much of the charge did your pension scheme pay? : £100
+Name of scheme originally paid charge 16/17 : TestName2017
+PSTR of scheme originally paid charge 16/17 : TestTaxRef2017
+Scheme : 2
+How much of the charge did your pension scheme pay? : £100
+Name of scheme originally paid charge 16/17 : TestName2222017
+PSTR of scheme originally paid charge 16/17 : TestTaxRef
+Amount of direct compensation 17/18 : £1002018
+Amount of indirect compensation 17/18 : £2002018
+Revised tax charge total 17/18 : £2702018
+How much of the charge did you pay? : £502018
+Scheme : 1
+How much of the charge did your pension scheme pay? : £100
+Name of scheme originally paid charge 17/18 : TestName2018
+PSTR of scheme originally paid charge 17/18 : TestTaxRef
+Scheme : 2
+How much of the charge did your pension scheme pay? : £100
+Name of scheme originally paid charge 17/18 : TestName22018
+PSTR of scheme originally paid charge 17/18 : TestTaxRef
+Value of previous charge for 16/17 : £300
+Who was the previous charge paid by? : Both
+Scheme : 1
+Name of scheme : TestName2017
+PSTR of scheme : TestTaxRef2017
+Scheme : 2
+Name of scheme : TestName2222017
+PSTR of scheme : TestTaxRef
+Credit value for 16/17 : £200
+Debit value for 16/17 : £25
+Is the scheme paying the charge? : Yes
+Date of election made to the scheme : 13/01/2017
+Value scheme is paying : 10
+PSTR of scheme paying : schemePstr
+Name of scheme paying : TestSceme
+Value of previous charge for 17/18 : £1700
+Who was the previous charge paid by? : Scheme
+Scheme : 1
+Name of scheme : TestName2018
+PSTR of scheme : TestTaxRef
+Scheme : 2
+Name of scheme : TestName22018
+PSTR of scheme : TestTaxRef
+Credit value for 17/18 : £1145076
+Debit value for 17/18 : £636
+Is the scheme paying the charge? : No
+Date of election made to the scheme : Not Applicable
+Value scheme is paying : Not Applicable
+PSTR of scheme paying : Not Applicable
+Name of scheme paying : Not Applicable
+Amount : £1000
+Name of scheme paying : SchemeA
+PSTR of scheme paying : schemePstr
+Name on bank account : TestAccountName
+Sort code : TestSortCode
+Account number : TestAccountNumber
+Declaration for compensation : Yes
+Declaration for tax administration framework : Yes
+Declaration for true and complete : Yes
+Declaration if claiming on behalf of a deceased individual : No
+Declaration if claiming on behalf of a member for whom you have a lasting power of attorney or deputyship : No

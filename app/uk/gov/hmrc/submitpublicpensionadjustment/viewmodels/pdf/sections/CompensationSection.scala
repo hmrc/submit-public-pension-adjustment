@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 
+import play.api.i18n.Messages
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023.{InitialFlexiblyAccessedTaxYear, NormalTaxYear, PostFlexiblyAccessedTaxYear}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{OutOfDatesTaxYearsCalculation, Period}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{OutOfDatesTaxYearsCalculation, Period, TaxYearScheme}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
+import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Row, Section}
 
 case class CompensationSection(
   relatingTo: Period,
@@ -28,16 +29,51 @@ case class CompensationSection(
   indirectAmount: String,
   revisedTaxChargeTotal: String,
   chargeYouPaid: String,
-  additionalRows: Seq[(String, String)] = Seq()
-) extends Section {
+  schemePaidChargeSubSections: Seq[SchemePaidChargeDetailsSubSection] = Seq()
+) extends Section
+    with Formatting {
 
   override def orderedFieldNames(): Seq[String] =
     Seq("directAmount", "indirectAmount", "revisedTaxChargeTotal", "chargeYouPaid")
 
   override def period() = Some(relatingTo)
+
+  override def rows(messages: Messages): Seq[Row] = {
+
+    val subsectionRows = buildSubSectionRows(messages)
+    super.rows(messages) ++ subsectionRows
+  }
+
+  private def buildSubSectionRows(messages: Messages) =
+    schemePaidChargeSubSections.flatMap { ss =>
+      Seq(
+        Row(
+          displayLabel(messages, "schemePaidChargeDetailsSubSection.scheme"),
+          ss.index.toString,
+          false
+        ),
+        Row(
+          displayLabel(messages, "schemePaidChargeDetailsSubSection.amount"),
+          formatPoundsAmount(ss.amount),
+          true
+        ),
+        Row(
+          displayLabel(messages, "schemePaidChargeDetailsSubSection.name"),
+          ss.name,
+          true
+        ),
+        Row(
+          displayLabel(messages, "schemePaidChargeDetailsSubSection.reference"),
+          ss.pstr,
+          true
+        )
+      )
+    }
 }
 
-object CompensationSection {
+case class SchemePaidChargeDetailsSubSection(index: Int, amount: Int, name: String, pstr: String) {}
+
+object CompensationSection extends Formatting {
 
   def build(finalSubmission: FinalSubmission): Seq[CompensationSection] = {
     val outOfDates = finalSubmission.calculation
@@ -53,43 +89,41 @@ object CompensationSection {
   ): CompensationSection =
     CompensationSection(
       relatingTo = calc.period,
-      directAmount = s"£${calc.directCompensation.toString}",
-      indirectAmount = s"£${calc.indirectCompensation.toString}",
-      revisedTaxChargeTotal = s"£${calc.revisedChargableAmountAfterTaxRate.toString}",
-      chargeYouPaid = s"£${calc.chargePaidByMember.toString}",
-      additionalRows = getAdditionalRows(finalSubmission, calc).flatten
+      directAmount = formatPoundsAmount(calc.directCompensation),
+      indirectAmount = formatPoundsAmount(calc.indirectCompensation),
+      revisedTaxChargeTotal = formatPoundsAmount(calc.revisedChargableAmountAfterTaxRate),
+      chargeYouPaid = formatPoundsAmount(calc.chargePaidByMember),
+      schemePaidChargeSubSections = schemePaidChargeSubSections(finalSubmission, calc)
     )
 
-  private def getAdditionalRows(
+  private def schemePaidChargeSubSections(
     finalSubmission: FinalSubmission,
     outDateCalc: OutOfDatesTaxYearsCalculation
-  ): Seq[Seq[(String, String)]] = {
-    val additionalRows = for {
-      taxYear <- finalSubmission.calculationInputs.annualAllowance.map(_.taxYears).getOrElse(List()).collect {
-                   case ty: TaxYear2016To2023 => ty
-                 }
-      if taxYear.period == outDateCalc.period.toCalculationInputsPeriod
-      scheme  <- taxYear match {
-                   case ny: NormalTaxYear                     => ny.taxYearSchemes
-                   case ifaty: InitialFlexiblyAccessedTaxYear => ifaty.taxYearSchemes
-                   case pfaty: PostFlexiblyAccessedTaxYear    => pfaty.taxYearSchemes
-                 }
-    } yield Seq(
-      ("scheme", ""),
-      ("chargeSchemePaid", s"£${scheme.chargePaidByScheme}"),
-      ("originalSchemePaidChargeName", scheme.name),
-      ("originalSchemePaidChargePstr", scheme.pensionSchemeTaxReference)
-    )
+  ): Seq[SchemePaidChargeDetailsSubSection] = {
 
-    indexAdditionalRows(additionalRows)
+    val outDatesSchemes: Seq[TaxYearScheme] = allTaxYears(finalSubmission)
+      .filter(ty => ty.period == outDateCalc.period.toCalculationInputsPeriod)
+      .flatMap(ty => taxYearSchemes(ty))
+
+    outDatesSchemes.zipWithIndex.map(schemeWithIndex =>
+      SchemePaidChargeDetailsSubSection(
+        schemeWithIndex._2 + 1,
+        schemeWithIndex._1.chargePaidByScheme,
+        schemeWithIndex._1.name,
+        schemeWithIndex._1.pensionSchemeTaxReference
+      )
+    )
   }
 
-  private def indexAdditionalRows(additionalRows: Seq[Seq[(String, String)]]): Seq[Seq[(String, String)]] =
-    additionalRows.zipWithIndex.map { case (row, index) =>
-      row.map {
-        case ("scheme", "") => ("scheme", (index + 1).toString)
-        case other          => other
-      }
+  private def allTaxYears(finalSubmission: FinalSubmission): Seq[TaxYear2016To2023] =
+    finalSubmission.calculationInputs.annualAllowance.map(_.taxYears).getOrElse(List()).collect {
+      case ty: TaxYear2016To2023 => ty
     }
 
+  private def taxYearSchemes(taxYear: TaxYear2016To2023): Seq[TaxYearScheme] =
+    taxYear match {
+      case ty: NormalTaxYear                  => ty.taxYearSchemes
+      case ty: InitialFlexiblyAccessedTaxYear => ty.taxYearSchemes
+      case ty: PostFlexiblyAccessedTaxYear    => ty.taxYearSchemes
+    }
 }

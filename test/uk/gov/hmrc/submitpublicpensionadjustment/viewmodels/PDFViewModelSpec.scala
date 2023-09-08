@@ -26,191 +26,76 @@ import play.api.i18n.MessagesApi
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{Period => ResponsePeriod}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.Compensation
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CaseIdentifiers, QueueReference}
 import uk.gov.hmrc.submitpublicpensionadjustment.services.FopService
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.PDFViewModel
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections._
 import uk.gov.hmrc.submitpublicpensionadjustment.views.xml.FinalSubmissionPdf
 
 import java.nio.file.{Files, Paths}
 import scala.concurrent.duration.DurationInt
 
 class PDFViewModelSpec extends AnyFreeSpec with Matchers with Logging {
+
   implicit val patience: PatienceConfiguration.Timeout = timeout(5.seconds)
-  private val app                                      = GuiceApplicationBuilder().build()
-  private val messages                                 = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
-  private val fopService                               = app.injector.instanceOf[FopService]
+
+  private val app        = GuiceApplicationBuilder().build()
+  private val messages   = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
+  private val fopService = app.injector.instanceOf[FopService]
 
   "PDFViewModel" - {
 
     "must support pretty printing to aid diagnostics" in {
-
       val prettyPrintLines = TestData.viewModel.prettyPrint(messages)
       logger.info(s"pdfViewModel :\n$prettyPrintLines\n")
 
-      val fileName = "test/resources/final_submission.txt"
-      Files.write(Paths.get(fileName), prettyPrintLines.getBytes())
+      Files.write(Paths.get("test/resources/final_submission.txt"), prettyPrintLines.getBytes())
     }
 
     "must be constructed from a final submission and generate PDF" in {
-      val submissionReference     = "submissionReference"
-      val dmsQueue                = Compensation("Compensation_Queue")
-      val caseIdentifiers         = CaseIdentifiers(submissionReference, Seq(QueueReference(dmsQueue, submissionReference)))
+      val submissionReference = "submissionReference"
+      val dmsQueue            = Compensation("Compensation_Queue")
+      val caseIdentifiers     = CaseIdentifiers(submissionReference, Seq(QueueReference(dmsQueue, submissionReference)))
+
       val viewModel: PDFViewModel = PDFViewModel.build(caseIdentifiers, TestData.finalSubmission)
 
-      viewModel.caseNumber mustBe submissionReference
+      checkContent(viewModel)
 
-      viewModel.administrativeDetailsSection mustBe AdministrativeDetailsSection(
-        firstName = "FirstName",
-        surname = "Surname",
-        dob = "13/01/1920",
-        addressLine1 = "testLine1",
-        addressLine2 = "testLine2",
-        townOrCity = "TestCity",
-        county = Some("TestCounty"),
-        stateOrRegion = None,
-        postCode = Some("Postcode"),
-        postalCode = None,
-        country = "United Kingdom",
-        utr = "someUtr",
-        ninoOrTrn = "someNino",
-        contactNumber = "1234567890"
-      )
+      val pdfTemplate: FinalSubmissionPdf = app.injector.instanceOf[FinalSubmissionPdf]
+      val pdfMarkup: String               = pdfTemplate.render(viewModel, messages).body
 
-      viewModel.publicSectorSchemeDetailsSections mustBe Seq(
-        PublicSectorSchemeDetailsSection(
-          schemeName = "TestScheme",
-          pstr = "TestPSTR",
-          reformReference = "reformReference",
-          legacyReference = "legacyReference"
-        )
-      )
+      checkFormat(pdfMarkup)
 
-      viewModel.compensationSections mustBe Seq(
-        CompensationSection(
-          relatingTo = ResponsePeriod._2017,
-          directAmount = "£100",
-          indirectAmount = "£200",
-          revisedTaxChargeTotal = "£270",
-          chargeYouPaid = "£50",
-          additionalRows = Seq(
-            ("scheme", "1"),
-            ("chargeSchemePaid", "£100"),
-            ("originalSchemePaidChargeName", "TestName2017"),
-            ("originalSchemePaidChargePstr", "TestTaxRef2017"),
-            ("scheme", "2"),
-            ("chargeSchemePaid", "£100"),
-            ("originalSchemePaidChargeName", "TestName2222017"),
-            ("originalSchemePaidChargePstr", "TestTaxRef")
-          )
-        ),
-        CompensationSection(
-          ResponsePeriod.Year(2018),
-          "£1002018",
-          "£2002018",
-          "£2702018",
-          "£502018",
-          Seq(
-            ("scheme", "1"),
-            ("chargeSchemePaid", "£100"),
-            ("originalSchemePaidChargeName", "TestName2018"),
-            ("originalSchemePaidChargePstr", "TestTaxRef"),
-            ("scheme", "2"),
-            ("chargeSchemePaid", "£100"),
-            ("originalSchemePaidChargeName", "TestName22018"),
-            ("originalSchemePaidChargePstr", "TestTaxRef")
-          )
-        )
-      )
-
-      viewModel.additionalOrHigherReliefSection mustBe Some(
-        AdditionalOrHigherReliefSection(
-          amount = "£1000",
-          schemePayingName = "SchemeA",
-          schemePayingPstr = "schemePstr"
-        )
-      )
-
-      viewModel.taxAdministrationFrameworkSections mustBe Seq(
-        TaxAdministrationFrameworkSection(
-          relatingTo = ResponsePeriod._2017,
-          previousChargeAmount = "£300",
-          whoChargePaidBy = "Both",
-          additionalRows = Seq(
-            ("scheme", "1"),
-            ("previousChargePaidBySchemeName", "TestName2017"),
-            ("previousChargePaidByPstr", "TestTaxRef2017"),
-            ("scheme", "2"),
-            ("previousChargePaidBySchemeName", "TestName2222017"),
-            ("previousChargePaidByPstr", "TestTaxRef")
-          ),
-          creditValue = "£200",
-          debitValue = "£25",
-          isSchemePayingCharge = "Yes",
-          schemePaymentElectionDate = "13/01/2017",
-          schemePayingChargeAmount = "10",
-          schemePayingPstr = "schemePstr",
-          schemePayingName = "TestSceme"
-        ),
-        TaxAdministrationFrameworkSection(
-          relatingTo = ResponsePeriod._2018,
-          previousChargeAmount = "£1700",
-          whoChargePaidBy = "Scheme",
-          additionalRows = Seq(
-            ("scheme", "1"),
-            ("previousChargePaidBySchemeName", "TestName2018"),
-            ("previousChargePaidByPstr", "TestTaxRef"),
-            ("scheme", "2"),
-            ("previousChargePaidBySchemeName", "TestName22018"),
-            ("previousChargePaidByPstr", "TestTaxRef")
-          ),
-          creditValue = "£1145076",
-          debitValue = "£636",
-          isSchemePayingCharge = "No",
-          schemePaymentElectionDate = "Not Applicable",
-          schemePayingChargeAmount = "Not Applicable",
-          schemePayingPstr = "Not Applicable",
-          schemePayingName = "Not Applicable"
-        )
-      )
-
-      viewModel.onBehalfOfSection mustBe Some(
-        OnBehalfOfSection(
-          firstName = "FirstName",
-          surname = "Surname",
-          dob = "13/01/1920",
-          addressLine1 = "Behalf Address 1",
-          addressLine2 = "Behalf Address 2",
-          townOrCity = "City",
-          county = Some("County"),
-          stateOrRegion = None,
-          postCode = Some("Postcode"),
-          postalCode = None,
-          country = "United Kingdom",
-          utr = "someUTR",
-          ninoOrTrn = "someNino"
-        )
-      )
-
-      viewModel.paymentInformationSection mustBe Some(
-        PaymentInformationSection(
-          accountName = "TestAccountName",
-          sortCode = "TestSortCode",
-          accountNumber = "TestAccountNumber"
-        )
-      )
-
-      viewModel.declarationsSection mustBe DeclarationsSection("Y", "Y", "Y", "N", "N")
-
-      val view      = app.injector.instanceOf[FinalSubmissionPdf]
-      val xmlString = view.render(viewModel, messages).body
-      val result    = fopService.render(xmlString).futureValue(patience)
-
-      val fileName = "test/resources/fop/final_submission_populated.pdf"
-
-      Files.write(Paths.get(fileName), result)
+      val pdfOutputFile = fopService.render(pdfMarkup).futureValue(patience)
+      Files.write(Paths.get("test/resources/fop/final_submission_populated.pdf"), pdfOutputFile)
     }
+  }
+
+  private def checkFormat(pdfMarkup: String) = {
+    checkHeadingIncluded(pdfMarkup, "administrativeDetailsSection", "Administrative details")
+    checkFieldAndValueIncluded(pdfMarkup, "First name", "FirstName")
+  }
+
+  def checkHeadingIncluded(pdfMarkupString: String, sectionId: String, headingValue: String) = {
+    val headingBlock =
+      s"""<!-- heading --><fo:block role="H3" id="$sectionId" font-size="14pt" font-weight="bold" margin-bottom="0.5cm"> $headingValue</fo:block>"""
+    pdfMarkupString must include(headingBlock)
+  }
+
+  def checkFieldAndValueIncluded(pdfMarkupString: String, fieldName: String, fieldValue: String) = {
+    val fieldNameBlock = s"<!-- key --><fo:block margin-left=\"0cm\" font-weight=\"bold\">$fieldName</fo:block>"
+    pdfMarkupString must include(fieldNameBlock)
+
+    val fieldValueBlock = s"<!-- value --><fo:block margin-left=\"0cm\" margin-bottom=\"3mm\">$fieldValue</fo:block>"
+    pdfMarkupString must include(fieldValueBlock)
+  }
+
+  private def checkContent(viewModel: PDFViewModel) = {
+    viewModel.caseNumber mustBe "submissionReference"
+
+    val prettyPrintedOutput = viewModel.prettyPrint(messages)
+    val expectedPrettyPrint = Files.readString(Paths.get("test/resources/final_submission_pretty_print.txt"))
+
+    prettyPrintedOutput mustBe expectedPrettyPrint
   }
 }
