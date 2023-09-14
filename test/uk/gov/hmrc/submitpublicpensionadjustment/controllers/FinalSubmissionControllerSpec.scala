@@ -66,9 +66,7 @@ class FinalSubmissionControllerSpec
   "submit" - {
 
     "can serialise and deserialize symmetrically" in {
-      val serialised = Json.prettyPrint(Json.toJson(TestData.finalSubmission))
-      logger.info(s"serialised:$serialised")
-
+      val serialised                              = Json.prettyPrint(Json.toJson(TestData.finalSubmission))
       val deserialized: JsResult[FinalSubmission] = Json.parse(serialised).validate[FinalSubmission]
       deserialized.get mustBe TestData.finalSubmission
     }
