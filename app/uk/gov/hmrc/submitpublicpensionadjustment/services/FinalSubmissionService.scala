@@ -38,7 +38,6 @@ class FinalSubmissionService @Inject() (
 
     val queueReferences: Seq[QueueReference] = queueLogicService.computeQueueReferences(finalSubmission)
     val mostSignificantQueueReference        = queueLogicService.determineMostSignificantQueueReference(queueReferences)
-    logger.info(s"queueReferences : $queueReferences - mostSignificantQueueReference : $mostSignificantQueueReference")
 
     val responses: Seq[Future[String]] =
       sendToDms(finalSubmission, auditMetadata, queueReferences)

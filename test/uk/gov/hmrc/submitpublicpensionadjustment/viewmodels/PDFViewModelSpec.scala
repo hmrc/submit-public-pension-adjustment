@@ -47,8 +47,6 @@ class PDFViewModelSpec extends AnyFreeSpec with Matchers with Logging {
 
     "must support pretty printing to aid diagnostics" in {
       val prettyPrintLines = TestData.viewModel.prettyPrint(messages)
-      logger.info(s"pdfViewModel :\n$prettyPrintLines\n")
-
       Files.write(Paths.get("test/resources/final_submission.txt"), prettyPrintLines.getBytes())
     }
 

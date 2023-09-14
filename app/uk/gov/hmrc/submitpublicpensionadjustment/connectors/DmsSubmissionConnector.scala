@@ -63,7 +63,7 @@ class DmsSubmissionConnector @Inject() (
       LocalDateTime.ofInstant(timestamp.truncatedTo(ChronoUnit.SECONDS), ZoneOffset.UTC)
     )
 
-    logDiagnostics(submissionReference, source, formId, classificationType, businessArea, callbackUrl)
+    logDiagnostics(source, formId, classificationType, businessArea, callbackUrl)
 
     val dataParts = Seq(
       MultipartFormData.DataPart("callbackUrl", callbackUrl),
@@ -98,9 +98,11 @@ class DmsSubmissionConnector @Inject() (
         if (response.status == ACCEPTED) {
           Future.successful(Done)
         } else {
-          logger.warn(s"dms-submission failed with response body: ${response.body}")
+          logger.error(
+            s"DMS submission to $dmsSubmission/dms-submission/submit failed with response.status : ${response.status}"
+          )
           Future.failed(
-            UpstreamErrorResponse("Unexpected response from dms-submission", response.status, reportAs = 500)
+            UpstreamErrorResponse("Unexpected response during DMS submission", response.status, reportAs = 500)
           )
         }
       }
@@ -108,7 +110,6 @@ class DmsSubmissionConnector @Inject() (
   }
 
   private def logDiagnostics(
-    submissionReference: String,
     source: String,
     formId: String,
     classificationType: String,
@@ -116,6 +117,6 @@ class DmsSubmissionConnector @Inject() (
     callbackUrl: String
   ) =
     logger.info(
-      s"submissionReference: $submissionReference, source:$source, formId:$formId, classificationType : $classificationType, businessArea:$businessArea, callbackUrl:$callbackUrl"
+      s"source:$source, formId:$formId, classificationType : $classificationType, businessArea:$businessArea, callbackUrl:$callbackUrl"
     )
 }
