@@ -91,10 +91,8 @@ object TestData {
     newProtectionTypeOrEnhancementReference = Some("newReference"),
     previousLifetimeAllowanceChargeFlag = true,
     previousLifetimeAllowanceChargePaymentMethod = Some(ExcessLifetimeAllowancePaid.Lumpsum),
-    previousLifetimeAllowanceChargeAmount = Some(10000),
     previousLifetimeAllowanceChargePaidBy = Some(WhoPaidLTACharge.PensionScheme),
     previousLifetimeAllowanceChargeSchemeNameAndTaxRef = Some(SchemeNameAndTaxRef("Scheme1", "pstr1")),
-    newLifetimeAllowanceChargeAmount = 20000,
     newLifetimeAllowanceChargeWillBePaidBy = Some(WhoPayingExtraLtaCharge.PensionScheme),
     newLifetimeAllowanceChargeSchemeNameAndTaxRef = Some(LtaPensionSchemeDetails("Scheme2", "pstr2"))
   )

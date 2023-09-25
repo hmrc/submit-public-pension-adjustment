@@ -32,11 +32,9 @@ case class LifetimeAllowanceSection(
   newProtectionTypeOrReference: String,
   hadLtaCharge: String,
   howExcessPaid: String,
-  ltaChargeAmount: String,
   whoPaidLtaCharge: String,
   schemeThatPaidChargeName: String,
   schemeThatPaidChargeTaxRef: String,
-  newLtaChargeValue: String,
   whoPayingExtraCharge: String,
   whoPayingExtraChargeSchemeName: String,
   whoPayingExtraChargeTaxRef: String
@@ -54,11 +52,9 @@ case class LifetimeAllowanceSection(
     "newProtectionTypeOrReference",
     "hadLtaCharge",
     "howExcessPaid",
-    "ltaChargeAmount",
     "whoPaidLtaCharge",
     "schemeThatPaidChargeName",
     "schemeThatPaidChargeTaxRef",
-    "newLtaChargeValue",
     "whoPayingExtraCharge",
     "whoPayingExtraChargeSchemeName",
     "whoPayingExtraChargeTaxRef"
@@ -83,14 +79,11 @@ object LifetimeAllowanceSection extends Formatting {
             newProtectionTypeOrReference = ltaInputs.newProtectionTypeOrEnhancementReference.getOrElse(NotApplicable),
             hadLtaCharge = format(ltaInputs.previousLifetimeAllowanceChargeFlag),
             howExcessPaid = formatExcessLifetimeAllowancePaid(ltaInputs.previousLifetimeAllowanceChargePaymentMethod),
-            ltaChargeAmount =
-              ltaInputs.previousLifetimeAllowanceChargeAmount.map(formatPoundsAmount(_)).getOrElse(NotApplicable),
             whoPaidLtaCharge = formatWhoPaidLTACharge(ltaInputs.previousLifetimeAllowanceChargePaidBy),
             schemeThatPaidChargeName =
               ltaInputs.previousLifetimeAllowanceChargeSchemeNameAndTaxRef.map(_.name).getOrElse(NotApplicable),
             schemeThatPaidChargeTaxRef =
               ltaInputs.previousLifetimeAllowanceChargeSchemeNameAndTaxRef.map(_.taxRef).getOrElse(NotApplicable),
-            newLtaChargeValue = formatPoundsAmount(ltaInputs.newLifetimeAllowanceChargeAmount),
             whoPayingExtraCharge = formatWhoPayingExtraLtaCharge(ltaInputs.newLifetimeAllowanceChargeWillBePaidBy),
             whoPayingExtraChargeSchemeName =
               ltaInputs.newLifetimeAllowanceChargeSchemeNameAndTaxRef.map(_.name).getOrElse(NotApplicable),
