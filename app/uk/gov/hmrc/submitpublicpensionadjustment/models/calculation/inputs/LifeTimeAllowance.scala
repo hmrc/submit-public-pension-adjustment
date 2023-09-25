@@ -33,10 +33,8 @@ case class LifeTimeAllowance(
   newProtectionTypeOrEnhancementReference: Option[String],
   previousLifetimeAllowanceChargeFlag: Boolean,
   previousLifetimeAllowanceChargePaymentMethod: Option[ExcessLifetimeAllowancePaid],
-  previousLifetimeAllowanceChargeAmount: Option[Int],
   previousLifetimeAllowanceChargePaidBy: Option[WhoPaidLTACharge],
   previousLifetimeAllowanceChargeSchemeNameAndTaxRef: Option[SchemeNameAndTaxRef],
-  newLifetimeAllowanceChargeAmount: Int,
   newLifetimeAllowanceChargeWillBePaidBy: Option[WhoPayingExtraLtaCharge],
   newLifetimeAllowanceChargeSchemeNameAndTaxRef: Option[LtaPensionSchemeDetails]
 )
