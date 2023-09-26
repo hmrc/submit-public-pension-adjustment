@@ -47,8 +47,6 @@ trait Formatting {
     case ProtectionType.FixedProtection2016      => "Fixed protection 2016"
     case ProtectionType.IndividualProtection2014 => "Individual protection 2014"
     case ProtectionType.IndividualProtection2016 => "Individual protection 2016"
-    case ProtectionType.InternationalEnhancement => "International enhancement"
-    case ProtectionType.PensionCredit            => "Pension credit"
   }
 
   def format(whatNewProtectionTypeEnhancement: Option[WhatNewProtectionTypeEnhancement]): String =
@@ -60,8 +58,6 @@ trait Formatting {
       case Some(WhatNewProtectionTypeEnhancement.FixedProtection2016)      => "Fixed protection 2016"
       case Some(WhatNewProtectionTypeEnhancement.IndividualProtection2014) => "Individual protection 2014"
       case Some(WhatNewProtectionTypeEnhancement.IndividualProtection2016) => "Individual protection 2016"
-      case Some(WhatNewProtectionTypeEnhancement.InternationalEnhancement) => "International enhancement"
-      case Some(WhatNewProtectionTypeEnhancement.PensionCredit)            => "Pension credit"
       case _                                                               => NotApplicable
     }
 

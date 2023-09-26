@@ -29,8 +29,6 @@ object ProtectionType extends Enumerable.Implicits {
   case object FixedProtection2016 extends WithName("fixedProtection2016") with ProtectionType
   case object IndividualProtection2014 extends WithName("individualProtection2014") with ProtectionType
   case object IndividualProtection2016 extends WithName("individualProtection2016") with ProtectionType
-  case object InternationalEnhancement extends WithName("internationalEnhancement") with ProtectionType
-  case object PensionCredit extends WithName("pensionCredit") with ProtectionType
 
   val values: Seq[ProtectionType] = Seq(
     EnhancedProtection,
@@ -39,9 +37,7 @@ object ProtectionType extends Enumerable.Implicits {
     FixedProtection2014,
     FixedProtection2016,
     IndividualProtection2014,
-    IndividualProtection2016,
-    InternationalEnhancement,
-    PensionCredit
+    IndividualProtection2016
   )
 
   implicit val enumerable: Enumerable[ProtectionType] =
