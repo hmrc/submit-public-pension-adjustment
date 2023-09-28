@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment
 
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, ChangeInTaxCharge, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LtaPensionSchemeDetails, LtaProtectionOrEnhancements, Period => InputPeriod, ProtectionType, Resubmission => inputsResubmission, SchemeNameAndTaxRef, TaxYear2016To2023, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, Period => ResponsePeriod, Resubmission => responseResubmission, TaxYearScheme, TotalAmounts}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, ChangeInTaxCharge, EnhancementType, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LtaPensionSchemeDetails, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, NewLifeTimeAllowanceAdditions, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, SchemeNameAndTaxRef, TaxYear2016To2023, UserSchemeDetails, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid, Period => InputPeriod, Resubmission => inputsResubmission}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, TaxYearScheme, TotalAmounts, Period => ResponsePeriod, Resubmission => responseResubmission}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.OnBehalfOfMemberType.Deceased
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{PSTR, UkAddress}
@@ -78,6 +78,23 @@ object TestData {
     period = InputPeriod._2017
   )
 
+  val newLifeTimeAllowanceAdditions = NewLifeTimeAllowanceAdditions(
+    multipleBenefitCrystallisationEventFlag = true,
+    enhancementType = Some(EnhancementType.Both),
+    internationalEnhancementReference = Some("internationalRef"),
+    pensionCreditReference = Some("pensionCredRef"),
+    newEnhancementType = Some(NewEnhancementType.Both),
+    newInternationalEnhancementReference = Some("newinternationEnhancementRef"),
+    newPensionCreditReference = Some("newPensionCredRef"),
+    lumpSumValue = Some(5),
+    annualPaymentValue = Some(6),
+    userSchemeDetails = Some(UserSchemeDetails("name", "ref")),
+    quarterChargePaid = Some(QuarterChargePaid.AprToJul),
+    yearChargePaid = Some(YearChargePaid._2015To2016),
+    newExcessLifetimeAllowancePaid = Some(NewExcessLifetimeAllowancePaid.Both),
+    newLumpSumValue = Some(7),
+    newAnnualPaymentValue = Some(8))
+
   val lifeTimeAllowance = LifeTimeAllowance(
     benefitCrystallisationEventFlag = true,
     benefitCrystallisationEventDate = LocalDate.of(2017, 1, 30),
@@ -86,7 +103,7 @@ object TestData {
     lifetimeAllowanceProtectionOrEnhancements = LtaProtectionOrEnhancements.Protection,
     protectionType = ProtectionType.PrimaryProtection,
     protectionReference = "originalReference",
-    protectionTypeOrEnhancementChangedFlag = true,
+    protectionTypeEnhancementChanged = ProtectionEnhancedChanged.Protection,
     newProtectionTypeOrEnhancement = Some(WhatNewProtectionTypeEnhancement.EnhancedProtection),
     newProtectionTypeOrEnhancementReference = Some("newReference"),
     previousLifetimeAllowanceChargeFlag = true,
@@ -94,7 +111,8 @@ object TestData {
     previousLifetimeAllowanceChargePaidBy = Some(WhoPaidLTACharge.PensionScheme),
     previousLifetimeAllowanceChargeSchemeNameAndTaxRef = Some(SchemeNameAndTaxRef("Scheme1", "pstr1")),
     newLifetimeAllowanceChargeWillBePaidBy = Some(WhoPayingExtraLtaCharge.PensionScheme),
-    newLifetimeAllowanceChargeSchemeNameAndTaxRef = Some(LtaPensionSchemeDetails("Scheme2", "pstr2"))
+    newLifetimeAllowanceChargeSchemeNameAndTaxRef = Some(LtaPensionSchemeDetails("Scheme2", "pstr2")),
+    newLifeTimeAllowanceAdditions = newLifeTimeAllowanceAdditions
   )
 
   val calculationInputs = CalculationInputs(
@@ -105,7 +123,7 @@ object TestData {
         taxYears = List(taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
       )
     ),
-    None
+    Some(lifeTimeAllowance)
   )
 
   val onBehalfOfMemberDetails = OnBehalfOfMember(

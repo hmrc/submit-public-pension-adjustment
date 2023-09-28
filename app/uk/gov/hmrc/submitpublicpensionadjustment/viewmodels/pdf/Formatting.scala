@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf
 
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{ChangeInTaxCharge, ExcessLifetimeAllowancePaid, LtaProtectionOrEnhancements, ProtectionType, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.NewEnhancementType.{Both, InternationalEnhancement, PensionCredit}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{ChangeInTaxCharge, EnhancementType, ExcessLifetimeAllowancePaid, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid}
 
 import java.time.format.DateTimeFormatter
 import java.time.{LocalDate, ZoneId}
@@ -62,6 +63,60 @@ trait Formatting {
       case _                                                               => NotApplicable
     }
 
+  def formatLtaProtectionOrEnhancements(changeToProtectionType:ProtectionEnhancedChanged): String =
+    changeToProtectionType match {
+      case ProtectionEnhancedChanged.Protection => "Protection"
+      case ProtectionEnhancedChanged.Enhancement => "Enhancements"
+      case ProtectionEnhancedChanged.Both => "Both"
+      case ProtectionEnhancedChanged.No => "No"
+      case _ => NotApplicable
+    }
+
+  def formatEnhancementType(enhancementType:Option[EnhancementType]): String =
+    enhancementType match{
+      case Some(EnhancementType.InternationalEnhancement) => "International Enhancement"
+      case Some(EnhancementType.PensionCredit) => "Pension Credit"
+      case Some(EnhancementType.Both) => "Both"
+      case _ => NotApplicable
+    }
+
+  def formatNewEnhancementType(newEnhancementType: Option[NewEnhancementType]): String =
+    newEnhancementType match {
+      case Some(InternationalEnhancement) => "International Enhancement"
+      case Some(PensionCredit) => "Pension Credit"
+      case Some(Both) => "Both"
+      case _ => NotApplicable
+    }
+
+  def formatYearChargePaid(yearChargePaid: Option[YearChargePaid]): String =
+    yearChargePaid match {
+      case Some(_2021To2022) => "6 April 2021 to 5 April 2022"
+      case Some(_2020To2021) => "6 April 2020 to 5 April 2021"
+      case Some(_2019To2020) => "6 April 2019 to 5 April 2020"
+      case Some(_2018To2019) => "6 April 2018 to 5 April 2019"
+      case Some(_2017To2018) => "6 April 2017 to 5 April 2018"
+      case Some(_2016To2017) => "6 April 2016 to 5 April 2017"
+      case Some(_2015To2016) => "6 April 2015 to 5 April 2016"
+      case _ => NotApplicable
+    }
+
+  def formatQuarterChargePaid(quarterChargePaid: Option[QuarterChargePaid]): String =
+    quarterChargePaid match {
+      case Some(aprToJul) => "6 April to 5 July"
+      case Some(julToOct) => "6 July to 5 October"
+      case Some(octToJan) => "6 October to 5 January"
+      case Some(janToApr) => "6 January to 5 April"
+      case _ => NotApplicable
+    }
+
+  def formatNewExcessLifetimeAllowancePaid(newExcessLifetimeAllowancePaid: Option[NewExcessLifetimeAllowancePaid]): String =
+    newExcessLifetimeAllowancePaid match {
+      case Some(annualPayment) => "Annual Payment"
+      case Some(lumpSum) => "Lump Sum"
+      case Some(both) => "Both"
+      case _ => NotApplicable
+    }
+
   def formatBoolean(optValue: Option[Boolean]): String = optValue match {
     case Some(true) => "Yes"
     case _          => "No"
@@ -99,6 +154,12 @@ trait Formatting {
   def format(value: Boolean): String = formatBoolean(Some(value))
 
   def formatPoundsAmount(amount: Int): String = s"£${amount.toString}"
+
+  def formatOptPoundsAmount(optValue: Option[Int]) =
+    optValue match{
+      case Some(value) => s"£${value.toString}"
+      case None        => NotEntered
+    }
 
   val NotEntered    = "Not entered"
   val NotApplicable = "Not Applicable"
