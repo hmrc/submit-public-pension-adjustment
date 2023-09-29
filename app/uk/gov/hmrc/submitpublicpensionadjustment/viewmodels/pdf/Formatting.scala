@@ -37,6 +37,7 @@ trait Formatting {
     case LtaProtectionOrEnhancements.Protection   => "Protection"
     case LtaProtectionOrEnhancements.Enhancements => "Enhancements"
     case LtaProtectionOrEnhancements.Both         => "Both"
+    case LtaProtectionOrEnhancements.No           => "No"
   }
 
   def format(protectionType: ProtectionType): String = protectionType match {
@@ -70,6 +71,7 @@ trait Formatting {
     excessLifetimeAllowancePaid match {
       case Some(ExcessLifetimeAllowancePaid.Annualpayment) => "Annual payment"
       case Some(ExcessLifetimeAllowancePaid.Lumpsum)       => "Lumpsum"
+      case Some(ExcessLifetimeAllowancePaid.Both)          => "Both"
       case _                                               => NotApplicable
     }
 
