@@ -99,17 +99,21 @@ object LifetimeAllowanceSection extends Formatting {
             changeInLtaPercentage = format(true),
             ltaChargeType = format(ltaInputs.changeInTaxCharge),
             haveLtaProtectionOrEnhancement = format(ltaInputs.lifetimeAllowanceProtectionOrEnhancements),
-            protectionType = format(ltaInputs.protectionType),
-            protectionReference = ltaInputs.protectionReference,
+            protectionType = formatProtectionType(ltaInputs.protectionType),
+            protectionReference = formatStringNotApplicable(ltaInputs.protectionReference),
             enhancementType = formatEnhancementType(ltaInputs.newLifeTimeAllowanceAdditions.enhancementType),
-            internationalEnhancementReference = ltaInputs.newLifeTimeAllowanceAdditions.internationalEnhancementReference.getOrElse(NotApplicable),
-            pensionCreditReference = ltaInputs.newLifeTimeAllowanceAdditions.pensionCreditReference.getOrElse(NotApplicable),
+            internationalEnhancementReference =
+              ltaInputs.newLifeTimeAllowanceAdditions.internationalEnhancementReference.getOrElse(NotApplicable),
+            pensionCreditReference =
+              ltaInputs.newLifeTimeAllowanceAdditions.pensionCreditReference.getOrElse(NotApplicable),
             changeToProtectionType = formatLtaProtectionOrEnhancements(ltaInputs.protectionTypeEnhancementChanged),
             newProtectionTypeOrEnhancement = format(ltaInputs.newProtectionTypeOrEnhancement),
             newProtectionTypeOrReference = ltaInputs.newProtectionTypeOrEnhancementReference.getOrElse(NotApplicable),
             newEnhancementType = formatNewEnhancementType(ltaInputs.newLifeTimeAllowanceAdditions.newEnhancementType),
-            newInternationalEnhancementReference = ltaInputs.newLifeTimeAllowanceAdditions.newInternationalEnhancementReference.getOrElse(NotApplicable),
-            newPensionCreditReference = ltaInputs.newLifeTimeAllowanceAdditions.newPensionCreditReference.getOrElse(NotApplicable),
+            newInternationalEnhancementReference =
+              ltaInputs.newLifeTimeAllowanceAdditions.newInternationalEnhancementReference.getOrElse(NotApplicable),
+            newPensionCreditReference =
+              ltaInputs.newLifeTimeAllowanceAdditions.newPensionCreditReference.getOrElse(NotApplicable),
             hadLtaCharge = format(ltaInputs.previousLifetimeAllowanceChargeFlag),
             howExcessPaid = formatExcessLifetimeAllowancePaid(ltaInputs.previousLifetimeAllowanceChargePaymentMethod),
             lumpSumValue = formatOptPoundsAmount(ltaInputs.newLifeTimeAllowanceAdditions.lumpSumValue),
@@ -121,9 +125,12 @@ object LifetimeAllowanceSection extends Formatting {
               ltaInputs.previousLifetimeAllowanceChargeSchemeNameAndTaxRef.map(_.taxRef).getOrElse(NotApplicable),
             yearChargePaid = formatYearChargePaid(ltaInputs.newLifeTimeAllowanceAdditions.yearChargePaid),
             quarterChargePaid = formatQuarterChargePaid(ltaInputs.newLifeTimeAllowanceAdditions.quarterChargePaid),
-            newExcessLifetimeAllowancePaid = formatNewExcessLifetimeAllowancePaid(ltaInputs.newLifeTimeAllowanceAdditions.newExcessLifetimeAllowancePaid),
+            newExcessLifetimeAllowancePaid = formatNewExcessLifetimeAllowancePaid(
+              ltaInputs.newLifeTimeAllowanceAdditions.newExcessLifetimeAllowancePaid
+            ),
             newLumpSumValue = formatOptPoundsAmount(ltaInputs.newLifeTimeAllowanceAdditions.newLumpSumValue),
-            newAnnualPaymentValue = formatOptPoundsAmount(ltaInputs.newLifeTimeAllowanceAdditions.newAnnualPaymentValue),
+            newAnnualPaymentValue =
+              formatOptPoundsAmount(ltaInputs.newLifeTimeAllowanceAdditions.newAnnualPaymentValue),
             whoPayingExtraCharge = formatWhoPayingExtraLtaCharge(ltaInputs.newLifetimeAllowanceChargeWillBePaidBy),
             whoPayingExtraChargeSchemeName =
               ltaInputs.newLifetimeAllowanceChargeSchemeNameAndTaxRef.map(_.name).getOrElse(NotApplicable),

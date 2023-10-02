@@ -41,16 +41,6 @@ trait Formatting {
     case LtaProtectionOrEnhancements.No           => "No"
   }
 
-  def format(protectionType: ProtectionType): String = protectionType match {
-    case ProtectionType.EnhancedProtection       => "Enhanced protection"
-    case ProtectionType.PrimaryProtection        => "Primary protection"
-    case ProtectionType.FixedProtection          => "Fixed protection"
-    case ProtectionType.FixedProtection2014      => "Fixed protection 2014"
-    case ProtectionType.FixedProtection2016      => "Fixed protection 2016"
-    case ProtectionType.IndividualProtection2014 => "Individual protection 2014"
-    case ProtectionType.IndividualProtection2016 => "Individual protection 2016"
-  }
-
   def format(whatNewProtectionTypeEnhancement: Option[WhatNewProtectionTypeEnhancement]): String =
     whatNewProtectionTypeEnhancement match {
       case Some(WhatNewProtectionTypeEnhancement.EnhancedProtection)       => "Enhanced protection"
@@ -63,29 +53,40 @@ trait Formatting {
       case _                                                               => NotApplicable
     }
 
-  def formatLtaProtectionOrEnhancements(changeToProtectionType:ProtectionEnhancedChanged): String =
+  def formatProtectionType(protectionType: Option[ProtectionType]): String = protectionType match {
+    case Some(ProtectionType.EnhancedProtection)       => "Enhanced protection"
+    case Some(ProtectionType.PrimaryProtection)        => "Primary protection"
+    case Some(ProtectionType.FixedProtection)          => "Fixed protection"
+    case Some(ProtectionType.FixedProtection2014)      => "Fixed protection 2014"
+    case Some(ProtectionType.FixedProtection2016)      => "Fixed protection 2016"
+    case Some(ProtectionType.IndividualProtection2014) => "Individual protection 2014"
+    case Some(ProtectionType.IndividualProtection2016) => "Individual protection 2016"
+    case _                                             => NotApplicable
+  }
+
+  def formatLtaProtectionOrEnhancements(changeToProtectionType: ProtectionEnhancedChanged): String =
     changeToProtectionType match {
-      case ProtectionEnhancedChanged.Protection => "Protection"
+      case ProtectionEnhancedChanged.Protection  => "Protection"
       case ProtectionEnhancedChanged.Enhancement => "Enhancements"
-      case ProtectionEnhancedChanged.Both => "Both"
-      case ProtectionEnhancedChanged.No => "No"
-      case _ => NotApplicable
+      case ProtectionEnhancedChanged.Both        => "Both"
+      case ProtectionEnhancedChanged.No          => "No"
+      case _                                     => NotApplicable
     }
 
-  def formatEnhancementType(enhancementType:Option[EnhancementType]): String =
-    enhancementType match{
+  def formatEnhancementType(enhancementType: Option[EnhancementType]): String =
+    enhancementType match {
       case Some(EnhancementType.InternationalEnhancement) => "International Enhancement"
-      case Some(EnhancementType.PensionCredit) => "Pension Credit"
-      case Some(EnhancementType.Both) => "Both"
-      case _ => NotApplicable
+      case Some(EnhancementType.PensionCredit)            => "Pension Credit"
+      case Some(EnhancementType.Both)                     => "Both"
+      case _                                              => NotApplicable
     }
 
   def formatNewEnhancementType(newEnhancementType: Option[NewEnhancementType]): String =
     newEnhancementType match {
       case Some(InternationalEnhancement) => "International Enhancement"
-      case Some(PensionCredit) => "Pension Credit"
-      case Some(Both) => "Both"
-      case _ => NotApplicable
+      case Some(PensionCredit)            => "Pension Credit"
+      case Some(Both)                     => "Both"
+      case _                              => NotApplicable
     }
 
   def formatYearChargePaid(yearChargePaid: Option[YearChargePaid]): String =
@@ -97,7 +98,7 @@ trait Formatting {
       case Some(_2017To2018) => "6 April 2017 to 5 April 2018"
       case Some(_2016To2017) => "6 April 2016 to 5 April 2017"
       case Some(_2015To2016) => "6 April 2015 to 5 April 2016"
-      case _ => NotApplicable
+      case _                 => NotApplicable
     }
 
   def formatQuarterChargePaid(quarterChargePaid: Option[QuarterChargePaid]): String =
@@ -106,15 +107,17 @@ trait Formatting {
       case Some(julToOct) => "6 July to 5 October"
       case Some(octToJan) => "6 October to 5 January"
       case Some(janToApr) => "6 January to 5 April"
-      case _ => NotApplicable
+      case _              => NotApplicable
     }
 
-  def formatNewExcessLifetimeAllowancePaid(newExcessLifetimeAllowancePaid: Option[NewExcessLifetimeAllowancePaid]): String =
+  def formatNewExcessLifetimeAllowancePaid(
+    newExcessLifetimeAllowancePaid: Option[NewExcessLifetimeAllowancePaid]
+  ): String =
     newExcessLifetimeAllowancePaid match {
       case Some(annualPayment) => "Annual Payment"
-      case Some(lumpSum) => "Lump Sum"
-      case Some(both) => "Both"
-      case _ => NotApplicable
+      case Some(lumpSum)       => "Lump Sum"
+      case Some(both)          => "Both"
+      case _                   => NotApplicable
     }
 
   def formatBoolean(optValue: Option[Boolean]): String = optValue match {
@@ -151,14 +154,21 @@ trait Formatting {
       case None        => NotEntered
     }
 
+  def formatStringNotApplicable(optValue: Option[String]) =
+    optValue match {
+      case Some("")    => NotApplicable
+      case Some(value) => value
+      case None        => NotApplicable
+    }
+
   def format(value: Boolean): String = formatBoolean(Some(value))
 
   def formatPoundsAmount(amount: Int): String = s"£${amount.toString}"
 
   def formatOptPoundsAmount(optValue: Option[Int]) =
-    optValue match{
+    optValue match {
       case Some(value) => s"£${value.toString}"
-      case None        => NotEntered
+      case None        => NotApplicable
     }
 
   val NotEntered    = "Not entered"

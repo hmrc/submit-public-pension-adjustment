@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment
 
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, ChangeInTaxCharge, EnhancementType, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LtaPensionSchemeDetails, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, NewLifeTimeAllowanceAdditions, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, SchemeNameAndTaxRef, TaxYear2016To2023, UserSchemeDetails, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid, Period => InputPeriod, Resubmission => inputsResubmission}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, TaxYearScheme, TotalAmounts, Period => ResponsePeriod, Resubmission => responseResubmission}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, ChangeInTaxCharge, EnhancementType, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LtaPensionSchemeDetails, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, NewLifeTimeAllowanceAdditions, Period => InputPeriod, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, Resubmission => inputsResubmission, SchemeNameAndTaxRef, TaxYear2016To2023, UserSchemeDetails, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, Period => ResponsePeriod, Resubmission => responseResubmission, TaxYearScheme, TotalAmounts}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.OnBehalfOfMemberType.Deceased
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{PSTR, UkAddress}
@@ -93,7 +93,8 @@ object TestData {
     yearChargePaid = Some(YearChargePaid._2015To2016),
     newExcessLifetimeAllowancePaid = Some(NewExcessLifetimeAllowancePaid.Both),
     newLumpSumValue = Some(7),
-    newAnnualPaymentValue = Some(8))
+    newAnnualPaymentValue = Some(8)
+  )
 
   val lifeTimeAllowance = LifeTimeAllowance(
     benefitCrystallisationEventFlag = true,
@@ -101,8 +102,8 @@ object TestData {
     changeInLifetimeAllowancePercentageInformedFlag = true,
     changeInTaxCharge = ChangeInTaxCharge.NewCharge,
     lifetimeAllowanceProtectionOrEnhancements = LtaProtectionOrEnhancements.Protection,
-    protectionType = ProtectionType.PrimaryProtection,
-    protectionReference = "originalReference",
+    protectionType = Some(ProtectionType.PrimaryProtection),
+    protectionReference = Some("originalReference"),
     protectionTypeEnhancementChanged = ProtectionEnhancedChanged.Protection,
     newProtectionTypeOrEnhancement = Some(WhatNewProtectionTypeEnhancement.EnhancedProtection),
     newProtectionTypeOrEnhancementReference = Some("newReference"),
