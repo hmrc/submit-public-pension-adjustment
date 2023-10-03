@@ -70,7 +70,6 @@ trait Formatting {
       case ProtectionEnhancedChanged.Enhancement => "Enhancements"
       case ProtectionEnhancedChanged.Both        => "Both"
       case ProtectionEnhancedChanged.No          => "No"
-      case _                                     => NotApplicable
     }
 
   def formatEnhancementType(enhancementType: Option[EnhancementType]): String =
@@ -91,33 +90,33 @@ trait Formatting {
 
   def formatYearChargePaid(yearChargePaid: Option[YearChargePaid]): String =
     yearChargePaid match {
-      case Some(_2021To2022) => "6 April 2021 to 5 April 2022"
-      case Some(_2020To2021) => "6 April 2020 to 5 April 2021"
-      case Some(_2019To2020) => "6 April 2019 to 5 April 2020"
-      case Some(_2018To2019) => "6 April 2018 to 5 April 2019"
-      case Some(_2017To2018) => "6 April 2017 to 5 April 2018"
-      case Some(_2016To2017) => "6 April 2016 to 5 April 2017"
-      case Some(_2015To2016) => "6 April 2015 to 5 April 2016"
-      case _                 => NotApplicable
+      case Some(YearChargePaid._2021To2022) => "6 April 2021 to 5 April 2022"
+      case Some(YearChargePaid._2020To2021) => "6 April 2020 to 5 April 2021"
+      case Some(YearChargePaid._2019To2020) => "6 April 2019 to 5 April 2020"
+      case Some(YearChargePaid._2018To2019) => "6 April 2018 to 5 April 2019"
+      case Some(YearChargePaid._2017To2018) => "6 April 2017 to 5 April 2018"
+      case Some(YearChargePaid._2016To2017) => "6 April 2016 to 5 April 2017"
+      case Some(YearChargePaid._2015To2016) => "6 April 2015 to 5 April 2016"
+      case _                                => NotApplicable
     }
 
   def formatQuarterChargePaid(quarterChargePaid: Option[QuarterChargePaid]): String =
     quarterChargePaid match {
-      case Some(aprToJul) => "6 April to 5 July"
-      case Some(julToOct) => "6 July to 5 October"
-      case Some(octToJan) => "6 October to 5 January"
-      case Some(janToApr) => "6 January to 5 April"
-      case _              => NotApplicable
+      case Some(QuarterChargePaid.AprToJul) => "6 April to 5 July"
+      case Some(QuarterChargePaid.JulToOct) => "6 July to 5 October"
+      case Some(QuarterChargePaid.OctToJan) => "6 October to 5 January"
+      case Some(QuarterChargePaid.JanToApr) => "6 January to 5 April"
+      case _                                => NotApplicable
     }
 
   def formatNewExcessLifetimeAllowancePaid(
     newExcessLifetimeAllowancePaid: Option[NewExcessLifetimeAllowancePaid]
   ): String =
     newExcessLifetimeAllowancePaid match {
-      case Some(annualPayment) => "Annual Payment"
-      case Some(lumpSum)       => "Lump Sum"
-      case Some(both)          => "Both"
-      case _                   => NotApplicable
+      case Some(NewExcessLifetimeAllowancePaid.Annualpayment) => "Annual Payment"
+      case Some(NewExcessLifetimeAllowancePaid.Lumpsum)       => "Lump Sum"
+      case Some(NewExcessLifetimeAllowancePaid.Both)          => "Both"
+      case _                                                  => NotApplicable
     }
 
   def formatBoolean(optValue: Option[Boolean]): String = optValue match {

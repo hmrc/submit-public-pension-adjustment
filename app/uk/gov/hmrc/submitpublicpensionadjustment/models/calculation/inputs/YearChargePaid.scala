@@ -16,7 +16,6 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs
 
-import play.api.i18n.Messages
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{Enumerable, WithName}
 
 sealed trait YearChargePaid
