@@ -99,7 +99,8 @@ object LifetimeAllowanceSection extends Formatting {
             bceDate = format(ltaInputs.benefitCrystallisationEventDate),
             changeInLtaPercentage = format(true),
             ltaChargeType = format(ltaInputs.changeInTaxCharge),
-            multipleBenefitCrystallisationEvent = format(ltaInputs.newLifeTimeAllowanceAdditions.multipleBenefitCrystallisationEventFlag),
+            multipleBenefitCrystallisationEvent =
+              format(ltaInputs.newLifeTimeAllowanceAdditions.multipleBenefitCrystallisationEventFlag),
             haveLtaProtectionOrEnhancement = format(ltaInputs.lifetimeAllowanceProtectionOrEnhancements),
             protectionType = formatProtectionType(ltaInputs.protectionType),
             protectionReference = formatStringNotApplicable(ltaInputs.protectionReference),
