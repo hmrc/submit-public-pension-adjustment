@@ -161,8 +161,8 @@ class FormattingSpec extends AnyFreeSpec with Matchers {
     "formatString(optValue: Option[String])" - {
       "should format optional string value correctly" in {
         formatter.formatString(Some("Test")) shouldBe "Test"
-        formatter.formatString(Some(""))     shouldBe "Not entered"
-        formatter.formatString(None)         shouldBe "Not entered"
+        formatter.formatString(Some(""))     shouldBe "Not Entered"
+        formatter.formatString(None)         shouldBe "Not Entered"
       }
     }
 

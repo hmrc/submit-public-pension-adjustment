@@ -126,8 +126,8 @@ trait Formatting {
 
   def formatExcessLifetimeAllowancePaid(excessLifetimeAllowancePaid: Option[ExcessLifetimeAllowancePaid]): String =
     excessLifetimeAllowancePaid match {
-      case Some(ExcessLifetimeAllowancePaid.Annualpayment) => "Annual payment"
-      case Some(ExcessLifetimeAllowancePaid.Lumpsum)       => "Lumpsum"
+      case Some(ExcessLifetimeAllowancePaid.Annualpayment) => "Annual Payment"
+      case Some(ExcessLifetimeAllowancePaid.Lumpsum)       => "Lump Sum"
       case Some(ExcessLifetimeAllowancePaid.Both)          => "Both"
       case _                                               => NotApplicable
     }
@@ -170,7 +170,7 @@ trait Formatting {
       case None        => NotApplicable
     }
 
-  val NotEntered    = "Not entered"
+  val NotEntered    = "Not Entered"
   val NotApplicable = "Not Applicable"
   val UnitedKingdom = "United Kingdom"
 

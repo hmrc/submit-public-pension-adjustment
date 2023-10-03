@@ -126,6 +126,7 @@ pdf.lifetimeAllowanceSection.hadBce = Have you had a benefit crystallisation eve
 pdf.lifetimeAllowanceSection.bceDate = What was the date of the benefit crystallisation event?
 pdf.lifetimeAllowanceSection.changeInLtaPercentage = Have you been told about a change in the lifetime allowance percentage?
 pdf.lifetimeAllowanceSection.ltaChargeType = Has the change resulted in a new, increased or decreased lifetime allowance charge?
+pdf.lifetimeAllowanceSection.multipleBenefitCrystallisationEvent = Have you had more than one benefit crystallisation event in your pensions?
 pdf.lifetimeAllowanceSection.haveLtaProtectionOrEnhancement = Do you have lifetime allowance protection or enhancements?
 pdf.lifetimeAllowanceSection.protectionType = What is your protection type?
 pdf.lifetimeAllowanceSection.protectionReference = What is your protection reference?
