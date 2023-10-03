@@ -46,10 +46,10 @@ class DmsSubmissionCallbackController @Inject() (
 
     if (notification.status == SubmissionItemStatus.Failed) {
       logger.error(
-        s"DMS notification received for ${notification.id} failed with error : ${notification.failureReason.getOrElse("")}"
+        s"DMS notification received - failed with error : ${notification.failureReason.getOrElse("")}"
       )
     } else {
-      logger.info(s"DMS notification received for ${notification.id} with status ${notification.status}")
+      logger.info(s"DMS notification received with status ${notification.status}")
     }
 
     Ok
