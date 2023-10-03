@@ -22,6 +22,38 @@ Postcode : Postcode
 Country : United Kingdom
 Unique Taxpayer Reference (UTR) : someUTR
 National Insurance number or alternative identifier (TRN) : someNino
+Have you had a benefit crystallisation event in your pension? : Yes
+What was the date of the benefit crystallisation event? : 30/01/2017
+Have you been told about a change in the lifetime allowance percentage? : Yes
+Has the change resulted in a new, increased or decreased lifetime allowance charge? : New
+Have you had more than one benefit crystallisation event in your pensions? : Yes
+Do you have lifetime allowance protection or enhancements? : Protection
+What is your protection type? : Primary protection
+What is your protection reference? : originalReference
+Which type of lifetime allowance enhancement did you have? : Both
+What is your lifetime allowance international enhancement reference? : internationalRef
+What is your lifetime allowance pension credit reference? : pensionCredRef
+Has your protection type or enhancement changed? : Protection
+What is the new protection type or enhancement? : Enhanced protection
+What is the reference of the new protection type or reference? : newReference
+Which new type of lifetime allowance enhancement did you have? : Both
+What is your new lifetime allowance international enhancement reference? : newinternationEnhancementRef
+What is your new lifetime allowance pension credit reference? : newPensionCredRef
+Have you had a lifetime allowance charge from 6 April 2015 to 5 April 2023? : Yes
+How was the excess above your lifetime allowance paid to you? : Lump Sum
+What was the value of the lump sum? : £5
+What was the value of the annual payment? : £6
+Who paid your lifetime allowance charge? : Scheme
+What is the name of the pension scheme that paid your lifetime allowance charge : Scheme1
+What is the tax reference for the pension scheme that paid? : pstr1
+In which year was your lifetime allowance charge paid? : 6 April 2015 to 5 April 2016
+In which quarter was your lifetime allowance charge paid? : 6 April to 5 July
+How will the new excess above your lifetime allowance be paid to you? : Both
+What is the new value of the lump sum? : £7
+What is the new value of the annual payment? : £8
+Who is paying the extra lifetime allowance charge? : Scheme
+What is the name of the scheme that is paying the extra charge? : Scheme2
+What is the tax reference of the scheme that is paying the extra charge? : pstr2
 Name of pension scheme : TestScheme
 PSTR : TestPSTR
 Members reform individual pension scheme reference : reformReference

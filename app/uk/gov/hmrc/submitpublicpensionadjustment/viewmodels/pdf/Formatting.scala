@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf
 
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{ChangeInTaxCharge, ExcessLifetimeAllowancePaid, LtaProtectionOrEnhancements, ProtectionType, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.NewEnhancementType.{Both, InternationalEnhancement, PensionCredit}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{ChangeInTaxCharge, EnhancementType, ExcessLifetimeAllowancePaid, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid}
 
 import java.time.format.DateTimeFormatter
 import java.time.{LocalDate, ZoneId}
@@ -40,16 +41,6 @@ trait Formatting {
     case LtaProtectionOrEnhancements.No           => "No"
   }
 
-  def format(protectionType: ProtectionType): String = protectionType match {
-    case ProtectionType.EnhancedProtection       => "Enhanced protection"
-    case ProtectionType.PrimaryProtection        => "Primary protection"
-    case ProtectionType.FixedProtection          => "Fixed protection"
-    case ProtectionType.FixedProtection2014      => "Fixed protection 2014"
-    case ProtectionType.FixedProtection2016      => "Fixed protection 2016"
-    case ProtectionType.IndividualProtection2014 => "Individual protection 2014"
-    case ProtectionType.IndividualProtection2016 => "Individual protection 2016"
-  }
-
   def format(whatNewProtectionTypeEnhancement: Option[WhatNewProtectionTypeEnhancement]): String =
     whatNewProtectionTypeEnhancement match {
       case Some(WhatNewProtectionTypeEnhancement.EnhancedProtection)       => "Enhanced protection"
@@ -62,6 +53,72 @@ trait Formatting {
       case _                                                               => NotApplicable
     }
 
+  def formatProtectionType(protectionType: Option[ProtectionType]): String = protectionType match {
+    case Some(ProtectionType.EnhancedProtection)       => "Enhanced protection"
+    case Some(ProtectionType.PrimaryProtection)        => "Primary protection"
+    case Some(ProtectionType.FixedProtection)          => "Fixed protection"
+    case Some(ProtectionType.FixedProtection2014)      => "Fixed protection 2014"
+    case Some(ProtectionType.FixedProtection2016)      => "Fixed protection 2016"
+    case Some(ProtectionType.IndividualProtection2014) => "Individual protection 2014"
+    case Some(ProtectionType.IndividualProtection2016) => "Individual protection 2016"
+    case _                                             => NotApplicable
+  }
+
+  def formatLtaProtectionOrEnhancements(changeToProtectionType: ProtectionEnhancedChanged): String =
+    changeToProtectionType match {
+      case ProtectionEnhancedChanged.Protection  => "Protection"
+      case ProtectionEnhancedChanged.Enhancement => "Enhancements"
+      case ProtectionEnhancedChanged.Both        => "Both"
+      case ProtectionEnhancedChanged.No          => "No"
+    }
+
+  def formatEnhancementType(enhancementType: Option[EnhancementType]): String =
+    enhancementType match {
+      case Some(EnhancementType.InternationalEnhancement) => "International Enhancement"
+      case Some(EnhancementType.PensionCredit)            => "Pension Credit"
+      case Some(EnhancementType.Both)                     => "Both"
+      case _                                              => NotApplicable
+    }
+
+  def formatNewEnhancementType(newEnhancementType: Option[NewEnhancementType]): String =
+    newEnhancementType match {
+      case Some(InternationalEnhancement) => "International Enhancement"
+      case Some(PensionCredit)            => "Pension Credit"
+      case Some(Both)                     => "Both"
+      case _                              => NotApplicable
+    }
+
+  def formatYearChargePaid(yearChargePaid: Option[YearChargePaid]): String =
+    yearChargePaid match {
+      case Some(YearChargePaid._2021To2022) => "6 April 2021 to 5 April 2022"
+      case Some(YearChargePaid._2020To2021) => "6 April 2020 to 5 April 2021"
+      case Some(YearChargePaid._2019To2020) => "6 April 2019 to 5 April 2020"
+      case Some(YearChargePaid._2018To2019) => "6 April 2018 to 5 April 2019"
+      case Some(YearChargePaid._2017To2018) => "6 April 2017 to 5 April 2018"
+      case Some(YearChargePaid._2016To2017) => "6 April 2016 to 5 April 2017"
+      case Some(YearChargePaid._2015To2016) => "6 April 2015 to 5 April 2016"
+      case _                                => NotApplicable
+    }
+
+  def formatQuarterChargePaid(quarterChargePaid: Option[QuarterChargePaid]): String =
+    quarterChargePaid match {
+      case Some(QuarterChargePaid.AprToJul) => "6 April to 5 July"
+      case Some(QuarterChargePaid.JulToOct) => "6 July to 5 October"
+      case Some(QuarterChargePaid.OctToJan) => "6 October to 5 January"
+      case Some(QuarterChargePaid.JanToApr) => "6 January to 5 April"
+      case _                                => NotApplicable
+    }
+
+  def formatNewExcessLifetimeAllowancePaid(
+    newExcessLifetimeAllowancePaid: Option[NewExcessLifetimeAllowancePaid]
+  ): String =
+    newExcessLifetimeAllowancePaid match {
+      case Some(NewExcessLifetimeAllowancePaid.Annualpayment) => "Annual Payment"
+      case Some(NewExcessLifetimeAllowancePaid.Lumpsum)       => "Lump Sum"
+      case Some(NewExcessLifetimeAllowancePaid.Both)          => "Both"
+      case _                                                  => NotApplicable
+    }
+
   def formatBoolean(optValue: Option[Boolean]): String = optValue match {
     case Some(true) => "Yes"
     case _          => "No"
@@ -69,8 +126,8 @@ trait Formatting {
 
   def formatExcessLifetimeAllowancePaid(excessLifetimeAllowancePaid: Option[ExcessLifetimeAllowancePaid]): String =
     excessLifetimeAllowancePaid match {
-      case Some(ExcessLifetimeAllowancePaid.Annualpayment) => "Annual payment"
-      case Some(ExcessLifetimeAllowancePaid.Lumpsum)       => "Lumpsum"
+      case Some(ExcessLifetimeAllowancePaid.Annualpayment) => "Annual Payment"
+      case Some(ExcessLifetimeAllowancePaid.Lumpsum)       => "Lump Sum"
       case Some(ExcessLifetimeAllowancePaid.Both)          => "Both"
       case _                                               => NotApplicable
     }
@@ -96,11 +153,24 @@ trait Formatting {
       case None        => NotEntered
     }
 
+  def formatStringNotApplicable(optValue: Option[String]) =
+    optValue match {
+      case Some("")    => NotApplicable
+      case Some(value) => value
+      case None        => NotApplicable
+    }
+
   def format(value: Boolean): String = formatBoolean(Some(value))
 
   def formatPoundsAmount(amount: Int): String = s"£${amount.toString}"
 
-  val NotEntered    = "Not entered"
+  def formatOptPoundsAmount(optValue: Option[Int]) =
+    optValue match {
+      case Some(value) => s"£${value.toString}"
+      case None        => NotApplicable
+    }
+
+  val NotEntered    = "Not Entered"
   val NotApplicable = "Not Applicable"
   val UnitedKingdom = "United Kingdom"
 
