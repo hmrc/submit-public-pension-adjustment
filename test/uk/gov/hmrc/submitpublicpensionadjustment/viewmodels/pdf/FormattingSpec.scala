@@ -131,10 +131,10 @@ class FormattingSpec extends AnyFreeSpec with Matchers {
 
     "formatQuarterChargePaid(quarterChargePaid: Option[QuarterChargePaid])" - {
       "should format QuarterChargePaid correctly" in {
-        formatter.formatQuarterChargePaid(Some(QuarterChargePaid.AprToJul)) shouldBe "6 April to 5 July"
-        formatter.formatQuarterChargePaid(Some(QuarterChargePaid.JulToOct)) shouldBe "6 July to 5 October"
-        formatter.formatQuarterChargePaid(Some(QuarterChargePaid.OctToJan)) shouldBe "6 October to 5 January"
-        formatter.formatQuarterChargePaid(Some(QuarterChargePaid.JanToApr)) shouldBe "6 January to 5 April"
+        formatter.formatQuarterChargePaid(Some(QuarterChargePaid.AprToJul)) shouldBe "1 April to 30 June"
+        formatter.formatQuarterChargePaid(Some(QuarterChargePaid.JulToOct)) shouldBe "1 July to 30 September"
+        formatter.formatQuarterChargePaid(Some(QuarterChargePaid.OctToJan)) shouldBe "1 October to 31 December"
+        formatter.formatQuarterChargePaid(Some(QuarterChargePaid.JanToApr)) shouldBe "1 January to 31 March"
         formatter.formatQuarterChargePaid(None)                             shouldBe "Not Applicable"
       }
     }

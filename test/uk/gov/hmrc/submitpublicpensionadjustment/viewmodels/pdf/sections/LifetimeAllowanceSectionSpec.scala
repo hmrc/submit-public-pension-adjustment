@@ -61,7 +61,7 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
     ltaSection.schemeThatPaidChargeName mustBe "Scheme1"
     ltaSection.schemeThatPaidChargeTaxRef mustBe "pstr1"
     ltaSection.yearChargePaid mustBe "6 April 2015 to 5 April 2016"
-    ltaSection.quarterChargePaid mustBe "6 April to 5 July"
+    ltaSection.quarterChargePaid mustBe "1 April to 30 June"
     ltaSection.newExcessLifetimeAllowancePaid mustBe "Both"
     ltaSection.newLumpSumValue mustBe "£7"
     ltaSection.newAnnualPaymentValue mustBe "£8"
