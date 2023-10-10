@@ -20,32 +20,32 @@ import play.api.libs.json._
 
 import scala.math.Ordered.orderingToOrdered
 
-case class TaxYear2013To2015(
+case class TaxYear2011To2015(
   pensionInputAmount: Int,
   period: Period
 ) extends TaxYear
 
-object TaxYear2013To2015 {
-  implicit lazy val reads: Reads[TaxYear2013To2015] = {
+object TaxYear2011To2015 {
+  implicit lazy val reads: Reads[TaxYear2011To2015] = {
 
     import play.api.libs.functional.syntax._
 
     (__ \ "period")
       .read[Period]
       .flatMap[Period] {
-        case p if p >= Period._2013 && p <= Period._2015 =>
+        case p if p >= Period._2011 && p <= Period._2015 =>
           Reads(_ => JsSuccess(p))
         case _                                           =>
-          Reads(_ => JsError("taxYear must fall between `2013`-`2015`"))
+          Reads(_ => JsError("taxYear must fall between `2011`-`2015`"))
       } andKeep {
       (
         (__ \ "pensionInputAmount").read[Int] and
           (__ \ "period").read[Period]
-      )(TaxYear2013To2015.apply _)
+      )(TaxYear2011To2015.apply _)
     }
   }
 
-  implicit lazy val writes: Writes[TaxYear2013To2015] = {
+  implicit lazy val writes: Writes[TaxYear2011To2015] = {
 
     import play.api.libs.functional.syntax._
 
