@@ -28,7 +28,7 @@ import uk.gov.hmrc.submitpublicpensionadjustment.TestData.submissionInputs
 import uk.gov.hmrc.submitpublicpensionadjustment.models.SubmissionAuditEvent
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.Income.BelowThreshold
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023.PostFlexiblyAccessedTaxYear
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, Period => InputsPeriod, Resubmission => InputsResubmission, TaxYear2013To2015}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, Period => InputsPeriod, Resubmission => InputsResubmission, TaxYear2011To2015}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, Period => ResponsePeriod, Resubmission => ResponseResubmission, TaxYearScheme, TotalAmounts}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 
@@ -60,9 +60,9 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
             AnnualAllowance(
               List(InputsPeriod._2021, InputsPeriod._2019, InputsPeriod._2017),
               List(
-                TaxYear2013To2015(40000, InputsPeriod._2013),
-                TaxYear2013To2015(40000, InputsPeriod._2014),
-                TaxYear2013To2015(40000, InputsPeriod._2015),
+                TaxYear2011To2015(40000, InputsPeriod._2013),
+                TaxYear2011To2015(40000, InputsPeriod._2014),
+                TaxYear2011To2015(40000, InputsPeriod._2015),
                 PostFlexiblyAccessedTaxYear(
                   33000,
                   0,

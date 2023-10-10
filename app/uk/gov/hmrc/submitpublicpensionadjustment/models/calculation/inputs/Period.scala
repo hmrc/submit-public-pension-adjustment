@@ -54,6 +54,8 @@ object Period {
     override lazy val end: LocalDate   = LocalDate.of(2016, 4, 5)
   }
 
+  val _2011: Period = Period.Year(2011)
+  val _2012: Period = Period.Year(2012)
   val _2013: Period = Period.Year(2013)
   val _2014: Period = Period.Year(2014)
   val _2015: Period = Period.Year(2015)
@@ -73,10 +75,10 @@ object Period {
         Reads(_ => JsSuccess(_2016PostAlignment))
       case yearString        =>
         Try(yearString.toInt) match {
-          case Success(year) if year >= 2013 =>
+          case Success(year) if year >= 2011 =>
             Reads(_ => JsSuccess(Year(year)))
           case Success(year)                 =>
-            Reads(_ => JsError(s"year: `$year`, must be 2013 or later"))
+            Reads(_ => JsError(s"year: `$year`, must be 2011 or later"))
           case Failure(_)                    =>
             Reads(_ => JsError("invalid tax year"))
         }

@@ -35,13 +35,13 @@ object TaxYear {
     implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
       a.map(identity)
 
-    TaxYear2013To2015.reads or
+    TaxYear2011To2015.reads or
       TaxYear2016To2023.reads
 
   }
 
   implicit lazy val writes: Writes[TaxYear] = Writes {
-    case year: TaxYear2013To2015 => Json.toJson(year)(TaxYear2013To2015.writes)
+    case year: TaxYear2011To2015 => Json.toJson(year)(TaxYear2011To2015.writes)
     case year: TaxYear2016To2023 => Json.toJson(year)(TaxYear2016To2023.writes)
     case _                       => throw new Exception("Tax year period is invalid")
   }
