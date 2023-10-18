@@ -113,7 +113,7 @@ object Period {
       case _2016PostAlignment.toString => Some(_2016PostAlignment)
       case yearString                  =>
         Try(yearString.toInt) match {
-          case Success(year) if year >= 2013 && year <= 2023 => Some(Year(year))
+          case Success(year) if year >= 2011 && year <= 2023 => Some(Year(year))
           case _                                             => None
         }
     }

@@ -26,6 +26,8 @@ sealed trait Period {
 
   def toCalculationInputsPeriod: InputsPeriod =
     this match {
+      case Period._2011              => InputsPeriod._2011
+      case Period._2012              => InputsPeriod._2012
       case Period._2013              => InputsPeriod._2013
       case Period._2014              => InputsPeriod._2014
       case Period._2015              => InputsPeriod._2015
