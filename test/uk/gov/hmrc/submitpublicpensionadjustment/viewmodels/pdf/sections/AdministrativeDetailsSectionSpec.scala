@@ -20,10 +20,11 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import play.api.Logging
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
+import uk.gov.hmrc.submitpublicpensionadjustment.TestData.calculationInputs
 
 class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Logging {
 
-  "section must be constructed based on final submission" in {
+  "section must be constructed based on final submission with no resubmissionReason" in {
 
     val section = AdministrativeDetailsSection.build(TestData.finalSubmission)
 
@@ -41,7 +42,31 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
       country = "United Kingdom",
       utr = "someUtr",
       ninoOrTrn = "someNino",
-      contactNumber = "1234567890"
+      contactNumber = "1234567890",
+      resubmissionReason = None
+    )
+  }
+
+  "section must be constructed based on final submission with resubmissionReason" in {
+
+    val section = AdministrativeDetailsSection.build(TestData.finalSubmissionWithResubmissionReason)
+
+    section mustBe AdministrativeDetailsSection(
+      firstName = "FirstName",
+      surname = "Surname",
+      dob = "13/01/1920",
+      addressLine1 = "testLine1",
+      addressLine2 = "testLine2",
+      townOrCity = "TestCity",
+      county = Some("TestCounty"),
+      stateOrRegion = None,
+      postCode = Some("Postcode"),
+      postalCode = None,
+      country = "United Kingdom",
+      utr = "someUtr",
+      ninoOrTrn = "someNino",
+      contactNumber = "1234567890",
+      resubmissionReason = Some("Test resubmission reason")
     )
   }
 }

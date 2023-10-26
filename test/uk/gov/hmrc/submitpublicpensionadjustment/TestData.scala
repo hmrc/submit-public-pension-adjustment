@@ -127,6 +127,17 @@ object TestData {
     Some(lifeTimeAllowance)
   )
 
+  val calculationInputsWithResubmissionReason = CalculationInputs(
+    inputsResubmission(true, Some("Test resubmission reason")),
+    Some(
+      AnnualAllowance(
+        scottishTaxYears = List(),
+        taxYears = List(taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
+      )
+    ),
+    Some(lifeTimeAllowance)
+  )
+
   val onBehalfOfMemberDetails = OnBehalfOfMember(
     memberPersonalDetails = PersonalDetails(
       fullName = "FirstName Surname",
@@ -281,6 +292,9 @@ object TestData {
 
   val finalSubmission = FinalSubmission(calculationInputs, calculationResponse, submissionInputs)
 
+  val finalSubmissionWithResubmissionReason =
+    FinalSubmission(calculationInputsWithResubmissionReason, calculationResponse, submissionInputs)
+
   val administrativeDetailsSection = AdministrativeDetailsSection(
     firstName = "firstName",
     surname = "surname",
@@ -295,7 +309,8 @@ object TestData {
     postalCode = Some("postalCode"),
     stateOrRegion = Some("state"),
     ninoOrTrn = "ninoOrTrn",
-    contactNumber = "contactNumber"
+    contactNumber = "contactNumber",
+    resubmissionReason = Some("resubmissionReason")
   )
 
   val additionalOrHigherReliefSection = AdditionalOrHigherReliefSection(
