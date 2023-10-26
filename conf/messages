@@ -43,6 +43,7 @@ pdf.administrativeDetailsSection.country = Country
 pdf.administrativeDetailsSection.utr = Unique Taxpayer Reference (UTR)
 pdf.administrativeDetailsSection.ninoOrTrn = National Insurance number
 pdf.administrativeDetailsSection.contactNumber = Contact number
+pdf.administrativeDetailsSection.resubmissionReason = Resubmission reason
 
 pdf.onBehalfOfSection.heading = Details of member you have lasting power of attorney or deputyship
 pdf.onBehalfOfSectionDeceased.heading = Details of deceased member you are making a calculation for

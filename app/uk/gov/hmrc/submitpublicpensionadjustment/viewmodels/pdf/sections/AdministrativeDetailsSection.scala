@@ -33,7 +33,8 @@ case class AdministrativeDetailsSection(
   country: String,
   utr: String,
   ninoOrTrn: String,
-  contactNumber: String
+  contactNumber: String,
+  resubmissionReason: Option[String]
 ) extends Section {
 
   override def orderedFieldNames(): Seq[String] = Seq(
@@ -50,7 +51,8 @@ case class AdministrativeDetailsSection(
     "country",
     "utr",
     "ninoOrTrn",
-    "contactNumber"
+    "contactNumber",
+    "resubmissionReason"
   )
 }
 object AdministrativeDetailsSection extends Formatting {
@@ -70,7 +72,8 @@ object AdministrativeDetailsSection extends Formatting {
       country = country(finalSubmission),
       utr = utr(finalSubmission),
       ninoOrTrn = ninoOrTrn(finalSubmission),
-      contactNumber = contactNumber(finalSubmission)
+      contactNumber = contactNumber(finalSubmission),
+      resubmissionReason = resubmissionReason(finalSubmission)
     )
 
   private def firstName(finalSubmission: FinalSubmission) =
@@ -161,4 +164,7 @@ object AdministrativeDetailsSection extends Formatting {
     formatString(
       finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails.contactPhoneNumber
     )
+
+  private def resubmissionReason(finalSubmission: FinalSubmission): Option[String] =
+    finalSubmission.calculationInputs.resubmission.reason
 }
