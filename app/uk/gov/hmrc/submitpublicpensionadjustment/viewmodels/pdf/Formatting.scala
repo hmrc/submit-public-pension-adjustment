@@ -102,10 +102,10 @@ trait Formatting {
 
   def formatQuarterChargePaid(quarterChargePaid: Option[QuarterChargePaid]): String =
     quarterChargePaid match {
-      case Some(QuarterChargePaid.AprToJul) => "6 April to 5 July"
-      case Some(QuarterChargePaid.JulToOct) => "6 July to 5 October"
-      case Some(QuarterChargePaid.OctToJan) => "6 October to 5 January"
-      case Some(QuarterChargePaid.JanToApr) => "6 January to 5 April"
+      case Some(QuarterChargePaid.AprToJul) => "1 April to 30 June"
+      case Some(QuarterChargePaid.JulToOct) => "1 July to 30 September"
+      case Some(QuarterChargePaid.OctToJan) => "1 October to 31 December"
+      case Some(QuarterChargePaid.JanToApr) => "1 January to 31 March"
       case _                                => NotApplicable
     }
 

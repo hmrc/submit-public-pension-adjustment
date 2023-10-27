@@ -47,7 +47,7 @@ Who paid your lifetime allowance charge? : Scheme
 What is the name of the pension scheme that paid your lifetime allowance charge : Scheme1
 What is the tax reference for the pension scheme that paid? : pstr1
 In which year was your lifetime allowance charge paid? : 6 April 2015 to 5 April 2016
-In which quarter was your lifetime allowance charge paid? : 6 April to 5 July
+In which quarter was your lifetime allowance charge paid? : 1 April to 30 June
 How will the new excess above your lifetime allowance be paid to you? : Both
 What is the new value of the lump sum? : £7
 What is the new value of the annual payment? : £8
