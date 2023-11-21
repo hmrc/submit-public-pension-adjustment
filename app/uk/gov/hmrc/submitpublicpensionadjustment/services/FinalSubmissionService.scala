@@ -43,7 +43,11 @@ class FinalSubmissionService @Inject() (
       sendToDms(finalSubmission, auditMetadata, queueReferences)
 
     val allSubmissionReferences: Future[Seq[String]] = Future.sequence(responses)
-    allSubmissionReferences.map(refs => SubmissionReferences(mostSignificantQueueReference.submissionReference, refs))
+
+    allSubmissionReferences.map { refs =>
+      auditService.auditSubmitRequest(buildAudit(finalSubmission, auditMetadata))
+      SubmissionReferences(mostSignificantQueueReference.submissionReference, refs)
+    }
   }
 
   private def sendToDms(
@@ -63,7 +67,6 @@ class FinalSubmissionService @Inject() (
             queueReference.submissionReference,
             queueReference.dmsQueue.queueName()
           )
-        _  = auditService.auditSubmitRequest(buildAudit(finalSubmission, auditMetadata))
       } yield queueReference.submissionReference
     }
     responses
