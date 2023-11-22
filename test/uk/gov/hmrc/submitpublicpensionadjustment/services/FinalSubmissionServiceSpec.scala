@@ -143,7 +143,7 @@ class FinalSubmissionServiceSpec
           any()
         )
 
-      verify(mockAuditService, times(2)).auditSubmitRequest(eqTo(expectedAudit))(any())
+      verify(mockAuditService, times(1)).auditSubmitRequest(eqTo(expectedAudit))(any())
     }
   }
 }
