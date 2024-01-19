@@ -90,6 +90,7 @@ trait Formatting {
 
   def formatYearChargePaid(yearChargePaid: Option[YearChargePaid]): String =
     yearChargePaid match {
+      case Some(YearChargePaid._2022To2023) => "6 April 2022 to 5 April 2023"
       case Some(YearChargePaid._2021To2022) => "6 April 2021 to 5 April 2022"
       case Some(YearChargePaid._2020To2021) => "6 April 2020 to 5 April 2021"
       case Some(YearChargePaid._2019To2020) => "6 April 2019 to 5 April 2020"
