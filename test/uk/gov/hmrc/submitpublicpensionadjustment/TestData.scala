@@ -150,7 +150,8 @@ object TestData {
     Some(
       AnnualAllowance(
         scottishTaxYears = List(),
-        taxYears = List(taxYear2016To2023SampleData2019, taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
+        taxYears =
+          List(taxYear2016To2023SampleData2019, taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
       )
     ),
     Some(lifeTimeAllowance)
@@ -161,7 +162,8 @@ object TestData {
     Some(
       AnnualAllowance(
         scottishTaxYears = List(),
-        taxYears = List(taxYear2016To2023SampleData2019, taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
+        taxYears =
+          List(taxYear2016To2023SampleData2019, taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
       )
     ),
     Some(lifeTimeAllowance)

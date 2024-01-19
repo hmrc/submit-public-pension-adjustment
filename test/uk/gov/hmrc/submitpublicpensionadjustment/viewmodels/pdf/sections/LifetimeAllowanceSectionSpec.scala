@@ -74,7 +74,19 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
     val calculationInputs = CalculationInputs(
       inputsResubmission(false, None),
       None,
-      Some(TestData.lifeTimeAllowance.copy(newProtectionTypeOrEnhancementReference = None, previousLifetimeAllowanceChargeSchemeNameAndTaxRef = None, newLifetimeAllowanceChargeSchemeNameAndTaxRef = None, newLifeTimeAllowanceAdditions = TestData.newLifeTimeAllowanceAdditions.copy(internationalEnhancementReference = None, pensionCreditReference = None, newInternationalEnhancementReference = None, newPensionCreditReference = None )))
+      Some(
+        TestData.lifeTimeAllowance.copy(
+          newProtectionTypeOrEnhancementReference = None,
+          previousLifetimeAllowanceChargeSchemeNameAndTaxRef = None,
+          newLifetimeAllowanceChargeSchemeNameAndTaxRef = None,
+          newLifeTimeAllowanceAdditions = TestData.newLifeTimeAllowanceAdditions.copy(
+            internationalEnhancementReference = None,
+            pensionCreditReference = None,
+            newInternationalEnhancementReference = None,
+            newPensionCreditReference = None
+          )
+        )
+      )
     )
 
     val finalSubmission = FinalSubmission(calculationInputs, None, TestData.submissionInputs)

@@ -77,7 +77,9 @@ class CompensationSectionSpec extends AnyFreeSpec with Matchers with Logging {
 
   "schemePaidChargeSubSections must be empty when taxYears do not exist" in {
 
-    val sections = CompensationSection.build(TestData.finalSubmission.copy(TestData.finalSubmission.calculationInputs.copy(annualAllowance = None)))
+    val sections = CompensationSection.build(
+      TestData.finalSubmission.copy(TestData.finalSubmission.calculationInputs.copy(annualAllowance = None))
+    )
     sections mustBe Seq(
       CompensationSection(
         relatingTo = Period._2017,

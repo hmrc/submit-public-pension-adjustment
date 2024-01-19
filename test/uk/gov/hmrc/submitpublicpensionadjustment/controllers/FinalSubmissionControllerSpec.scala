@@ -126,9 +126,9 @@ class FinalSubmissionControllerSpec
         )
 
         val invalidJson = Json.obj("invalidField" -> "invalidValue")
-        val request = FakeRequest(POST, routes.FinalSubmissionController.submit.url)
+        val request     = FakeRequest(POST, routes.FinalSubmissionController.submit.url)
           .withBody(invalidJson)
-        val result = route(app, request).value
+        val result      = route(app, request).value
 
         status(result) mustEqual BAD_REQUEST
         contentAsString(result) must include("Invalid Final Submission")

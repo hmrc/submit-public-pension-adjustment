@@ -23,19 +23,19 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{Peri
 class ResponsePeriodSpec extends AnyFlatSpec with Matchers {
 
   "toCalculationInputsPeriod" should "correctly map Period instances to InputsPeriod instances" in {
-    Period._2011.toCalculationInputsPeriod shouldBe InputsPeriod._2011
-    Period._2012.toCalculationInputsPeriod shouldBe InputsPeriod._2012
-    Period._2013.toCalculationInputsPeriod shouldBe InputsPeriod._2013
-    Period._2014.toCalculationInputsPeriod shouldBe InputsPeriod._2014
-    Period._2015.toCalculationInputsPeriod shouldBe InputsPeriod._2015
-    Period._2016PreAlignment.toCalculationInputsPeriod shouldBe InputsPeriod._2016PreAlignment
+    Period._2011.toCalculationInputsPeriod              shouldBe InputsPeriod._2011
+    Period._2012.toCalculationInputsPeriod              shouldBe InputsPeriod._2012
+    Period._2013.toCalculationInputsPeriod              shouldBe InputsPeriod._2013
+    Period._2014.toCalculationInputsPeriod              shouldBe InputsPeriod._2014
+    Period._2015.toCalculationInputsPeriod              shouldBe InputsPeriod._2015
+    Period._2016PreAlignment.toCalculationInputsPeriod  shouldBe InputsPeriod._2016PreAlignment
     Period._2016PostAlignment.toCalculationInputsPeriod shouldBe InputsPeriod._2016PostAlignment
-    Period._2017.toCalculationInputsPeriod shouldBe InputsPeriod._2017
-    Period._2018.toCalculationInputsPeriod shouldBe InputsPeriod._2018
-    Period._2019.toCalculationInputsPeriod shouldBe InputsPeriod._2019
-    Period._2020.toCalculationInputsPeriod shouldBe InputsPeriod._2020
-    Period._2021.toCalculationInputsPeriod shouldBe InputsPeriod._2021
-    Period._2022.toCalculationInputsPeriod shouldBe InputsPeriod._2022
-    Period._2023.toCalculationInputsPeriod shouldBe InputsPeriod._2023
+    Period._2017.toCalculationInputsPeriod              shouldBe InputsPeriod._2017
+    Period._2018.toCalculationInputsPeriod              shouldBe InputsPeriod._2018
+    Period._2019.toCalculationInputsPeriod              shouldBe InputsPeriod._2019
+    Period._2020.toCalculationInputsPeriod              shouldBe InputsPeriod._2020
+    Period._2021.toCalculationInputsPeriod              shouldBe InputsPeriod._2021
+    Period._2022.toCalculationInputsPeriod              shouldBe InputsPeriod._2022
+    Period._2023.toCalculationInputsPeriod              shouldBe InputsPeriod._2023
   }
 }

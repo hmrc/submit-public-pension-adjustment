@@ -34,7 +34,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response
 
 import org.scalatestplus.play.PlaySpec
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response._
-class TaxRateSpec extends PlaySpec{
+class TaxRateSpec extends PlaySpec {
   "NonScottishTaxRate" should {
     "apply correct tax rates for different years" in {
       NonScottishTaxRate._2016().getTaxRate(10000) mustBe 0.00

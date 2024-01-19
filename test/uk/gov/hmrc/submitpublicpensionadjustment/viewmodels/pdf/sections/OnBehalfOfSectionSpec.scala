@@ -56,7 +56,8 @@ class OnBehalfOfSectionSpec extends AnyFreeSpec with Matchers with Logging {
 
       val finalSubmissionWithDOB = TestData.finalSubmission.copy(
         submissionInputs = TestData.submissionInputs.copy(
-          administrativeDetails = TestData.administrativeDetails.copy(TestData.administrativeDetails.claimantDetails,
+          administrativeDetails = TestData.administrativeDetails.copy(
+            TestData.administrativeDetails.claimantDetails,
             Some(
               TestData.onBehalfOfMemberDetails.copy(
                 memberPersonalDetails = TestData.onBehalfOfMemberDetails.memberPersonalDetails.copy(
@@ -67,14 +68,15 @@ class OnBehalfOfSectionSpec extends AnyFreeSpec with Matchers with Logging {
           )
         )
       )
-      val section = OnBehalfOfSection.build(finalSubmissionWithDOB)
-      section.get.dob mustBe "01/01/1980" // Assuming format method is dd/MM/yyyy
+      val section                = OnBehalfOfSection.build(finalSubmissionWithDOB)
+      section.get.dob mustBe "01/01/1980"
     }
 
     "should return 'Not Entered' if dateOfBirth is None" in {
       val finalSubmissionWithoutDOB = TestData.finalSubmission.copy(
         submissionInputs = TestData.submissionInputs.copy(
-          administrativeDetails = TestData.administrativeDetails.copy(TestData.administrativeDetails.claimantDetails,
+          administrativeDetails = TestData.administrativeDetails.copy(
+            TestData.administrativeDetails.claimantDetails,
             Some(
               TestData.onBehalfOfMemberDetails.copy(
                 memberPersonalDetails = TestData.onBehalfOfMemberDetails.memberPersonalDetails.copy(
@@ -85,24 +87,30 @@ class OnBehalfOfSectionSpec extends AnyFreeSpec with Matchers with Logging {
           )
         )
       )
-      val section = OnBehalfOfSection.build(finalSubmissionWithoutDOB)
+      val section                   = OnBehalfOfSection.build(finalSubmissionWithoutDOB)
       section.get.dob mustBe "Not Entered"
     }
 
     "when constructing address lines" - {
       "should use international address when present" in {
-        val internationalAddress = InternationalAddress("Intl Address Line 1", Some("Intl Address Line 2"), "Intl City", Some("Intl Region"), Some("Postalcode"), "FR")
+        val internationalAddress                   = InternationalAddress(
+          "Intl Address Line 1",
+          Some("Intl Address Line 2"),
+          "Intl City",
+          Some("Intl Region"),
+          Some("Postalcode"),
+          "FR"
+        )
         val onBehalfOfMemberDetailsWithIntlAddress = TestData.onBehalfOfMemberDetails.copy(
           memberPersonalDetails = TestData.onBehalfOfMemberDetails.memberPersonalDetails.copy(
             pensionSchemeMemberAddress = None,
             pensionSchemeMemberInternationalAddress = Some(internationalAddress)
           )
         )
-        val finalSubmissionWithIntlAddress = TestData.finalSubmission.copy(
+        val finalSubmissionWithIntlAddress         = TestData.finalSubmission.copy(
           submissionInputs = TestData.submissionInputs.copy(
-            administrativeDetails = TestData.administrativeDetails.copy(TestData.administrativeDetails.claimantDetails,
-              Some(onBehalfOfMemberDetailsWithIntlAddress)
-            )
+            administrativeDetails = TestData.administrativeDetails
+              .copy(TestData.administrativeDetails.claimantDetails, Some(onBehalfOfMemberDetailsWithIntlAddress))
           )
         )
 
@@ -124,11 +132,10 @@ class OnBehalfOfSectionSpec extends AnyFreeSpec with Matchers with Logging {
             pensionSchemeMemberInternationalAddress = None
           )
         )
-        val finalSubmissionWithIntlAddress = TestData.finalSubmission.copy(
+        val finalSubmissionWithIntlAddress         = TestData.finalSubmission.copy(
           submissionInputs = TestData.submissionInputs.copy(
-            administrativeDetails = TestData.administrativeDetails.copy(TestData.administrativeDetails.claimantDetails,
-              Some(onBehalfOfMemberDetailsWithIntlAddress)
-            )
+            administrativeDetails = TestData.administrativeDetails
+              .copy(TestData.administrativeDetails.claimantDetails, Some(onBehalfOfMemberDetailsWithIntlAddress))
           )
         )
 
@@ -144,18 +151,18 @@ class OnBehalfOfSectionSpec extends AnyFreeSpec with Matchers with Logging {
       }
 
       "should return 'NotEntered' when addressLine2 is not present and is international Address" in {
-        val internationalAddress = InternationalAddress("Intl Address Line 1", None, "Intl City", Some("Intl Region"), Some("Postalcode"), "FR")
+        val internationalAddress                   =
+          InternationalAddress("Intl Address Line 1", None, "Intl City", Some("Intl Region"), Some("Postalcode"), "FR")
         val onBehalfOfMemberDetailsWithIntlAddress = TestData.onBehalfOfMemberDetails.copy(
           memberPersonalDetails = TestData.onBehalfOfMemberDetails.memberPersonalDetails.copy(
             pensionSchemeMemberAddress = None,
             pensionSchemeMemberInternationalAddress = Some(internationalAddress)
           )
         )
-        val finalSubmissionWithIntlAddress = TestData.finalSubmission.copy(
+        val finalSubmissionWithIntlAddress         = TestData.finalSubmission.copy(
           submissionInputs = TestData.submissionInputs.copy(
-            administrativeDetails = TestData.administrativeDetails.copy(TestData.administrativeDetails.claimantDetails,
-              Some(onBehalfOfMemberDetailsWithIntlAddress)
-            )
+            administrativeDetails = TestData.administrativeDetails
+              .copy(TestData.administrativeDetails.claimantDetails, Some(onBehalfOfMemberDetailsWithIntlAddress))
           )
         )
 
@@ -164,18 +171,17 @@ class OnBehalfOfSectionSpec extends AnyFreeSpec with Matchers with Logging {
       }
 
       "should return 'NotEntered' when addressLine2 is not present and is Uk Address" in {
-        val ukAddress = UkAddress("Address Line 1", None, "City", Some("County"), "Postcode")
+        val ukAddress                              = UkAddress("Address Line 1", None, "City", Some("County"), "Postcode")
         val onBehalfOfMemberDetailsWithIntlAddress = TestData.onBehalfOfMemberDetails.copy(
           memberPersonalDetails = TestData.onBehalfOfMemberDetails.memberPersonalDetails.copy(
             pensionSchemeMemberAddress = Some(ukAddress),
             pensionSchemeMemberInternationalAddress = None
           )
         )
-        val finalSubmissionWithIntlAddress = TestData.finalSubmission.copy(
+        val finalSubmissionWithIntlAddress         = TestData.finalSubmission.copy(
           submissionInputs = TestData.submissionInputs.copy(
-            administrativeDetails = TestData.administrativeDetails.copy(TestData.administrativeDetails.claimantDetails,
-              Some(onBehalfOfMemberDetailsWithIntlAddress)
-            )
+            administrativeDetails = TestData.administrativeDetails
+              .copy(TestData.administrativeDetails.claimantDetails, Some(onBehalfOfMemberDetailsWithIntlAddress))
           )
         )
 
@@ -188,16 +194,18 @@ class OnBehalfOfSectionSpec extends AnyFreeSpec with Matchers with Logging {
       "should return trn correctly" in {
         val finalSubmissionWithUtr = TestData.finalSubmission.copy(
           submissionInputs = TestData.submissionInputs.copy(
-            administrativeDetails = TestData.administrativeDetails.copy(TestData.administrativeDetails.claimantDetails,
+            administrativeDetails = TestData.administrativeDetails.copy(
+              TestData.administrativeDetails.claimantDetails,
               Some(
-                TestData.onBehalfOfMemberDetails.copy(taxIdentifiers = TaxIdentifiers(None, Some("testTrn"), None),
+                TestData.onBehalfOfMemberDetails.copy(
+                  taxIdentifiers = TaxIdentifiers(None, Some("testTrn"), None),
                   memberPersonalDetails = TestData.onBehalfOfMemberDetails.memberPersonalDetails
                 )
               )
             )
           )
         )
-        val sectionWithUTR = OnBehalfOfSection.build(finalSubmissionWithUtr)
+        val sectionWithUTR         = OnBehalfOfSection.build(finalSubmissionWithUtr)
         sectionWithUTR.get.ninoOrTrn mustBe "testTrn"
       }
     }

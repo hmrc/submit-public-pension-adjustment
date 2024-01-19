@@ -26,7 +26,8 @@ class CaseIdentificationSectionSpec extends AnyFreeSpec with Matchers {
 
   "CaseIdentificationSection" - {
     "should be correctly constructed with all queue references" in {
-      val caseIdentifiers = CaseIdentifiers("testCaseNumber",
+      val caseIdentifiers = CaseIdentifiers(
+        "testCaseNumber",
         queueReferences = List(
           QueueReference(Compensation("testQueue"), "compRef"),
           QueueReference(CompensationAmendment("testQueue"), "compAmendRef"),
@@ -48,7 +49,8 @@ class CaseIdentificationSectionSpec extends AnyFreeSpec with Matchers {
     }
 
     "should correctly handle missing queue references" in {
-      val caseIdentifiers = CaseIdentifiers("testCaseNumber",
+      val caseIdentifiers = CaseIdentifiers(
+        "testCaseNumber",
         queueReferences = List(
         )
       )
