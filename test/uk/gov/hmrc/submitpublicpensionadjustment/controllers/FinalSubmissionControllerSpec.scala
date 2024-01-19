@@ -111,5 +111,28 @@ class FinalSubmissionControllerSpec
         any()
       )
     }
+
+    "submit with invalid JSON" - {
+      "must return BadRequest when JSON is invalid" in {
+        when(
+          mockAuthConnector.authorise[Option[String] ~ Option[String] ~ Option[AffinityGroup] ~ Option[CredentialRole]](
+            any(),
+            any()
+          )(any(), any())
+        ).thenReturn(
+          Future.successful(
+            new ~(new ~(new ~(Some("nino"), Some("internalId")), Some(AffinityGroup.Organisation)), Some(User))
+          )
+        )
+
+        val invalidJson = Json.obj("invalidField" -> "invalidValue")
+        val request = FakeRequest(POST, routes.FinalSubmissionController.submit.url)
+          .withBody(invalidJson)
+        val result = route(app, request).value
+
+        status(result) mustEqual BAD_REQUEST
+        contentAsString(result) must include("Invalid Final Submission")
+      }
+    }
   }
 }

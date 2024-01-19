@@ -82,6 +82,18 @@ Scheme : 2
 How much of the charge did your pension scheme pay? : £100
 Name of scheme originally paid charge 17/18 : TestName22018
 PSTR of scheme originally paid charge 17/18 : TestTaxRef
+Amount of direct compensation 18/19 : £1002019
+Amount of indirect compensation 18/19 : £2002019
+Revised tax charge total 18/19 : £2702019
+How much of the charge did you pay? : £502019
+Scheme : 1
+How much of the charge did your pension scheme pay? : £100
+Name of scheme originally paid charge 18/19 : TestName2019
+PSTR of scheme originally paid charge 18/19 : TestTaxRef
+Scheme : 2
+How much of the charge did your pension scheme pay? : £100
+Name of scheme originally paid charge 18/19 : TestName22019
+PSTR of scheme originally paid charge 18/19 : TestTaxRef
 Value of previous charge for 16/17 : £300
 Who was the previous charge paid by? : Both
 Scheme : 1

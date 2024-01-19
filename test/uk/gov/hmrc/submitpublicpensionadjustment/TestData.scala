@@ -28,6 +28,23 @@ import java.time.LocalDate
 
 object TestData {
 
+  val testTaxYearSchemeData2019 = List(
+    TaxYearScheme(
+      name = "TestName2019",
+      pensionSchemeTaxReference = "TestTaxRef",
+      originalPensionInputAmount = 999,
+      revisedPensionInputAmount = 991,
+      chargePaidByScheme = 100
+    ),
+    TaxYearScheme(
+      name = "TestName22019",
+      pensionSchemeTaxReference = "TestTaxRef",
+      originalPensionInputAmount = 999,
+      revisedPensionInputAmount = 991,
+      chargePaidByScheme = 100
+    )
+  )
+
   val testTaxYearSchemeData2018 = List(
     TaxYearScheme(
       name = "TestName2018",
@@ -62,8 +79,20 @@ object TestData {
     )
   )
 
-  val taxYear2016To2023SampleData2018 = TaxYear2016To2023.NormalTaxYear(
-    pensionInputAmount = 5000,
+  val taxYear2016To2023SampleData2019 = TaxYear2016To2023.PostFlexiblyAccessedTaxYear(
+    definedBenefitInputAmount = 5000,
+    definedContributionInputAmount = 300,
+    taxYearSchemes = testTaxYearSchemeData2019,
+    totalIncome = 100000,
+    chargePaidByMember = 1500,
+    period = InputPeriod._2019
+  )
+
+  val taxYear2016To2023SampleData2018 = TaxYear2016To2023.InitialFlexiblyAccessedTaxYear(
+    definedBenefitInputAmount = 5000,
+    flexiAccessDate = LocalDate.of(2016, 4, 6),
+    preAccessDefinedContributionInputAmount = 300,
+    postAccessDefinedContributionInputAmount = 200,
     taxYearSchemes = testTaxYearSchemeData2018,
     totalIncome = 100000,
     chargePaidByMember = 1500,
@@ -121,7 +150,7 @@ object TestData {
     Some(
       AnnualAllowance(
         scottishTaxYears = List(),
-        taxYears = List(taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
+        taxYears = List(taxYear2016To2023SampleData2019, taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
       )
     ),
     Some(lifeTimeAllowance)
@@ -132,7 +161,7 @@ object TestData {
     Some(
       AnnualAllowance(
         scottishTaxYears = List(),
-        taxYears = List(taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
+        taxYears = List(taxYear2016To2023SampleData2019, taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
       )
     ),
     Some(lifeTimeAllowance)
@@ -230,6 +259,18 @@ object TestData {
       declarations
     )
 
+  val outOfDatesCalculation2019 = OutOfDatesTaxYearsCalculation(
+    period = ResponsePeriod.Year(2019),
+    directCompensation = 1002019,
+    indirectCompensation = 2002019,
+    chargePaidByMember = 502019,
+    chargePaidBySchemes = 752019,
+    revisedChargableAmountBeforeTaxRate = 3002019,
+    revisedChargableAmountAfterTaxRate = 2702019,
+    unusedAnnualAllowance = 202019,
+    taxYearSchemes = List(OutOfDatesTaxYearSchemeCalculation("Scheme A2019", "PSTR1232019", 502018))
+  )
+
   val outOfDatesCalculation2017 = OutOfDatesTaxYearsCalculation(
     period = ResponsePeriod._2017,
     directCompensation = 100,
@@ -285,7 +326,7 @@ object TestData {
       CalculationResponse(
         responseResubmission(false, None),
         TotalAmounts(10, 20, 30),
-        List(outOfDatesCalculation2017, outOfDatesCalculation2018),
+        List(outOfDatesCalculation2017, outOfDatesCalculation2018, outOfDatesCalculation2019),
         List(inDatesCalculation2017, inDatesCalculation2018)
       )
     )
