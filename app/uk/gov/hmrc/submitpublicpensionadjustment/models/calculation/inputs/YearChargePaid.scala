@@ -22,6 +22,8 @@ sealed trait YearChargePaid
 
 object YearChargePaid extends Enumerable.Implicits {
 
+  case object _2022To2023 extends WithName("2022To2023") with YearChargePaid
+
   case object _2021To2022 extends WithName("2021To2022") with YearChargePaid
 
   case object _2020To2021 extends WithName("2020To2021") with YearChargePaid
@@ -37,6 +39,7 @@ object YearChargePaid extends Enumerable.Implicits {
   case object _2015To2016 extends WithName("2015To2016") with YearChargePaid
 
   val values: Seq[YearChargePaid] = Seq(
+    _2022To2023,
     _2021To2022,
     _2020To2021,
     _2019To2020,
