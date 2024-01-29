@@ -377,4 +377,21 @@ object TestData {
     ),
     DeclarationsSection("Y", "Y", "Y", "Y", "Y")
   )
+
+  val pdfXmlLayout: String =
+    """
+      |<fo:root>
+      |  <fo:layout-master-set>
+      |    <fo:simple-page-master master-name="A4">
+      |      <fo:region-body />
+      |    </fo:simple-page-master>
+      |  </fo:layout-master-set>
+      |  <fo:page-sequence master-reference="A4">
+      |    <fo:flow flow-name="xsl-region-body">
+      |      <fo:block>Test PDF Content</fo:block>
+      |    </fo:flow>
+      |  </fo:page-sequence>
+      |</fo:root>
+    """.stripMargin
+
 }

@@ -32,9 +32,11 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
 import uk.gov.hmrc.submitpublicpensionadjustment.connectors.DmsSubmissionConnector
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.Compensation
+import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CaseIdentifiers, Done, QueueReference}
 import uk.gov.hmrc.submitpublicpensionadjustment.views.xml.FinalSubmissionPdf
 
+import java.nio.file.{Files, Paths}
 import scala.concurrent.Future
 
 class DmsSubmissionServiceSpec
@@ -126,6 +128,22 @@ class DmsSubmissionServiceSpec
         .thenReturn(Future.failed(new RuntimeException()))
 
       service.send(caseIdentifiers, finalSubmission, submissionReference, dmsQueue.queueName)(hc).failed.futureValue
+    }
+  }
+
+  "NoOpDmsSubmissionService should return done after performing an operation" - {
+    val service = new NoOpDmsSubmissionService()
+
+    val caseIdentifiers            = CaseIdentifiers("caseNumber", Seq(QueueReference(null, "submissionReference")))
+    val finalSubmission            = FinalSubmission(null, None, null)
+    val submissionReference        = "submissionReference"
+    val dmsQueueName               = "dmsQueueName"
+    implicit val hc: HeaderCarrier = HeaderCarrier()
+
+    val result: Future[Done] = service.send(caseIdentifiers, finalSubmission, submissionReference, dmsQueueName)
+
+    whenReady(result) { done =>
+      done mustBe Done
     }
   }
 }
