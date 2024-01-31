@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment
 
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, ChangeInTaxCharge, EnhancementType, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LtaPensionSchemeDetails, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, NewLifeTimeAllowanceAdditions, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, SchemeNameAndTaxRef, TaxYear, TaxYear2016To2023, UserSchemeDetails, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid, Period => InputPeriod, Resubmission => inputsResubmission}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, TaxYearScheme, TotalAmounts, Period => ResponsePeriod, Resubmission => responseResubmission}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, ChangeInTaxCharge, EnhancementType, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LtaPensionSchemeDetails, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, NewLifeTimeAllowanceAdditions, Period => InputPeriod, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, Resubmission => inputsResubmission, SchemeNameAndTaxRef, TaxYear2016To2023, UserSchemeDetails, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, Period => ResponsePeriod, Resubmission => responseResubmission, TaxYearScheme, TotalAmounts}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.OnBehalfOfMemberType.Deceased
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{PSTR, UkAddress}
@@ -147,8 +147,7 @@ object TestData {
 
   val annualAllowance: AnnualAllowance = AnnualAllowance(
     scottishTaxYears = List(),
-    taxYears =
-      List(taxYear2016To2023SampleData2019, taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
+    taxYears = List(taxYear2016To2023SampleData2019, taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
   )
 
   val calculationInputs = CalculationInputs(
@@ -253,7 +252,8 @@ object TestData {
 
   val paymentElection: PaymentElection = PaymentElection(period = InputPeriod._2017, None, schemeCharge)
 
-  val paymentElection2018: PaymentElection = PaymentElection(period = InputPeriod._2018, None, schemeChargeWithEstimatedElectionQuater)
+  val paymentElection2018: PaymentElection =
+    PaymentElection(period = InputPeriod._2018, None, schemeChargeWithEstimatedElectionQuater)
 
   val submissionInputs: SubmissionInputs =
     SubmissionInputs(

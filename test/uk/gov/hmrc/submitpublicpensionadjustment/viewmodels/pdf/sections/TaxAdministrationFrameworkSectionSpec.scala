@@ -90,7 +90,9 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
 
   "section must be constructed with an empty relevantTaxYear" in {
 
-    val sections = TaxAdministrationFrameworkSection.build(TestData.finalSubmission.copy(TestData.calculationInputs.copy(annualAllowance = None)))
+    val sections = TaxAdministrationFrameworkSection.build(
+      TestData.finalSubmission.copy(TestData.calculationInputs.copy(annualAllowance = None))
+    )
 
     sections mustBe Seq(
       TaxAdministrationFrameworkSection(
@@ -131,13 +133,21 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
         schemePayingPstr = "Not Applicable",
         schemePayingName = "Not Applicable",
         schemeDetailsSubSections = Seq()
-      ),
+      )
     )
   }
 
   "section must be constructed with no inDateCalc" in {
 
-    val sections = TaxAdministrationFrameworkSection.build(TestData.finalSubmission.copy(calculation = Some(TestData.calculationResponse.copy(inDates = List(TestData.inDatesCalculation2019.copy(chargePaidByMember = 0, chargePaidBySchemes = 0))))))
+    val sections = TaxAdministrationFrameworkSection.build(
+      TestData.finalSubmission.copy(calculation =
+        Some(
+          TestData.calculationResponse.copy(inDates =
+            List(TestData.inDatesCalculation2019.copy(chargePaidByMember = 0, chargePaidBySchemes = 0))
+          )
+        )
+      )
+    )
 
     sections mustBe Seq(
       TaxAdministrationFrameworkSection(
@@ -151,8 +161,11 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
         schemePayingChargeAmount = "Not Applicable",
         schemePayingPstr = "Not Applicable",
         schemePayingName = "Not Applicable",
-        schemeDetailsSubSections = List(SchemeDetailsSubSection(1, "TestName2019", "TestTaxRef"), SchemeDetailsSubSection(2, "TestName22019", "TestTaxRef"))
-      ),
+        schemeDetailsSubSections = List(
+          SchemeDetailsSubSection(1, "TestName2019", "TestTaxRef"),
+          SchemeDetailsSubSection(2, "TestName22019", "TestTaxRef")
+        )
+      )
     )
   }
 

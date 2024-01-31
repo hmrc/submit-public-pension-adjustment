@@ -33,17 +33,17 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class CreateLocalPdfDmsSubmissionServiceSpec
-  extends AnyFreeSpec
+    extends AnyFreeSpec
     with Matchers
     with ScalaFutures
     with OptionValues
     with MockitoSugar
     with BeforeAndAfterEach {
 
-  private val mockFopService = mock[FopService]
-  private val mockViewModelService = mock[ViewModelService]
-  private val mockFinalSubmissionPdf = mock[FinalSubmissionPdf]
-  private val mockMessagesApi = mock[MessagesApi]
+  private val mockFopService              = mock[FopService]
+  private val mockViewModelService        = mock[ViewModelService]
+  private val mockFinalSubmissionPdf      = mock[FinalSubmissionPdf]
+  private val mockMessagesApi             = mock[MessagesApi]
   private implicit val messages: Messages = mockMessagesApi.preferred(Seq.empty)
 
   private lazy val service = new CreateLocalPdfDmsSubmissionService(
@@ -55,10 +55,10 @@ class CreateLocalPdfDmsSubmissionServiceSpec
 
   "CreateLocalPdfDmsSubmissionService" - {
 
-    val caseIdentifiers = CaseIdentifiers("caseNumber", Seq.empty)
-    val finalSubmission = TestData.finalSubmission
-    val submissionReference = "submissionReference"
-    val dmsQueueName = "dmsQueueName"
+    val caseIdentifiers            = CaseIdentifiers("caseNumber", Seq.empty)
+    val finalSubmission            = TestData.finalSubmission
+    val submissionReference        = "submissionReference"
+    val dmsQueueName               = "dmsQueueName"
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
     "must successfully create a PDF and write to a file" in {

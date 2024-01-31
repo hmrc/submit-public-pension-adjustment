@@ -20,7 +20,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import play.api.Logging
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{CalculationInputs, Resubmission => inputsResubmission}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{CalculationInputs, ExcessLifetimeAllowancePaid, Resubmission => inputsResubmission, WhoPaidLTACharge, WhoPayingExtraLtaCharge}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 
 class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Logging {
@@ -68,6 +68,112 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
     ltaSection.whoPayingExtraCharge mustBe "Scheme"
     ltaSection.whoPayingExtraChargeSchemeName mustBe "Scheme2"
     ltaSection.whoPayingExtraChargeTaxRef mustBe "pstr2"
+  }
+
+  "formatExcessLifetimeAllowancePaid to Annual Payment when ExcessLifetimeAllowancePaid.Annualpayment" in {
+    val calculationInputs = CalculationInputs(
+      inputsResubmission(false, None),
+      None,
+      Some(
+        TestData.lifeTimeAllowance.copy(previousLifetimeAllowanceChargePaymentMethod =
+          Some(ExcessLifetimeAllowancePaid.Annualpayment)
+        )
+      )
+    )
+
+    val finalSubmission = FinalSubmission(calculationInputs, None, TestData.submissionInputs)
+
+    val ltaSection: LifetimeAllowanceSection = LifetimeAllowanceSection.build(finalSubmission).get
+
+    ltaSection.howExcessPaid mustBe "Annual Payment"
+  }
+
+  "formatExcessLifetimeAllowancePaid to Both when ExcessLifetimeAllowancePaid.Both" in {
+    val calculationInputs = CalculationInputs(
+      inputsResubmission(false, None),
+      None,
+      Some(
+        TestData.lifeTimeAllowance.copy(previousLifetimeAllowanceChargePaymentMethod =
+          Some(ExcessLifetimeAllowancePaid.Both)
+        )
+      )
+    )
+
+    val finalSubmission = FinalSubmission(calculationInputs, None, TestData.submissionInputs)
+
+    val ltaSection: LifetimeAllowanceSection = LifetimeAllowanceSection.build(finalSubmission).get
+
+    ltaSection.howExcessPaid mustBe "Both"
+  }
+
+  "formatExcessLifetimeAllowancePaid to NotApplicable when ExcessLifetimeAllowancePaid doesn't exist" in {
+    val calculationInputs = CalculationInputs(
+      inputsResubmission(false, None),
+      None,
+      Some(TestData.lifeTimeAllowance.copy(previousLifetimeAllowanceChargePaymentMethod = None))
+    )
+
+    val finalSubmission = FinalSubmission(calculationInputs, None, TestData.submissionInputs)
+
+    val ltaSection: LifetimeAllowanceSection = LifetimeAllowanceSection.build(finalSubmission).get
+
+    ltaSection.howExcessPaid mustBe "Not Applicable"
+  }
+
+  "formatWhoPaidLTACharge to Member when WhoPaidLTACharge.You" in {
+    val calculationInputs = CalculationInputs(
+      inputsResubmission(false, None),
+      None,
+      Some(TestData.lifeTimeAllowance.copy(previousLifetimeAllowanceChargePaidBy = Some(WhoPaidLTACharge.You)))
+    )
+
+    val finalSubmission = FinalSubmission(calculationInputs, None, TestData.submissionInputs)
+
+    val ltaSection: LifetimeAllowanceSection = LifetimeAllowanceSection.build(finalSubmission).get
+
+    ltaSection.whoPaidLtaCharge mustBe "Member"
+  }
+
+  "formatWhoPaidLTACharge to Not Applicable when WhoPaidLTACharge doesn't exist" in {
+    val calculationInputs = CalculationInputs(
+      inputsResubmission(false, None),
+      None,
+      Some(TestData.lifeTimeAllowance.copy(previousLifetimeAllowanceChargePaidBy = None))
+    )
+
+    val finalSubmission = FinalSubmission(calculationInputs, None, TestData.submissionInputs)
+
+    val ltaSection: LifetimeAllowanceSection = LifetimeAllowanceSection.build(finalSubmission).get
+
+    ltaSection.whoPaidLtaCharge mustBe "Not Applicable"
+  }
+
+  "formatWhoPayingExtraLtaCharge to Member when WhoPayingExtraLtaCharge.You" in {
+    val calculationInputs = CalculationInputs(
+      inputsResubmission(false, None),
+      None,
+      Some(TestData.lifeTimeAllowance.copy(newLifetimeAllowanceChargeWillBePaidBy = Some(WhoPayingExtraLtaCharge.You)))
+    )
+
+    val finalSubmission = FinalSubmission(calculationInputs, None, TestData.submissionInputs)
+
+    val ltaSection: LifetimeAllowanceSection = LifetimeAllowanceSection.build(finalSubmission).get
+
+    ltaSection.whoPayingExtraCharge mustBe "Member"
+  }
+
+  "formatWhoPayingExtraLtaCharge to Not Applicable when WhoPayingExtraLtaCharge does not exist" in {
+    val calculationInputs = CalculationInputs(
+      inputsResubmission(false, None),
+      None,
+      Some(TestData.lifeTimeAllowance.copy(newLifetimeAllowanceChargeWillBePaidBy = None))
+    )
+
+    val finalSubmission = FinalSubmission(calculationInputs, None, TestData.submissionInputs)
+
+    val ltaSection: LifetimeAllowanceSection = LifetimeAllowanceSection.build(finalSubmission).get
+
+    ltaSection.whoPayingExtraCharge mustBe "Not Applicable"
   }
 
   "section must be constructed with Not Applicable when row not present" in {
