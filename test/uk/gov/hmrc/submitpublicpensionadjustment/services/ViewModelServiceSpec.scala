@@ -186,14 +186,30 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
       whoChargePaidBy = "Scheme",
       creditValue = "£1145076",
       debitValue = "£636",
+      isSchemePayingCharge = "Yes",
+      schemePaymentElectionDate = "estimate",
+      schemePayingChargeAmount = "10",
+      schemePayingPstr = "schemePstr",
+      schemePayingName = "TestSceme",
+      schemeDetailsSubSections = Seq(
+        SchemeDetailsSubSection(1, "TestName2018", "TestTaxRef"),
+        SchemeDetailsSubSection(2, "TestName22018", "TestTaxRef")
+      )
+    ),
+    TaxAdministrationFrameworkSection(
+      relatingTo = Period._2019,
+      previousChargeAmount = "£1700",
+      whoChargePaidBy = "Member",
+      creditValue = "£200",
+      debitValue = "£25",
       isSchemePayingCharge = "No",
       schemePaymentElectionDate = "Not Applicable",
       schemePayingChargeAmount = "Not Applicable",
       schemePayingPstr = "Not Applicable",
       schemePayingName = "Not Applicable",
       schemeDetailsSubSections = Seq(
-        SchemeDetailsSubSection(1, "TestName2018", "TestTaxRef"),
-        SchemeDetailsSubSection(2, "TestName22018", "TestTaxRef")
+        SchemeDetailsSubSection(1, "TestName2019", "TestTaxRef"),
+        SchemeDetailsSubSection(2, "TestName22019", "TestTaxRef")
       )
     )
   )

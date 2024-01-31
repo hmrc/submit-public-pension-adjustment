@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment
 
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, ChangeInTaxCharge, EnhancementType, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LtaPensionSchemeDetails, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, NewLifeTimeAllowanceAdditions, Period => InputPeriod, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, Resubmission => inputsResubmission, SchemeNameAndTaxRef, TaxYear2016To2023, UserSchemeDetails, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, Period => ResponsePeriod, Resubmission => responseResubmission, TaxYearScheme, TotalAmounts}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, ChangeInTaxCharge, EnhancementType, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LtaPensionSchemeDetails, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, NewLifeTimeAllowanceAdditions, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, SchemeNameAndTaxRef, TaxYear, TaxYear2016To2023, UserSchemeDetails, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid, Period => InputPeriod, Resubmission => inputsResubmission}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, TaxYearScheme, TotalAmounts, Period => ResponsePeriod, Resubmission => responseResubmission}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.OnBehalfOfMemberType.Deceased
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{PSTR, UkAddress}
@@ -145,14 +145,16 @@ object TestData {
     newLifeTimeAllowanceAdditions = newLifeTimeAllowanceAdditions
   )
 
+  val annualAllowance: AnnualAllowance = AnnualAllowance(
+    scottishTaxYears = List(),
+    taxYears =
+      List(taxYear2016To2023SampleData2019, taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
+  )
+
   val calculationInputs = CalculationInputs(
     inputsResubmission(false, None),
     Some(
-      AnnualAllowance(
-        scottishTaxYears = List(),
-        taxYears =
-          List(taxYear2016To2023SampleData2019, taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
-      )
+      annualAllowance
     ),
     Some(lifeTimeAllowance)
   )
@@ -160,11 +162,7 @@ object TestData {
   val calculationInputsWithResubmissionReason = CalculationInputs(
     inputsResubmission(true, Some("Test resubmission reason")),
     Some(
-      AnnualAllowance(
-        scottishTaxYears = List(),
-        taxYears =
-          List(taxYear2016To2023SampleData2019, taxYear2016To2023SampleData2018, taxYear2016To2023SampleData2017)
-      )
+      annualAllowance
     ),
     Some(lifeTimeAllowance)
   )
@@ -249,12 +247,18 @@ object TestData {
     SchemeCharge(amount = 10, schemeDetails = schemeDetails, Some(LocalDate.of(2017, 1, 13)), None)
   )
 
+  val schemeChargeWithEstimatedElectionQuater: Option[SchemeCharge] = Some(
+    SchemeCharge(amount = 10, schemeDetails = schemeDetails, None, Some("estimate"))
+  )
+
   val paymentElection: PaymentElection = PaymentElection(period = InputPeriod._2017, None, schemeCharge)
+
+  val paymentElection2018: PaymentElection = PaymentElection(period = InputPeriod._2018, None, schemeChargeWithEstimatedElectionQuater)
 
   val submissionInputs: SubmissionInputs =
     SubmissionInputs(
       administrativeDetails,
-      List(paymentElection),
+      List(paymentElection, paymentElection2018),
       List(individualSchemeIdentifier),
       schemeTaxRelief,
       bankAccountDetails,
@@ -297,6 +301,19 @@ object TestData {
     taxYearSchemes = List(OutOfDatesTaxYearSchemeCalculation("Scheme A2018", "PSTR1232018", 502018))
   )
 
+  val inDatesCalculation2019: InDatesTaxYearsCalculation = InDatesTaxYearsCalculation(
+    period = ResponsePeriod.Year(2019),
+    memberCredit = 50,
+    schemeCredit = 150,
+    debit = 25,
+    chargePaidByMember = 50,
+    chargePaidBySchemes = 0,
+    revisedChargableAmountBeforeTaxRate = 300,
+    revisedChargableAmountAfterTaxRate = 270,
+    unusedAnnualAllowance = 20,
+    taxYearSchemes = List(InDatesTaxYearSchemeCalculation("Scheme B2019", "PSTR4562019", 100))
+  )
+
   val inDatesCalculation2017 = InDatesTaxYearsCalculation(
     period = ResponsePeriod.Year(2017),
     memberCredit = 50,
@@ -323,20 +340,17 @@ object TestData {
     taxYearSchemes = List(InDatesTaxYearSchemeCalculation("Scheme B2018", "PSTR4562018", 100))
   )
 
-  val calculationResponse: Some[CalculationResponse] =
-    Some(
-      CalculationResponse(
-        responseResubmission(false, None),
-        TotalAmounts(10, 20, 30),
-        List(outOfDatesCalculation2017, outOfDatesCalculation2018, outOfDatesCalculation2019),
-        List(inDatesCalculation2017, inDatesCalculation2018)
-      )
-    )
+  val calculationResponse: CalculationResponse = CalculationResponse(
+    responseResubmission(false, None),
+    TotalAmounts(10, 20, 30),
+    List(outOfDatesCalculation2017, outOfDatesCalculation2018, outOfDatesCalculation2019),
+    List(inDatesCalculation2017, inDatesCalculation2018, inDatesCalculation2019)
+  )
 
-  val finalSubmission = FinalSubmission(calculationInputs, calculationResponse, submissionInputs)
+  val finalSubmission = FinalSubmission(calculationInputs, Some(calculationResponse), submissionInputs)
 
   val finalSubmissionWithResubmissionReason =
-    FinalSubmission(calculationInputsWithResubmissionReason, calculationResponse, submissionInputs)
+    FinalSubmission(calculationInputsWithResubmissionReason, Some(calculationResponse), submissionInputs)
 
   val administrativeDetailsSection = AdministrativeDetailsSection(
     firstName = "firstName",
@@ -377,21 +391,4 @@ object TestData {
     ),
     DeclarationsSection("Y", "Y", "Y", "Y", "Y")
   )
-
-  val pdfXmlLayout: String =
-    """
-      |<fo:root>
-      |  <fo:layout-master-set>
-      |    <fo:simple-page-master master-name="A4">
-      |      <fo:region-body />
-      |    </fo:simple-page-master>
-      |  </fo:layout-master-set>
-      |  <fo:page-sequence master-reference="A4">
-      |    <fo:flow flow-name="xsl-region-body">
-      |      <fo:block>Test PDF Content</fo:block>
-      |    </fo:flow>
-      |  </fo:page-sequence>
-      |</fo:root>
-    """.stripMargin
-
 }
