@@ -93,7 +93,6 @@ class PDFViewModelSpec extends AnyFreeSpec with Matchers with Logging {
 
     val prettyPrintedOutput = viewModel.prettyPrint(messages)
     val expectedPrettyPrint = Files.readString(Paths.get("test/resources/final_submission_pretty_print.txt"))
-
     prettyPrintedOutput mustBe expectedPrettyPrint
   }
 }
