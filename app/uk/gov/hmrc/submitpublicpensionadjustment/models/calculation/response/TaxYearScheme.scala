@@ -23,7 +23,9 @@ case class TaxYearScheme(
   pensionSchemeTaxReference: String,
   originalPensionInputAmount: Int,
   revisedPensionInputAmount: Int,
-  chargePaidByScheme: Int
+  chargePaidByScheme: Int,
+  originalPensionInput2016PostAmount: Option[Int],
+  revisedPensionInput2016PostAmount: Option[Int]
 )
 
 object TaxYearScheme {
