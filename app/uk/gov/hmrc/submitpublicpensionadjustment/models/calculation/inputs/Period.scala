@@ -59,6 +59,7 @@ object Period {
   val _2013: Period = Period.Year(2013)
   val _2014: Period = Period.Year(2014)
   val _2015: Period = Period.Year(2015)
+  val _2016: Period = Period.Year(2016)
   val _2017: Period = Period.Year(2017)
   val _2018: Period = Period.Year(2018)
   val _2019: Period = Period.Year(2019)
@@ -68,26 +69,19 @@ object Period {
   val _2023: Period = Period.Year(2023)
 
   implicit lazy val reads: Reads[Period] =
-    __.read[String].flatMap {
-      case JsonValue2016Pre  =>
-        Reads(_ => JsSuccess(_2016PreAlignment))
-      case JsonValue2016Post =>
-        Reads(_ => JsSuccess(_2016PostAlignment))
-      case yearString        =>
-        Try(yearString.toInt) match {
-          case Success(year) if year >= 2011 =>
-            Reads(_ => JsSuccess(Year(year)))
-          case Success(year)                 =>
-            Reads(_ => JsError(s"year: `$year`, must be 2011 or later"))
-          case Failure(_)                    =>
-            Reads(_ => JsError("invalid tax year"))
-        }
+    __.read[String].flatMap { case yearString =>
+      Try(yearString.toInt) match {
+        case Success(year) if year >= 2011 =>
+          Reads(_ => JsSuccess(Year(year)))
+        case Success(year)                 =>
+          Reads(_ => JsError(s"year: `$year`, must be 2011 or later"))
+        case Failure(_)                    =>
+          Reads(_ => JsError("invalid tax year"))
+      }
     }
 
-  implicit lazy val writes: Writes[Period] = Writes {
-    case Period.Year(year)         => JsString(year.toString)
-    case Period._2016PreAlignment  => JsString(JsonValue2016Pre)
-    case Period._2016PostAlignment => JsString(JsonValue2016Post)
+  implicit lazy val writes: Writes[Period] = Writes { case Period.Year(year) =>
+    JsString(year.toString)
   }
 
   implicit lazy val ordering: Ordering[Period] =
@@ -109,9 +103,7 @@ object Period {
 
   def fromString(string: String): Option[Period] =
     string match {
-      case _2016PreAlignment.toString  => Some(_2016PreAlignment)
-      case _2016PostAlignment.toString => Some(_2016PostAlignment)
-      case yearString                  =>
+      case yearString =>
         Try(yearString.toInt) match {
           case Success(year) if year >= 2011 && year <= 2023 => Some(Year(year))
           case _                                             => None

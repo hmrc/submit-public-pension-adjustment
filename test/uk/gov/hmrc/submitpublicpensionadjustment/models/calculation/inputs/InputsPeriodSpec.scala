@@ -23,7 +23,7 @@ import org.scalatest.matchers.should.Matchers
 import play.api.libs.json.JsString
 import play.api.mvc.PathBindable
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.Period
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.Period.{Year, _2016PostAlignment, _2016PreAlignment}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.Period.Year
 
 import scala.util.Try
 
@@ -39,15 +39,13 @@ class PeriodSpec extends AnyFlatSpec with Matchers {
 
   "Period Model" should "return correct period from string" in {
 
-    val invalidString = "123"
-    val yearString    = "2017"
-    val preString     = "2016-pre"
-    val postString    = "2016-post"
+    val invalidString  = "123"
+    val year2017String = "2017"
+    val year2016String = "2016"
 
-    Period.fromString(invalidString) shouldEqual None
-    Period.fromString(yearString)    shouldEqual Some(Year(2017))
-    Period.fromString(preString)     shouldEqual Some(_2016PreAlignment)
-    Period.fromString(postString)    shouldEqual Some(_2016PostAlignment)
+    Period.fromString(invalidString)  shouldEqual None
+    Period.fromString(year2017String) shouldEqual Some(Year(2017))
+    Period.fromString(year2016String) shouldEqual Some(Year(2016))
   }
 
   "Period Model" should "should return PathBindable period from string when string is a valid tax year" in {
