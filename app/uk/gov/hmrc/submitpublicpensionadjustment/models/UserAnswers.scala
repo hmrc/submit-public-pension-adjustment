@@ -26,8 +26,8 @@ import java.time.Instant
 
 final case class UserAnswers(
   id: String,
-  data: JsObject,
-  lastUpdated: Instant
+  data: JsObject = Json.obj(),
+  lastUpdated: Instant = Instant.now
 )
 
 object UserAnswers {

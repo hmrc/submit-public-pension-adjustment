@@ -27,4 +27,7 @@ class AppConfig @Inject() (config: Configuration) {
   val submissionAuditEventName = config.get[String]("auditing.submission-request-event-name")
 
   val userAnswerTtlInDays: Int = config.get[Int]("mongodb.userAnswersTtlInDays")
+  val cacheTtl: Int            = config.get[Int]("mongodb.timeToLiveInSeconds")
+  val cppaBaseUrl: String      = config.get[Service]("microservice.services.calculate-public-pension-adjustment").baseUrl
+
 }
