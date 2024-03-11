@@ -39,7 +39,7 @@ class RetrieveSubmissionController @Inject() (
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  def landingCallReceiver(submissionUniqueId: String): Action[AnyContent] = identify.async { implicit request =>
+  def retrieveSubmissionStatus(submissionUniqueId: String): Action[AnyContent] = identify.async { implicit request =>
     val status = calculationDataService.retrieveSubmission(request.internalId, UniqueId(submissionUniqueId))(ec, hc)
 
     status.map { status =>
