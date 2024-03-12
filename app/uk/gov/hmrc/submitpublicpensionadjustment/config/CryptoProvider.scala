@@ -16,18 +16,16 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.config
 
-import javax.inject.{Inject, Singleton}
 import play.api.Configuration
+import uk.gov.hmrc.crypto.{Decrypter, Encrypter, SymmetricCryptoFactory}
+
+import javax.inject.{Inject, Provider, Singleton}
 
 @Singleton
-class AppConfig @Inject() (config: Configuration) {
+class CryptoProvider @Inject() (
+  configuration: Configuration
+) extends Provider[Encrypter with Decrypter] {
 
-  val appName: String = config.get[String]("appName")
-
-  val submissionAuditEventName = config.get[String]("auditing.submission-request-event-name")
-
-  val userAnswerTtlInDays: Int = config.get[Int]("mongodb.userAnswersTtlInDays")
-  val cacheTtl: Int            = config.get[Int]("mongodb.timeToLiveInSeconds")
-  val cppaBaseUrl: String      = config.get[Service]("microservice.services.calculate-public-pension-adjustment").baseUrl
-
+  override def get(): Encrypter with Decrypter =
+    SymmetricCryptoFactory.aesGcmCryptoFromConfig("crypto", configuration.underlying)
 }

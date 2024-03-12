@@ -19,6 +19,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.config
 import org.apache.fop.apps.FopFactory
 import play.api.inject.Binding
 import play.api.{Configuration, Environment}
+import uk.gov.hmrc.crypto.{Decrypter, Encrypter}
 import uk.gov.hmrc.submitpublicpensionadjustment.services.{CreateLocalPdfDmsSubmissionService, DefaultDmsSubmissionService, DmsSubmissionService, NoOpDmsSubmissionService}
 
 import java.time.Clock
@@ -47,6 +48,7 @@ class Module extends play.api.inject.Module {
       bind[AppConfig].toSelf.eagerly(),
       bind[Clock].toInstance(Clock.systemUTC()),
       bind[FopFactory].toProvider[FopFactoryProvider].eagerly(),
+      bind[Encrypter with Decrypter].toProvider[CryptoProvider].eagerly(),
       authTokenInitialiserBinding,
       dmsSubmissionServiceBinding
     )
