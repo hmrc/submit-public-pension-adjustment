@@ -22,7 +22,7 @@ import play.api.http.Status._
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps, UpstreamErrorResponse}
 import uk.gov.hmrc.submitpublicpensionadjustment.config.AppConfig
-import uk.gov.hmrc.submitpublicpensionadjustment.models.UniqueId
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{Done, UniqueId}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.RetrieveSubmissionResponse
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -45,6 +45,7 @@ class CalculateBackendConnector @Inject() (
           case OK =>
             Future.successful(response.json.as[RetrieveSubmissionResponse])
           case _  =>
+            updateSubmissionFlag(submissionUniqueId)
             logger.error(
               s"Unexpected response from /calculate-public-pension-adjustment/submission/${submissionUniqueId.value} with status : ${response.status}"
             )
@@ -56,5 +57,39 @@ class CalculateBackendConnector @Inject() (
             )
         }
       }
+      .recoverWith { _ =>
+        updateSubmissionFlag(submissionUniqueId)
+        logger.error(
+          s"Future failed for an API call /calculate-public-pension-adjustment/submission/${submissionUniqueId.value}"
+        )
+        Future.failed(
+          UpstreamErrorResponse(
+            "Future failed for an API call /calculate-public-pension-adjustment/submission/submissionUniqueId",
+            INTERNAL_SERVER_ERROR
+          )
+        )
+      }
 
+  def updateSubmissionFlag(
+    id: UniqueId
+  )(implicit hc: HeaderCarrier): Future[Boolean] =
+    httpClient2
+      .get(url"${config.cppaBaseUrl}/calculate-public-pension-adjustment/submission-status-update/${id.value}")
+      .execute
+      .flatMap { response =>
+        response.status match {
+          case OK =>
+            Future.successful(true)
+          case _  =>
+            logger.error(
+              s"Unexpected response from /calculate-public-pension-adjustment/submission-status-update/${id.value} with status : ${response.status}"
+            )
+            Future.failed(
+              UpstreamErrorResponse(
+                "Unexpected response from /calculate-public-pension-adjustment/submission-status-update",
+                response.status
+              )
+            )
+        }
+      }
 }
