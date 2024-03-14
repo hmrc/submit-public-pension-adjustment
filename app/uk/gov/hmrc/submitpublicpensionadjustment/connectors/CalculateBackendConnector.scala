@@ -56,6 +56,17 @@ class CalculateBackendConnector @Inject() (
               )
             )
         }
+      }.recoverWith { _ =>
+        updateSubmissionFlag(submissionUniqueId)
+        logger.error(
+          s"Future failed for an API call /calculate-public-pension-adjustment/submission/${submissionUniqueId.value}"
+        )
+        Future.failed(
+          UpstreamErrorResponse(
+            "Future failed for an API call /calculate-public-pension-adjustment/submission/submissionUniqueId",
+            INTERNAL_SERVER_ERROR
+          )
+        )
       }
 
   def updateSubmissionFlag(
