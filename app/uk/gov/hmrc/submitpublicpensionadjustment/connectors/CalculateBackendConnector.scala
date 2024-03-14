@@ -56,7 +56,8 @@ class CalculateBackendConnector @Inject() (
               )
             )
         }
-      }.recoverWith { _ =>
+      }
+      .recoverWith { _ =>
         updateSubmissionFlag(submissionUniqueId)
         logger.error(
           s"Future failed for an API call /calculate-public-pension-adjustment/submission/${submissionUniqueId.value}"
