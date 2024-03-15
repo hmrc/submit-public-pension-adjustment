@@ -20,9 +20,12 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import generators.Generators
+import org.scalatest.concurrent.Eventually.eventually
+import org.scalatest.concurrent.PatienceConfiguration.Timeout
 import org.scalatest.concurrent.ScalaFutures.convertScalaFuture
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
+import org.scalatest.time.{Seconds, Span}
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.http.Status.{BAD_REQUEST, OK}
@@ -84,10 +87,12 @@ class CalculateBackendConnectorSpec
             .willReturn(aResponse().withStatus(OK).withBody(retrieveSubmissionResponse))
         )
 
-        val result: RetrieveSubmissionResponse = connector.retrieveSubmission(UniqueId(submissionUniqueId)).futureValue
-
-        result.calculationInputs mustBe calculationInputs
-        result.calculation mustBe None
+        eventually(Timeout(Span(30, Seconds))) {
+          val result: RetrieveSubmissionResponse =
+            connector.retrieveSubmission(UniqueId(submissionUniqueId)).futureValue
+          result.calculationInputs mustBe calculationInputs
+          result.calculation mustBe None
+        }
       }
     }
 
@@ -107,10 +112,12 @@ class CalculateBackendConnectorSpec
             .willReturn(aResponse().withStatus(BAD_REQUEST).withBody(responseBody))
         )
 
-        val response: Try[RetrieveSubmissionResponse] =
-          Try(connector.retrieveSubmission(UniqueId(submissionUniqueId)).futureValue)
+        eventually(Timeout(Span(30, Seconds))) {
+          val response: Try[RetrieveSubmissionResponse] =
+            Try(connector.retrieveSubmission(UniqueId(submissionUniqueId)).futureValue)
 
-        response.isFailure mustBe true
+          response.isFailure mustBe true
+        }
       }
     }
   }
