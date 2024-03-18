@@ -22,9 +22,11 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import generators.Generators
 import org.scalatest.concurrent.Eventually.eventually
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
+import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.concurrent.ScalaFutures.convertScalaFuture
-import org.scalatest.freespec.AnyFreeSpec
-import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.must.Matchers.{a, convertToAnyMustWrapper}
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import org.scalatest.time.{Seconds, Span}
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
@@ -32,26 +34,25 @@ import play.api.http.Status.{BAD_REQUEST, OK}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import play.api.test.Helpers.running
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.UniqueId
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.RetrieveSubmissionResponse
 
-import scala.util.Try
-
 class CalculateBackendConnectorSpec
-    extends AnyFreeSpec
+    extends AnyFlatSpec
     with ScalaCheckPropertyChecks
     with Generators
     with BeforeAndAfterAll
     with BeforeAndAfterEach {
   implicit lazy val headerCarrier: HeaderCarrier = HeaderCarrier()
 
-  private val application = GuiceApplicationBuilder().build()
-
   val wiremockStubPort = 12802
 
   val server: WireMockServer = new WireMockServer(wireMockConfig().port(wiremockStubPort))
+
+  private val application = GuiceApplicationBuilder()
+    .build()
 
   override def beforeAll(): Unit = {
     server.start()
@@ -68,57 +69,97 @@ class CalculateBackendConnectorSpec
     server.stop()
   }
 
-  ".submission" - {
+  "CalculateBackendConnector" should "retrieve a submission response when call repsonse OK " in {
 
-    "must return a RetrieveSubmission response containing data when a known submissionUniqueId is specified" in {
+    val url = s"/calculate-public-pension-adjustment/submission"
 
-      val url = s"/calculate-public-pension-adjustment/submission"
+    running(application) {
+      val connector = application.injector.instanceOf[CalculateBackendConnector]
 
-      running(application) {
-        val connector = application.injector.instanceOf[CalculateBackendConnector]
+      val calculationInputs          = CalculationInputs(Resubmission(false, None), None, None)
+      val retrieveSubmissionResponse = Json.toJson(RetrieveSubmissionResponse(calculationInputs, None)).toString
 
-        val calculationInputs          = CalculationInputs(Resubmission(false, None), None, None)
-        val retrieveSubmissionResponse = Json.toJson(RetrieveSubmissionResponse(calculationInputs, None)).toString
+      val submissionUniqueId = "1234"
 
-        val submissionUniqueId = "1234"
+      server.stubFor(
+        get(urlEqualTo(url + s"/$submissionUniqueId"))
+          .willReturn(aResponse().withStatus(OK).withBody(retrieveSubmissionResponse))
+      )
 
-        server.stubFor(
-          get(urlEqualTo(url + s"/$submissionUniqueId"))
-            .willReturn(aResponse().withStatus(OK).withBody(retrieveSubmissionResponse))
-        )
-
-        eventually(Timeout(Span(30, Seconds))) {
-          val result: RetrieveSubmissionResponse =
-            connector.retrieveSubmission(UniqueId(submissionUniqueId)).futureValue
-          result.calculationInputs mustBe calculationInputs
-          result.calculation mustBe None
-        }
+      eventually(Timeout(Span(30, Seconds))) {
+        val result: RetrieveSubmissionResponse =
+          connector.retrieveSubmission(UniqueId(submissionUniqueId)).futureValue
+        result.calculationInputs mustBe calculationInputs
+        result.calculation mustBe None
       }
     }
+  }
 
-    "must return a failed future when the server responds with an error" in {
+  "CalculateBackendConnector" should "receive upstream error response when retrieveSubmission Bad Request but updateSubmissionFlag OK" in {
 
-      val url = s"/calculate-public-pension-adjustment/submission"
+    val url = s"/calculate-public-pension-adjustment/submission"
 
-      running(application) {
-        val connector = application.injector.instanceOf[CalculateBackendConnector]
+    val urlUpdateFlag = s"/calculate-public-pension-adjustment/submission-status-update"
 
-        val responseBody = Json.toJson("someError").toString
+    running(application) {
+      val connector = application.injector.instanceOf[CalculateBackendConnector]
 
-        val submissionUniqueId = "1234"
+      val responseBody = Json.toJson("someError").toString
 
-        server.stubFor(
-          get(urlEqualTo(url + s"/$submissionUniqueId"))
-            .willReturn(aResponse().withStatus(BAD_REQUEST).withBody(responseBody))
-        )
+      val submissionUniqueId = "1234"
 
-        eventually(Timeout(Span(30, Seconds))) {
-          val response: Try[RetrieveSubmissionResponse] =
-            Try(connector.retrieveSubmission(UniqueId(submissionUniqueId)).futureValue)
+      server.stubFor(
+        get(urlEqualTo(url + s"/$submissionUniqueId"))
+          .willReturn(aResponse().withStatus(BAD_REQUEST).withBody(responseBody))
+      )
 
-          response.isFailure mustBe true
+      server.stubFor(
+        get(urlEqualTo(urlUpdateFlag + s"/$submissionUniqueId"))
+          .willReturn(aResponse().withStatus(OK))
+      )
+
+      eventually(Timeout(Span(30, Seconds))) {
+        val response = connector.retrieveSubmission(UniqueId(submissionUniqueId))
+
+        ScalaFutures.whenReady(response.failed) { response =>
+          response shouldBe a[UpstreamErrorResponse]
         }
       }
+
+    }
+  }
+
+  "CalculateBackendConnector" should "receive upstream error response when retrieveSubmission Bad Request and updateSubmissionFlag Bad Request" in {
+
+    val url = s"/calculate-public-pension-adjustment/submission"
+
+    val urlUpdateFlag = s"/calculate-public-pension-adjustment/submission-status-update"
+
+    running(application) {
+      val connector = application.injector.instanceOf[CalculateBackendConnector]
+
+      val responseBody = Json.toJson("someError").toString
+
+      val submissionUniqueId = "1234"
+
+      server.stubFor(
+        get(urlEqualTo(url + s"/$submissionUniqueId"))
+          .willReturn(aResponse().withStatus(BAD_REQUEST).withBody(responseBody))
+      )
+
+      server.stubFor(
+        get(urlEqualTo(urlUpdateFlag + s"/$submissionUniqueId"))
+          .willReturn(aResponse().withStatus(BAD_REQUEST))
+      )
+
+      eventually(Timeout(Span(30, Seconds))) {
+        val response = connector.retrieveSubmission(UniqueId(submissionUniqueId))
+
+        ScalaFutures.whenReady(response.failed) { response =>
+          response shouldBe a[UpstreamErrorResponse]
+        }
+      }
+
     }
   }
 }

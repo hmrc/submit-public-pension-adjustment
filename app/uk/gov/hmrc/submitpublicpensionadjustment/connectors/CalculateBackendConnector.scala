@@ -22,8 +22,9 @@ import play.api.http.Status._
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps, UpstreamErrorResponse}
 import uk.gov.hmrc.submitpublicpensionadjustment.config.AppConfig
-import uk.gov.hmrc.submitpublicpensionadjustment.models.{Done, UniqueId}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.UniqueId
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.RetrieveSubmissionResponse
+import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -72,24 +73,25 @@ class CalculateBackendConnector @Inject() (
 
   def updateSubmissionFlag(
     id: UniqueId
-  )(implicit hc: HeaderCarrier): Future[Boolean] =
+  )(implicit hc: HeaderCarrier): Future[Boolean] = {
+    val a = url"${config.cppaBaseUrl}/calculate-public-pension-adjustment/submission-status-update/${id.value}"
     httpClient2
       .get(url"${config.cppaBaseUrl}/calculate-public-pension-adjustment/submission-status-update/${id.value}")
       .execute
-      .flatMap { response =>
+      .map { response =>
         response.status match {
           case OK =>
-            Future.successful(true)
+            true
           case _  =>
             logger.error(
               s"Unexpected response from /calculate-public-pension-adjustment/submission-status-update/${id.value} with status : ${response.status}"
             )
-            Future.failed(
-              UpstreamErrorResponse(
-                "Unexpected response from /calculate-public-pension-adjustment/submission-status-update",
-                response.status
-              )
+            UpstreamErrorResponse(
+              "Unexpected response from /calculate-public-pension-adjustment/submission-status-update",
+              response.status
             )
+            false
         }
       }
+  }
 }
