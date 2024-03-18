@@ -16,20 +16,14 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.controllers
 
-import play.api.Logging
-import play.api.i18n.Lang.logger
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.JsValue
-import play.api.mvc.Results._
-import play.api.mvc.{Action, AnyContent, ControllerComponents, MessagesControllerComponents, RequestHeader, Result}
-import uk.gov.hmrc.http.HeaderCarrier
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import uk.gov.hmrc.submitpublicpensionadjustment.controllers.actions.{IdentifierAction, IdentifierRequest}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.{Done, UniqueId}
+import uk.gov.hmrc.submitpublicpensionadjustment.controllers.actions.IdentifierAction
+import uk.gov.hmrc.submitpublicpensionadjustment.models.UniqueId
 import uk.gov.hmrc.submitpublicpensionadjustment.services.CalculationDataService
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class RetrieveSubmissionController @Inject() (
