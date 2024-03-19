@@ -18,6 +18,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.controllers
 
 import akka.stream.Materializer
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.MockitoSugar
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
@@ -209,6 +210,33 @@ class UserAnswersControllerSpec
         val result     = controller.clear.apply(request)
 
         status(result) mustEqual NO_CONTENT
+      }
+    }
+    "checkSubmissionStarted" - {
+      "Content must be true when record has been found" in {
+        when(mockRepo.get(eqTo(userId))) thenReturn Future.successful(Some(userData))
+
+        val request =
+          FakeRequest(GET, routes.UserAnswersController.checkSubmissionStartedWithId(userId).url)
+            .withHeaders("Authorization" -> "Bearer token")
+
+        val result = route(app, request).value
+
+        status(result) mustEqual OK
+        contentAsJson(result) mustEqual Json.toJson(true)
+      }
+
+      "Content must be false when record has not been found" in {
+        when(mockRepo.get(eqTo(userId))) thenReturn Future.successful(None)
+
+        val request =
+          FakeRequest(GET, routes.UserAnswersController.checkSubmissionStartedWithId(userId).url)
+            .withHeaders("Authorization" -> "Bearer token")
+
+        val result = route(app, request).value
+
+        status(result) mustEqual OK
+        contentAsJson(result) mustEqual Json.toJson(false)
       }
     }
   }
