@@ -74,7 +74,6 @@ class CalculateBackendConnector @Inject() (
   def updateSubmissionFlag(
     id: UniqueId
   )(implicit hc: HeaderCarrier): Future[Boolean] = {
-    val a = url"${config.cppaBaseUrl}/calculate-public-pension-adjustment/submission-status-update/${id.value}"
     httpClient2
       .get(url"${config.cppaBaseUrl}/calculate-public-pension-adjustment/submission-status-update/${id.value}")
       .execute
