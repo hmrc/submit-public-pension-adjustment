@@ -17,6 +17,7 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.models
 
 import play.api.mvc.QueryStringBindable
+import play.api.libs.json._
 
 import scala.util.matching.Regex
 
@@ -50,4 +51,6 @@ object UniqueId {
 
   def fromString(uuidString: String): Option[Either[String, Option[UniqueId]]] =
     if (pattern.matches(uuidString)) Some(Right(Some(UniqueId(uuidString)))) else Some(Left("invalid param format"))
+
+  implicit val format = Json.format[UniqueId]
 }
