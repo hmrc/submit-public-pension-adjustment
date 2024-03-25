@@ -47,7 +47,7 @@ class CalculateBackendConnectorSpec
     with BeforeAndAfterEach {
   implicit lazy val headerCarrier: HeaderCarrier = HeaderCarrier()
 
-  val wiremockStubPort = 12800
+  val wiremockStubPort = 12802
 
   val server: WireMockServer = new WireMockServer(wireMockConfig().port(wiremockStubPort))
 
