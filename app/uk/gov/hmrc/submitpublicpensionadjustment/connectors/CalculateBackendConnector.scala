@@ -73,7 +73,7 @@ class CalculateBackendConnector @Inject() (
 
   def updateSubmissionFlag(
     id: UniqueId
-  )(implicit hc: HeaderCarrier): Future[Boolean] = {
+  )(implicit hc: HeaderCarrier): Future[Boolean] =
     httpClient2
       .get(url"${config.cppaBaseUrl}/calculate-public-pension-adjustment/submission-status-update/${id.value}")
       .execute
@@ -92,5 +92,4 @@ class CalculateBackendConnector @Inject() (
             false
         }
       }
-  }
 }
