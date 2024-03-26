@@ -35,7 +35,7 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import play.api.test.Helpers.running
 import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.UniqueId
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{RetrieveSubmissionInfo, UniqueId}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.RetrieveSubmissionResponse
 
@@ -71,7 +71,7 @@ class CalculateBackendConnectorSpec
 
   "CalculateBackendConnector" should "retrieve a submission response when call repsonse OK " in {
 
-    val url = s"/calculate-public-pension-adjustment/submission"
+    val url = s"/calculate-public-pension-adjustment/retrieve-submission"
 
     running(application) {
       val connector = application.injector.instanceOf[CalculateBackendConnector]
@@ -79,16 +79,16 @@ class CalculateBackendConnectorSpec
       val calculationInputs          = CalculationInputs(Resubmission(false, None), None, None)
       val retrieveSubmissionResponse = Json.toJson(RetrieveSubmissionResponse(calculationInputs, None)).toString
 
-      val submissionUniqueId = "1234"
+      val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
 
       server.stubFor(
-        get(urlEqualTo(url + s"/$submissionUniqueId"))
+        post(url)
           .willReturn(aResponse().withStatus(OK).withBody(retrieveSubmissionResponse))
       )
 
       eventually(Timeout(Span(30, Seconds))) {
         val result: RetrieveSubmissionResponse =
-          connector.retrieveSubmission(UniqueId(submissionUniqueId)).futureValue
+          connector.retrieveSubmission(retrieveSubmissionInfo).futureValue
         result.calculationInputs mustBe calculationInputs
         result.calculation mustBe None
       }
@@ -97,7 +97,7 @@ class CalculateBackendConnectorSpec
 
   "CalculateBackendConnector" should "receive upstream error response when retrieveSubmission Bad Request but updateSubmissionFlag OK" in {
 
-    val url = s"/calculate-public-pension-adjustment/submission"
+    val url = s"/calculate-public-pension-adjustment/retrieve-submission"
 
     val urlUpdateFlag = s"/calculate-public-pension-adjustment/submission-status-update"
 
@@ -106,20 +106,20 @@ class CalculateBackendConnectorSpec
 
       val responseBody = Json.toJson("someError").toString
 
-      val submissionUniqueId = "1234"
+      val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
 
       server.stubFor(
-        get(urlEqualTo(url + s"/$submissionUniqueId"))
+        post(url)
           .willReturn(aResponse().withStatus(BAD_REQUEST).withBody(responseBody))
       )
 
       server.stubFor(
-        get(urlEqualTo(urlUpdateFlag + s"/$submissionUniqueId"))
+        get(urlEqualTo(urlUpdateFlag + s"/${retrieveSubmissionInfo.submissionUniqueId.value}"))
           .willReturn(aResponse().withStatus(OK))
       )
 
       eventually(Timeout(Span(30, Seconds))) {
-        val response = connector.retrieveSubmission(UniqueId(submissionUniqueId))
+        val response = connector.retrieveSubmission(retrieveSubmissionInfo)
 
         ScalaFutures.whenReady(response.failed) { response =>
           response shouldBe a[UpstreamErrorResponse]
@@ -131,7 +131,7 @@ class CalculateBackendConnectorSpec
 
   "CalculateBackendConnector" should "receive upstream error response when retrieveSubmission Bad Request and updateSubmissionFlag Bad Request" in {
 
-    val url = s"/calculate-public-pension-adjustment/submission"
+    val url = s"/calculate-public-pension-adjustment/retrieve-submission"
 
     val urlUpdateFlag = s"/calculate-public-pension-adjustment/submission-status-update"
 
@@ -140,20 +140,20 @@ class CalculateBackendConnectorSpec
 
       val responseBody = Json.toJson("someError").toString
 
-      val submissionUniqueId = "1234"
+      val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
 
       server.stubFor(
-        get(urlEqualTo(url + s"/$submissionUniqueId"))
+        post(url)
           .willReturn(aResponse().withStatus(BAD_REQUEST).withBody(responseBody))
       )
 
       server.stubFor(
-        get(urlEqualTo(urlUpdateFlag + s"/$submissionUniqueId"))
+        get(urlEqualTo(urlUpdateFlag + s"/${retrieveSubmissionInfo.submissionUniqueId.value}"))
           .willReturn(aResponse().withStatus(BAD_REQUEST))
       )
 
       eventually(Timeout(Span(30, Seconds))) {
-        val response = connector.retrieveSubmission(UniqueId(submissionUniqueId))
+        val response = connector.retrieveSubmission(retrieveSubmissionInfo)
 
         ScalaFutures.whenReady(response.failed) { response =>
           response shouldBe a[UpstreamErrorResponse]

@@ -23,7 +23,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.connectors.CalculateBackendConnector
-import uk.gov.hmrc.submitpublicpensionadjustment.models.{Done, UniqueId}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{Done, RetrieveSubmissionInfo, UniqueId}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{CalculationInputs, ChangeInTaxCharge, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LtaProtectionOrEnhancements, NewLifeTimeAllowanceAdditions, ProtectionEnhancedChanged, ProtectionType, Resubmission, SchemeNameAndTaxRef, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.RetrieveSubmissionResponse
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.SubmissionRepository
@@ -45,13 +45,13 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
 
     "result should true when submission can be retrieved and inserted" in {
 
-      val submissionUniqueId = UniqueId("submissionUniqueId")
+      val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
 
       val retrieveSubmissionResponse =
         RetrieveSubmissionResponse(CalculationInputs(Resubmission(false, None), None, None), None)
 
       when(
-        mockCalculateBackendConnector.retrieveSubmission(ArgumentMatchers.eq(submissionUniqueId))(
+        mockCalculateBackendConnector.retrieveSubmission(ArgumentMatchers.eq(retrieveSubmissionInfo))(
           ArgumentMatchers.eq(headerCarrier)
         )
       )
@@ -59,7 +59,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
 
       when(mockSubmissionRepository.insert(any())).thenReturn(Future.successful(Done))
 
-      val result: Future[Boolean] = service.retrieveSubmission("someInternalId", submissionUniqueId)(
+      val result: Future[Boolean] = service.retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId)(
         implicitly[ExecutionContext],
         implicitly(headerCarrier)
       )
@@ -69,7 +69,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
 
     "result should true when submission with LTA data can be retrieved and inserted" in {
 
-      val submissionUniqueId = UniqueId("submissionUniqueId")
+      val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
 
       val retrieveSubmissionResponse = RetrieveSubmissionResponse(
         CalculationInputs(
@@ -117,7 +117,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       )
 
       when(
-        mockCalculateBackendConnector.retrieveSubmission(ArgumentMatchers.eq(submissionUniqueId))(
+        mockCalculateBackendConnector.retrieveSubmission(ArgumentMatchers.eq(retrieveSubmissionInfo))(
           ArgumentMatchers.eq(headerCarrier)
         )
       )
@@ -125,7 +125,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
 
       when(mockSubmissionRepository.insert(any())).thenReturn(Future.successful(Done))
 
-      val result: Future[Boolean] = service.retrieveSubmission("someInternalId", submissionUniqueId)(
+      val result: Future[Boolean] = service.retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId)(
         implicitly[ExecutionContext],
         implicitly(headerCarrier)
       )
@@ -135,13 +135,13 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
 
     "result should be false when submission can be retrieved but cannot be inserted" in {
 
-      val submissionUniqueId = UniqueId("submissionUniqueId")
+      val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
 
       val retrieveSubmissionResponse =
         RetrieveSubmissionResponse(CalculationInputs(Resubmission(false, None), None, None), None)
 
       when(
-        mockCalculateBackendConnector.retrieveSubmission(ArgumentMatchers.eq(submissionUniqueId))(
+        mockCalculateBackendConnector.retrieveSubmission(ArgumentMatchers.eq(retrieveSubmissionInfo))(
           ArgumentMatchers.eq(headerCarrier)
         )
       )
@@ -151,7 +151,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       when(mockSubmissionRepository.insert(any())).thenReturn(Future.failed(exception))
 
       val result = service
-        .retrieveSubmission("someInternalId", submissionUniqueId)(
+        .retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId)(
           implicitly[ExecutionContext],
           implicitly(headerCarrier)
         )
@@ -162,19 +162,19 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
 
     "result should be false when submission cannot be retrieved" in {
 
-      val submissionUniqueId = UniqueId("submissionUniqueId")
+      val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
 
       val exception = new RuntimeException("retrieval failed")
 
       when(
-        mockCalculateBackendConnector.retrieveSubmission(ArgumentMatchers.eq(submissionUniqueId))(
+        mockCalculateBackendConnector.retrieveSubmission(ArgumentMatchers.eq(retrieveSubmissionInfo))(
           ArgumentMatchers.eq(headerCarrier)
         )
       )
         .thenReturn(Future.failed(exception))
 
       val result = service
-        .retrieveSubmission("someInternalId", submissionUniqueId)(
+        .retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId)(
           implicitly[ExecutionContext],
           implicitly(headerCarrier)
         )

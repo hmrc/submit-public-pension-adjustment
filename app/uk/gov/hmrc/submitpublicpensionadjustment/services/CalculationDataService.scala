@@ -19,7 +19,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.services
 import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.connectors.CalculateBackendConnector
-import uk.gov.hmrc.submitpublicpensionadjustment.models.UniqueId
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{RetrieveSubmissionInfo, UniqueId}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.Submission
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.SubmissionRepository
 
@@ -36,7 +36,7 @@ class CalculationDataService @Inject() (
     internalId: String,
     submissionUniqueId: UniqueId
   )(implicit executionContext: ExecutionContext, hc: HeaderCarrier): Future[Boolean] =
-    calculateBackendConnector.retrieveSubmission(submissionUniqueId).transformWith {
+    calculateBackendConnector.retrieveSubmission(RetrieveSubmissionInfo(internalId, submissionUniqueId)).transformWith {
       case Success(submissionResponse) =>
         submissionRepository
           .insert(
