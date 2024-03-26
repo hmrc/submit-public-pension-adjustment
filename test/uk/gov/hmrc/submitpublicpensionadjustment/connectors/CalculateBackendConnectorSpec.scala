@@ -71,7 +71,7 @@ class CalculateBackendConnectorSpec
 
   "CalculateBackendConnector" should "retrieve a submission response when call repsonse OK " in {
 
-    val url = s"/calculate-public-pension-adjustment/submission"
+    val url = s"/calculate-public-pension-adjustment/retrieve-submission"
 
     running(application) {
       val connector = application.injector.instanceOf[CalculateBackendConnector]
@@ -82,7 +82,7 @@ class CalculateBackendConnectorSpec
       val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
 
       server.stubFor(
-        get(urlEqualTo(url + s"/${retrieveSubmissionInfo.submissionUniqueId.value}"))
+        post(url)
           .willReturn(aResponse().withStatus(OK).withBody(retrieveSubmissionResponse))
       )
 
@@ -97,7 +97,7 @@ class CalculateBackendConnectorSpec
 
   "CalculateBackendConnector" should "receive upstream error response when retrieveSubmission Bad Request but updateSubmissionFlag OK" in {
 
-    val url = s"/calculate-public-pension-adjustment/submission"
+    val url = s"/calculate-public-pension-adjustment/retrieve-submission"
 
     val urlUpdateFlag = s"/calculate-public-pension-adjustment/submission-status-update"
 
@@ -109,7 +109,7 @@ class CalculateBackendConnectorSpec
       val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
 
       server.stubFor(
-        get(urlEqualTo(url + s"/${retrieveSubmissionInfo.submissionUniqueId.value}"))
+        post(url)
           .willReturn(aResponse().withStatus(BAD_REQUEST).withBody(responseBody))
       )
 
@@ -131,7 +131,7 @@ class CalculateBackendConnectorSpec
 
   "CalculateBackendConnector" should "receive upstream error response when retrieveSubmission Bad Request and updateSubmissionFlag Bad Request" in {
 
-    val url = s"/calculate-public-pension-adjustment/submission"
+    val url = s"/calculate-public-pension-adjustment/retrieve-submission"
 
     val urlUpdateFlag = s"/calculate-public-pension-adjustment/submission-status-update"
 
@@ -143,12 +143,12 @@ class CalculateBackendConnectorSpec
       val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
 
       server.stubFor(
-        get(urlEqualTo(url + s"/${retrieveSubmissionInfo.submissionUniqueId.value}"))
+        post(url)
           .willReturn(aResponse().withStatus(BAD_REQUEST).withBody(responseBody))
       )
 
       server.stubFor(
-        get(urlEqualTo(url + s"/${retrieveSubmissionInfo.submissionUniqueId.value}"))
+        get(urlEqualTo(urlUpdateFlag + s"/${retrieveSubmissionInfo.submissionUniqueId.value}"))
           .willReturn(aResponse().withStatus(BAD_REQUEST))
       )
 
