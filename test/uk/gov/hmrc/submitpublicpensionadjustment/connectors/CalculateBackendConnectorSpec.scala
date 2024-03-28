@@ -47,11 +47,12 @@ class CalculateBackendConnectorSpec
     with BeforeAndAfterEach {
   implicit lazy val headerCarrier: HeaderCarrier = HeaderCarrier()
 
-  val wiremockStubPort = 12802
+  val wiremockStubPort = 11112
 
   val server: WireMockServer = new WireMockServer(wireMockConfig().port(wiremockStubPort))
 
   private val application = GuiceApplicationBuilder()
+    .configure("microservice.services.calculate-public-pension-adjustment.port" -> "11112")
     .build()
 
   override def beforeAll(): Unit = {

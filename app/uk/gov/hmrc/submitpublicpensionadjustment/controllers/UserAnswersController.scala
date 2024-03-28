@@ -22,7 +22,7 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import uk.gov.hmrc.submitpublicpensionadjustment.controllers.actions.IdentifierAction
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.UserAnswersRepository
 import uk.gov.hmrc.submitpublicpensionadjustment.models.UserAnswers
-
+import uk.gov.hmrc.submitpublicpensionadjustment.services.UserAnswersService
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
@@ -30,7 +30,8 @@ import scala.concurrent.ExecutionContext
 class UserAnswersController @Inject() (
   cc: ControllerComponents,
   identify: IdentifierAction,
-  repository: UserAnswersRepository
+  repository: UserAnswersRepository,
+  userAnswersService: UserAnswersService
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
@@ -59,5 +60,11 @@ class UserAnswersController @Inject() (
     repository
       .clear(request.internalId)
       .map(_ => NoContent)
+  }
+
+  def checkSubmissionStartedWithId(id: String): Action[AnyContent] = Action.async {
+    userAnswersService
+      .checkSubmissionStartedWithId(id)
+      .map(submissionStarted => Ok(Json.toJson(submissionStarted)))
   }
 }

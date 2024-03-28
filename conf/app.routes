@@ -15,3 +15,4 @@ GET         /submissions/:userId              uk.gov.hmrc.submitpublicpensionadj
 DELETE      /submissions              uk.gov.hmrc.submitpublicpensionadjustment.controllers.SubmissionsController.clear
 POST        /submissions/keep-alive   uk.gov.hmrc.submitpublicpensionadjustment.controllers.SubmissionsController.keepAlive
 
+GET         /check-submission-status/:id          uk.gov.hmrc.submitpublicpensionadjustment.controllers.UserAnswersController.checkSubmissionStartedWithId(id: String)
