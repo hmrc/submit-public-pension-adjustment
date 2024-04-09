@@ -212,12 +212,12 @@ class UserAnswersControllerSpec
         status(result) mustEqual NO_CONTENT
       }
     }
-    "checkSubmissionStarted" - {
+    "checkUserAnswersPresentWithId" - {
       "Content must be true when record has been found" in {
         when(mockRepo.get(eqTo(userId))) thenReturn Future.successful(Some(userData))
 
         val request =
-          FakeRequest(GET, routes.UserAnswersController.checkSubmissionStartedWithId(userId).url)
+          FakeRequest(GET, routes.UserAnswersController.checkUserAnswersPresentWithId(userId).url)
             .withHeaders("Authorization" -> "Bearer token")
 
         val result = route(app, request).value
@@ -230,7 +230,7 @@ class UserAnswersControllerSpec
         when(mockRepo.get(eqTo(userId))) thenReturn Future.successful(None)
 
         val request =
-          FakeRequest(GET, routes.UserAnswersController.checkSubmissionStartedWithId(userId).url)
+          FakeRequest(GET, routes.UserAnswersController.checkUserAnswersPresentWithId(userId).url)
             .withHeaders("Authorization" -> "Bearer token")
 
         val result = route(app, request).value

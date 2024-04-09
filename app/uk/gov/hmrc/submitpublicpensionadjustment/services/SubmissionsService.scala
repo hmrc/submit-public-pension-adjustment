@@ -25,7 +25,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SubmissionsService @Inject()(
+class SubmissionsService @Inject() (
   submissions: SubmissionRepository
 )(implicit ec: ExecutionContext)
     extends Logging {
