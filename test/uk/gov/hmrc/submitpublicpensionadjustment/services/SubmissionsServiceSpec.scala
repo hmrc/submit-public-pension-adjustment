@@ -23,16 +23,17 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
-import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.submitpublicpensionadjustment.models.UserAnswers
-import uk.gov.hmrc.submitpublicpensionadjustment.repositories.UserAnswersRepository
+import uk.gov.hmrc.submitpublicpensionadjustment.TestData
+import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.Submission
+import uk.gov.hmrc.submitpublicpensionadjustment.repositories.SubmissionRepository
 
-import java.time.Instant
+import java.time.temporal.ChronoUnit
+import java.time.{Clock, Instant, ZoneId}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class UserAnswersServiceSpec
+class SubmissionsServiceSpec
     extends AnyFreeSpec
     with Matchers
     with ScalaFutures
@@ -40,55 +41,52 @@ class UserAnswersServiceSpec
     with MockitoSugar
     with BeforeAndAfterEach {
 
-  private val mockUserAnswersRepository = mock[UserAnswersRepository]
+  private val mockSubmissionRepository = mock[SubmissionRepository]
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    reset(mockUserAnswersRepository)
+    reset(mockSubmissionRepository)
   }
+  private val instant             = Instant.now.truncatedTo(ChronoUnit.MILLIS)
 
-  private val hc: HeaderCarrier = HeaderCarrier()
+  private val service = new SubmissionsService(mockSubmissionRepository)
 
-  private val service = new UserAnswersService(mockUserAnswersRepository)
+  private val submissionData =
+    Submission("sessionId", "uniqueId", TestData.calculationInputs, None, Instant.parse("2024-03-12T10:00:00Z"))
 
-  "UserAnswersService" - {
+  "SubmissionsService" - {
 
-    "retrieveUserAnswers" - {
+    "retrieveSubmissions" - {
 
       "must return a submission when it exists in the userAnswersRepository" in {
+        when(mockSubmissionRepository.get(any())).thenReturn(Future.successful(Some(submissionData)))
 
-        val userAnswers = UserAnswers("id", Json.obj("foo" -> "bar"), Instant.ofEpochSecond(1))
-
-        when(mockUserAnswersRepository.get(any())).thenReturn(Future.successful(Some(userAnswers)))
-
-        service.retrieveUserAnswers("uniqueId").futureValue mustBe Some(userAnswers)
-        verify(mockUserAnswersRepository, times(1)).get(eqTo("uniqueId"))
+        service.retrieveSubmissions("uniqueId").futureValue mustBe Some(submissionData)
+        verify(mockSubmissionRepository, times(1)).get(eqTo("uniqueId"))
       }
 
       "must return None when it does not exist in the repository" in {
-        when(mockUserAnswersRepository.get("unknownId")).thenReturn(Future.successful(None))
+        when(mockSubmissionRepository.get("unknownId")).thenReturn(Future.successful(None))
 
-        service.retrieveUserAnswers("unknownId").futureValue mustBe None
-        verify(mockUserAnswersRepository, times(1)).get(eqTo("unknownId"))
+        service.retrieveSubmissions("unknownId").futureValue mustBe None
+        verify(mockSubmissionRepository, times(1)).get(eqTo("unknownId"))
       }
     }
 
-    "checkSubmissionStarted" - {
+    "checkSubmissionsPresentWithUniqueId" - {
 
       "must return true when it exists in repository" - {
-        val userAnswers = new UserAnswers("id", Json.obj("foo" -> "bar"), Instant.ofEpochSecond(1))
+        when(mockSubmissionRepository.get(any())).thenReturn(Future.successful(Some(submissionData)))
 
-        when(mockUserAnswersRepository.get(any())).thenReturn(Future.successful(Some(userAnswers)))
-
-        val result = service.checkUserAnswersPresentWithId("ID")
+        val result = service.checkSubmissionsPresentWithUniqueId("ID")
 
         result.futureValue mustBe true
       }
 
       "must return false it does not exists in repository" in {
-        when(mockUserAnswersRepository.get(any())).thenReturn(Future.successful(None))
+        when(mockSubmissionRepository.get(any())).thenReturn(Future.successful(None))
 
-        val result = service.checkUserAnswersPresentWithId("ID")
+        val result = service.checkSubmissionsPresentWithUniqueId("ID")
 
         result.futureValue mustBe false
       }

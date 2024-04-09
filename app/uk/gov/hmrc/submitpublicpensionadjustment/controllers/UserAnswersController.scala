@@ -62,9 +62,9 @@ class UserAnswersController @Inject() (
       .map(_ => NoContent)
   }
 
-  def checkSubmissionStartedWithId(id: String): Action[AnyContent] = Action.async {
+  def checkUserAnswersPresentWithId(id: String): Action[AnyContent] = Action.async {
     userAnswersService
-      .checkSubmissionStartedWithId(id)
+      .checkUserAnswersPresentWithId(id)
       .map(submissionStarted => Ok(Json.toJson(submissionStarted)))
   }
 }

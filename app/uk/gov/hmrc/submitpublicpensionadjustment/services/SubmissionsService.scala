@@ -18,21 +18,22 @@ package uk.gov.hmrc.submitpublicpensionadjustment.services
 
 import play.api.Logging
 import uk.gov.hmrc.submitpublicpensionadjustment.models.UserAnswers
-import uk.gov.hmrc.submitpublicpensionadjustment.repositories.UserAnswersRepository
+import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.Submission
+import uk.gov.hmrc.submitpublicpensionadjustment.repositories.{SubmissionRepository, UserAnswersRepository}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class UserAnswersService @Inject() (
-  userAnswers: UserAnswersRepository
+class SubmissionsService @Inject() (
+  submissions: SubmissionRepository
 )(implicit ec: ExecutionContext)
     extends Logging {
 
-  def retrieveUserAnswers(id: String): Future[Option[UserAnswers]] = userAnswers.get(id)
+  def retrieveSubmissions(id: String): Future[Option[Submission]] = submissions.get(id)
 
-  def checkUserAnswersPresentWithId(id: String): Future[Boolean] =
-    retrieveUserAnswers(id).flatMap {
+  def checkSubmissionsPresentWithUniqueId(uniqueId: String): Future[Boolean] =
+    retrieveSubmissions(uniqueId).flatMap {
       case Some(_) =>
         Future.successful(true)
       case None    =>
