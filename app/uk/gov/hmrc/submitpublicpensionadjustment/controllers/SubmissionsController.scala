@@ -22,6 +22,7 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import uk.gov.hmrc.submitpublicpensionadjustment.controllers.actions.IdentifierAction
 import uk.gov.hmrc.submitpublicpensionadjustment.models.UserAnswers
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.{SubmissionRepository, UserAnswersRepository}
+import uk.gov.hmrc.submitpublicpensionadjustment.services.SubmissionsService
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
@@ -30,7 +31,8 @@ import scala.concurrent.ExecutionContext
 class SubmissionsController @Inject() (
   cc: ControllerComponents,
   identify: IdentifierAction,
-  repository: SubmissionRepository
+  repository: SubmissionRepository,
+  submissionsService: SubmissionsService
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
@@ -52,5 +54,11 @@ class SubmissionsController @Inject() (
     repository
       .clear(request.internalId)
       .map(_ => NoContent)
+  }
+
+  def checkSubmissionsPresentWithUniqueId(uniqueId: String): Action[AnyContent] = Action.async {
+    submissionsService
+      .checkSubmissionsPresentWithUniqueId(uniqueId)
+      .map(submissionStarted => Ok(Json.toJson(submissionStarted)))
   }
 }
