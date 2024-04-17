@@ -2,18 +2,19 @@ lazy val microservice = Project("submit-public-pension-adjustment", file("."))
   .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin, ScalafmtPlugin)
   .disablePlugins(JUnitXmlReportPlugin)
   .settings(
-    majorVersion        := 0,
-    scalaVersion        := "2.13.8",
+    majorVersion := 0,
+    scalaVersion := "2.13.8",
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
+    dependencyOverrides += "commons-codec" % "commons-codec" % "1.12",
     // https://www.scala-lang.org/2021/01/12/configuring-and-suppressing-warnings.html
     // suppress warnings in generated routes files
     scalacOptions ++= Seq(
       "-Wconf:src=routes/.*:s",
-      "-Ywarn-unused:imports",   // Warn if an import selector is not referenced.
-      "-Ywarn-unused:locals",    // Warn if a local definition is unused.
-      "-Ywarn-unused:params",    // Warn if a value parameter is unused.
-      "-Ywarn-unused:patvars",   // Warn if a variable bound in a pattern is unused.
-      "-Ywarn-unused:privates"   // Warn if a private member is unused.
+      "-Ywarn-unused:imports", // Warn if an import selector is not referenced.
+      "-Ywarn-unused:locals", // Warn if a local definition is unused.
+      "-Ywarn-unused:params", // Warn if a value parameter is unused.
+      "-Ywarn-unused:patvars", // Warn if a variable bound in a pattern is unused.
+      "-Ywarn-unused:privates" // Warn if a private member is unused.
     ),
     PlayKeys.playDefaultPort := 12803
   )
@@ -41,7 +42,7 @@ lazy val itSettings = Defaults.itSettings ++ Seq(
   fork := true
 )
 
-lazy val scoverageSettings = {
+lazy val scoverageSettings =
   Seq(
     coverageExcludedPackages := """;uk\.gov\.hmrc\.BuildInfo;.*\.Routes;.*\.RoutesPrefix;.*\.Reverse[^.]*;testonly""",
     coverageExcludedFiles := "<empty>;.*javascript.*;.*Routes.*;.*testonly.*",
@@ -49,4 +50,3 @@ lazy val scoverageSettings = {
     coverageHighlighting := true,
     coverageMinimumStmtTotal := 80
   )
-}
