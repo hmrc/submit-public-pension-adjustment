@@ -50,7 +50,7 @@ class CalculationDataService @Inject() (
           .transformWith {
             case Failure(exception) =>
               logger.error(
-                s"Insert into submissionRepository for submissionUniqueId : $submissionUniqueId - failed with message : ${exception.getMessage}"
+                s"Insert into submissionRepository for submissionUniqueId : $submissionUniqueId - failed with message : $exception"
               )
               Future(false)
             case Success(_)         => Future(true)
