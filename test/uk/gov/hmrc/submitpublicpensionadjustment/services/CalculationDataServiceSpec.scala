@@ -59,10 +59,11 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
 
       when(mockSubmissionRepository.insert(any())).thenReturn(Future.successful(Done))
 
-      val result: Future[Boolean] = service.retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId)(
-        implicitly[ExecutionContext],
-        implicitly(headerCarrier)
-      )
+      val result: Future[Boolean] =
+        service.retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
+          implicitly[ExecutionContext],
+          implicitly(headerCarrier)
+        )
 
       result.futureValue mustBe true
     }
@@ -125,10 +126,11 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
 
       when(mockSubmissionRepository.insert(any())).thenReturn(Future.successful(Done))
 
-      val result: Future[Boolean] = service.retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId)(
-        implicitly[ExecutionContext],
-        implicitly(headerCarrier)
-      )
+      val result: Future[Boolean] =
+        service.retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
+          implicitly[ExecutionContext],
+          implicitly(headerCarrier)
+        )
 
       result.futureValue mustBe true
     }
@@ -151,7 +153,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       when(mockSubmissionRepository.insert(any())).thenReturn(Future.failed(exception))
 
       val result = service
-        .retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId)(
+        .retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
           implicitly[ExecutionContext],
           implicitly(headerCarrier)
         )
@@ -174,7 +176,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
         .thenReturn(Future.failed(exception))
 
       val result = service
-        .retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId)(
+        .retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
           implicitly[ExecutionContext],
           implicitly(headerCarrier)
         )

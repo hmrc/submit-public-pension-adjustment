@@ -34,32 +34,34 @@ class CalculationDataService @Inject() (
 
   def retrieveSubmission(
     internalId: String,
-    submissionUniqueId: UniqueId
+    submissionUniqueId: String
   )(implicit executionContext: ExecutionContext, hc: HeaderCarrier): Future[Boolean] =
-    calculateBackendConnector.retrieveSubmission(RetrieveSubmissionInfo(internalId, submissionUniqueId)).transformWith {
-      case Success(submissionResponse) =>
-        submissionRepository
-          .insert(
-            Submission(
-              internalId,
-              submissionUniqueId.value,
-              submissionResponse.calculationInputs,
-              submissionResponse.calculation
-            )
-          )
-          .transformWith {
-            case Failure(exception) =>
-              logger.error(
-                s"Insert into submissionRepository for submissionUniqueId : $submissionUniqueId - failed with message : ${exception.getMessage}"
+    calculateBackendConnector
+      .retrieveSubmission(RetrieveSubmissionInfo(internalId, UniqueId(submissionUniqueId)))
+      .transformWith {
+        case Success(submissionResponse) =>
+          submissionRepository
+            .insert(
+              Submission(
+                internalId,
+                submissionUniqueId,
+                submissionResponse.calculationInputs,
+                submissionResponse.calculation
               )
-              Future(false)
-            case Success(_)         => Future(true)
-          }
+            )
+            .transformWith {
+              case Failure(exception) =>
+                logger.error(
+                  s"Insert into submissionRepository for submissionUniqueId : $submissionUniqueId - failed with message : ${exception.getMessage}"
+                )
+                Future(false)
+              case Success(_)         => Future(true)
+            }
 
-      case Failure(exception) =>
-        logger.error(
-          s"Could not retrieve submission from calculate-public-pension-adjustment backend for submissionUniqueId : $submissionUniqueId - failed with message : ${exception.getMessage}"
-        )
-        Future(false)
-    }
+        case Failure(exception) =>
+          logger.error(
+            s"Could not retrieve submission from calculate-public-pension-adjustment backend for submissionUniqueId : $submissionUniqueId - failed with message : ${exception.getMessage}"
+          )
+          Future(false)
+      }
 }
