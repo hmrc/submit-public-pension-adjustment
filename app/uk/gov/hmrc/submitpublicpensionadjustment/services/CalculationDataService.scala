@@ -52,7 +52,7 @@ class CalculationDataService @Inject() (
             .transformWith {
               case Failure(exception) =>
                 logger.error(
-                  s"Insert into submissionRepository for submissionUniqueId : $submissionUniqueId - failed with message : ${exception.getMessage}"
+                  s"Insert into submissionRepository for submissionUniqueId : $submissionUniqueId - failed with message : $exception"
                 )
                 Future(false)
               case Success(_)         => Future(true)
@@ -60,7 +60,7 @@ class CalculationDataService @Inject() (
 
         case Failure(exception) =>
           logger.error(
-            s"Could not retrieve submission from calculate-public-pension-adjustment backend for submissionUniqueId : $submissionUniqueId - failed with message : ${exception.getMessage}"
+            s"Could not retrieve submission from calculate-public-pension-adjustment backend for submissionUniqueId : $submissionUniqueId - failed with message : $exception"
           )
           Future(false)
       }

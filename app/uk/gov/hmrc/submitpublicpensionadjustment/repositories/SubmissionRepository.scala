@@ -65,12 +65,8 @@ class SubmissionRepository @Inject() (
 
   def insert(item: Submission): Future[Done] =
     collection
-      .replaceOne(
-        filter = bySessionId(item.sessionId),
-        replacement = item.copy(lastUpdated = clock.instant()),
-        options = ReplaceOptions().upsert(true)
-      )
-      .toFuture
+      .insertOne(item.copy(lastUpdated = clock.instant()))
+      .toFuture()
       .map(_ => Done)
 
   private def byUniqueId(uniqueId: String): Bson = Filters.equal("uniqueId", uniqueId)
