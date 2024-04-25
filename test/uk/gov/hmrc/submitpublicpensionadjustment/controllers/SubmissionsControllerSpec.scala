@@ -57,7 +57,7 @@ class SubmissionsControllerSpec
   private val stubClock      = Clock.fixed(instant, ZoneId.systemDefault)
   private val userId         = "foo"
   private val submissionData =
-    Submission("sessionId", "uniqueId", TestData.calculationInputs, None, Instant.parse("2024-03-12T10:00:00Z"))
+    Submission("id", "sessionId", "uniqueId", TestData.calculationInputs, None, Instant.parse("2024-03-12T10:00:00Z"))
 
   override def beforeEach(): Unit = {
     reset(mockRepo)
@@ -81,14 +81,14 @@ class SubmissionsControllerSpec
       "must return OK and the data when user data can be found for this session id" in {
         when(mockRepo.getBySessionId(userId)) thenReturn Future.successful(Some(submissionData))
         when(
-          mockAuthConnector.authorise[Option[String] ~ Option[String] ~ Option[AffinityGroup] ~ Option[String]](
+          mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
             any()
           )(any(), any())
         )
           .thenReturn(
             Future.successful(
-              new ~(new ~(new ~(Some("nino"), Some(userId)), Some(AffinityGroup.Individual)), Some("User"))
+              new ~(new ~(Some("nino"), Some(AffinityGroup.Individual)), Some("User"))
             )
           )
 
@@ -106,14 +106,14 @@ class SubmissionsControllerSpec
       "must return Not Found when user data cannot be found for this session id" in {
         when(mockRepo.getBySessionId(userId)) thenReturn Future.successful(None)
         when(
-          mockAuthConnector.authorise[Option[String] ~ Option[String] ~ Option[AffinityGroup] ~ Option[String]](
+          mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
             any()
           )(any(), any())
         )
           .thenReturn(
             Future.successful(
-              new ~(new ~(new ~(Some("nino"), Some(userId)), Some(AffinityGroup.Individual)), Some("User"))
+              new ~(new ~(Some("nino"), Some(AffinityGroup.Individual)), Some("User"))
             )
           )
 
@@ -132,14 +132,14 @@ class SubmissionsControllerSpec
         "must return No Content when data is kept alive" in {
           when(mockRepo.keepAlive(any[String])) thenReturn Future.successful(true)
           when(
-            mockAuthConnector.authorise[Option[String] ~ Option[String] ~ Option[AffinityGroup] ~ Option[String]](
+            mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
               any(),
               any()
             )(any(), any())
           )
             .thenReturn(
               Future.successful(
-                new ~(new ~(new ~(Some("nino"), Some(userId)), Some(AffinityGroup.Individual)), Some("User"))
+                new ~(new ~(Some("nino"), Some(AffinityGroup.Individual)), Some("User"))
               )
             )
 
@@ -159,14 +159,14 @@ class SubmissionsControllerSpec
         "must return No Content when data is cleared" in {
           when(mockRepo.clear(any[String])) thenReturn Future.successful(true)
           when(
-            mockAuthConnector.authorise[Option[String] ~ Option[String] ~ Option[AffinityGroup] ~ Option[String]](
+            mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
               any(),
               any()
             )(any(), any())
           )
             .thenReturn(
               Future.successful(
-                new ~(new ~(new ~(Some("nino"), Some(userId)), Some(AffinityGroup.Individual)), Some("User"))
+                new ~(new ~(Some("nino"), Some(AffinityGroup.Individual)), Some("User"))
               )
             )
 

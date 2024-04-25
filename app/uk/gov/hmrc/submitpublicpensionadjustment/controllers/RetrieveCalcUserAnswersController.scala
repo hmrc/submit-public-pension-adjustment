@@ -34,7 +34,7 @@ class RetrieveCalcUserAnswersController @Inject() (
 
   def retrieveCalcUserAnswersStatus(submissionUniqueId: String): Action[AnyContent] = identify.async {
     implicit request =>
-      val status = calculationDataService.retrieveCalcUserAnswers(request.internalId, submissionUniqueId)(ec, hc)
+      val status = calculationDataService.retrieveCalcUserAnswers(request.userId, submissionUniqueId)(ec, hc)
 
       status.map { status =>
         if (status) {

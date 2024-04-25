@@ -52,7 +52,7 @@ class SubmissionsServiceSpec
   private val service = new SubmissionsService(mockSubmissionRepository)
 
   private val submissionData =
-    Submission("sessionId", "uniqueId", TestData.calculationInputs, None, Instant.parse("2024-03-12T10:00:00Z"))
+    Submission("id", "sessionId", "uniqueId", TestData.calculationInputs, None, Instant.parse("2024-03-12T10:00:00Z"))
 
   "SubmissionsService" - {
 

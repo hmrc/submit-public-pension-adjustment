@@ -74,23 +74,22 @@ class FinalSubmissionControllerSpec
     "must submit the final submission and return a submission response" in {
 
       when(
-        mockAuthConnector.authorise[Option[String] ~ Option[String] ~ Option[AffinityGroup] ~ Option[CredentialRole]](
+        mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[CredentialRole]](
           any(),
           any()
         )(any(), any())
-      )
-        .thenReturn(
-          Future.successful(
-            new ~(new ~(new ~(Some("nino"), Some("internalId")), Some(AffinityGroup.Organisation)), Some(User))
-          )
+      ).thenReturn(
+        Future.successful(
+          new ~(new ~(Some("nino"), Some(AffinityGroup.Organisation)), Some(User))
         )
+      )
 
       when(mockFinalSubmissionService.submit(any(), any())(any())) thenReturn Future.successful(
         SubmissionReferences("ABCDEF123456", Seq("ABCDEF123456"))
       )
 
       val expectedMetadata = AuditMetadata(
-        internalId = "internalId",
+        userId = "nino",
         affinityGroup = AffinityGroup.Organisation,
         credentialRole = Some(User)
       )
@@ -115,13 +114,13 @@ class FinalSubmissionControllerSpec
     "submit with invalid JSON" - {
       "must return BadRequest when JSON is invalid" in {
         when(
-          mockAuthConnector.authorise[Option[String] ~ Option[String] ~ Option[AffinityGroup] ~ Option[CredentialRole]](
+          mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[CredentialRole]](
             any(),
             any()
           )(any(), any())
         ).thenReturn(
           Future.successful(
-            new ~(new ~(new ~(Some("nino"), Some("internalId")), Some(AffinityGroup.Organisation)), Some(User))
+            new ~(new ~(Some("nino"), Some(AffinityGroup.Organisation)), Some(User))
           )
         )
 

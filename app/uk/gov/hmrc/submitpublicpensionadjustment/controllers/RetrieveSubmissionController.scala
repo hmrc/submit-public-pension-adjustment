@@ -33,7 +33,7 @@ class RetrieveSubmissionController @Inject() (
     extends BackendController(cc) {
 
   def retrieveSubmissionStatus(submissionUniqueId: String): Action[AnyContent] = identify.async { implicit request =>
-    val status = calculationDataService.retrieveSubmission(request.internalId, submissionUniqueId)(ec, hc)
+    val status = calculationDataService.retrieveSubmission(request.userId, submissionUniqueId)(ec, hc)
 
     status.map { status =>
       if (status) {

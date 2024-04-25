@@ -107,13 +107,13 @@ class FinalSubmissionServiceSpec
       val finalSubmission = TestData.finalSubmission
 
       val auditMetadata = AuditMetadata(
-        internalId = "internalId",
+        userId = "nino",
         affinityGroup = AffinityGroup.Individual,
         credentialRole = None
       )
 
       val expectedAudit = SubmissionAuditEvent(
-        internalId = "internalId",
+        userId = "nino",
         affinityGroup = AffinityGroup.Individual,
         credentialRole = None,
         finalSubmission = finalSubmission

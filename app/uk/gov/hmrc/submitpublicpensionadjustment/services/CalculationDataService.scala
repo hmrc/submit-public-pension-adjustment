@@ -35,19 +35,20 @@ class CalculationDataService @Inject() (
 ) extends Logging {
 
   def retrieveSubmission(
-    internalId: String,
+    userId: String,
     submissionUniqueId: String
   )(implicit executionContext: ExecutionContext, hc: HeaderCarrier): Future[Boolean] =
     calculateBackendConnector
-      .retrieveSubmission(RetrieveSubmissionInfo(internalId, UniqueId(submissionUniqueId)))
+      .retrieveSubmission(RetrieveSubmissionInfo(userId, UniqueId(submissionUniqueId)))
       .transformWith {
         case Success(submissionResponse) =>
           for {
-            _ <- userAnswersService.clearById(internalId)
+            _ <- userAnswersService.clearById(userId)
             r <- submissionRepository
                    .insert(
                      Submission(
-                       internalId,
+                       userId,
+                       userId,
                        submissionUniqueId,
                        submissionResponse.calculationInputs,
                        submissionResponse.calculation

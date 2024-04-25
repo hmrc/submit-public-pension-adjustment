@@ -78,14 +78,14 @@ class UserAnswersControllerSpec
       "must return OK and the data when user data can be found for this session id" in {
         when(mockRepo.get(any[String])) thenReturn Future.successful(Some(userData))
         when(
-          mockAuthConnector.authorise[Option[String] ~ Option[String] ~ Option[AffinityGroup] ~ Option[String]](
+          mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
             any()
           )(any(), any())
         )
           .thenReturn(
             Future.successful(
-              new ~(new ~(new ~(Some("nino"), Some(userId)), Some(AffinityGroup.Individual)), Some("User"))
+              new ~(new ~(Some("nino"), Some(AffinityGroup.Individual)), Some("User"))
             )
           )
 
@@ -103,14 +103,14 @@ class UserAnswersControllerSpec
       "must return Not Found when user data cannot be found for this session id" in {
         when(mockRepo.get(any[String])) thenReturn Future.successful(None)
         when(
-          mockAuthConnector.authorise[Option[String] ~ Option[String] ~ Option[AffinityGroup] ~ Option[String]](
+          mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
             any()
           )(any(), any())
         )
           .thenReturn(
             Future.successful(
-              new ~(new ~(new ~(Some("nino"), Some(userId)), Some(AffinityGroup.Individual)), Some("User"))
+              new ~(new ~(Some("nino"), Some(AffinityGroup.Individual)), Some("User"))
             )
           )
 
@@ -164,14 +164,14 @@ class UserAnswersControllerSpec
       "must return No Content when data is kept alive" in {
         when(mockRepo.keepAlive(any[String])) thenReturn Future.successful(Done)
         when(
-          mockAuthConnector.authorise[Option[String] ~ Option[String] ~ Option[AffinityGroup] ~ Option[String]](
+          mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
             any()
           )(any(), any())
         )
           .thenReturn(
             Future.successful(
-              new ~(new ~(new ~(Some("nino"), Some(userId)), Some(AffinityGroup.Individual)), Some("User"))
+              new ~(new ~(Some("nino"), Some(AffinityGroup.Individual)), Some("User"))
             )
           )
 
@@ -191,14 +191,14 @@ class UserAnswersControllerSpec
       "must return No Content when data is cleared" in {
         when(mockRepo.clear(any[String])) thenReturn Future.successful(Done)
         when(
-          mockAuthConnector.authorise[Option[String] ~ Option[String] ~ Option[AffinityGroup] ~ Option[String]](
+          mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
             any()
           )(any(), any())
         )
           .thenReturn(
             Future.successful(
-              new ~(new ~(new ~(Some("nino"), Some(userId)), Some(AffinityGroup.Individual)), Some("User"))
+              new ~(new ~(Some("nino"), Some(AffinityGroup.Individual)), Some("User"))
             )
           )
 

@@ -50,6 +50,7 @@ class SubmissionRepositorySpec
     with OptionValues
     with MockitoSugar {
 
+  private val id                 = "id"
   private val sessionId          = "sessionId"
   private val submissionUniqueId = "submissionUniqueId"
   private val instant            = Instant.now.truncatedTo(ChronoUnit.MILLIS)
@@ -103,7 +104,8 @@ class SubmissionRepositorySpec
     )
   )
 
-  private val submission: Submission = Submission("sessionId", "submissionUniqueId", calculationInputs, calculation)
+  private val submission: Submission =
+    Submission("id", "sessionId", "submissionUniqueId", calculationInputs, calculation)
 
   protected override val repository = new SubmissionRepository(
     mongoComponent = mongoComponent,
@@ -118,6 +120,7 @@ class SubmissionRepositorySpec
     "must set the last updated time to `now` and save the submission" in {
 
       val expectedResult = Submission(
+        id,
         sessionId,
         submissionUniqueId,
         calculationInputs,
@@ -135,6 +138,7 @@ class SubmissionRepositorySpec
     "must store the data section as encrypted bytes" in {
 
       val submission = Submission(
+        id,
         sessionId,
         submissionUniqueId,
         calculationInputs,
@@ -188,6 +192,7 @@ class SubmissionRepositorySpec
       "must get the record" in {
 
         val submission = Submission(
+          id,
           sessionId,
           submissionUniqueId,
           calculationInputs,
@@ -218,6 +223,7 @@ class SubmissionRepositorySpec
       "must update its lastUpdated to `now` and return true" in {
 
         val submission = Submission(
+          id,
           sessionId,
           submissionUniqueId,
           calculationInputs,

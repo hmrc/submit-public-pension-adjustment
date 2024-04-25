@@ -37,7 +37,7 @@ class UserAnswersController @Inject() (
 
   def get: Action[AnyContent] = identify.async { request =>
     repository
-      .get(request.internalId)
+      .get(request.userId)
       .map {
         _.map(userAnswers => Ok(Json.toJson(userAnswers)))
           .getOrElse(NotFound)
@@ -52,13 +52,13 @@ class UserAnswersController @Inject() (
 
   def keepAlive: Action[AnyContent] = identify.async { request =>
     repository
-      .keepAlive(request.internalId)
+      .keepAlive(request.userId)
       .map(_ => NoContent)
   }
 
   def clear: Action[AnyContent] = identify.async { request =>
     repository
-      .clear(request.internalId)
+      .clear(request.userId)
       .map(_ => NoContent)
   }
 

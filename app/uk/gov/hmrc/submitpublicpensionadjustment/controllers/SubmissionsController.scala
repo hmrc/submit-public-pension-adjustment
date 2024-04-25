@@ -46,13 +46,13 @@ class SubmissionsController @Inject() (
   }
   def keepAlive: Action[AnyContent]                      = identify.async { request =>
     repository
-      .keepAlive(request.internalId)
+      .keepAlive(request.userId)
       .map(_ => NoContent)
   }
 
   def clear: Action[AnyContent] = identify.async { request =>
     repository
-      .clear(request.internalId)
+      .clear(request.userId)
       .map(_ => NoContent)
   }
 

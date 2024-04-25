@@ -18,4 +18,4 @@ package uk.gov.hmrc.submitpublicpensionadjustment.models
 
 import uk.gov.hmrc.auth.core.{AffinityGroup, CredentialRole}
 
-final case class AuditMetadata(internalId: String, affinityGroup: AffinityGroup, credentialRole: Option[CredentialRole])
+final case class AuditMetadata(userId: String, affinityGroup: AffinityGroup, credentialRole: Option[CredentialRole])
