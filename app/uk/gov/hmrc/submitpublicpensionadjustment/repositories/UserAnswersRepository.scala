@@ -35,7 +35,8 @@ import scala.concurrent.{ExecutionContext, Future}
 class UserAnswersRepository @Inject() (
   mongoComponent: MongoComponent,
   appConfig: AppConfig,
-  clock: Clock
+  clock: Clock,
+  calcUserAnswersRepository: CalcUserAnswersRepository
 )(implicit ec: ExecutionContext, crypto: Encrypter with Decrypter)
     extends PlayMongoRepository[UserAnswers](
       collectionName = "user-answers",
@@ -74,15 +75,17 @@ class UserAnswersRepository @Inject() (
   def set(userAnswers: UserAnswers): Future[Done] = {
 
     val updatedUserAnswers = userAnswers copy (lastUpdated = Instant.now(clock))
-
-    collection
-      .replaceOne(
-        filter = byId(updatedUserAnswers.id),
-        replacement = updatedUserAnswers,
-        options = ReplaceOptions().upsert(true)
-      )
-      .toFuture()
-      .map(_ => Done)
+    for {
+      _ <- calcUserAnswersRepository.keepAlive(updatedUserAnswers.id)
+      r <- collection
+             .replaceOne(
+               filter = byId(updatedUserAnswers.id),
+               replacement = updatedUserAnswers,
+               options = ReplaceOptions().upsert(true)
+             )
+             .toFuture()
+             .map(_ => Done)
+    } yield r
   }
 
   def clear(id: String): Future[Done] =
