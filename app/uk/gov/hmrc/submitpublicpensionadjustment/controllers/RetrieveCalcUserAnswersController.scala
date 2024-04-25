@@ -25,22 +25,23 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class RetrieveSubmissionController @Inject() (
+class RetrieveCalcUserAnswersController @Inject() (
   calculationDataService: CalculationDataService,
   cc: ControllerComponents,
   identify: IdentifierAction
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  def retrieveSubmissionStatus(submissionUniqueId: String): Action[AnyContent] = identify.async { implicit request =>
-    val status = calculationDataService.retrieveSubmission(request.internalId, submissionUniqueId)(ec, hc)
+  def retrieveCalcUserAnswersStatus(submissionUniqueId: String): Action[AnyContent] = identify.async {
+    implicit request =>
+      val status = calculationDataService.retrieveCalcUserAnswers(request.internalId, submissionUniqueId)(ec, hc)
 
-    status.map { status =>
-      if (status) {
-        Ok
-      } else {
-        BadRequest
+      status.map { status =>
+        if (status) {
+          Ok
+        } else {
+          BadRequest
+        }
       }
-    }
   }
 }

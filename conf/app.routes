@@ -9,6 +9,7 @@ DELETE      /user-answers              uk.gov.hmrc.submitpublicpensionadjustment
 
 POST        /user-answers/keep-alive   uk.gov.hmrc.submitpublicpensionadjustment.controllers.UserAnswersController.keepAlive
 
+GET        /calc-user-answers-signal/:submissionUniqueId          uk.gov.hmrc.submitpublicpensionadjustment.controllers.RetrieveCalcUserAnswersController.retrieveCalcUserAnswersStatus(submissionUniqueId: String)
 GET        /submission-signal/:submissionUniqueId          uk.gov.hmrc.submitpublicpensionadjustment.controllers.RetrieveSubmissionController.retrieveSubmissionStatus(submissionUniqueId: String)
 
 GET         /submissions/:userId              uk.gov.hmrc.submitpublicpensionadjustment.controllers.SubmissionsController.getBySessionId(userId: String)

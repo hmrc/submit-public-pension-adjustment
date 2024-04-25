@@ -18,17 +18,20 @@ package uk.gov.hmrc.submitpublicpensionadjustment.services
 
 import org.mockito.ArgumentMatchers.any
 import org.mockito.{ArgumentMatchers, MockitoSugar}
+import org.scalatest.concurrent.Futures.whenReady
 import org.scalatest.concurrent.ScalaFutures.convertScalaFuture
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
+import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.connectors.CalculateBackendConnector
-import uk.gov.hmrc.submitpublicpensionadjustment.models.{Done, RetrieveSubmissionInfo, UniqueId}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{CalcUserAnswers, Done, RetrieveSubmissionInfo, UniqueId}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{CalculationInputs, ChangeInTaxCharge, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LtaProtectionOrEnhancements, NewLifeTimeAllowanceAdditions, ProtectionEnhancedChanged, ProtectionType, Resubmission, SchemeNameAndTaxRef, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.RetrieveSubmissionResponse
-import uk.gov.hmrc.submitpublicpensionadjustment.repositories.SubmissionRepository
+import uk.gov.hmrc.submitpublicpensionadjustment.repositories.{CalcUserAnswersRepository, SubmissionRepository}
 
-import java.time.LocalDate
+import java.time.temporal.ChronoUnit
+import java.time.{Clock, Instant, LocalDate, ZoneId}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -39,9 +42,20 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
   private val mockCalculateBackendConnector = mock[CalculateBackendConnector]
   private val mockSubmissionRepository      = mock[SubmissionRepository]
   private val mockUserAnswersService        = mock[UserAnswersService]
+  private val mockCalcUserAnswersRepository = mock[CalcUserAnswersRepository]
 
-  private val service =
-    new CalculationDataService(mockCalculateBackendConnector, mockSubmissionRepository, mockUserAnswersService)
+  private val instant          = Instant.now.truncatedTo(ChronoUnit.MILLIS)
+  private val stubClock: Clock = Clock.fixed(instant, ZoneId.systemDefault)
+
+  private val service         =
+    new CalculationDataService(
+      mockCalculateBackendConnector,
+      mockSubmissionRepository,
+      mockUserAnswersService,
+      mockCalcUserAnswersRepository
+    )
+  private val calcUserAnswers =
+    CalcUserAnswers("internalId", Json.obj("foo" -> "bar"), "1234", Instant.now(stubClock), true, true)
 
   "Submission Retrieval" - {
 
@@ -189,4 +203,75 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       result mustBe false
     }
   }
+
+  "CalcUserAnswers Retrieval" - {
+
+    "should return true when CalcUserAnswers can be retrieved and inserted" in {
+
+      val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
+
+      when(
+        mockCalculateBackendConnector.retrieveCalcUserAnswers(ArgumentMatchers.eq(retrieveSubmissionInfo))(
+          ArgumentMatchers.eq(headerCarrier)
+        )
+      )
+        .thenReturn(Future.successful(calcUserAnswers))
+
+      when(mockCalcUserAnswersRepository.set(any())).thenReturn(Future.successful(Done))
+
+      val result: Future[Boolean] =
+        service.retrieveCalcUserAnswers("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
+          implicitly[ExecutionContext],
+          implicitly(headerCarrier)
+        )
+
+      result.futureValue mustBe true
+
+    }
+
+    "should return false when CalcUserAnswers can be retrieved but cannot be inserted" in {
+
+      val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
+
+      when(
+        mockCalculateBackendConnector.retrieveCalcUserAnswers(ArgumentMatchers.eq(retrieveSubmissionInfo))(
+          ArgumentMatchers.eq(headerCarrier)
+        )
+      )
+        .thenReturn(Future.successful(calcUserAnswers))
+
+      when(mockCalcUserAnswersRepository.set(any())).thenReturn(Future.failed(new Exception("DB insert failed")))
+
+      val result: Future[Boolean] =
+        service.retrieveCalcUserAnswers("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
+          implicitly[ExecutionContext],
+          implicitly(headerCarrier)
+        )
+
+      result.futureValue mustBe false
+
+    }
+
+    "should return false when CalcUserAnswers cannot be retrieved" in {
+
+      val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
+
+      when(
+        mockCalculateBackendConnector.retrieveCalcUserAnswers(ArgumentMatchers.eq(retrieveSubmissionInfo))(
+          ArgumentMatchers.eq(headerCarrier)
+        )
+      )
+        .thenReturn(Future.failed(new Exception("Retrieval failed")))
+
+      val result: Future[Boolean] =
+        service.retrieveCalcUserAnswers("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
+          implicitly[ExecutionContext],
+          implicitly(headerCarrier)
+        )
+
+      result.futureValue mustBe false
+
+    }
+  }
+
 }

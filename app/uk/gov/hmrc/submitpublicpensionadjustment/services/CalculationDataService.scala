@@ -19,9 +19,9 @@ package uk.gov.hmrc.submitpublicpensionadjustment.services
 import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.connectors.CalculateBackendConnector
-import uk.gov.hmrc.submitpublicpensionadjustment.models.{RetrieveSubmissionInfo, UniqueId}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.Submission
-import uk.gov.hmrc.submitpublicpensionadjustment.repositories.SubmissionRepository
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{RetrieveSubmissionInfo, UniqueId}
+import uk.gov.hmrc.submitpublicpensionadjustment.repositories.{CalcUserAnswersRepository, SubmissionRepository}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -30,7 +30,8 @@ import scala.util.{Failure, Success}
 class CalculationDataService @Inject() (
   calculateBackendConnector: CalculateBackendConnector,
   submissionRepository: SubmissionRepository,
-  userAnswersService: UserAnswersService
+  userAnswersService: UserAnswersService,
+  calcUserAnswersRepository: CalcUserAnswersRepository
 ) extends Logging {
 
   def retrieveSubmission(
@@ -65,6 +66,32 @@ class CalculationDataService @Inject() (
         case Failure(exception) =>
           logger.error(
             s"Could not retrieve submission from calculate-public-pension-adjustment backend for submissionUniqueId : $submissionUniqueId - failed with message : $exception"
+          )
+          Future(false)
+      }
+
+  def retrieveCalcUserAnswers(
+    internalId: String,
+    submissionUniqueId: String
+  )(implicit executionContext: ExecutionContext, hc: HeaderCarrier): Future[Boolean] =
+    calculateBackendConnector
+      .retrieveCalcUserAnswers(RetrieveSubmissionInfo(internalId, UniqueId(submissionUniqueId)))
+      .transformWith {
+        case Success(calcUserAnswers) =>
+          calcUserAnswersRepository
+            .set(calcUserAnswers)
+            .transformWith {
+              case Failure(exception) =>
+                logger.error(
+                  s"Insert into CalcUserAnswersRepository for submissionUniqueId : $submissionUniqueId - failed with message : $exception"
+                )
+                Future(false)
+              case Success(_)         => Future(true)
+            }
+
+        case Failure(exception) =>
+          logger.error(
+            s"Could not retrieve CalcUserAnswers from calculate-public-pension-adjustment backend for submissionUniqueId : $submissionUniqueId - failed with message : $exception"
           )
           Future(false)
       }
