@@ -48,7 +48,6 @@ class CalculationDataService @Inject() (
                    .insert(
                      Submission(
                        userId,
-                       userId,
                        submissionUniqueId,
                        submissionResponse.calculationInputs,
                        submissionResponse.calculation
