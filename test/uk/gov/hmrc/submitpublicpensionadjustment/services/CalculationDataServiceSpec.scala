@@ -38,8 +38,10 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
 
   private val mockCalculateBackendConnector = mock[CalculateBackendConnector]
   private val mockSubmissionRepository      = mock[SubmissionRepository]
+  private val mockUserAnswersService        = mock[UserAnswersService]
 
-  private val service = new CalculationDataService(mockCalculateBackendConnector, mockSubmissionRepository)
+  private val service =
+    new CalculationDataService(mockCalculateBackendConnector, mockSubmissionRepository, mockUserAnswersService)
 
   "Submission Retrieval" - {
 
@@ -58,6 +60,8 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
         .thenReturn(Future.successful(retrieveSubmissionResponse))
 
       when(mockSubmissionRepository.insert(any())).thenReturn(Future.successful(Done))
+
+      when(mockUserAnswersService.clearById(any())).thenReturn(Future.successful(Done))
 
       val result: Future[Boolean] =
         service.retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(

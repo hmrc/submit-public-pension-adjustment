@@ -25,7 +25,7 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.submitpublicpensionadjustment.models.UserAnswers
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{Done, UserAnswers}
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.UserAnswersRepository
 
 import java.time.Instant
@@ -92,6 +92,16 @@ class UserAnswersServiceSpec
 
         result.futureValue mustBe false
       }
+    }
+
+    "clearById" - {
+
+      "must clear a UserAnswer when it exists in the repository" in {
+
+        when(mockUserAnswersRepository.clear("id")).thenReturn(Future.successful(Done))
+        service.clearById("id").futureValue mustBe Done
+      }
+
     }
 
   }
