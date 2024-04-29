@@ -17,7 +17,7 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
 import play.api.Logging
-import uk.gov.hmrc.submitpublicpensionadjustment.models.UserAnswers
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{Done, UserAnswers}
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.UserAnswersRepository
 
 import javax.inject.{Inject, Singleton}
@@ -38,4 +38,6 @@ class UserAnswersService @Inject() (
       case None    =>
         Future.successful(false)
     }
+
+  def clearById(id: String): Future[Done] = userAnswers.clear(id)
 }

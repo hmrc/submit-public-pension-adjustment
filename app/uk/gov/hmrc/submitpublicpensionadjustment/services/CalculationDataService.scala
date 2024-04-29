@@ -29,7 +29,8 @@ import scala.util.{Failure, Success}
 
 class CalculationDataService @Inject() (
   calculateBackendConnector: CalculateBackendConnector,
-  submissionRepository: SubmissionRepository
+  submissionRepository: SubmissionRepository,
+  userAnswersService: UserAnswersService
 ) extends Logging {
 
   def retrieveSubmission(
@@ -40,23 +41,26 @@ class CalculationDataService @Inject() (
       .retrieveSubmission(RetrieveSubmissionInfo(internalId, UniqueId(submissionUniqueId)))
       .transformWith {
         case Success(submissionResponse) =>
-          submissionRepository
-            .insert(
-              Submission(
-                internalId,
-                submissionUniqueId,
-                submissionResponse.calculationInputs,
-                submissionResponse.calculation
-              )
-            )
-            .transformWith {
-              case Failure(exception) =>
-                logger.error(
-                  s"Insert into submissionRepository for submissionUniqueId : $submissionUniqueId - failed with message : $exception"
-                )
-                Future(false)
-              case Success(_)         => Future(true)
-            }
+          for {
+            _ <- userAnswersService.clearById(internalId)
+            r <- submissionRepository
+                   .insert(
+                     Submission(
+                       internalId,
+                       submissionUniqueId,
+                       submissionResponse.calculationInputs,
+                       submissionResponse.calculation
+                     )
+                   )
+                   .transformWith {
+                     case Failure(exception) =>
+                       logger.error(
+                         s"Insert into submissionRepository for submissionUniqueId : $submissionUniqueId - failed with message : $exception"
+                       )
+                       Future(false)
+                     case Success(_)         => Future(true)
+                   }
+          } yield r
 
         case Failure(exception) =>
           logger.error(
