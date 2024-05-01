@@ -20,12 +20,12 @@ import com.google.inject.Inject
 import play.api.Logging
 import play.api.http.Status._
 import play.api.libs.json.Json
+import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps, UpstreamErrorResponse}
 import uk.gov.hmrc.submitpublicpensionadjustment.config.AppConfig
-import uk.gov.hmrc.submitpublicpensionadjustment.models.{RetrieveSubmissionInfo, UniqueId}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.RetrieveSubmissionResponse
-import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{CalcUserAnswers, RetrieveSubmissionInfo, UniqueId}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -73,6 +73,32 @@ class CalculateBackendConnector @Inject() (
             INTERNAL_SERVER_ERROR
           )
         )
+      }
+
+  def retrieveCalcUserAnswers(
+    retrieveSubmissionInfo: RetrieveSubmissionInfo
+  )(implicit hc: HeaderCarrier): Future[CalcUserAnswers] =
+    httpClient2
+      .post(
+        url"${config.cppaBaseUrl}/calculate-public-pension-adjustment/retrieve-user-answers"
+      )
+      .withBody(Json.toJson(retrieveSubmissionInfo))
+      .execute
+      .flatMap { response =>
+        response.status match {
+          case OK =>
+            Future.successful(response.json.as[CalcUserAnswers])
+          case _  =>
+            logger.error(
+              s"Unexpected response from /calculate-public-pension-adjustment/retrieve-user-answers/${retrieveSubmissionInfo.submissionUniqueId.value} with status : ${response.status}"
+            )
+            Future.failed(
+              UpstreamErrorResponse(
+                "Unexpected response from /calculate-public-pension-adjustment/retrieve-user-answers",
+                response.status
+              )
+            )
+        }
       }
 
   def updateSubmissionFlag(

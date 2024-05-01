@@ -132,12 +132,14 @@ class InternalAuthInitialiserSpec
 
       app.injector.instanceOf[InternalAuthTokenInitialiser].initialised.futureValue
 
-      wireMockServer.verify(
-        1,
-        getRequestedFor(urlMatching("/test-only/token"))
-          .withHeader(AUTHORIZATION, equalTo(authToken))
-      )
-      wireMockServer.verify(0, postRequestedFor(urlMatching("/test-only/token")))
+      eventually(Timeout(Span(30, Seconds))) {
+        wireMockServer.verify(
+          1,
+          getRequestedFor(urlMatching("/test-only/token"))
+            .withHeader(AUTHORIZATION, equalTo(authToken))
+        )
+        wireMockServer.verify(0, postRequestedFor(urlMatching("/test-only/token")))
+      }
     }
   }
 
