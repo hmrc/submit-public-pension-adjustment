@@ -46,16 +46,6 @@ class CalculateBackendConnectorSpec
     with BeforeAndAfterEach
     with BeforeAndAfterAll {
 
-  implicit private lazy val hc: HeaderCarrier = HeaderCarrier()
-
-  private lazy val app: Application = new GuiceApplicationBuilder()
-    .configure(
-      "microservice.services.calculate-public-pension-adjustment.port" -> wireMockServer.port
-    )
-    .build()
-
-  private lazy val connector: CalculateBackendConnector = app.injector.instanceOf[CalculateBackendConnector]
-
   override def beforeAll(): Unit = {
     super.beforeAll()
     startWireMock()
@@ -70,6 +60,16 @@ class CalculateBackendConnectorSpec
     super.beforeEach()
     resetWireMock()
   }
+
+  implicit private lazy val hc: HeaderCarrier = HeaderCarrier()
+
+  private lazy val app: Application = new GuiceApplicationBuilder()
+    .configure(
+      "microservice.services.calculate-public-pension-adjustment.port" -> wireMockServer.port
+    )
+    .build()
+
+  private lazy val connector: CalculateBackendConnector = app.injector.instanceOf[CalculateBackendConnector]
 
   "CalculateBackendConnector" - {
 
