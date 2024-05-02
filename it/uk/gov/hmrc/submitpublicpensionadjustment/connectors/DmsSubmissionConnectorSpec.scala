@@ -16,9 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.connectors
 
-import akka.actor.ActorSystem
-import akka.stream.scaladsl.Source
-import akka.util.ByteString
+import org.apache.pekko.stream.scaladsl.Source
+import org.apache.pekko.util.ByteString
 import com.github.tomakehurst.wiremock.client.WireMock._
 import org.mockito.MockitoSugar
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
@@ -76,7 +75,7 @@ class DmsSubmissionConnectorSpec
         "microservice.services.dms-submission.casKey"        -> "casKey",
         "microservice.services.dms-submission.businessArea"  -> "businessArea",
         "internal-auth.token"                                -> "authKey",
-        "akka.stream.materializer.subscription-timeout.mode" -> "warn"
+        "org.apache.pekko.stream.materializer.subscription-timeout.timeout.mode" -> "warn"
       )
       .build()
 

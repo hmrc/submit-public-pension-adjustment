@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.config
 
-import akka.actor.ActorSystem
+import org.apache.pekko.actor.ActorSystem
 import play.api.libs.json.Json
 import play.api.{Configuration, Logging}
 import uk.gov.hmrc.http.HttpReads.Implicits.readRaw

@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.connectors
 
-import akka.stream.scaladsl.Source
-import akka.util.ByteString
+import org.apache.pekko.stream.scaladsl.Source
+import org.apache.pekko.util.ByteString
 import play.api.http.Status.ACCEPTED
 import play.api.mvc.MultipartFormData
 import play.api.{Configuration, Logging}
