@@ -1,7 +1,7 @@
 package repositories
 
 import com.fasterxml.jackson.core.JsonParseException
-import org.mockito.{Mockito, MockitoSugar}
+import org.mockito.MockitoSugar
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters
 import org.scalatest.OptionValues
@@ -13,12 +13,12 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.crypto.{Decrypter, Encrypter, SymmetricCryptoFactory}
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 import uk.gov.hmrc.submitpublicpensionadjustment.config.AppConfig
-import uk.gov.hmrc.submitpublicpensionadjustment.models.{Done, UserAnswers}
-import uk.gov.hmrc.submitpublicpensionadjustment.repositories.{SubmissionRepository, UserAnswersRepository}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{CalcUserAnswers, Done, UserAnswers}
+import uk.gov.hmrc.submitpublicpensionadjustment.repositories.{CalcUserAnswersRepository, UserAnswersRepository}
 
 import java.security.SecureRandom
-import java.time.{Clock, Instant, ZoneId}
 import java.time.temporal.ChronoUnit
+import java.time.{Clock, Instant, ZoneId}
 import java.util.Base64
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -45,14 +45,26 @@ class UserAnswersRepositorySpec
   private implicit val crypto: Encrypter with Decrypter =
     SymmetricCryptoFactory.aesGcmCryptoFromConfig("crypto", configuration.underlying)
 
-  private val userAnswers = UserAnswers("id", Json.obj("foo" -> "bar"), Instant.ofEpochSecond(1))
+  private val userAnswers     = UserAnswers("id", Json.obj("foo" -> "bar"), Instant.ofEpochSecond(1))
+  private val calcUserAnswers =
+    CalcUserAnswers("id", Json.obj("foo" -> "bar"), "uniqueId", Instant.now(stubClock), true, true)
 
-  private val mockAppConfig            = mock[AppConfig]
-  private val mockSubmissionRepository = mock[SubmissionRepository]
+  private val mockAppConfig               = mock[AppConfig]
+  protected val calcUserAnswersRepository =
+    new CalcUserAnswersRepository(
+      mongoComponent = mongoComponent,
+      appConfig = mockAppConfig,
+      clock = stubClock
+    )
   when(mockAppConfig.cacheTtl) thenReturn 1
 
   protected override val repository =
-    new UserAnswersRepository(mongoComponent = mongoComponent, appConfig = mockAppConfig, clock = stubClock)
+    new UserAnswersRepository(
+      mongoComponent = mongoComponent,
+      appConfig = mockAppConfig,
+      clock = stubClock,
+      calcUserAnswersRepository = calcUserAnswersRepository
+    )
 
   ".set" - {
 
@@ -60,10 +72,14 @@ class UserAnswersRepositorySpec
 
       val expectedResult = userAnswers copy (lastUpdated = instant)
 
+      calcUserAnswersRepository.set(calcUserAnswers)
+      val calcUaKeepAliveResult = calcUserAnswersRepository.keepAlive("id").futureValue
+
       val setResult     = repository.set(userAnswers).futureValue
       val updatedRecord = find(Filters.equal("_id", userAnswers.id)).futureValue.headOption.value
 
       setResult mustEqual Done
+      calcUaKeepAliveResult mustEqual Done
       updatedRecord mustEqual expectedResult
     }
 
