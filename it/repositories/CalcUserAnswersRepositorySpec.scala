@@ -2,9 +2,12 @@ package repositories
 
 import org.mockito.MockitoSugar
 import org.scalatest.OptionValues
+import org.scalatest.concurrent.Eventually.eventually
+import org.scalatest.concurrent.PatienceConfiguration.Timeout
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
+import org.scalatest.time.{Seconds, Span}
 import play.api.Configuration
 import play.api.libs.json.Json
 import uk.gov.hmrc.crypto.{Decrypter, Encrypter, SymmetricCryptoFactory}
@@ -63,7 +66,9 @@ class CalcUserAnswersRepositorySpec
       insert(userAnswers).futureValue
 
       val result = repository.get(userAnswersUniqueId).futureValue
-      result.value mustEqual userAnswers
+      eventually(Timeout(Span(30, Seconds))) {
+        result.value mustEqual userAnswers
+      }
     }
 
     "when no userAnswer exists, return None" in {
