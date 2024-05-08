@@ -32,7 +32,7 @@ import uk.gov.hmrc.submitpublicpensionadjustment.services.CalculationDataService
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class RetrieveSubmissionControllerSpec
+class RetrieveSubmissionFromCalcBEControllerSpec
     extends PlaySpec
     with GuiceOneAppPerTest
     with Injecting
@@ -44,10 +44,10 @@ class RetrieveSubmissionControllerSpec
       "return OK when the submission status is found and true" in {
         val mockCalculationDataService = mock[CalculationDataService]
         val submissionUniqueId         = "uniqueId"
-        when(mockCalculationDataService.retrieveSubmission(any(), any())(any(), any()))
+        when(mockCalculationDataService.retrieveSubmissionFromCalcBE(any(), any())(any(), any()))
           .thenReturn(Future.successful(true))
 
-        val controller = new RetrieveSubmissionController(
+        val controller = new RetrieveSubmissionFromCalcBEController(
           mockCalculationDataService,
           stubControllerComponents(),
           new FakeIdentifierAction
@@ -60,10 +60,10 @@ class RetrieveSubmissionControllerSpec
       "return BadRequest when the submission status is found and false" in {
         val mockCalculationDataService = mock[CalculationDataService]
         val submissionUniqueId         = "uniqueId"
-        when(mockCalculationDataService.retrieveSubmission(any(), any())(any(), any()))
+        when(mockCalculationDataService.retrieveSubmissionFromCalcBE(any(), any())(any(), any()))
           .thenReturn(Future.successful(false))
 
-        val controller = new RetrieveSubmissionController(
+        val controller = new RetrieveSubmissionFromCalcBEController(
           mockCalculationDataService,
           stubControllerComponents(),
           new FakeIdentifierAction

@@ -16,31 +16,34 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.controllers
 
+import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import uk.gov.hmrc.submitpublicpensionadjustment.controllers.actions.IdentifierAction
-import uk.gov.hmrc.submitpublicpensionadjustment.services.CalculationDataService
+import uk.gov.hmrc.submitpublicpensionadjustment.repositories.CalcUserAnswersRepository
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class RetrieveSubmissionController @Inject() (
-  calculationDataService: CalculationDataService,
+class CalcUserAnswersController @Inject() (
   cc: ControllerComponents,
-  identify: IdentifierAction
+  identify: IdentifierAction,
+  calcUserAnswers: CalcUserAnswersRepository
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  def retrieveSubmissionStatus(submissionUniqueId: String): Action[AnyContent] = identify.async { implicit request =>
-    val status = calculationDataService.retrieveSubmission(request.userId, submissionUniqueId)(ec, hc)
-
-    status.map { status =>
-      if (status) {
-        Ok
-      } else {
-        BadRequest
-      }
+  def getByUniqueId(uniqueId: String): Action[AnyContent] = identify.async { request =>
+    calcUserAnswers.getByUniqueId(uniqueId).map {
+      _.map(userAnswers => Ok(Json.toJson(userAnswers)))
+        .getOrElse(NotFound)
     }
   }
+
+  def clear: Action[AnyContent] = identify.async { request =>
+    calcUserAnswers
+      .clear(request.userId)
+      .map(_ => NoContent)
+  }
+
 }

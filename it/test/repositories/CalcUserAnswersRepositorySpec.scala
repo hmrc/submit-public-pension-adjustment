@@ -47,11 +47,11 @@ class CalcUserAnswersRepositorySpec
     with OptionValues
     with MockitoSugar {
 
-  private val userAnswersUniqueId  = "userAnswersUniqueId"
-  private val userAnswersUniqueId2 = "userAnswersUniqueId2"
-  private val instant              = Instant.now.truncatedTo(ChronoUnit.MILLIS)
-  private val stubClock: Clock     = Clock.fixed(instant, ZoneId.systemDefault)
-  private val mockAppConfig        = mock[AppConfig]
+  private val userAnswersId    = "userAnswersId"
+  private val userAnswersId2   = "userAnswersId2"
+  private val instant          = Instant.now.truncatedTo(ChronoUnit.MILLIS)
+  private val stubClock: Clock = Clock.fixed(instant, ZoneId.systemDefault)
+  private val mockAppConfig    = mock[AppConfig]
 
   private val aesKey = {
     val aesKey = new Array[Byte](32)
@@ -73,15 +73,15 @@ class CalcUserAnswersRepositorySpec
   )
 
   val userAnswers =
-    CalcUserAnswers(userAnswersUniqueId, Json.obj("foo" -> "bar"), "uniqueId", Instant.now(stubClock), true, true)
+    CalcUserAnswers(userAnswersId, Json.obj("foo" -> "bar"), "uniqueId", Instant.now(stubClock), true, true)
 
   ".get" - {
 
-    "when a userAnswer exists, must get the record with the uniqueId" in {
+    "when a userAnswer exists, must get the record with the Id" in {
 
       insert(userAnswers).futureValue
 
-      val result = repository.get(userAnswersUniqueId).futureValue
+      val result = repository.get(userAnswersId).futureValue
       eventually(Timeout(Span(30, Seconds))) {
         result.value mustEqual userAnswers
       }
@@ -89,9 +89,27 @@ class CalcUserAnswersRepositorySpec
 
     "when no userAnswer exists, return None" in {
 
-      repository.get(userAnswersUniqueId).futureValue must not be defined
+      repository.get(userAnswersId).futureValue must not be defined
     }
   }
+
+  // TODO revisit uniqueId unit tests
+
+//    ".getByUniqueId" - {
+//
+//      "when a userAnswer exists, must get the record with the uniqueId" in {
+//
+//        insert(userAnswers).futureValue
+//
+//        val result = repository.getByUniqueId("uniqueId").futureValue
+//        result.value mustEqual userAnswers
+//      }
+//
+//      "when no userAnswer exists, return None" in {
+//
+//        repository.getByUniqueId("uniqueId").futureValue must not be defined
+//      }
+//    }
 
   ".clear" - {
 
@@ -99,8 +117,8 @@ class CalcUserAnswersRepositorySpec
 
       insert(userAnswers).futureValue
 
-      repository.clear(userAnswersUniqueId).futureValue
-      repository.get(userAnswersUniqueId).futureValue must not be defined
+      repository.clear(userAnswersId).futureValue
+      repository.get(userAnswersId).futureValue must not be defined
     }
   }
 
@@ -109,7 +127,7 @@ class CalcUserAnswersRepositorySpec
     "must set user answers" in {
 
       repository.set(userAnswers).futureValue
-      repository.get(userAnswersUniqueId).futureValue.value mustBe userAnswers
+      repository.get(userAnswersId).futureValue.value mustBe userAnswers
     }
   }
 
@@ -119,20 +137,30 @@ class CalcUserAnswersRepositorySpec
 
       insert(userAnswers).futureValue
 
-      repository.keepAlive(userAnswersUniqueId).futureValue mustBe Done
+      repository.keepAlive(userAnswersId).futureValue mustBe Done
     }
   }
+
+  //  ".keepAliveByUniqueId" - {
+  //
+  //    "must return done when last updated time kept alive" in {
+  //
+  //      insert(userAnswers).futureValue
+  //
+  //      repository.keepAliveByUniqueId("uniqueId").futureValue mustBe Done
+  //    }
+  //  }
 
   ".clearByUniqueIdAndNotId" - {
 
     "must clear user answers with UniqueId with different Id" in {
 
       insert(userAnswers).futureValue
-      insert(userAnswers.copy(id = userAnswersUniqueId2)).futureValue
+      insert(userAnswers.copy(id = userAnswersId2)).futureValue
 
-      repository.clearByUniqueIdAndNotId("uniqueId", userAnswersUniqueId).futureValue
-      repository.get(userAnswersUniqueId).futureValue mustBe defined
-      repository.get(userAnswersUniqueId2).futureValue must not be defined
+      repository.clearByUniqueIdAndNotId("uniqueId", userAnswersId).futureValue
+      repository.get(userAnswersId).futureValue mustBe defined
+      repository.get(userAnswersId2).futureValue must not be defined
     }
   }
 }
