@@ -1,9 +1,22 @@
+import uk.gov.hmrc.DefaultBuildSettings.itSettings
+
+val scala2_13_12 = "2.13.12"
+
+ThisBuild / majorVersion := 0
+ThisBuild / scalaVersion := scala2_13_12
+
+lazy val it = project
+  .enablePlugins(PlayScala)
+  .dependsOn(microservice % "test->test") // the "test->test" allows reusing test code and test dependencies
+  .settings(itSettings())
+  .settings(libraryDependencies ++= AppDependencies.itDependencies)
+
 lazy val microservice = Project("submit-public-pension-adjustment", file("."))
   .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin, ScalafmtPlugin)
   .disablePlugins(JUnitXmlReportPlugin)
   .settings(
     majorVersion := 0,
-    scalaVersion := "2.13.8",
+    scalaVersion := "2.13.12",
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
     dependencyOverrides += "commons-codec" % "commons-codec" % "1.12",
     // https://www.scala-lang.org/2021/01/12/configuring-and-suppressing-warnings.html
@@ -19,8 +32,6 @@ lazy val microservice = Project("submit-public-pension-adjustment", file("."))
     PlayKeys.playDefaultPort := 12803
   )
   .settings(inConfig(Test)(testSettings): _*)
-  .configs(IntegrationTest)
-  .settings(inConfig(IntegrationTest)(itSettings): _*)
   .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings: _*)
   .settings(scoverageSettings)
@@ -28,18 +39,6 @@ lazy val microservice = Project("submit-public-pension-adjustment", file("."))
 lazy val testSettings: Seq[Def.Setting[_]] = Seq(
   fork := true,
   unmanagedSourceDirectories += baseDirectory.value / "test-utils"
-)
-
-lazy val itSettings = Defaults.itSettings ++ Seq(
-  unmanagedSourceDirectories := Seq(
-    baseDirectory.value / "it",
-    baseDirectory.value / "test-utils"
-  ),
-  unmanagedResourceDirectories := Seq(
-    baseDirectory.value / "it" / "resources"
-  ),
-  parallelExecution := false,
-  fork := true
 )
 
 lazy val scoverageSettings =

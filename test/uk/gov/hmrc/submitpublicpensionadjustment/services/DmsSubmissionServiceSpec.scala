@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
-import akka.stream.Materializer
-import akka.stream.scaladsl.{Keep, Sink, Source}
-import akka.util.ByteString
+import org.apache.pekko.stream.Materializer
+import org.apache.pekko.stream.scaladsl.{Keep, Sink, Source}
+import org.apache.pekko.util.ByteString
 import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.{ArgumentCaptor, MockitoSugar}
 import org.scalatest.concurrent.ScalaFutures
