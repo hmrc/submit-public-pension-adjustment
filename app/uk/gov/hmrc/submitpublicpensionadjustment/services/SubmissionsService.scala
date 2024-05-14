@@ -17,9 +17,8 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
 import play.api.Logging
-import uk.gov.hmrc.submitpublicpensionadjustment.models.UserAnswers
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.Submission
-import uk.gov.hmrc.submitpublicpensionadjustment.repositories.{SubmissionRepository, UserAnswersRepository}
+import uk.gov.hmrc.submitpublicpensionadjustment.repositories.SubmissionRepository
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}

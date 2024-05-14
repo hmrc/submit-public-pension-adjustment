@@ -20,7 +20,6 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import play.api.Logging
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
-import uk.gov.hmrc.submitpublicpensionadjustment.TestData.calculationInputs
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{InternationalAddress, UkAddress}
 
 import java.time.LocalDate

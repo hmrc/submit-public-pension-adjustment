@@ -18,7 +18,6 @@ package uk.gov.hmrc.submitpublicpensionadjustment.services
 
 import org.mockito.ArgumentMatchers.any
 import org.mockito.{ArgumentMatchers, MockitoSugar}
-import org.scalatest.concurrent.Futures.whenReady
 import org.scalatest.concurrent.ScalaFutures.convertScalaFuture
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper

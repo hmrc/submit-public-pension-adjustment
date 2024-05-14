@@ -20,8 +20,7 @@ import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import uk.gov.hmrc.submitpublicpensionadjustment.controllers.actions.IdentifierAction
-import uk.gov.hmrc.submitpublicpensionadjustment.models.UserAnswers
-import uk.gov.hmrc.submitpublicpensionadjustment.repositories.{SubmissionRepository, UserAnswersRepository}
+import uk.gov.hmrc.submitpublicpensionadjustment.repositories.SubmissionRepository
 import uk.gov.hmrc.submitpublicpensionadjustment.services.SubmissionsService
 
 import javax.inject.{Inject, Singleton}
