@@ -51,7 +51,6 @@ class SubmissionRepositorySpec
     with MockitoSugar {
 
   private val id                 = "id"
-  private val sessionId          = "sessionId"
   private val submissionUniqueId = "submissionUniqueId"
   private val instant            = Instant.now.truncatedTo(ChronoUnit.MILLIS)
   private val stubClock: Clock   = Clock.fixed(instant, ZoneId.systemDefault)
@@ -105,7 +104,7 @@ class SubmissionRepositorySpec
   )
 
   private val submission: Submission =
-    Submission("id", "sessionId", "submissionUniqueId", calculationInputs, calculation)
+    Submission("id", "submissionUniqueId", calculationInputs, calculation)
 
   protected override val repository = new SubmissionRepository(
     mongoComponent = mongoComponent,
@@ -121,7 +120,6 @@ class SubmissionRepositorySpec
 
       val expectedResult = Submission(
         id,
-        sessionId,
         submissionUniqueId,
         calculationInputs,
         calculation,
@@ -139,7 +137,6 @@ class SubmissionRepositorySpec
 
       val submission = Submission(
         id,
-        sessionId,
         submissionUniqueId,
         calculationInputs,
         calculation,
@@ -193,7 +190,6 @@ class SubmissionRepositorySpec
 
         val submission = Submission(
           id,
-          sessionId,
           submissionUniqueId,
           calculationInputs,
           None,
@@ -224,7 +220,6 @@ class SubmissionRepositorySpec
 
         val submission = Submission(
           id,
-          sessionId,
           submissionUniqueId,
           calculationInputs,
           None,
@@ -233,12 +228,12 @@ class SubmissionRepositorySpec
 
         insert(submission).futureValue
 
-        val result = repository.keepAlive(submission.sessionId).futureValue
+        val result = repository.keepAlive(submission.id).futureValue
 
         val expectedSubmission = submission copy (lastUpdated = instant)
 
         result mustEqual true
-        val updatedAnswers = find(Filters.equal("sessionId", sessionId)).futureValue.headOption.value
+        val updatedAnswers = find(Filters.equal("_id", "id")).futureValue.headOption.value
         updatedAnswers mustEqual expectedSubmission
       }
     }

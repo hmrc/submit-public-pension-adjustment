@@ -36,15 +36,15 @@ class SubmissionsController @Inject() (
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  def getBySessionId(userId: String): Action[AnyContent] = identify.async { request =>
+  def getByUserId(userId: String): Action[AnyContent] = identify.async { request =>
     repository
-      .getBySessionId(userId)
+      .getByUserId(userId)
       .map {
         _.map(submission => Ok(Json.toJson(submission)))
           .getOrElse(NotFound)
       }
   }
-  def keepAlive: Action[AnyContent]                      = identify.async { request =>
+  def keepAlive: Action[AnyContent]                   = identify.async { request =>
     repository
       .keepAlive(request.userId)
       .map(_ => NoContent)

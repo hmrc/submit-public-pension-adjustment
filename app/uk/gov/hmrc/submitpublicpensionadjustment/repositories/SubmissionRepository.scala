@@ -53,12 +53,6 @@ class SubmissionRepository @Inject() (
           IndexOptions()
             .name("uniqueIdx")
             .unique(true)
-        ),
-        IndexModel(
-          Indexes.ascending("sessionId"),
-          IndexOptions()
-            .name("sessionIdx")
-            .unique(true)
         )
       )
     ) {
@@ -69,7 +63,7 @@ class SubmissionRepository @Inject() (
 
     collection
       .replaceOne(
-        filter = bySessionId(updatedSubmission.sessionId),
+        filter = byUserId(updatedSubmission.id),
         replacement = updatedSubmission,
         options = ReplaceOptions().upsert(true)
       )
@@ -79,12 +73,12 @@ class SubmissionRepository @Inject() (
 
   private def byUniqueId(uniqueId: String): Bson = Filters.equal("uniqueId", uniqueId)
 
-  private def bySessionId(sessionId: String): Bson = Filters.equal("sessionId", sessionId)
+  private def byUserId(userId: String): Bson = Filters.equal("_id", userId)
 
-  def keepAlive(sessionId: String): Future[Boolean] =
+  def keepAlive(userId: String): Future[Boolean] =
     collection
       .updateOne(
-        filter = bySessionId(sessionId),
+        filter = byUserId(userId),
         update = Updates.set("lastUpdated", Instant.now(clock))
       )
       .toFuture
@@ -95,14 +89,14 @@ class SubmissionRepository @Inject() (
       .find(byUniqueId(uniqueId))
       .headOption()
 
-  def getBySessionId(sessionId: String): Future[Option[Submission]] =
+  def getByUserId(userId: String): Future[Option[Submission]] =
     collection
-      .find(bySessionId(sessionId))
+      .find(byUserId(userId))
       .headOption()
 
-  def clear(sessionId: String): Future[Boolean] =
+  def clear(userId: String): Future[Boolean] =
     collection
-      .deleteOne(bySessionId(sessionId))
+      .deleteOne(byUserId(userId))
       .toFuture
       .map(_ => true)
 }

@@ -57,7 +57,7 @@ class SubmissionsControllerSpec
   private val stubClock      = Clock.fixed(instant, ZoneId.systemDefault)
   private val userId         = "foo"
   private val submissionData =
-    Submission("id", "sessionId", "uniqueId", TestData.calculationInputs, None, Instant.parse("2024-03-12T10:00:00Z"))
+    Submission("id", "uniqueId", TestData.calculationInputs, None, Instant.parse("2024-03-12T10:00:00Z"))
 
   override def beforeEach(): Unit = {
     reset(mockRepo)
@@ -79,7 +79,7 @@ class SubmissionsControllerSpec
     ".get" - {
 
       "must return OK and the data when user data can be found for this session id" in {
-        when(mockRepo.getBySessionId(userId)) thenReturn Future.successful(Some(submissionData))
+        when(mockRepo.getByUserId(userId)) thenReturn Future.successful(Some(submissionData))
         when(
           mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
@@ -93,18 +93,18 @@ class SubmissionsControllerSpec
           )
 
         val request =
-          FakeRequest(GET, routes.SubmissionsController.getBySessionId(userId).url)
+          FakeRequest(GET, routes.SubmissionsController.getByUserId(userId).url)
             .withHeaders("Authorization" -> "Bearer token")
 
         val controller = app.injector.instanceOf[SubmissionsController]
-        val result     = controller.getBySessionId(userId).apply(request)
+        val result     = controller.getByUserId(userId).apply(request)
 
         status(result) mustEqual OK
         contentAsJson(result) mustEqual Json.toJson(submissionData)
       }
 
       "must return Not Found when user data cannot be found for this session id" in {
-        when(mockRepo.getBySessionId(userId)) thenReturn Future.successful(None)
+        when(mockRepo.getByUserId(userId)) thenReturn Future.successful(None)
         when(
           mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
@@ -118,11 +118,11 @@ class SubmissionsControllerSpec
           )
 
         val request =
-          FakeRequest(GET, routes.SubmissionsController.getBySessionId(userId).url)
+          FakeRequest(GET, routes.SubmissionsController.getByUserId(userId).url)
             .withHeaders("Authorization" -> "Bearer token")
 
         val controller = app.injector.instanceOf[SubmissionsController]
-        val result     = controller.getBySessionId(userId).apply(request)
+        val result     = controller.getByUserId(userId).apply(request)
 
         status(result) mustEqual NOT_FOUND
       }
