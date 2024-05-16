@@ -21,7 +21,7 @@ import uk.gov.hmrc.auth.core.{AffinityGroup, CredentialRole}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 
 final case class SubmissionAuditEvent(
-  internalId: String,
+  userId: String,
   affinityGroup: AffinityGroup,
   credentialRole: Option[CredentialRole],
   finalSubmission: FinalSubmission

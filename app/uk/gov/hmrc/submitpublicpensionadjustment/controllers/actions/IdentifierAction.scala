@@ -35,7 +35,6 @@ class IdentifierAction @Inject() (val authConnector: AuthConnector, val parser: 
 
   private val retrievals =
     Retrievals.nino and
-      Retrievals.internalId and
       Retrievals.affinityGroup and
       Retrievals.credentialRole
 
@@ -44,11 +43,11 @@ class IdentifierAction @Inject() (val authConnector: AuthConnector, val parser: 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequest(request)
 
     authorised(AffinityGroup.Individual and ConfidenceLevel.L250).retrieve(retrievals) {
-      case Some(nino) ~ Some(internalId) ~ Some(affinityGroup) ~ credentialRole =>
+      case Some(nino) ~ Some(affinityGroup) ~ credentialRole =>
         val eventualResult: Future[Result] =
-          block(IdentifierRequest(request, nino, internalId, affinityGroup, credentialRole))
+          block(IdentifierRequest(request, nino, affinityGroup, credentialRole))
         eventualResult
-      case _                                                                    =>
+      case _                                                 =>
         Future.successful(Unauthorized)
     }
   }

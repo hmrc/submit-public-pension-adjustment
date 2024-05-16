@@ -55,7 +55,7 @@ class FinalSubmissionController @Inject() (
 
   private def getAuditMetadata(request: IdentifierRequest[_]): AuditMetadata =
     AuditMetadata(
-      internalId = request.internalId,
+      userId = request.userId,
       affinityGroup = request.affinityGroup,
       credentialRole = request.credentialRole
     )

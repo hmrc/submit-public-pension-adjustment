@@ -18,7 +18,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.models
 
 import play.api.libs.json._
 
-case class RetrieveSubmissionInfo(internalId: String, submissionUniqueId: UniqueId)
+case class RetrieveSubmissionInfo(userId: String, submissionUniqueId: UniqueId)
 
 object RetrieveSubmissionInfo {
   implicit val format = Json.format[RetrieveSubmissionInfo]

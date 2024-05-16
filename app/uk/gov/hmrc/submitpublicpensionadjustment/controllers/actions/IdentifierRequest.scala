@@ -21,8 +21,7 @@ import uk.gov.hmrc.auth.core.{AffinityGroup, CredentialRole}
 
 final case class IdentifierRequest[A](
   request: Request[A],
-  nino: String,
-  internalId: String,
+  userId: String,
   affinityGroup: AffinityGroup,
   credentialRole: Option[CredentialRole]
 ) extends WrappedRequest[A](request)

@@ -74,7 +74,7 @@ class FinalSubmissionService @Inject() (
 
   private def buildAudit(finalSubmission: FinalSubmission, auditMetadata: AuditMetadata): SubmissionAuditEvent =
     SubmissionAuditEvent(
-      internalId = auditMetadata.internalId,
+      userId = auditMetadata.userId,
       affinityGroup = auditMetadata.affinityGroup,
       credentialRole = auditMetadata.credentialRole,
       finalSubmission = finalSubmission

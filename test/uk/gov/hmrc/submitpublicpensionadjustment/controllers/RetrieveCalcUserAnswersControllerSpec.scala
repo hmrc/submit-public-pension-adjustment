@@ -78,7 +78,7 @@ class RetrieveCalcUserAnswersControllerSpec
           request: play.api.mvc.Request[A],
           block: IdentifierRequest[A] => Future[Result]
         ): Future[Result] =
-          block(IdentifierRequest(request, "nino", "internalId", AffinityGroup.Individual, None))
+          block(IdentifierRequest(request, "nino", AffinityGroup.Individual, None))
       }
     }
   }
