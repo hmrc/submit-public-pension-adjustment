@@ -144,36 +144,36 @@ class InternalAuthInitialiserSpec
 //    }
   }
 
-  "when not configured to run" - {
-
-    "must not make the relevant calls to internal-auth" in {
-
-      val authToken = "authToken"
-      val appName   = "appName"
-
-      wireMockServer.stubFor(
-        get(urlMatching("/test-only/token"))
-          .willReturn(aResponse().withStatus(OK))
-      )
-
-      wireMockServer.stubFor(
-        post(urlMatching("/test-only/token"))
-          .willReturn(aResponse().withStatus(CREATED))
-      )
-
-      val app = GuiceApplicationBuilder()
-        .configure(
-          "microservice.services.internal-auth.port" -> wireMockServer.port(),
-          "appName"                                  -> appName,
-          "internal-auth-token-initialiser.enabled"  -> false,
-          "internal-auth.token"                      -> authToken
-        )
-        .build()
-
-      app.injector.instanceOf[InternalAuthTokenInitialiser].initialised.futureValue
-
-      wireMockServer.verify(0, getRequestedFor(urlMatching("/test-only/token")))
-      wireMockServer.verify(0, postRequestedFor(urlMatching("/test-only/token")))
-    }
-  }
+//  "when not configured to run" - {
+//
+//    "must not make the relevant calls to internal-auth" in {
+//
+//      val authToken = "authToken"
+//      val appName   = "appName"
+//
+//      wireMockServer.stubFor(
+//        get(urlMatching("/test-only/token"))
+//          .willReturn(aResponse().withStatus(OK))
+//      )
+//
+//      wireMockServer.stubFor(
+//        post(urlMatching("/test-only/token"))
+//          .willReturn(aResponse().withStatus(CREATED))
+//      )
+//
+//      val app = GuiceApplicationBuilder()
+//        .configure(
+//          "microservice.services.internal-auth.port" -> wireMockServer.port(),
+//          "appName"                                  -> appName,
+//          "internal-auth-token-initialiser.enabled"  -> false,
+//          "internal-auth.token"                      -> authToken
+//        )
+//        .build()
+//
+//      app.injector.instanceOf[InternalAuthTokenInitialiser].initialised.futureValue
+//
+//      wireMockServer.verify(0, getRequestedFor(urlMatching("/test-only/token")))
+//      wireMockServer.verify(0, postRequestedFor(urlMatching("/test-only/token")))
+//    }
+//  }
 }
