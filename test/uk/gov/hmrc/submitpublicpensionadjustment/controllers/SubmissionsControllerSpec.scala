@@ -209,6 +209,34 @@ class SubmissionsControllerSpec
         }
       }
 
+      "checkSubmissionsPresentWithId" - {
+        "Content must be true when record has been found" in {
+          when(mockRepo.getByUserId(eqTo(userId))) thenReturn Future.successful(Some(submissionData))
+
+          val request =
+            FakeRequest(GET, routes.SubmissionsController.checkSubmissionsPresentWithId(userId).url)
+              .withHeaders("Authorization" -> "Bearer token")
+
+          val result = route(app, request).value
+
+          status(result) mustEqual OK
+          contentAsJson(result) mustEqual Json.toJson(true)
+        }
+
+        "Content must be false when record has not been found" in {
+          when(mockRepo.getByUserId(eqTo(userId))) thenReturn Future.successful(None)
+
+          val request =
+            FakeRequest(GET, routes.SubmissionsController.checkSubmissionsPresentWithId(userId).url)
+              .withHeaders("Authorization" -> "Bearer token")
+
+          val result = route(app, request).value
+
+          status(result) mustEqual OK
+          contentAsJson(result) mustEqual Json.toJson(false)
+        }
+      }
+
     }
   }
 }

@@ -74,12 +74,64 @@ class CalcUserAnswersControllerSpec
 
   "CalcUserAnswersController" - {
 
+    ".getById" - {
+
+      "must return OK and the data when user data can be found for this session id" in {
+        when(mockRepo.get(userId)) thenReturn Future.successful(Some(userData))
+        when(
+          mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
+            any(),
+            any()
+          )(any(), any())
+        )
+          .thenReturn(
+            Future.successful(
+              new ~(new ~(Some(userId), Some(AffinityGroup.Individual)), Some("User"))
+            )
+          )
+
+        val request =
+          FakeRequest(GET, routes.CalcUserAnswersController.getById(userId).url)
+            .withHeaders("Authorization" -> "Bearer token")
+
+        val controller = app.injector.instanceOf[CalcUserAnswersController]
+        val result     = controller.getById(userId) apply request
+
+        status(result) mustEqual OK
+        contentAsJson(result) mustEqual Json.toJson(userData)
+      }
+
+      "must return NO_CONTENT when user data cannot be found for this session id" in {
+        when(mockRepo.get(userId)) thenReturn Future.successful(None)
+        when(
+          mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
+            any(),
+            any()
+          )(any(), any())
+        )
+          .thenReturn(
+            Future.successful(
+              new ~(new ~(Some("nino"), Some(AffinityGroup.Individual)), Some("User"))
+            )
+          )
+
+        val request =
+          FakeRequest(GET, routes.CalcUserAnswersController.getById(userId).url)
+            .withHeaders("Authorization" -> "Bearer token")
+
+        val controller = app.injector.instanceOf[CalcUserAnswersController]
+        val result     = controller.getById(userId).apply(request)
+
+        status(result) mustEqual NO_CONTENT
+      }
+    }
+
     ".getByUniqueId" - {
 
       "must return OK and the data when user data can be found for this session id" in {
         when(mockRepo.getByUniqueId(uniqueId)) thenReturn Future.successful(Some(userData))
         when(
-          mockAuthConnector.authorise[ Option[String] ~ Option[AffinityGroup] ~ Option[String]](
+          mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
             any()
           )(any(), any())
@@ -101,7 +153,7 @@ class CalcUserAnswersControllerSpec
         contentAsJson(result) mustEqual Json.toJson(userData)
       }
 
-      "must return Not Found when user data cannot be found for this session id" in {
+      "must return NO_CONTENT when user data cannot be found for this session id" in {
         when(mockRepo.getByUniqueId(uniqueId)) thenReturn Future.successful(None)
         when(
           mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
@@ -122,7 +174,7 @@ class CalcUserAnswersControllerSpec
         val controller = app.injector.instanceOf[CalcUserAnswersController]
         val result     = controller.getByUniqueId(uniqueId).apply(request)
 
-        status(result) mustEqual NOT_FOUND
+        status(result) mustEqual NO_CONTENT
       }
     }
 

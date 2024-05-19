@@ -61,4 +61,10 @@ class SubmissionsController @Inject() (
       .checkSubmissionsPresentWithUniqueId(uniqueId)
       .map(submissionStarted => Ok(Json.toJson(submissionStarted)))
   }
+
+  def checkSubmissionsPresentWithId(id: String): Action[AnyContent] = Action.async {
+    submissionsService
+      .checkSubmissionsPresentWithId(id)
+      .map(submissionStarted => Ok(Json.toJson(submissionStarted)))
+  }
 }

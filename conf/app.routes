@@ -6,11 +6,12 @@ POST       /dms/callback                 uk.gov.hmrc.submitpublicpensionadjustme
 GET         /user-answers              uk.gov.hmrc.submitpublicpensionadjustment.controllers.UserAnswersController.get
 POST        /user-answers              uk.gov.hmrc.submitpublicpensionadjustment.controllers.UserAnswersController.set
 DELETE      /user-answers              uk.gov.hmrc.submitpublicpensionadjustment.controllers.UserAnswersController.clear
+GET         /user-answers-present/:id          uk.gov.hmrc.submitpublicpensionadjustment.controllers.UserAnswersController.checkUserAnswersPresentWithId(id: String)
+POST        /user-answers/keep-alive   uk.gov.hmrc.submitpublicpensionadjustment.controllers.UserAnswersController.keepAlive
 
 GET         /calc-user-answers/:uniqueId          uk.gov.hmrc.submitpublicpensionadjustment.controllers.CalcUserAnswersController.getByUniqueId(uniqueId: String)
+GET         /calc-user-answers-with-id/:id          uk.gov.hmrc.submitpublicpensionadjustment.controllers.CalcUserAnswersController.getById(id: String)
 DELETE      /calc-user-answers                    uk.gov.hmrc.submitpublicpensionadjustment.controllers.CalcUserAnswersController.clear
-
-POST        /user-answers/keep-alive   uk.gov.hmrc.submitpublicpensionadjustment.controllers.UserAnswersController.keepAlive
 
 GET        /calc-user-answers-signal/:submissionUniqueId          uk.gov.hmrc.submitpublicpensionadjustment.controllers.RetrieveCalcUserAnswersFromCalcBEController.retrieveCalcUserAnswersStatus(submissionUniqueId: String)
 GET        /submission-signal/:submissionUniqueId          uk.gov.hmrc.submitpublicpensionadjustment.controllers.RetrieveSubmissionFromCalcBEController.retrieveSubmissionStatus(submissionUniqueId: String)
@@ -18,7 +19,5 @@ GET        /submission-signal/:submissionUniqueId          uk.gov.hmrc.submitpub
 GET         /submissions/:userId              uk.gov.hmrc.submitpublicpensionadjustment.controllers.SubmissionsController.getByUserId(userId: String)
 DELETE      /submissions              uk.gov.hmrc.submitpublicpensionadjustment.controllers.SubmissionsController.clear
 POST        /submissions/keep-alive   uk.gov.hmrc.submitpublicpensionadjustment.controllers.SubmissionsController.keepAlive
-
-GET         /user-answers-present/:id          uk.gov.hmrc.submitpublicpensionadjustment.controllers.UserAnswersController.checkUserAnswersPresentWithId(id: String)
-
 GET         /submissions-present/:uniqueId          uk.gov.hmrc.submitpublicpensionadjustment.controllers.SubmissionsController.checkSubmissionsPresentWithUniqueId(uniqueId: String)
+GET         /submissions-present-with-id/:id          uk.gov.hmrc.submitpublicpensionadjustment.controllers.SubmissionsController.checkSubmissionsPresentWithId(id: String)
