@@ -21,10 +21,8 @@ import play.api.libs.json._
 case class TaxYearScheme(
   name: String,
   pensionSchemeTaxReference: String,
-  originalPensionInputAmount: Int,
   revisedPensionInputAmount: Int,
   chargePaidByScheme: Int,
-  originalPensionInput2016PostAmount: Option[Int],
   revisedPensionInput2016PostAmount: Option[Int]
 )
 

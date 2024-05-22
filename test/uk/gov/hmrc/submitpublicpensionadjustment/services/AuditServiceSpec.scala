@@ -70,8 +70,8 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
                   60000,
                   0,
                   List(
-                    TaxYearScheme("Scheme 1", "00348916RT", 20000, 15000, 0, Some(30000), Some(25000)),
-                    TaxYearScheme("Scheme 2", "00348916RG", 20000, 18000, 0, Some(30000), Some(22000))
+                    TaxYearScheme("Scheme 1", "00348916RT", 15000, 0, Some(25000)),
+                    TaxYearScheme("Scheme 2", "00348916RG", 18000, 0, Some(22000))
                   ),
                   InputsPeriod._2016,
                   None,
@@ -84,8 +84,8 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
                   60000,
                   1200,
                   List(
-                    TaxYearScheme("Scheme 1", "00348916RT", 28000, 25000, 0, None, None),
-                    TaxYearScheme("Scheme 2", "00348916RG", 15000, 13000, 0, None, None)
+                    TaxYearScheme("Scheme 1", "00348916RT", 25000, 0, None),
+                    TaxYearScheme("Scheme 2", "00348916RG", 13000, 0, None)
                   ),
                   InputsPeriod._2017,
                   Some(BelowThreshold)
@@ -96,8 +96,8 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
                   60000,
                   0,
                   List(
-                    TaxYearScheme("Scheme 1", "00348916RT", 0, 0, 0, None, None),
-                    TaxYearScheme("Scheme 2", "00348916RG", 30000, 25000, 0, None, None)
+                    TaxYearScheme("Scheme 1", "00348916RT", 0, 0, None),
+                    TaxYearScheme("Scheme 2", "00348916RG", 25000, 0, None)
                   ),
                   InputsPeriod._2018,
                   Some(BelowThreshold)

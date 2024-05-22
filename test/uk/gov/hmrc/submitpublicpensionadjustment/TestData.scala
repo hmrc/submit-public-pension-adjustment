@@ -32,19 +32,15 @@ object TestData {
     TaxYearScheme(
       name = "TestName2019",
       pensionSchemeTaxReference = "TestTaxRef",
-      originalPensionInputAmount = 999,
       revisedPensionInputAmount = 991,
       chargePaidByScheme = 100,
-      None,
       None
     ),
     TaxYearScheme(
       name = "TestName22019",
       pensionSchemeTaxReference = "TestTaxRef",
-      originalPensionInputAmount = 999,
       revisedPensionInputAmount = 991,
       chargePaidByScheme = 100,
-      None,
       None
     )
   )
@@ -53,19 +49,15 @@ object TestData {
     TaxYearScheme(
       name = "TestName2018",
       pensionSchemeTaxReference = "TestTaxRef",
-      originalPensionInputAmount = 999,
       revisedPensionInputAmount = 991,
       chargePaidByScheme = 100,
-      None,
       None
     ),
     TaxYearScheme(
       name = "TestName22018",
       pensionSchemeTaxReference = "TestTaxRef",
-      originalPensionInputAmount = 999,
       revisedPensionInputAmount = 991,
       chargePaidByScheme = 100,
-      None,
       None
     )
   )
@@ -74,19 +66,15 @@ object TestData {
     TaxYearScheme(
       name = "TestName2017",
       pensionSchemeTaxReference = "TestTaxRef2017",
-      originalPensionInputAmount = 999,
       revisedPensionInputAmount = 991,
       chargePaidByScheme = 100,
-      None,
       None
     ),
     TaxYearScheme(
       name = "TestName2222017",
       pensionSchemeTaxReference = "TestTaxRef",
-      originalPensionInputAmount = 999,
       revisedPensionInputAmount = 991,
       chargePaidByScheme = 100,
-      None,
       None
     )
   )
