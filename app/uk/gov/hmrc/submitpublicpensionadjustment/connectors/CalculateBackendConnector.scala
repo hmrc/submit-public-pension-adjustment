@@ -36,7 +36,7 @@ class CalculateBackendConnector @Inject() (
   ec: ExecutionContext
 ) extends Logging {
 
-  def retrieveSubmission(
+  def retrieveSubmissionFromCalcBE(
     retrieveSubmissionInfo: RetrieveSubmissionInfo
   )(implicit hc: HeaderCarrier): Future[RetrieveSubmissionResponse] =
     httpClient2
@@ -75,7 +75,7 @@ class CalculateBackendConnector @Inject() (
         )
       }
 
-  def retrieveCalcUserAnswers(
+  def retrieveCalcUserAnswersFromCalcBE(
     retrieveSubmissionInfo: RetrieveSubmissionInfo
   )(implicit hc: HeaderCarrier): Future[CalcUserAnswers] =
     httpClient2

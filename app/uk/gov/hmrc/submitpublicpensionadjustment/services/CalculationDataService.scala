@@ -34,12 +34,12 @@ class CalculationDataService @Inject() (
   calcUserAnswersRepository: CalcUserAnswersRepository
 ) extends Logging {
 
-  def retrieveSubmission(
+  def retrieveSubmissionFromCalcBE(
     userId: String,
     submissionUniqueId: String
   )(implicit executionContext: ExecutionContext, hc: HeaderCarrier): Future[Boolean] =
     calculateBackendConnector
-      .retrieveSubmission(RetrieveSubmissionInfo(userId, UniqueId(submissionUniqueId)))
+      .retrieveSubmissionFromCalcBE(RetrieveSubmissionInfo(userId, UniqueId(submissionUniqueId)))
       .transformWith {
         case Success(submissionResponse) =>
           for {
@@ -70,12 +70,12 @@ class CalculationDataService @Inject() (
           Future(false)
       }
 
-  def retrieveCalcUserAnswers(
+  def retrieveCalcUserAnswersFromCalcBE(
     internalId: String,
     submissionUniqueId: String
   )(implicit executionContext: ExecutionContext, hc: HeaderCarrier): Future[Boolean] =
     calculateBackendConnector
-      .retrieveCalcUserAnswers(RetrieveSubmissionInfo(internalId, UniqueId(submissionUniqueId)))
+      .retrieveCalcUserAnswersFromCalcBE(RetrieveSubmissionInfo(internalId, UniqueId(submissionUniqueId)))
       .transformWith {
         case Success(calcUserAnswers) =>
           calcUserAnswersRepository

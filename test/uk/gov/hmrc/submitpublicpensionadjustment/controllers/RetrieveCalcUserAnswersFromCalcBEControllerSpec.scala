@@ -32,22 +32,22 @@ import uk.gov.hmrc.submitpublicpensionadjustment.services.CalculationDataService
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class RetrieveCalcUserAnswersControllerSpec
+class RetrieveCalcUserAnswersFromCalcBEControllerSpec
     extends PlaySpec
     with GuiceOneAppPerTest
     with Injecting
     with MockitoSugar
     with ScalaFutures {
 
-  "RetrieveCalcUserAnswersController" when {
+  "RetrieveCalcUserAnswersFromCalcBEController" when {
     "retrieveCalcUserAnswersStatus" should {
       "return OK when the submission status is found and true" in {
         val mockCalculationDataService = mock[CalculationDataService]
         val submissionUniqueId         = "uniqueId"
-        when(mockCalculationDataService.retrieveCalcUserAnswers(any(), any())(any(), any()))
+        when(mockCalculationDataService.retrieveCalcUserAnswersFromCalcBE(any(), any())(any(), any()))
           .thenReturn(Future.successful(true))
 
-        val controller = new RetrieveCalcUserAnswersController(
+        val controller = new RetrieveCalcUserAnswersFromCalcBEController(
           mockCalculationDataService,
           stubControllerComponents(),
           new FakeIdentifierAction
@@ -60,10 +60,10 @@ class RetrieveCalcUserAnswersControllerSpec
       "return BadRequest when the submission status is found and false" in {
         val mockCalculationDataService = mock[CalculationDataService]
         val submissionUniqueId         = "uniqueId"
-        when(mockCalculationDataService.retrieveCalcUserAnswers(any(), any())(any(), any()))
+        when(mockCalculationDataService.retrieveCalcUserAnswersFromCalcBE(any(), any())(any(), any()))
           .thenReturn(Future.successful(false))
 
-        val controller = new RetrieveCalcUserAnswersController(
+        val controller = new RetrieveCalcUserAnswersFromCalcBEController(
           mockCalculationDataService,
           stubControllerComponents(),
           new FakeIdentifierAction

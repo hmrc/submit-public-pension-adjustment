@@ -32,8 +32,18 @@ class SubmissionsService @Inject() (
 
   def retrieveSubmissions(id: String): Future[Option[Submission]] = submissions.get(id)
 
+  def retrieveSubmissionsById(id: String): Future[Option[Submission]] = submissions.getByUserId(id)
+
   def checkSubmissionsPresentWithUniqueId(uniqueId: String): Future[Boolean] =
     retrieveSubmissions(uniqueId).flatMap {
+      case Some(_) =>
+        Future.successful(true)
+      case None    =>
+        Future.successful(false)
+    }
+
+  def checkSubmissionsPresentWithId(id: String): Future[Boolean] =
+    retrieveSubmissionsById(id).flatMap {
       case Some(_) =>
         Future.successful(true)
       case None    =>

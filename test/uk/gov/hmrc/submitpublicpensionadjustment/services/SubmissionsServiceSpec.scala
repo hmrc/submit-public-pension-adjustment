@@ -73,6 +73,23 @@ class SubmissionsServiceSpec
       }
     }
 
+    "retrieveSubmissionsById" - {
+
+      "must return a submission when it exists in the userAnswersRepository" in {
+        when(mockSubmissionRepository.getByUserId(any())).thenReturn(Future.successful(Some(submissionData)))
+
+        service.retrieveSubmissionsById("id").futureValue mustBe Some(submissionData)
+        verify(mockSubmissionRepository, times(1)).getByUserId(eqTo("id"))
+      }
+
+      "must return None when it does not exist in the repository" in {
+        when(mockSubmissionRepository.getByUserId("unknownId")).thenReturn(Future.successful(None))
+
+        service.retrieveSubmissionsById("unknownId").futureValue mustBe None
+        verify(mockSubmissionRepository, times(1)).getByUserId(eqTo("unknownId"))
+      }
+    }
+
     "checkSubmissionsPresentWithUniqueId" - {
 
       "must return true when it exists in repository" - {
@@ -87,6 +104,25 @@ class SubmissionsServiceSpec
         when(mockSubmissionRepository.get(any())).thenReturn(Future.successful(None))
 
         val result = service.checkSubmissionsPresentWithUniqueId("ID")
+
+        result.futureValue mustBe false
+      }
+    }
+
+    "checkSubmissionsPresentWithId" - {
+
+      "must return true when it exists in repository" - {
+        when(mockSubmissionRepository.getByUserId(any())).thenReturn(Future.successful(Some(submissionData)))
+
+        val result = service.checkSubmissionsPresentWithId("ID")
+
+        result.futureValue mustBe true
+      }
+
+      "must return false it does not exists in repository" in {
+        when(mockSubmissionRepository.getByUserId(any())).thenReturn(Future.successful(None))
+
+        val result = service.checkSubmissionsPresentWithId("ID")
 
         result.futureValue mustBe false
       }

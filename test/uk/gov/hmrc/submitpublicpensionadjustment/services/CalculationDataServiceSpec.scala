@@ -67,7 +67,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
         RetrieveSubmissionResponse(CalculationInputs(Resubmission(false, None), None, None), None)
 
       when(
-        mockCalculateBackendConnector.retrieveSubmission(ArgumentMatchers.eq(retrieveSubmissionInfo))(
+        mockCalculateBackendConnector.retrieveSubmissionFromCalcBE(ArgumentMatchers.eq(retrieveSubmissionInfo))(
           ArgumentMatchers.eq(headerCarrier)
         )
       )
@@ -78,7 +78,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       when(mockUserAnswersService.clearById(any())).thenReturn(Future.successful(Done))
 
       val result: Future[Boolean] =
-        service.retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
+        service.retrieveSubmissionFromCalcBE("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
           implicitly[ExecutionContext],
           implicitly(headerCarrier)
         )
@@ -136,7 +136,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       )
 
       when(
-        mockCalculateBackendConnector.retrieveSubmission(ArgumentMatchers.eq(retrieveSubmissionInfo))(
+        mockCalculateBackendConnector.retrieveSubmissionFromCalcBE(ArgumentMatchers.eq(retrieveSubmissionInfo))(
           ArgumentMatchers.eq(headerCarrier)
         )
       )
@@ -145,7 +145,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       when(mockSubmissionRepository.insert(any())).thenReturn(Future.successful(Done))
 
       val result: Future[Boolean] =
-        service.retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
+        service.retrieveSubmissionFromCalcBE("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
           implicitly[ExecutionContext],
           implicitly(headerCarrier)
         )
@@ -161,7 +161,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
         RetrieveSubmissionResponse(CalculationInputs(Resubmission(false, None), None, None), None)
 
       when(
-        mockCalculateBackendConnector.retrieveSubmission(ArgumentMatchers.eq(retrieveSubmissionInfo))(
+        mockCalculateBackendConnector.retrieveSubmissionFromCalcBE(ArgumentMatchers.eq(retrieveSubmissionInfo))(
           ArgumentMatchers.eq(headerCarrier)
         )
       )
@@ -171,7 +171,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       when(mockSubmissionRepository.insert(any())).thenReturn(Future.failed(exception))
 
       val result = service
-        .retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
+        .retrieveSubmissionFromCalcBE("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
           implicitly[ExecutionContext],
           implicitly(headerCarrier)
         )
@@ -187,14 +187,14 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       val exception = new RuntimeException("retrieval failed")
 
       when(
-        mockCalculateBackendConnector.retrieveSubmission(ArgumentMatchers.eq(retrieveSubmissionInfo))(
+        mockCalculateBackendConnector.retrieveSubmissionFromCalcBE(ArgumentMatchers.eq(retrieveSubmissionInfo))(
           ArgumentMatchers.eq(headerCarrier)
         )
       )
         .thenReturn(Future.failed(exception))
 
       val result = service
-        .retrieveSubmission("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
+        .retrieveSubmissionFromCalcBE("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
           implicitly[ExecutionContext],
           implicitly(headerCarrier)
         )
@@ -211,7 +211,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
 
       when(
-        mockCalculateBackendConnector.retrieveCalcUserAnswers(ArgumentMatchers.eq(retrieveSubmissionInfo))(
+        mockCalculateBackendConnector.retrieveCalcUserAnswersFromCalcBE(ArgumentMatchers.eq(retrieveSubmissionInfo))(
           ArgumentMatchers.eq(headerCarrier)
         )
       )
@@ -220,7 +220,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       when(mockCalcUserAnswersRepository.set(any())).thenReturn(Future.successful(Done))
 
       val result: Future[Boolean] =
-        service.retrieveCalcUserAnswers("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
+        service.retrieveCalcUserAnswersFromCalcBE("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
           implicitly[ExecutionContext],
           implicitly(headerCarrier)
         )
@@ -234,7 +234,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
 
       when(
-        mockCalculateBackendConnector.retrieveCalcUserAnswers(ArgumentMatchers.eq(retrieveSubmissionInfo))(
+        mockCalculateBackendConnector.retrieveCalcUserAnswersFromCalcBE(ArgumentMatchers.eq(retrieveSubmissionInfo))(
           ArgumentMatchers.eq(headerCarrier)
         )
       )
@@ -243,7 +243,7 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       when(mockCalcUserAnswersRepository.set(any())).thenReturn(Future.failed(new Exception("DB insert failed")))
 
       val result: Future[Boolean] =
-        service.retrieveCalcUserAnswers("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
+        service.retrieveCalcUserAnswersFromCalcBE("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
           implicitly[ExecutionContext],
           implicitly(headerCarrier)
         )
@@ -257,14 +257,14 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
 
       when(
-        mockCalculateBackendConnector.retrieveCalcUserAnswers(ArgumentMatchers.eq(retrieveSubmissionInfo))(
+        mockCalculateBackendConnector.retrieveCalcUserAnswersFromCalcBE(ArgumentMatchers.eq(retrieveSubmissionInfo))(
           ArgumentMatchers.eq(headerCarrier)
         )
       )
         .thenReturn(Future.failed(new Exception("Retrieval failed")))
 
       val result: Future[Boolean] =
-        service.retrieveCalcUserAnswers("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
+        service.retrieveCalcUserAnswersFromCalcBE("internalId", retrieveSubmissionInfo.submissionUniqueId.value)(
           implicitly[ExecutionContext],
           implicitly(headerCarrier)
         )

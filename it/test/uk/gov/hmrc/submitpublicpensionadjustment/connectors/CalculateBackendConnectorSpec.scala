@@ -87,7 +87,7 @@ class CalculateBackendConnectorSpec
         )
 
         eventually(Timeout(Span(30, Seconds))) {
-          connector.retrieveSubmission(retrieveSubmissionInfo).futureValue shouldBe expectedResponse
+          connector.retrieveSubmissionFromCalcBE(retrieveSubmissionInfo).futureValue shouldBe expectedResponse
         }
       }
 
@@ -108,7 +108,7 @@ class CalculateBackendConnectorSpec
             .willReturn(aResponse().withStatus(OK))
         )
 
-        val response = connector.retrieveCalcUserAnswers(retrieveSubmissionInfo)
+        val response = connector.retrieveCalcUserAnswersFromCalcBE(retrieveSubmissionInfo)
 
         ScalaFutures.whenReady(response.failed) { response =>
           response shouldBe a[UpstreamErrorResponse]
@@ -135,7 +135,7 @@ class CalculateBackendConnectorSpec
             .willReturn(aResponse().withStatus(OK).withBody(Json.toJson(expectedResponse).toString()))
         )
 
-        connector.retrieveCalcUserAnswers(retrieveSubmissionInfo).futureValue shouldBe expectedResponse
+        connector.retrieveCalcUserAnswersFromCalcBE(retrieveSubmissionInfo).futureValue shouldBe expectedResponse
       }
 
       "should throw UpstreamErrorResponse when calc backend responds with an error" in {
@@ -147,7 +147,7 @@ class CalculateBackendConnectorSpec
             .willReturn(aResponse().withStatus(BAD_REQUEST))
         )
 
-        val response = connector.retrieveCalcUserAnswers(retrieveSubmissionInfo)
+        val response = connector.retrieveCalcUserAnswersFromCalcBE(retrieveSubmissionInfo)
 
         ScalaFutures.whenReady(response.failed) { response =>
           response shouldBe a[UpstreamErrorResponse]

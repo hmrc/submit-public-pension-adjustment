@@ -25,7 +25,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class RetrieveCalcUserAnswersController @Inject() (
+class RetrieveCalcUserAnswersFromCalcBEController @Inject() (
   calculationDataService: CalculationDataService,
   cc: ControllerComponents,
   identify: IdentifierAction
@@ -34,7 +34,8 @@ class RetrieveCalcUserAnswersController @Inject() (
 
   def retrieveCalcUserAnswersStatus(submissionUniqueId: String): Action[AnyContent] = identify.async {
     implicit request =>
-      val status = calculationDataService.retrieveCalcUserAnswers(request.userId, submissionUniqueId)(ec, hc)
+      val status =
+        calculationDataService.retrieveCalcUserAnswersFromCalcBE(request.userId, submissionUniqueId)(ec, hc)
 
       status.map { status =>
         if (status) {
