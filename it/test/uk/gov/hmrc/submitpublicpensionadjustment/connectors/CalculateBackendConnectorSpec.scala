@@ -38,7 +38,7 @@ import uk.gov.hmrc.submitpublicpensionadjustment.utils.WireMockHelper
 import java.time.Instant
 
 class CalculateBackendConnectorSpec
-    extends AnyFreeSpec
+  extends AnyFreeSpec
     with MockitoSugar
     with ScalaFutures
     with Matchers

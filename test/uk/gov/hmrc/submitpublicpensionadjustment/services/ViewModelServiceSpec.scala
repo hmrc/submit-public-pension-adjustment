@@ -226,7 +226,7 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
     accountNumber = "TestAccountNumber"
   )
 
-  private val declarationsSection = DeclarationsSection("Yes", "Yes", "Yes", "No", "No")
+  private val declarationsSection = DeclarationsSection("Yes", "Yes", "Yes", "No", "No", "Consent given")
 
   "ViewModelService" - {
     "must correctly create a PDFViewModel using provided CaseIdentifiers and FinalSubmission" in {

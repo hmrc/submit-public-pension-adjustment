@@ -18,6 +18,7 @@ import java.time.LocalDate
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{ChangeInTaxCharge, EnhancementType, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, WhatNewProtectionTypeEnhancement, YearChargePaid}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.SchemeCreditConsent
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Formatting
 
 class FormattingSpec extends AnyFreeSpec with Matchers {
@@ -184,6 +185,14 @@ class FormattingSpec extends AnyFreeSpec with Matchers {
       "should format an optional amount correctly with pound symbol" in {
         formatter.formatOptPoundsAmount(Some(100)) shouldBe "£100"
         formatter.formatOptPoundsAmount(None)      shouldBe "Not Applicable"
+      }
+    }
+
+    "formatSchemeCreditConsent" - {
+      "should format an optional consent to desired messaged" in {
+
+        formatter.formatSchemeCreditConsent(Some(SchemeCreditConsent.Yes)) shouldBe "Consent given"
+        formatter.formatSchemeCreditConsent(None)                          shouldBe "Not Applicable"
       }
     }
   }

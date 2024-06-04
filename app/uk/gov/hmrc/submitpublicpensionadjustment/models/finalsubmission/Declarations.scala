@@ -23,7 +23,8 @@ case class Declarations(
   tax: Boolean,
   contactDetails: Boolean,
   powerOfAttorney: Option[Boolean],
-  claimOnBehalfOfDeceased: Option[Boolean]
+  claimOnBehalfOfDeceased: Option[Boolean],
+  schemeCreditConsent: Option[SchemeCreditConsent]
 ) {}
 
 object Declarations {
