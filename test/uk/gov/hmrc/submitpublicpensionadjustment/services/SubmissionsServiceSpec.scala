@@ -23,13 +23,12 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
-import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.Submission
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.SubmissionRepository
 
 import java.time.temporal.ChronoUnit
-import java.time.{Clock, Instant, ZoneId}
+import java.time.Instant
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 

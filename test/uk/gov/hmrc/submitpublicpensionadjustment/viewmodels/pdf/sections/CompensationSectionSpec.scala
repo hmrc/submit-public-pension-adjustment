@@ -20,11 +20,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import play.api.Logging
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.AnnualAllowance
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023.InitialFlexiblyAccessedTaxYear
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{Period, TaxYearScheme}
-
-import java.time.LocalDate
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.Period
 
 class CompensationSectionSpec extends AnyFreeSpec with Matchers with Logging {
 

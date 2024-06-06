@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package repositories
+package uk.gov.hmrc.submitpublicpensionadjustment.repositories
 
 import org.mockito.MockitoSugar
-import org.scalatest.OptionValues
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, OptionValues}
 import org.scalatest.concurrent.Eventually.eventually
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
@@ -31,6 +31,7 @@ import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 import uk.gov.hmrc.submitpublicpensionadjustment.config.AppConfig
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CalcUserAnswers, Done}
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.CalcUserAnswersRepository
+import uk.gov.hmrc.submitpublicpensionadjustment.utils.WireMockHelper
 
 import java.security.SecureRandom
 import java.time.temporal.ChronoUnit
@@ -45,7 +46,25 @@ class CalcUserAnswersRepositorySpec
     with ScalaFutures
     with IntegrationPatience
     with OptionValues
-    with MockitoSugar {
+    with MockitoSugar
+      with BeforeAndAfterEach
+      with BeforeAndAfterAll
+      with WireMockHelper {
+
+  override def beforeAll(): Unit = {
+    super.beforeAll()
+    startWireMock()
+  }
+
+  override def afterAll(): Unit = {
+    stopWireMock()
+    super.afterAll()
+  }
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    resetWireMock()
+  }
 
   private val userAnswersId    = "userAnswersId"
   private val userAnswersId2   = "userAnswersId2"

@@ -36,7 +36,6 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSub
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CaseIdentifiers, Done, QueueReference}
 import uk.gov.hmrc.submitpublicpensionadjustment.views.xml.FinalSubmissionPdf
 
-import java.nio.file.{Files, Paths}
 import scala.concurrent.Future
 
 class DmsSubmissionServiceSpec

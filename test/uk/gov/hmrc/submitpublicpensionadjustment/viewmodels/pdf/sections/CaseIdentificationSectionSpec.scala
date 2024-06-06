@@ -20,8 +20,6 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.{Compensation, CompensationAmendment, LTA, MiniRegime, MiniRegimeAmendment}
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.CaseIdentificationSection
 
-import java.time.LocalDate
-
 class CaseIdentificationSectionSpec extends AnyFreeSpec with Matchers {
 
   "CaseIdentificationSection" - {

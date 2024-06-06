@@ -32,13 +32,13 @@ import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{DELETE, GET, POST, contentAsJson, defaultAwaitTimeout, route, status, writeableOf_AnyContentAsEmpty}
 import uk.gov.hmrc.auth.core.retrieve.~
-import uk.gov.hmrc.auth.core.{AffinityGroup, AuthConnector, NoActiveSession}
+import uk.gov.hmrc.auth.core.{AffinityGroup, AuthConnector}
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.Submission
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.SubmissionRepository
 
 import java.time.temporal.ChronoUnit
-import java.time.{Clock, Instant, ZoneId}
+import java.time.Instant
 import scala.concurrent.Future
 
 class SubmissionsControllerSpec
@@ -54,7 +54,6 @@ class SubmissionsControllerSpec
   private val mockAuthConnector = mock[AuthConnector]
 
   private val instant        = Instant.now.truncatedTo(ChronoUnit.MILLIS)
-  private val stubClock      = Clock.fixed(instant, ZoneId.systemDefault)
   private val userId         = "foo"
   private val submissionData =
     Submission("id", "uniqueId", TestData.calculationInputs, None, Instant.parse("2024-03-12T10:00:00Z"))

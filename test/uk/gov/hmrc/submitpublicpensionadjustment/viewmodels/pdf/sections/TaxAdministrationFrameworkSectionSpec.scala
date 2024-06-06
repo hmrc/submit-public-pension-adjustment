@@ -20,9 +20,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import play.api.Logging
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
-import uk.gov.hmrc.submitpublicpensionadjustment.TestData.{inDatesCalculation2017, inDatesCalculation2018, outOfDatesCalculation2017, outOfDatesCalculation2018, outOfDatesCalculation2019}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearsCalculation, Period, Resubmission, TotalAmounts}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.Period
 
 class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers with Logging {
 

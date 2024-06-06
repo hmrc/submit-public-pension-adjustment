@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package repositories
+package uk.gov.hmrc.submitpublicpensionadjustment.repositories
 
 import com.fasterxml.jackson.core.JsonParseException
 import org.mockito.MockitoSugar
@@ -31,6 +31,7 @@ import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 import uk.gov.hmrc.submitpublicpensionadjustment.config.AppConfig
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CalcUserAnswers, Done, UserAnswers}
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.{CalcUserAnswersRepository, UserAnswersRepository}
+import uk.gov.hmrc.submitpublicpensionadjustment.utils.WireMockHelper
 
 import java.security.SecureRandom
 import java.time.temporal.ChronoUnit
@@ -45,7 +46,23 @@ class UserAnswersRepositorySpec
     with ScalaFutures
     with IntegrationPatience
     with OptionValues
-    with MockitoSugar {
+    with MockitoSugar
+      with WireMockHelper {
+
+  override def beforeAll(): Unit = {
+    super.beforeAll()
+    startWireMock()
+  }
+
+  override def afterAll(): Unit = {
+    stopWireMock()
+    super.afterAll()
+  }
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    resetWireMock()
+  }
 
   private val instant          = Instant.now.truncatedTo(ChronoUnit.MILLIS)
   private val stubClock: Clock = Clock.fixed(instant, ZoneId.systemDefault)
