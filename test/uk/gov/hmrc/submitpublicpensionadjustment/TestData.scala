@@ -213,7 +213,8 @@ object TestData {
     tax = true,
     contactDetails = true,
     powerOfAttorney = Some(false),
-    claimOnBehalfOfDeceased = Some(false)
+    claimOnBehalfOfDeceased = Some(false),
+    schemeCreditConsent = Some(SchemeCreditConsent.Yes)
   )
 
   val individualSchemeIdentifier = IndividualSchemeIdentifier(
@@ -389,6 +390,6 @@ object TestData {
     Some(
       PaymentInformationSection(accountName = "accountName", sortCode = "sortCode", accountNumber = "accountNumber")
     ),
-    DeclarationsSection("Y", "Y", "Y", "Y", "Y")
+    DeclarationsSection("Y", "Y", "Y", "Y", "Y", "Consent given")
   )
 }

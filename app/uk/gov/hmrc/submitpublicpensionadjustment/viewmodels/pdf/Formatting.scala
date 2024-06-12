@@ -18,6 +18,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf
 
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.NewEnhancementType.{Both, InternationalEnhancement, PensionCredit}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{ChangeInTaxCharge, EnhancementType, ExcessLifetimeAllowancePaid, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.SchemeCreditConsent
 
 import java.time.format.DateTimeFormatter
 import java.time.{LocalDate, ZoneId}
@@ -159,6 +160,12 @@ trait Formatting {
       case Some("")    => NotApplicable
       case Some(value) => value
       case None        => NotApplicable
+    }
+
+  def formatSchemeCreditConsent(optValue: Option[SchemeCreditConsent]): String =
+    optValue match {
+      case Some(SchemeCreditConsent.Yes) => "Consent given"
+      case None                          => NotApplicable
     }
 
   def format(value: Boolean): String = formatBoolean(Some(value))

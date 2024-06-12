@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
+package uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission
 
-import org.scalatest.freespec.AnyFreeSpec
-import org.scalatest.matchers.must.Matchers
-import play.api.Logging
-import uk.gov.hmrc.submitpublicpensionadjustment.TestData
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{Enumerable, WithName}
 
-class DeclarationsSectionSpec extends AnyFreeSpec with Matchers with Logging {
+sealed trait SchemeCreditConsent
 
-  "section must be constructed based on final submission" in {
+object SchemeCreditConsent extends Enumerable.Implicits {
 
-    val sections = DeclarationsSection.build(TestData.finalSubmission)
+  case object Yes extends WithName("yes") with SchemeCreditConsent
 
-    sections mustBe DeclarationsSection("Yes", "Yes", "Yes", "No", "No", "Consent given")
-  }
+  val values: Seq[SchemeCreditConsent] = Seq(
+    Yes
+  )
+
+  implicit lazy val enumerable: Enumerable[SchemeCreditConsent] =
+    Enumerable(values.map(v => v.toString -> v): _*)
+
 }
