@@ -160,7 +160,8 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
 
         val finalSubmission = FinalSubmission(calculationInputs, Some(calculationResponse), submissionInputs)
 
-        val submissionAuditEvent = SubmissionAuditEvent("internalId", Individual, None, finalSubmission)
+        val submissionAuditEvent =
+          SubmissionAuditEvent(Some("uniqueId"), Some(true), "internalId", Individual, None, finalSubmission)
 
         service.auditSubmitRequest(submissionAuditEvent)(hc) mustBe ()
 

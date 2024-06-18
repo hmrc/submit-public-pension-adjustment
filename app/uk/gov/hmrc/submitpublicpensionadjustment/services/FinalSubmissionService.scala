@@ -20,6 +20,7 @@ import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.models._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
+import uk.gov.hmrc.submitpublicpensionadjustment.repositories.CalcUserAnswersRepository
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -28,7 +29,8 @@ import scala.concurrent.{ExecutionContext, Future}
 class FinalSubmissionService @Inject() (
   dmsSubmissionService: DmsSubmissionService,
   queueLogicService: QueueLogicService,
-  auditService: AuditService
+  auditService: AuditService,
+  calcUserAnswersRepository: CalcUserAnswersRepository
 )(implicit ec: ExecutionContext)
     extends Logging {
 
@@ -40,24 +42,24 @@ class FinalSubmissionService @Inject() (
     val mostSignificantQueueReference        = queueLogicService.determineMostSignificantQueueReference(queueReferences)
 
     val responses: Seq[Future[String]] =
-      sendToDms(finalSubmission, auditMetadata, queueReferences)
+      sendToDms(finalSubmission, queueReferences)
 
-    val allSubmissionReferences: Future[Seq[String]] = Future.sequence(responses)
-
-    allSubmissionReferences.map { refs =>
-      auditService.auditSubmitRequest(buildAudit(finalSubmission, auditMetadata))
+    for {
+      oCalcUserAnswer <- calcUserAnswersRepository.get(auditMetadata.userId)
+      refs            <- Future.sequence(responses)
+    } yield {
+      auditService.auditSubmitRequest(buildAudit(oCalcUserAnswer, finalSubmission, auditMetadata))
       SubmissionReferences(mostSignificantQueueReference.submissionReference, refs)
     }
   }
 
   private def sendToDms(
     finalSubmission: FinalSubmission,
-    auditMetadata: AuditMetadata,
     queueReferences: Seq[QueueReference]
   )(implicit
     hc: HeaderCarrier
-  ) = {
-    val responses: Seq[Future[String]] = queueReferences.map { queueReference =>
+  ) =
+    queueReferences.map { queueReference =>
       val caseIdentifiers = CaseIdentifiers(queueReference.submissionReference, queueReferences)
       for {
         _ <-
@@ -69,11 +71,15 @@ class FinalSubmissionService @Inject() (
           )
       } yield queueReference.submissionReference
     }
-    responses
-  }
 
-  private def buildAudit(finalSubmission: FinalSubmission, auditMetadata: AuditMetadata): SubmissionAuditEvent =
+  private def buildAudit(
+    calcUserAnswer: Option[CalcUserAnswers],
+    finalSubmission: FinalSubmission,
+    auditMetadata: AuditMetadata
+  ): SubmissionAuditEvent =
     SubmissionAuditEvent(
+      uniqueId = calcUserAnswer.map(_.uniqueId),
+      authenticated = calcUserAnswer.map(_.authenticated),
       userId = auditMetadata.userId,
       affinityGroup = auditMetadata.affinityGroup,
       credentialRole = auditMetadata.credentialRole,

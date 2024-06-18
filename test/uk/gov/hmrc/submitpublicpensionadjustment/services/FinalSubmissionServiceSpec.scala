@@ -23,14 +23,17 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
+import play.api.libs.json.JsObject
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
 import uk.gov.hmrc.submitpublicpensionadjustment.models._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.{Compensation, MiniRegime}
+import uk.gov.hmrc.submitpublicpensionadjustment.repositories.CalcUserAnswersRepository
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import java.time.Instant
 
 class FinalSubmissionServiceSpec
     extends AnyFreeSpec
@@ -44,13 +47,15 @@ class FinalSubmissionServiceSpec
   private val mockSubmissionReferenceService = mock[SubmissionReferenceService]
   private val mockAuditService               = mock[AuditService]
   private val mockQueueLogicService          = mock[QueueLogicService]
+  private val mockCalcUserAnswersRepository  = mock[CalcUserAnswersRepository]
 
   private val hc: HeaderCarrier = HeaderCarrier()
 
   private val service = new FinalSubmissionService(
     mockDmsSubmissionService,
     mockQueueLogicService,
-    mockAuditService
+    mockAuditService,
+    mockCalcUserAnswersRepository
   )
 
   override def beforeEach(): Unit = {
@@ -112,7 +117,24 @@ class FinalSubmissionServiceSpec
         credentialRole = None
       )
 
+      when(mockCalcUserAnswersRepository.get(auditMetadata.userId)).thenReturn(
+        Future.successful(
+          Some(
+            CalcUserAnswers(
+              "nino",
+              JsObject(Seq()),
+              "uniqueId",
+              Instant.ofEpochSecond(1),
+              authenticated = true,
+              submissionStarted = true
+            )
+          )
+        )
+      )
+
       val expectedAudit = SubmissionAuditEvent(
+        uniqueId = Some("uniqueId"),
+        authenticated = Some(true),
         userId = "nino",
         affinityGroup = AffinityGroup.Individual,
         credentialRole = None,
