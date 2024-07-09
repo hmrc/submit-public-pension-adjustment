@@ -47,7 +47,7 @@ class UserAnswersRepository @Inject() (
           Indexes.ascending("lastUpdated"),
           IndexOptions()
             .name("last-updated-index")
-            .expireAfter(appConfig.userAnswerTtlInDays, TimeUnit.DAYS)
+            .expireAfter(appConfig.ttlInDays, TimeUnit.DAYS)
         )
       )
     ) {
