@@ -24,7 +24,7 @@ case class Declarations(
   contactDetails: Boolean,
   powerOfAttorney: Option[Boolean],
   claimOnBehalfOfDeceased: Option[Boolean],
-  schemeCreditConsent: Option[SchemeCreditConsent]
+  schemeCreditConsent: Option[SchemeCreditConsent] //Option of bool
 ) {}
 
 object Declarations {
