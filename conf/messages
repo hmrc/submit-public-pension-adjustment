@@ -122,7 +122,7 @@ pdf.declarationsSection.contact = Declaration for contact details
 pdf.declarationsSection.trueAndComplete = Declaration for true and complete
 pdf.declarationsSection.onBehalfDeceased = Declaration if claiming on behalf of a deceased individual
 pdf.declarationsSection.deputyship = Declaration if claiming on behalf of a member for whom you have a lasting power of attorney or deputyship
-pdf.declarationsSection.schemeCreditConsent = PLACEHOLDER CREDIT SCHEME CONSENT
+pdf.declarationsSection.schemeCreditConsent = Credit scheme consent
 
 pdf.lifetimeAllowanceSection.hadBce = Have you had a benefit crystallisation event in your pension?
 pdf.lifetimeAllowanceSection.bceDate = What was the date of the benefit crystallisation event?

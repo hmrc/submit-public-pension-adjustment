@@ -214,7 +214,7 @@ object TestData {
     contactDetails = true,
     powerOfAttorney = Some(false),
     claimOnBehalfOfDeceased = Some(false),
-    schemeCreditConsent = Some(SchemeCreditConsent.Yes)
+    schemeCreditConsent = Some(true)
   )
 
   val individualSchemeIdentifier = IndividualSchemeIdentifier(

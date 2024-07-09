@@ -162,10 +162,10 @@ trait Formatting {
       case None        => NotApplicable
     }
 
-  def formatSchemeCreditConsent(optValue: Option[SchemeCreditConsent]): String =
+  def formatSchemeCreditConsent(optValue: Option[Boolean]): String =
     optValue match {
-      case Some(SchemeCreditConsent.Yes) => "Consent given"
-      case None                          => NotApplicable
+      case Some(true) => "Consent given"
+      case None       => NotApplicable
     }
 
   def format(value: Boolean): String = formatBoolean(Some(value))
