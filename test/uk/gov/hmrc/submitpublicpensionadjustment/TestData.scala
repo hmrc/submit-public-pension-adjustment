@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment
 
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, ChangeInTaxCharge, EnhancementType, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LtaPensionSchemeDetails, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, NewLifeTimeAllowanceAdditions, Period => InputPeriod, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, Resubmission => inputsResubmission, SchemeNameAndTaxRef, TaxYear2016To2023, UserSchemeDetails, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, ChangeInTaxCharge, EnhancementType, ExcessLifetimeAllowancePaid, IncomeSubJourney, LifeTimeAllowance, LtaPensionSchemeDetails, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, NewLifeTimeAllowanceAdditions, Period => InputPeriod, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, Resubmission => inputsResubmission, SchemeNameAndTaxRef, TaxYear2016To2023, UserSchemeDetails, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, Period => ResponsePeriod, Resubmission => responseResubmission, TaxYearScheme, TotalAmounts}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.OnBehalfOfMemberType.Deceased
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission._
@@ -79,13 +79,32 @@ object TestData {
     )
   )
 
+  val incomeSubJourney = IncomeSubJourney(
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None
+  )
+
   val taxYear2016To2023SampleData2019 = TaxYear2016To2023.PostFlexiblyAccessedTaxYear(
     definedBenefitInputAmount = 5000,
     definedContributionInputAmount = 300,
     taxYearSchemes = testTaxYearSchemeData2019,
     totalIncome = 100000,
     chargePaidByMember = 1500,
-    period = InputPeriod._2019
+    period = InputPeriod._2019,
+    incomeSubJourney = incomeSubJourney
   )
 
   val taxYear2016To2023SampleData2018 = TaxYear2016To2023.InitialFlexiblyAccessedTaxYear(
@@ -96,7 +115,8 @@ object TestData {
     taxYearSchemes = testTaxYearSchemeData2018,
     totalIncome = 100000,
     chargePaidByMember = 1500,
-    period = InputPeriod._2018
+    period = InputPeriod._2018,
+    incomeSubJourney = incomeSubJourney
   )
 
   val taxYear2016To2023SampleData2017 = TaxYear2016To2023.NormalTaxYear(
@@ -104,7 +124,8 @@ object TestData {
     taxYearSchemes = testTaxYearSchemeData2017,
     totalIncome = 100000,
     chargePaidByMember = 100,
-    period = InputPeriod._2017
+    period = InputPeriod._2017,
+    incomeSubJourney = incomeSubJourney
   )
 
   val newLifeTimeAllowanceAdditions = NewLifeTimeAllowanceAdditions(
