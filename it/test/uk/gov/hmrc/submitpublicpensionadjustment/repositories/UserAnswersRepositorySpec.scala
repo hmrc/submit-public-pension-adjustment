@@ -89,7 +89,7 @@ class UserAnswersRepositorySpec
       appConfig = mockAppConfig,
       clock = stubClock
     )
-  when(mockAppConfig.cacheTtl) thenReturn 1
+  when(mockAppConfig.ttlInDays) thenReturn 1
 
   protected override val repository =
     new UserAnswersRepository(
