@@ -191,8 +191,8 @@ class FormattingSpec extends AnyFreeSpec with Matchers {
     "formatSchemeCreditConsent" - {
       "should format an optional consent to desired messaged" in {
 
-        formatter.formatSchemeCreditConsent(Some(SchemeCreditConsent.Yes)) shouldBe "Consent given"
-        formatter.formatSchemeCreditConsent(None)                          shouldBe "Not Applicable"
+        formatter.formatSchemeCreditConsent(Some(true)) shouldBe "Consent given"
+        formatter.formatSchemeCreditConsent(None)       shouldBe "Not Applicable"
       }
     }
   }

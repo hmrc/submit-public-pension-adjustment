@@ -24,11 +24,11 @@ object SchemeCreditConsent extends Enumerable.Implicits {
 
   case object Yes extends WithName("yes") with SchemeCreditConsent
 
-  val values: Seq[SchemeCreditConsent] = Seq(
-    Yes
+  val values: Seq[Boolean] = Seq(
+    true
   )
 
-  implicit lazy val enumerable: Enumerable[SchemeCreditConsent] =
+  implicit lazy val enumerable: Enumerable[Boolean] =
     Enumerable(values.map(v => v.toString -> v): _*)
 
 }
