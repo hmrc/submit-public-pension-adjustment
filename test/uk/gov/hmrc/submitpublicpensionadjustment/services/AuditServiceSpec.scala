@@ -24,7 +24,7 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import uk.gov.hmrc.auth.core.AffinityGroup.Individual
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
-import uk.gov.hmrc.submitpublicpensionadjustment.TestData.submissionInputs
+import uk.gov.hmrc.submitpublicpensionadjustment.TestData.{incomeSubJourney, submissionInputs}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.SubmissionAuditEvent
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.Income.BelowThreshold
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023.PostFlexiblyAccessedTaxYear
@@ -74,6 +74,7 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
                     TaxYearScheme("Scheme 2", "00348916RG", 18000, 0, Some(22000))
                   ),
                   InputsPeriod._2016,
+                  incomeSubJourney,
                   None,
                   Some(47000),
                   Some(38000)
@@ -88,6 +89,7 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
                     TaxYearScheme("Scheme 2", "00348916RG", 13000, 0, None)
                   ),
                   InputsPeriod._2017,
+                  incomeSubJourney,
                   Some(BelowThreshold)
                 ),
                 PostFlexiblyAccessedTaxYear(
@@ -100,6 +102,7 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
                     TaxYearScheme("Scheme 2", "00348916RG", 25000, 0, None)
                   ),
                   InputsPeriod._2018,
+                  incomeSubJourney,
                   Some(BelowThreshold)
                 )
               )
