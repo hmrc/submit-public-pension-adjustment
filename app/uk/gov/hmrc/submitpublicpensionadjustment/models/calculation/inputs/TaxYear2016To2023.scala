@@ -32,6 +32,7 @@ object TaxYear2016To2023 {
     totalIncome: Int,
     chargePaidByMember: Int,
     period: Period,
+    incomeSubJourney: IncomeSubJourney,
     income: Option[Income] = None,
     pensionInput2016PostAmount: Option[Int] = None
   ) extends TaxYear2016To2023
@@ -45,6 +46,7 @@ object TaxYear2016To2023 {
     totalIncome: Int,
     chargePaidByMember: Int,
     period: Period,
+    incomeSubJourney: IncomeSubJourney,
     income: Option[Income] = None,
     definedBenefitInput2016PostAmount: Option[Int] = None,
     definedContributionInput2016PostAmount: Option[Int] = None,
@@ -58,6 +60,7 @@ object TaxYear2016To2023 {
     chargePaidByMember: Int,
     taxYearSchemes: List[TaxYearScheme],
     period: Period,
+    incomeSubJourney: IncomeSubJourney,
     income: Option[Income] = None,
     definedBenefitInput2016PostAmount: Option[Int] = None,
     definedContributionInput2016PostAmount: Option[Int] = None
@@ -72,6 +75,7 @@ object TaxYear2016To2023 {
       (__ \ "totalIncome").read[Int] and
       (__ \ "chargePaidByMember").read[Int] and
       (__ \ "period").read[Period] and
+      (__ \ "incomeSubJourney").read[IncomeSubJourney] and
       (__ \ "income").readNullable[Income] and
       (__ \ "pensionInput2016PostAmount").readNullable[Int])(
       TaxYear2016To2023.NormalTaxYear
@@ -85,6 +89,7 @@ object TaxYear2016To2023 {
       (__ \ "totalIncome").read[Int] and
       (__ \ "chargePaidByMember").read[Int] and
       (__ \ "period").read[Period] and
+      (__ \ "incomeSubJourney").read[IncomeSubJourney] and
       (__ \ "income").readNullable[Income] and
       (__ \ "definedBenefitInput2016PostAmount").readNullable[Int] and
       (__ \ "definedContributionInput2016PostAmount").readNullable[Int] and
@@ -99,6 +104,7 @@ object TaxYear2016To2023 {
         (__ \ "chargePaidByMember").read[Int] and
         (__ \ "taxYearSchemes").read[List[TaxYearScheme]] and
         (__ \ "period").read[Period] and
+        (__ \ "incomeSubJourney").read[IncomeSubJourney] and
         (__ \ "income").readNullable[Income] and
         (__ \ "definedBenefitInput2016PostAmount").readNullable[Int] and
         (__ \ "definedContributionInput2016PostAmount").readNullable[Int])(
@@ -126,6 +132,7 @@ object TaxYear2016To2023 {
         (__ \ "totalIncome").write[Int] and
         (__ \ "chargePaidByMember").write[Int] and
         (__ \ "period").write[Period] and
+        (__ \ "incomeSubJourney").write[IncomeSubJourney] and
         (__ \ "income").writeNullable[Income] and
         (__ \ "pensionInput2016PostAmount").writeNullable[Int]
     )(a =>
@@ -135,6 +142,7 @@ object TaxYear2016To2023 {
         a.totalIncome,
         a.chargePaidByMember,
         a.period,
+        a.incomeSubJourney,
         a.income,
         a.pensionInput2016PostAmount
       )
@@ -149,6 +157,7 @@ object TaxYear2016To2023 {
         (__ \ "totalIncome").write[Int] and
         (__ \ "chargePaidByMember").write[Int] and
         (__ \ "period").write[Period] and
+        (__ \ "incomeSubJourney").write[IncomeSubJourney] and
         (__ \ "income").writeNullable[Income] and
         (__ \ "definedBenefitInput2016PostAmount").writeNullable[Int] and
         (__ \ "definedContributionInput2016PostAmount").writeNullable[Int] and
@@ -163,6 +172,7 @@ object TaxYear2016To2023 {
         a.totalIncome,
         a.chargePaidByMember,
         a.period,
+        a.incomeSubJourney,
         a.income,
         a.definedBenefitInput2016PostAmount,
         a.definedContributionInput2016PostAmount,
@@ -177,6 +187,7 @@ object TaxYear2016To2023 {
         (__ \ "chargePaidByMember").write[Int] and
         (__ \ "taxYearSchemes").write[List[TaxYearScheme]] and
         (__ \ "period").write[Period] and
+        (__ \ "incomeSubJourney").write[IncomeSubJourney] and
         (__ \ "income").writeNullable[Income] and
         (__ \ "definedBenefitInput2016PostAmount").writeNullable[Int] and
         (__ \ "definedContributionInput2016PostAmount").writeNullable[Int]
@@ -188,6 +199,7 @@ object TaxYear2016To2023 {
         a.chargePaidByMember,
         a.taxYearSchemes,
         a.period,
+        a.incomeSubJourney,
         a.income,
         a.definedBenefitInput2016PostAmount,
         a.definedContributionInput2016PostAmount
