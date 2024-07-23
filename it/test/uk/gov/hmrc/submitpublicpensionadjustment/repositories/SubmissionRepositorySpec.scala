@@ -128,7 +128,7 @@ class SubmissionRepositorySpec
     clock = stubClock
   )
 
-  when(mockAppConfig.cacheTtl) thenReturn 900
+  when(mockAppConfig.ttlInDays) thenReturn 900
 
   ".insert" - {
 

@@ -46,7 +46,7 @@ class SubmissionRepository @Inject() (
           Indexes.ascending("lastUpdated"),
           IndexOptions()
             .name("lastUpdatedIdx")
-            .expireAfter(appConfig.cacheTtl, TimeUnit.SECONDS)
+            .expireAfter(appConfig.ttlInDays, TimeUnit.DAYS)
         ),
         IndexModel(
           Indexes.ascending("uniqueId"),
