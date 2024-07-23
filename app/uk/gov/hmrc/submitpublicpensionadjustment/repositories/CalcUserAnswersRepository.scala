@@ -40,6 +40,7 @@ class CalcUserAnswersRepository @Inject() (
     extends PlayMongoRepository[CalcUserAnswers](
       collectionName = "calc-user-answers",
       mongoComponent = mongoComponent,
+      replaceIndexes = true,
       domainFormat = CalcUserAnswers.encryptedFormat,
       indexes = Seq(
         IndexModel(
