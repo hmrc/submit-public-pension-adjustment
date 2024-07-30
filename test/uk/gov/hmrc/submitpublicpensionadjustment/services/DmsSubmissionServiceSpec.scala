@@ -145,4 +145,41 @@ class DmsSubmissionServiceSpec
       done mustBe Done
     }
   }
+
+  "DmsSubmissionService bindings" - {
+
+    "must bind to CreateLocalPdfDmsSubmissionService when dms-submission.createLocalPdf is true" in {
+      val app = GuiceApplicationBuilder()
+        .overrides(
+          bind[FopService].toInstance(mockFopService),
+          bind[DmsSubmissionConnector].toInstance(mockDmsSubmissionConnector),
+          bind[ViewModelService].toInstance(mockViewModelService)
+        )
+        .configure(
+          "dms-submission.enabled"        -> false,
+          "dms-submission.createLocalPdf" -> true
+        )
+        .build()
+
+      val service = app.injector.instanceOf[DmsSubmissionService]
+      service mustBe a[CreateLocalPdfDmsSubmissionService]
+    }
+
+    "must bind to NoOpDmsSubmissionService when dms-submission.createLocalPdf is false" in {
+      val app = GuiceApplicationBuilder()
+        .overrides(
+          bind[FopService].toInstance(mockFopService),
+          bind[DmsSubmissionConnector].toInstance(mockDmsSubmissionConnector),
+          bind[ViewModelService].toInstance(mockViewModelService)
+        )
+        .configure(
+          "dms-submission.enabled"        -> false,
+          "dms-submission.createLocalPdf" -> false
+        )
+        .build()
+
+      val service = app.injector.instanceOf[DmsSubmissionService]
+      service mustBe a[NoOpDmsSubmissionService]
+    }
+  }
 }

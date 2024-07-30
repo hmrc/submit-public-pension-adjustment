@@ -17,6 +17,7 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.connectors
 
 import com.github.tomakehurst.wiremock.client.WireMock._
+import com.github.tomakehurst.wiremock.http.Fault
 import org.mockito.MockitoSugar
 import org.scalatest.concurrent.Eventually.eventually
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
@@ -26,7 +27,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.time.{Seconds, Span}
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import play.api.Application
-import play.api.http.Status.{BAD_REQUEST, OK}
+import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND, OK}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
@@ -91,7 +92,7 @@ class CalculateBackendConnectorSpec
         }
       }
 
-      "should throw UpstreamErrorResponse when calc backend responds with an error" in {
+      "should throw 404 when calc backend responds with BAD_REQUEST" in {
         val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
         val url                    = s"/calculate-public-pension-adjustment/retrieve-submission"
         val urlUpdateFlag          = s"/calculate-public-pension-adjustment/submission-status-update"
@@ -112,6 +113,53 @@ class CalculateBackendConnectorSpec
 
         ScalaFutures.whenReady(response.failed) { response =>
           response shouldBe a[UpstreamErrorResponse]
+          response.asInstanceOf[UpstreamErrorResponse].statusCode shouldBe NOT_FOUND
+        }
+      }
+
+      "should handle unexpected response from retrieve-submission" in {
+        val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
+        val url = s"/calculate-public-pension-adjustment/retrieve-submission"
+        val urlUpdateFlag = s"/calculate-public-pension-adjustment/submission-status-update/${retrieveSubmissionInfo.submissionUniqueId.value}"
+
+        wireMockServer.stubFor(
+          post(url)
+            .willReturn(aResponse().withStatus(INTERNAL_SERVER_ERROR))
+        )
+
+        wireMockServer.stubFor(
+          get(urlEqualTo(urlUpdateFlag))
+            .willReturn(aResponse().withStatus(OK))
+        )
+
+        val response = connector.retrieveSubmissionFromCalcBE(retrieveSubmissionInfo)
+
+        ScalaFutures.whenReady(response.failed) { response =>
+          response shouldBe a[UpstreamErrorResponse]
+          response.asInstanceOf[UpstreamErrorResponse].statusCode shouldBe INTERNAL_SERVER_ERROR
+        }
+      }
+
+      "should handle failed future for retrieve-submission" in {
+        val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
+        val url = s"/calculate-public-pension-adjustment/retrieve-submission"
+        val urlUpdateFlag = s"/calculate-public-pension-adjustment/submission-status-update/${retrieveSubmissionInfo.submissionUniqueId.value}"
+
+        wireMockServer.stubFor(
+          post(url)
+            .willReturn(aResponse().withFault(Fault.CONNECTION_RESET_BY_PEER))
+        )
+
+        wireMockServer.stubFor(
+          get(urlEqualTo(urlUpdateFlag))
+            .willReturn(aResponse().withStatus(OK))
+        )
+
+        val response = connector.retrieveSubmissionFromCalcBE(retrieveSubmissionInfo)
+
+        ScalaFutures.whenReady(response.failed) { response =>
+          response shouldBe a[UpstreamErrorResponse]
+          response.asInstanceOf[UpstreamErrorResponse].statusCode shouldBe INTERNAL_SERVER_ERROR
         }
       }
     }
