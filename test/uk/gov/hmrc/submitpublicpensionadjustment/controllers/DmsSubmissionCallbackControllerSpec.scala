@@ -16,14 +16,22 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.controllers
 
+import ch.qos.logback.classic.{Level, Logger}
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.Appender
+import org.apache.pekko.event.slf4j.{Logger, Slf4jLogger}
+import org.mockito.ArgumentCaptor
+import org.slf4j.LoggerFactory
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
+import play.api
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.Files.logger
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -113,6 +121,24 @@ class DmsSubmissionCallbackControllerSpec
         .withBody(Json.toJson(notification))
 
       route(app, request).value.failed.futureValue
+    }
+
+    "Result must be ok when notification.status is Failed" in {
+
+      val notification = NotificationRequest(
+        id = "id",
+        status = SubmissionItemStatus.Failed,
+        failureReason = Some("Some failure reason")
+      )
+
+      when(mockStubBehaviour.stubAuth[Unit](any(), any())).thenReturn(Future.unit)
+
+      val request = FakeRequest(POST, routes.DmsSubmissionCallbackController.callback.url)
+        .withHeaders(AUTHORIZATION -> "Some auth token")
+        .withBody(Json.toJson(notification))
+
+      val result = route(app, request).value
+      status(result) mustEqual OK
     }
   }
 }

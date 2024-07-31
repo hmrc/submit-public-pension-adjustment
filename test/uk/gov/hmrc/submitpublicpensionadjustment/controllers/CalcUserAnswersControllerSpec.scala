@@ -198,7 +198,7 @@ class CalcUserAnswersControllerSpec
           FakeRequest(DELETE, routes.CalcUserAnswersController.clear.url)
             .withHeaders("Authorization" -> "Bearer token")
 
-        val controller = app.injector.instanceOf[UserAnswersController]
+        val controller = app.injector.instanceOf[CalcUserAnswersController]
         val result     = controller.clear.apply(request)
 
         status(result) mustEqual NO_CONTENT
