@@ -48,6 +48,12 @@ class CalcUserAnswersRepository @Inject() (
           IndexOptions()
             .name("last-updated-index")
             .expireAfter(appConfig.ttlInDays, TimeUnit.DAYS)
+        ),
+        IndexModel(
+          Indexes.ascending("uniqueId"),
+          IndexOptions()
+            .name("uniqueIdx")
+            .unique(false)
         )
       )
     ) {
