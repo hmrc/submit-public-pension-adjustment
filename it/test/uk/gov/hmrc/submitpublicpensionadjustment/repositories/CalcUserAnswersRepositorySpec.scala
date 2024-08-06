@@ -112,23 +112,21 @@ class CalcUserAnswersRepositorySpec
     }
   }
 
-  // TODO revisit uniqueId unit tests
+    ".getByUniqueId" - {
 
-//    ".getByUniqueId" - {
-//
-//      "when a userAnswer exists, must get the record with the uniqueId" in {
-//
-//        insert(userAnswers).futureValue
-//
-//        val result = repository.getByUniqueId("uniqueId").futureValue
-//        result.value mustEqual userAnswers
-//      }
-//
-//      "when no userAnswer exists, return None" in {
-//
-//        repository.getByUniqueId("uniqueId").futureValue must not be defined
-//      }
-//    }
+      "when a userAnswer exists, must get the record with the uniqueId" in {
+
+        insert(userAnswers).futureValue
+
+        val result = repository.getByUniqueId("uniqueId").futureValue
+        result.value mustEqual userAnswers
+      }
+
+      "when no userAnswer exists, return None" in {
+
+        repository.getByUniqueId("uniqueId").futureValue must not be defined
+      }
+    }
 
   ".clear" - {
 
@@ -160,15 +158,15 @@ class CalcUserAnswersRepositorySpec
     }
   }
 
-  //  ".keepAliveByUniqueId" - {
-  //
-  //    "must return done when last updated time kept alive" in {
-  //
-  //      insert(userAnswers).futureValue
-  //
-  //      repository.keepAliveByUniqueId("uniqueId").futureValue mustBe Done
-  //    }
-  //  }
+    ".keepAliveByUniqueId" - {
+
+      "must return done when last updated time kept alive" in {
+
+        insert(userAnswers).futureValue
+
+        repository.keepAliveByUniqueId("uniqueId").futureValue mustBe Done
+      }
+    }
 
   ".clearByUniqueIdAndNotId" - {
 
