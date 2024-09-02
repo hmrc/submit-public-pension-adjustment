@@ -16,16 +16,14 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json._
 
-case class CalculationInputs(
-  resubmission: Resubmission,
-  setup: Setup,
-  annualAllowance: Option[AnnualAllowance],
-  lifeTimeAllowance: Option[LifeTimeAllowance]
+case class Setup(
+  annualAllowanceSetup: Option[AnnualAllowanceSetup],
+  lifetimeAllowanceSetup: Option[LifetimeAllowanceSetup]
 )
 
-object CalculationInputs {
+object Setup {
 
-  implicit lazy val format: Format[CalculationInputs] = Json.format
+  implicit lazy val formats: Format[Setup] = Json.format
 }

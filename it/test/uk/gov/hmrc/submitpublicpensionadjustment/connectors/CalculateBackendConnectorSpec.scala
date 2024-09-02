@@ -31,7 +31,7 @@ import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND, OK}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{CalculationInputs, Resubmission}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, LifetimeAllowanceSetup, Resubmission, Setup}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.RetrieveSubmissionResponse
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CalcUserAnswers, RetrieveSubmissionInfo, UniqueId}
 import uk.gov.hmrc.submitpublicpensionadjustment.utils.WireMockHelper
@@ -39,7 +39,7 @@ import uk.gov.hmrc.submitpublicpensionadjustment.utils.WireMockHelper
 import java.time.Instant
 
 class CalculateBackendConnectorSpec
-  extends AnyFreeSpec
+    extends AnyFreeSpec
     with MockitoSugar
     with ScalaFutures
     with Matchers
@@ -77,7 +77,15 @@ class CalculateBackendConnectorSpec
     "retrieveSubmission" - {
       "should return RetrieveSubmissionResponse successfully when calc backend responds with OK" in {
         val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
-        val calculationInputs      = CalculationInputs(Resubmission(false, None), None, None)
+        val calculationInputs      = CalculationInputs(
+          Resubmission(false, None),
+          Setup(
+            Some(AnnualAllowanceSetup(Some(true))),
+            Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))
+          ),
+          None,
+          None
+        )
         val expectedResponse       = RetrieveSubmissionResponse(calculationInputs, None)
 
         val url                        = s"/calculate-public-pension-adjustment/retrieve-submission"
@@ -112,15 +120,16 @@ class CalculateBackendConnectorSpec
         val response = connector.retrieveCalcUserAnswersFromCalcBE(retrieveSubmissionInfo)
 
         ScalaFutures.whenReady(response.failed) { response =>
-          response shouldBe a[UpstreamErrorResponse]
+          response                                                shouldBe a[UpstreamErrorResponse]
           response.asInstanceOf[UpstreamErrorResponse].statusCode shouldBe NOT_FOUND
         }
       }
 
       "should handle unexpected response from retrieve-submission" in {
         val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
-        val url = s"/calculate-public-pension-adjustment/retrieve-submission"
-        val urlUpdateFlag = s"/calculate-public-pension-adjustment/submission-status-update/${retrieveSubmissionInfo.submissionUniqueId.value}"
+        val url                    = s"/calculate-public-pension-adjustment/retrieve-submission"
+        val urlUpdateFlag          =
+          s"/calculate-public-pension-adjustment/submission-status-update/${retrieveSubmissionInfo.submissionUniqueId.value}"
 
         wireMockServer.stubFor(
           post(url)
@@ -135,15 +144,16 @@ class CalculateBackendConnectorSpec
         val response = connector.retrieveSubmissionFromCalcBE(retrieveSubmissionInfo)
 
         ScalaFutures.whenReady(response.failed) { response =>
-          response shouldBe a[UpstreamErrorResponse]
+          response                                                shouldBe a[UpstreamErrorResponse]
           response.asInstanceOf[UpstreamErrorResponse].statusCode shouldBe INTERNAL_SERVER_ERROR
         }
       }
 
       "should handle failed future for retrieve-submission" in {
         val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
-        val url = s"/calculate-public-pension-adjustment/retrieve-submission"
-        val urlUpdateFlag = s"/calculate-public-pension-adjustment/submission-status-update/${retrieveSubmissionInfo.submissionUniqueId.value}"
+        val url                    = s"/calculate-public-pension-adjustment/retrieve-submission"
+        val urlUpdateFlag          =
+          s"/calculate-public-pension-adjustment/submission-status-update/${retrieveSubmissionInfo.submissionUniqueId.value}"
 
         wireMockServer.stubFor(
           post(url)
@@ -158,7 +168,7 @@ class CalculateBackendConnectorSpec
         val response = connector.retrieveSubmissionFromCalcBE(retrieveSubmissionInfo)
 
         ScalaFutures.whenReady(response.failed) { response =>
-          response shouldBe a[UpstreamErrorResponse]
+          response                                                shouldBe a[UpstreamErrorResponse]
           response.asInstanceOf[UpstreamErrorResponse].statusCode shouldBe INTERNAL_SERVER_ERROR
         }
       }

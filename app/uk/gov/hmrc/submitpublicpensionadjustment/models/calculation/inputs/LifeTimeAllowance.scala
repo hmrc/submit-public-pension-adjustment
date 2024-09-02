@@ -21,9 +21,7 @@ import play.api.libs.json._
 import java.time.LocalDate
 
 case class LifeTimeAllowance(
-  benefitCrystallisationEventFlag: Boolean,
   benefitCrystallisationEventDate: LocalDate,
-  changeInLifetimeAllowancePercentageInformedFlag: Boolean,
   changeInTaxCharge: ChangeInTaxCharge,
   lifetimeAllowanceProtectionOrEnhancements: LtaProtectionOrEnhancements,
   protectionType: Option[ProtectionType],
@@ -45,7 +43,6 @@ object LifeTimeAllowance {
 }
 
 case class NewLifeTimeAllowanceAdditions(
-  multipleBenefitCrystallisationEventFlag: Boolean,
   enhancementType: Option[EnhancementType],
   internationalEnhancementReference: Option[String],
   pensionCreditReference: Option[String],

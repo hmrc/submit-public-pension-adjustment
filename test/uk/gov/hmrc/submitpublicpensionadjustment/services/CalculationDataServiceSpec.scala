@@ -25,7 +25,7 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.connectors.CalculateBackendConnector
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CalcUserAnswers, Done, RetrieveSubmissionInfo, UniqueId}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{CalculationInputs, ChangeInTaxCharge, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LtaProtectionOrEnhancements, NewLifeTimeAllowanceAdditions, ProtectionEnhancedChanged, ProtectionType, Resubmission, SchemeNameAndTaxRef, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, ChangeInTaxCharge, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LifetimeAllowanceSetup, LtaProtectionOrEnhancements, NewLifeTimeAllowanceAdditions, ProtectionEnhancedChanged, ProtectionType, Resubmission, SchemeNameAndTaxRef, Setup, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.RetrieveSubmissionResponse
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.{CalcUserAnswersRepository, SubmissionRepository}
 
@@ -63,7 +63,18 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
 
       val retrieveSubmissionResponse =
-        RetrieveSubmissionResponse(CalculationInputs(Resubmission(false, None), None, None), None)
+        RetrieveSubmissionResponse(
+          CalculationInputs(
+            Resubmission(false, None),
+            Setup(
+              Some(AnnualAllowanceSetup(Some(true))),
+              Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))
+            ),
+            None,
+            None
+          ),
+          None
+        )
 
       when(
         mockCalculateBackendConnector.retrieveSubmissionFromCalcBE(ArgumentMatchers.eq(retrieveSubmissionInfo))(
@@ -92,12 +103,14 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       val retrieveSubmissionResponse = RetrieveSubmissionResponse(
         CalculationInputs(
           Resubmission(false, None),
+          Setup(
+            Some(AnnualAllowanceSetup(Some(true))),
+            Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))
+          ),
           None,
           Some(
             LifeTimeAllowance(
-              true,
               LocalDate.parse("2018-11-28"),
-              true,
               ChangeInTaxCharge.IncreasedCharge,
               LtaProtectionOrEnhancements.Protection,
               Some(ProtectionType.FixedProtection2014),
@@ -112,7 +125,6 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
               Some(WhoPayingExtraLtaCharge.You),
               None,
               NewLifeTimeAllowanceAdditions(
-                false,
                 None,
                 None,
                 None,
@@ -157,7 +169,18 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
       val retrieveSubmissionInfo = RetrieveSubmissionInfo("internalId", UniqueId("1234"))
 
       val retrieveSubmissionResponse =
-        RetrieveSubmissionResponse(CalculationInputs(Resubmission(false, None), None, None), None)
+        RetrieveSubmissionResponse(
+          CalculationInputs(
+            Resubmission(false, None),
+            Setup(
+              Some(AnnualAllowanceSetup(Some(true))),
+              Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))
+            ),
+            None,
+            None
+          ),
+          None
+        )
 
       when(
         mockCalculateBackendConnector.retrieveSubmissionFromCalcBE(ArgumentMatchers.eq(retrieveSubmissionInfo))(

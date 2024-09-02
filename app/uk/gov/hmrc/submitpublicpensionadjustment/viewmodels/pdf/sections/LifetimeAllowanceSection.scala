@@ -95,12 +95,21 @@ object LifetimeAllowanceSection extends Formatting {
       case Some(ltaInputs) =>
         Some(
           LifetimeAllowanceSection(
-            hadBce = format(true),
+            hadBce = format(finalSubmission.calculationInputs.setup.lifetimeAllowanceSetup match {
+              case Some(v) => v.benefitCrystallisationEventFlag.getOrElse(false)
+              case _       => false
+            }),
             bceDate = format(ltaInputs.benefitCrystallisationEventDate),
-            changeInLtaPercentage = format(true),
+            changeInLtaPercentage = format(finalSubmission.calculationInputs.setup.lifetimeAllowanceSetup match {
+              case Some(v) => v.changeInLifetimeAllowancePercentageInformedFlag.getOrElse(false)
+              case _       => false
+            }),
             ltaChargeType = format(ltaInputs.changeInTaxCharge),
             multipleBenefitCrystallisationEvent =
-              format(ltaInputs.newLifeTimeAllowanceAdditions.multipleBenefitCrystallisationEventFlag),
+              format(finalSubmission.calculationInputs.setup.lifetimeAllowanceSetup match {
+                case Some(v) => v.multipleBenefitCrystallisationEventFlag.getOrElse(false)
+                case _       => false
+              }),
             haveLtaProtectionOrEnhancement = format(ltaInputs.lifetimeAllowanceProtectionOrEnhancements),
             protectionType = formatProtectionType(ltaInputs.protectionType),
             protectionReference = formatStringNotApplicable(ltaInputs.protectionReference),

@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment
 
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, CalculationInputs, ChangeInTaxCharge, EnhancementType, ExcessLifetimeAllowancePaid, IncomeSubJourney, LifeTimeAllowance, LtaPensionSchemeDetails, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, NewLifeTimeAllowanceAdditions, Period => InputPeriod, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, Resubmission => inputsResubmission, SchemeNameAndTaxRef, TaxYear2016To2023, UserSchemeDetails, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, AnnualAllowanceSetup, CalculationInputs, ChangeInTaxCharge, EnhancementType, ExcessLifetimeAllowancePaid, IncomeSubJourney, LifeTimeAllowance, LifetimeAllowanceSetup, LtaPensionSchemeDetails, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, NewLifeTimeAllowanceAdditions, Period => InputPeriod, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, Resubmission => inputsResubmission, SchemeNameAndTaxRef, Setup, TaxYear2016To2023, UserSchemeDetails, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, Period => ResponsePeriod, Resubmission => responseResubmission, TaxYearScheme, TotalAmounts}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.OnBehalfOfMemberType.Deceased
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission._
@@ -128,7 +128,6 @@ object TestData {
   )
 
   val newLifeTimeAllowanceAdditions = NewLifeTimeAllowanceAdditions(
-    multipleBenefitCrystallisationEventFlag = true,
     enhancementType = Some(EnhancementType.Both),
     internationalEnhancementReference = Some("internationalRef"),
     pensionCreditReference = Some("pensionCredRef"),
@@ -146,9 +145,7 @@ object TestData {
   )
 
   val lifeTimeAllowance = LifeTimeAllowance(
-    benefitCrystallisationEventFlag = true,
     benefitCrystallisationEventDate = LocalDate.of(2017, 1, 30),
-    changeInLifetimeAllowancePercentageInformedFlag = true,
     changeInTaxCharge = ChangeInTaxCharge.NewCharge,
     lifetimeAllowanceProtectionOrEnhancements = LtaProtectionOrEnhancements.Protection,
     protectionType = Some(ProtectionType.PrimaryProtection),
@@ -172,6 +169,7 @@ object TestData {
 
   val calculationInputs = CalculationInputs(
     inputsResubmission(false, None),
+    Setup(Some(AnnualAllowanceSetup(Some(true))), Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))),
     Some(
       annualAllowance
     ),
@@ -180,6 +178,7 @@ object TestData {
 
   val calculationInputsWithResubmissionReason = CalculationInputs(
     inputsResubmission(true, Some("Test resubmission reason")),
+    Setup(Some(AnnualAllowanceSetup(Some(true))), Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))),
     Some(
       annualAllowance
     ),

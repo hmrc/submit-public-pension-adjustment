@@ -29,8 +29,8 @@ import uk.gov.hmrc.crypto.{Crypted, Decrypter, Encrypter, SymmetricCryptoFactory
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 import uk.gov.hmrc.submitpublicpensionadjustment.config.AppConfig
 import uk.gov.hmrc.submitpublicpensionadjustment.models.Done
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{CalculationInputs, Resubmission}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, TotalAmounts, Period => responsePeriod, Resubmission => ResponseResubmission}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, LifetimeAllowanceSetup, Resubmission, Setup}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, Period => responsePeriod, Resubmission => ResponseResubmission, TotalAmounts}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.Submission
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.SubmissionRepository
 import uk.gov.hmrc.submitpublicpensionadjustment.utils.WireMockHelper
@@ -49,7 +49,7 @@ class SubmissionRepositorySpec
     with IntegrationPatience
     with OptionValues
     with MockitoSugar
-      with WireMockHelper {
+    with WireMockHelper {
 
   override def beforeAll(): Unit = {
     super.beforeAll()
@@ -84,7 +84,12 @@ class SubmissionRepositorySpec
   private implicit val crypto: Encrypter with Decrypter =
     SymmetricCryptoFactory.aesGcmCryptoFromConfig("crypto", configuration.underlying)
 
-  private val calculationInputs = CalculationInputs(Resubmission(false, None), None, None)
+  private val calculationInputs = CalculationInputs(
+    Resubmission(false, None),
+    Setup(Some(AnnualAllowanceSetup(Some(true))), Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))),
+    None,
+    None
+  )
   val calculation               = Some(
     CalculationResponse(
       ResponseResubmission(false, None),

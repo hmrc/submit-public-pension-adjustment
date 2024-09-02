@@ -26,7 +26,7 @@ import play.api.{Configuration, Logging}
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData.submissionInputs
 import uk.gov.hmrc.submitpublicpensionadjustment.models.QueueReference
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{CalculationInputs, LifeTimeAllowance, Resubmission => InputsResubmission}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, LifeTimeAllowance, LifetimeAllowanceSetup, Resubmission => InputsResubmission, Setup}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
@@ -306,7 +306,12 @@ class QueueLogicServiceSpec
     calculationResponse: CalculationResponse,
     expectedDmsQueues: Seq[DmsQueue]
   ) = {
-    val calculationInputs = CalculationInputs(InputsResubmission(resubmission, None), None, lta)
+    val calculationInputs = CalculationInputs(
+      InputsResubmission(resubmission, None),
+      Setup(Some(AnnualAllowanceSetup(Some(true))), Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))),
+      None,
+      lta
+    )
 
     val finalSubmission                      = FinalSubmission(calculationInputs, Some(calculationResponse), submissionInputs)
     val queueReferences: Seq[QueueReference] = service.computeQueueReferences(finalSubmission)
