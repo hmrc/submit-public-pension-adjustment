@@ -187,7 +187,7 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
       creditValue = "£1145076",
       debitValue = "£636",
       isSchemePayingCharge = "Yes",
-      schemePaymentElectionDate = "estimate",
+      schemePaymentElectionDate = "Not Applicable",
       schemePayingChargeAmount = "10",
       schemePayingPstr = "schemePstr",
       schemePayingName = "TestSceme",

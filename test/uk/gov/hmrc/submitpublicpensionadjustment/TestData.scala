@@ -263,11 +263,11 @@ object TestData {
   val schemeDetails: SchemeDetails                   = SchemeDetails(schemeName = "TestSceme", pstr = PSTR("schemePstr"))
 
   val schemeCharge: Option[SchemeCharge] = Some(
-    SchemeCharge(amount = 10, schemeDetails = schemeDetails, Some(LocalDate.of(2017, 1, 13)), None)
+    SchemeCharge(amount = 10, schemeDetails = schemeDetails, Some(LocalDate.of(2017, 1, 13)))
   )
 
   val schemeChargeWithEstimatedElectionQuater: Option[SchemeCharge] = Some(
-    SchemeCharge(amount = 10, schemeDetails = schemeDetails, None, Some("estimate"))
+    SchemeCharge(amount = 10, schemeDetails = schemeDetails, None)
   )
 
   val paymentElection: PaymentElection = PaymentElection(period = InputPeriod._2017, None, schemeCharge)

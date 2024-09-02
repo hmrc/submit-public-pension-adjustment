@@ -120,7 +120,7 @@ PSTR of scheme : TestTaxRef
 Credit value for 17/18 : £1145076
 Debit value for 17/18 : £636
 Is the scheme paying the charge? : Yes
-Date of election made to the scheme : estimate
+Date of election made to the scheme : Not Applicable
 Value scheme is paying : 10
 PSTR of scheme paying : schemePstr
 Name of scheme paying : TestSceme
