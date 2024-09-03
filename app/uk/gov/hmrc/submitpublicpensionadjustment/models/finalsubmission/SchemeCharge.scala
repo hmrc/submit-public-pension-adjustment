@@ -23,8 +23,7 @@ import java.time.LocalDate
 case class SchemeCharge(
   amount: Int,
   schemeDetails: SchemeDetails,
-  paymentElectionDate: Option[LocalDate],
-  estimatedPaymentElectionQuarter: Option[String]
+  paymentElectionDate: Option[LocalDate]
 ) {}
 
 object SchemeCharge {

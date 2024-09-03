@@ -175,9 +175,5 @@ object TaxAdministrationFrameworkSection extends Formatting {
     electionSchemeCharge
       .flatMap(_.paymentElectionDate)
       .map(date => format(date))
-      .orElse(
-        electionSchemeCharge
-          .flatMap(_.estimatedPaymentElectionQuarter)
-      )
       .getOrElse(NotApplicable)
 }
