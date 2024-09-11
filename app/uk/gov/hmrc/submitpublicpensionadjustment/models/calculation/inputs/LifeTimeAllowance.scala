@@ -22,7 +22,6 @@ import java.time.LocalDate
 
 case class LifeTimeAllowance(
   benefitCrystallisationEventDate: LocalDate,
-  changeInTaxCharge: ChangeInTaxCharge,
   lifetimeAllowanceProtectionOrEnhancements: LtaProtectionOrEnhancements,
   protectionType: Option[ProtectionType],
   protectionReference: Option[String],

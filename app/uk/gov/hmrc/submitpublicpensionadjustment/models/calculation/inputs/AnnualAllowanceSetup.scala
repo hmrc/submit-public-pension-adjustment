@@ -18,7 +18,20 @@ package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs
 
 import play.api.libs.json._
 
-case class AnnualAllowanceSetup(savingsStatement: Option[Boolean])
+case class AnnualAllowanceSetup(
+  savingsStatement: Option[Boolean],
+  pensionProtectedMember: Option[Boolean],
+  hadAACharge: Option[Boolean],
+  contributionRefunds: Option[Boolean],
+  netIncomeAbove100K: Option[Boolean],
+  netIncomeAbove190K: Option[Boolean],
+  maybePIAIncrease: Option[MaybePIAIncrease],
+  maybePIAUnchangedOrDecreased: Option[MaybePIAUnchangedOrDecreased],
+  pIAAboveAnnualAllowanceIn2023: Option[Boolean],
+  netIncomeAbove190KIn2023: Option[Boolean],
+  flexibleAccessDcScheme: Option[Boolean],
+  contribution4000ToDirectContributionScheme: Option[Boolean]
+)
 
 object AnnualAllowanceSetup {
 

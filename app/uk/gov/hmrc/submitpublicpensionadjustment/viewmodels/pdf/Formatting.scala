@@ -17,7 +17,7 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf
 
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.NewEnhancementType.{Both, InternationalEnhancement, PensionCredit}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{ChangeInTaxCharge, EnhancementType, ExcessLifetimeAllowancePaid, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{EnhancementType, ExcessLifetimeAllowancePaid, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.SchemeCreditConsent
 
 import java.time.format.DateTimeFormatter
@@ -27,13 +27,6 @@ trait Formatting {
 
   def format(dob: LocalDate): String =
     DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone(ZoneId.systemDefault()).format(dob)
-
-  def format(changeInTaxCharge: ChangeInTaxCharge): String = changeInTaxCharge match {
-    case ChangeInTaxCharge.NewCharge       => "New"
-    case ChangeInTaxCharge.IncreasedCharge => "Increased"
-    case ChangeInTaxCharge.DecreasedCharge => "Decreased"
-    case ChangeInTaxCharge.None            => "Error"
-  }
 
   def format(ltaProtectionOrEnhancements: LtaProtectionOrEnhancements): String = ltaProtectionOrEnhancements match {
     case LtaProtectionOrEnhancements.Protection   => "Protection"
