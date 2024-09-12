@@ -26,7 +26,7 @@ import play.api.{Configuration, Logging}
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData.submissionInputs
 import uk.gov.hmrc.submitpublicpensionadjustment.models.QueueReference
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, LifeTimeAllowance, LifetimeAllowanceSetup, Resubmission => InputsResubmission, Setup}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, LifeTimeAllowance, LifetimeAllowanceSetup, MaybePIAIncrease, MaybePIAUnchangedOrDecreased, Resubmission => InputsResubmission, Setup}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
@@ -308,7 +308,35 @@ class QueueLogicServiceSpec
   ) = {
     val calculationInputs = CalculationInputs(
       InputsResubmission(resubmission, None),
-      Setup(Some(AnnualAllowanceSetup(Some(true))), Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))),
+      Setup(
+        Some(
+          AnnualAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(MaybePIAIncrease.No),
+            Some(MaybePIAUnchangedOrDecreased.No),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false)
+          )
+        ),
+        Some(
+          LifetimeAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(true)
+          )
+        )
+      ),
       None,
       lta
     )

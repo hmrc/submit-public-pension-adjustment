@@ -16,19 +16,22 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs
 
-import play.api.libs.json._
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{Enumerable, WithName}
 
-case class LifetimeAllowanceSetup(
-  benefitCrystallisationEventFlag: Option[Boolean],
-  previousLTACharge: Option[Boolean],
-  changeInLifetimeAllowancePercentageInformedFlag: Option[Boolean],
-  increaseInLTACharge: Option[Boolean],
-  newLTACharge: Option[Boolean],
-  multipleBenefitCrystallisationEventFlag: Option[Boolean],
-  otherSchemeNotification: Option[Boolean]
-)
+sealed trait MaybePIAUnchangedOrDecreased
 
-object LifetimeAllowanceSetup {
+object MaybePIAUnchangedOrDecreased extends Enumerable.Implicits {
 
-  implicit lazy val formats: Format[LifetimeAllowanceSetup] = Json.format
+  case object Yes extends WithName("yes") with MaybePIAUnchangedOrDecreased
+  case object No extends WithName("no") with MaybePIAUnchangedOrDecreased
+  case object IDoNotKnow extends WithName("idk") with MaybePIAUnchangedOrDecreased
+
+  val values: Seq[MaybePIAUnchangedOrDecreased] = Seq(
+    Yes,
+    No,
+    IDoNotKnow
+  )
+
+  implicit val enumerable: Enumerable[MaybePIAUnchangedOrDecreased] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

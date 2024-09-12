@@ -23,7 +23,6 @@ case class LifetimeAllowanceSection(
   hadBce: String,
   bceDate: String,
   changeInLtaPercentage: String,
-  ltaChargeType: String,
   multipleBenefitCrystallisationEvent: String,
   haveLtaProtectionOrEnhancement: String,
   protectionType: String,
@@ -57,7 +56,6 @@ case class LifetimeAllowanceSection(
     "hadBce",
     "bceDate",
     "changeInLtaPercentage",
-    "ltaChargeType",
     "multipleBenefitCrystallisationEvent",
     "haveLtaProtectionOrEnhancement",
     "protectionType",
@@ -104,7 +102,6 @@ object LifetimeAllowanceSection extends Formatting {
               case Some(v) => v.changeInLifetimeAllowancePercentageInformedFlag.getOrElse(false)
               case _       => false
             }),
-            ltaChargeType = format(ltaInputs.changeInTaxCharge),
             multipleBenefitCrystallisationEvent =
               format(finalSubmission.calculationInputs.setup.lifetimeAllowanceSetup match {
                 case Some(v) => v.multipleBenefitCrystallisationEventFlag.getOrElse(false)

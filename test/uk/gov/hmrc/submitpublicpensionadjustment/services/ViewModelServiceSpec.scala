@@ -87,7 +87,6 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
     hadBce = "Yes",
     bceDate = "30/01/2017",
     changeInLtaPercentage = "Yes",
-    ltaChargeType = "New",
     multipleBenefitCrystallisationEvent = "No",
     haveLtaProtectionOrEnhancement = "Protection",
     protectionType = "Primary protection",
