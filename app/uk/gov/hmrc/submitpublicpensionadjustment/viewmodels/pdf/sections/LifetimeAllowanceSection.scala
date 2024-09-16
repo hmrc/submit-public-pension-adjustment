@@ -23,6 +23,8 @@ case class LifetimeAllowanceSection(
   hadBce: String,
   bceDate: String,
   changeInLtaPercentage: String,
+  increaseInLTACharge: String,
+  newLTACharge: String,
   multipleBenefitCrystallisationEvent: String,
   haveLtaProtectionOrEnhancement: String,
   protectionType: String,
@@ -56,6 +58,8 @@ case class LifetimeAllowanceSection(
     "hadBce",
     "bceDate",
     "changeInLtaPercentage",
+    "increaseInLTACharge",
+    "newLTACharge",
     "multipleBenefitCrystallisationEvent",
     "haveLtaProtectionOrEnhancement",
     "protectionType",
@@ -93,20 +97,27 @@ object LifetimeAllowanceSection extends Formatting {
       case Some(ltaInputs) =>
         Some(
           LifetimeAllowanceSection(
-            hadBce = format(finalSubmission.calculationInputs.setup.lifetimeAllowanceSetup match {
-              case Some(v) => v.benefitCrystallisationEventFlag.getOrElse(false)
-              case _       => false
-            }),
+            hadBce = finalSubmission.calculationInputs.setup.lifetimeAllowanceSetup
+              .flatMap(_.benefitCrystallisationEventFlag)
+              .map(format)
+              .getOrElse(formatStringNotApplicable(None)),
             bceDate = format(ltaInputs.benefitCrystallisationEventDate),
-            changeInLtaPercentage = format(finalSubmission.calculationInputs.setup.lifetimeAllowanceSetup match {
-              case Some(v) => v.changeInLifetimeAllowancePercentageInformedFlag.getOrElse(false)
-              case _       => false
-            }),
-            multipleBenefitCrystallisationEvent =
-              format(finalSubmission.calculationInputs.setup.lifetimeAllowanceSetup match {
-                case Some(v) => v.multipleBenefitCrystallisationEventFlag.getOrElse(false)
-                case _       => false
-              }),
+            changeInLtaPercentage = finalSubmission.calculationInputs.setup.lifetimeAllowanceSetup
+              .flatMap(_.changeInLifetimeAllowancePercentageInformedFlag)
+              .map(format)
+              .getOrElse(formatStringNotApplicable(None)),
+            increaseInLTACharge = finalSubmission.calculationInputs.setup.lifetimeAllowanceSetup
+              .flatMap(_.increaseInLTACharge)
+              .map(format)
+              .getOrElse(formatStringNotApplicable(None)),
+            newLTACharge = finalSubmission.calculationInputs.setup.lifetimeAllowanceSetup
+              .flatMap(_.newLTACharge)
+              .map(format)
+              .getOrElse(formatStringNotApplicable(None)),
+            multipleBenefitCrystallisationEvent = finalSubmission.calculationInputs.setup.lifetimeAllowanceSetup
+              .flatMap(_.multipleBenefitCrystallisationEventFlag)
+              .map(format)
+              .getOrElse(formatStringNotApplicable(None)),
             haveLtaProtectionOrEnhancement = format(ltaInputs.lifetimeAllowanceProtectionOrEnhancements),
             protectionType = formatProtectionType(ltaInputs.protectionType),
             protectionReference = formatStringNotApplicable(ltaInputs.protectionReference),

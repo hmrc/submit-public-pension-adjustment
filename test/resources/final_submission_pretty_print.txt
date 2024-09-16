@@ -25,6 +25,8 @@ National Insurance number or alternative identifier (TRN) : someNino
 Have you had a benefit crystallisation event in your pension? : Yes
 What was the date of the benefit crystallisation event? : 30/01/2017
 Have you been told about a change in the lifetime allowance percentage? : Yes
+Have you been told about an increase in your lifetime allowance percentage? : No
+Have you received a new lifetime allowance charge as a result of the Public Service Pensions Remedy? : No
 Have you had more than one benefit crystallisation event in your pensions? : No
 Do you have lifetime allowance protection or enhancements? : Protection
 What is your protection type? : Primary protection
