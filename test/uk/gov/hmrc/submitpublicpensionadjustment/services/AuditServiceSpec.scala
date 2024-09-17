@@ -28,7 +28,7 @@ import uk.gov.hmrc.submitpublicpensionadjustment.TestData.{incomeSubJourney, sub
 import uk.gov.hmrc.submitpublicpensionadjustment.models.SubmissionAuditEvent
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.Income.BelowThreshold
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023.PostFlexiblyAccessedTaxYear
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, AnnualAllowanceSetup, CalculationInputs, LifetimeAllowanceSetup, Period => InputsPeriod, Resubmission => InputsResubmission, Setup, TaxYear2011To2015}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, AnnualAllowanceSetup, CalculationInputs, LifetimeAllowanceSetup, MaybePIAIncrease, MaybePIAUnchangedOrDecreased, Period => InputsPeriod, Resubmission => InputsResubmission, Setup, TaxYear2011To2015}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, Period => ResponsePeriod, Resubmission => ResponseResubmission, TaxYearScheme, TotalAmounts}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 
@@ -57,8 +57,33 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
         val calculationInputs = CalculationInputs(
           InputsResubmission(false, None),
           Setup(
-            Some(AnnualAllowanceSetup(Some(true))),
-            Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))
+            Some(
+              AnnualAllowanceSetup(
+                Some(true),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(MaybePIAIncrease.No),
+                Some(MaybePIAUnchangedOrDecreased.No),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false)
+              )
+            ),
+            Some(
+              LifetimeAllowanceSetup(
+                Some(true),
+                Some(false),
+                Some(true),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(true)
+              )
+            )
           ),
           Some(
             AnnualAllowance(

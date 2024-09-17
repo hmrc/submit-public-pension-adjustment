@@ -29,8 +29,8 @@ import uk.gov.hmrc.crypto.{Crypted, Decrypter, Encrypter, SymmetricCryptoFactory
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 import uk.gov.hmrc.submitpublicpensionadjustment.config.AppConfig
 import uk.gov.hmrc.submitpublicpensionadjustment.models.Done
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, LifetimeAllowanceSetup, Resubmission, Setup}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, Period => responsePeriod, Resubmission => ResponseResubmission, TotalAmounts}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, LifetimeAllowanceSetup, MaybePIAIncrease, MaybePIAUnchangedOrDecreased, Resubmission, Setup}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, TotalAmounts, Period => responsePeriod, Resubmission => ResponseResubmission}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.Submission
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.SubmissionRepository
 import uk.gov.hmrc.submitpublicpensionadjustment.utils.WireMockHelper
@@ -86,7 +86,35 @@ class SubmissionRepositorySpec
 
   private val calculationInputs = CalculationInputs(
     Resubmission(false, None),
-    Setup(Some(AnnualAllowanceSetup(Some(true))), Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))),
+    Setup(
+      Some(
+        AnnualAllowanceSetup(
+          Some(true),
+          Some(false),
+          Some(false),
+          Some(false),
+          Some(false),
+          Some(false),
+          Some(MaybePIAIncrease.No),
+          Some(MaybePIAUnchangedOrDecreased.No),
+          Some(false),
+          Some(false),
+          Some(false),
+          Some(false)
+        )
+      ),
+      Some(
+        LifetimeAllowanceSetup(
+          Some(true),
+          Some(false),
+          Some(true),
+          Some(false),
+          Some(false),
+          Some(false),
+          Some(true)
+        )
+      )
+    ),
     None,
     None
   )

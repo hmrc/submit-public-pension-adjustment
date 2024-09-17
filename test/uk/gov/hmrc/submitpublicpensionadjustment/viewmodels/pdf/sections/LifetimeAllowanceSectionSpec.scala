@@ -20,7 +20,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import play.api.Logging
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, ExcessLifetimeAllowancePaid, LifetimeAllowanceSetup, Resubmission => inputsResubmission, Setup, WhoPaidLTACharge, WhoPayingExtraLtaCharge}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, ExcessLifetimeAllowancePaid, LifetimeAllowanceSetup, MaybePIAIncrease, MaybePIAUnchangedOrDecreased, Resubmission => inputsResubmission, Setup, WhoPaidLTACharge, WhoPayingExtraLtaCharge}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 
 class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Logging {
@@ -28,7 +28,35 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
   "section must be constructed based on final submission" in {
     val calculationInputs = CalculationInputs(
       inputsResubmission(false, None),
-      Setup(Some(AnnualAllowanceSetup(Some(true))), Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))),
+      Setup(
+        Some(
+          AnnualAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(MaybePIAIncrease.No),
+            Some(MaybePIAUnchangedOrDecreased.No),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false)
+          )
+        ),
+        Some(
+          LifetimeAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(true)
+          )
+        )
+      ),
       None,
       Some(TestData.lifeTimeAllowance)
     )
@@ -40,7 +68,6 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
     ltaSection.hadBce mustBe "Yes"
     ltaSection.bceDate mustBe "30/01/2017"
     ltaSection.changeInLtaPercentage mustBe "Yes"
-    ltaSection.ltaChargeType mustBe "New"
     ltaSection.multipleBenefitCrystallisationEvent mustBe "No"
     ltaSection.haveLtaProtectionOrEnhancement mustBe "Protection"
     ltaSection.protectionType mustBe "Primary protection"
@@ -74,7 +101,35 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
   "formatExcessLifetimeAllowancePaid to Annual Payment when ExcessLifetimeAllowancePaid.Annualpayment" in {
     val calculationInputs = CalculationInputs(
       inputsResubmission(false, None),
-      Setup(Some(AnnualAllowanceSetup(Some(true))), Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))),
+      Setup(
+        Some(
+          AnnualAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(MaybePIAIncrease.No),
+            Some(MaybePIAUnchangedOrDecreased.No),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false)
+          )
+        ),
+        Some(
+          LifetimeAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(true)
+          )
+        )
+      ),
       None,
       Some(
         TestData.lifeTimeAllowance.copy(previousLifetimeAllowanceChargePaymentMethod =
@@ -93,7 +148,35 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
   "formatExcessLifetimeAllowancePaid to Both when ExcessLifetimeAllowancePaid.Both" in {
     val calculationInputs = CalculationInputs(
       inputsResubmission(false, None),
-      Setup(Some(AnnualAllowanceSetup(Some(true))), Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))),
+      Setup(
+        Some(
+          AnnualAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(MaybePIAIncrease.No),
+            Some(MaybePIAUnchangedOrDecreased.No),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false)
+          )
+        ),
+        Some(
+          LifetimeAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(true)
+          )
+        )
+      ),
       None,
       Some(
         TestData.lifeTimeAllowance.copy(previousLifetimeAllowanceChargePaymentMethod =
@@ -112,7 +195,35 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
   "formatExcessLifetimeAllowancePaid to NotApplicable when ExcessLifetimeAllowancePaid doesn't exist" in {
     val calculationInputs = CalculationInputs(
       inputsResubmission(false, None),
-      Setup(Some(AnnualAllowanceSetup(Some(true))), Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))),
+      Setup(
+        Some(
+          AnnualAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(MaybePIAIncrease.No),
+            Some(MaybePIAUnchangedOrDecreased.No),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false)
+          )
+        ),
+        Some(
+          LifetimeAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(true)
+          )
+        )
+      ),
       None,
       Some(TestData.lifeTimeAllowance.copy(previousLifetimeAllowanceChargePaymentMethod = None))
     )
@@ -127,7 +238,35 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
   "formatWhoPaidLTACharge to Member when WhoPaidLTACharge.You" in {
     val calculationInputs = CalculationInputs(
       inputsResubmission(false, None),
-      Setup(Some(AnnualAllowanceSetup(Some(true))), Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))),
+      Setup(
+        Some(
+          AnnualAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(MaybePIAIncrease.No),
+            Some(MaybePIAUnchangedOrDecreased.No),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false)
+          )
+        ),
+        Some(
+          LifetimeAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(true)
+          )
+        )
+      ),
       None,
       Some(TestData.lifeTimeAllowance.copy(previousLifetimeAllowanceChargePaidBy = Some(WhoPaidLTACharge.You)))
     )
@@ -142,7 +281,35 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
   "formatWhoPaidLTACharge to Not Applicable when WhoPaidLTACharge doesn't exist" in {
     val calculationInputs = CalculationInputs(
       inputsResubmission(false, None),
-      Setup(Some(AnnualAllowanceSetup(Some(true))), Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))),
+      Setup(
+        Some(
+          AnnualAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(MaybePIAIncrease.No),
+            Some(MaybePIAUnchangedOrDecreased.No),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false)
+          )
+        ),
+        Some(
+          LifetimeAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(true)
+          )
+        )
+      ),
       None,
       Some(TestData.lifeTimeAllowance.copy(previousLifetimeAllowanceChargePaidBy = None))
     )
@@ -157,7 +324,35 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
   "formatWhoPayingExtraLtaCharge to Member when WhoPayingExtraLtaCharge.You" in {
     val calculationInputs = CalculationInputs(
       inputsResubmission(false, None),
-      Setup(Some(AnnualAllowanceSetup(Some(true))), Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))),
+      Setup(
+        Some(
+          AnnualAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(MaybePIAIncrease.No),
+            Some(MaybePIAUnchangedOrDecreased.No),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false)
+          )
+        ),
+        Some(
+          LifetimeAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(true)
+          )
+        )
+      ),
       None,
       Some(TestData.lifeTimeAllowance.copy(newLifetimeAllowanceChargeWillBePaidBy = Some(WhoPayingExtraLtaCharge.You)))
     )
@@ -172,7 +367,35 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
   "formatWhoPayingExtraLtaCharge to Not Applicable when WhoPayingExtraLtaCharge does not exist" in {
     val calculationInputs = CalculationInputs(
       inputsResubmission(false, None),
-      Setup(Some(AnnualAllowanceSetup(Some(true))), Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))),
+      Setup(
+        Some(
+          AnnualAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(MaybePIAIncrease.No),
+            Some(MaybePIAUnchangedOrDecreased.No),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false)
+          )
+        ),
+        Some(
+          LifetimeAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(true)
+          )
+        )
+      ),
       None,
       Some(TestData.lifeTimeAllowance.copy(newLifetimeAllowanceChargeWillBePaidBy = None))
     )
@@ -187,7 +410,35 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
   "section must be constructed with Not Applicable when row not present" in {
     val calculationInputs = CalculationInputs(
       inputsResubmission(false, None),
-      Setup(Some(AnnualAllowanceSetup(Some(true))), Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(true)))),
+      Setup(
+        Some(
+          AnnualAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(MaybePIAIncrease.No),
+            Some(MaybePIAUnchangedOrDecreased.No),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false)
+          )
+        ),
+        Some(
+          LifetimeAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(true),
+            Some(true)
+          )
+        )
+      ),
       None,
       Some(
         TestData.lifeTimeAllowance.copy(
@@ -211,7 +462,6 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
     ltaSection.hadBce mustBe "Yes"
     ltaSection.bceDate mustBe "30/01/2017"
     ltaSection.changeInLtaPercentage mustBe "Yes"
-    ltaSection.ltaChargeType mustBe "New"
     ltaSection.multipleBenefitCrystallisationEvent mustBe "Yes"
     ltaSection.haveLtaProtectionOrEnhancement mustBe "Protection"
     ltaSection.protectionType mustBe "Primary protection"
@@ -245,7 +495,35 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
   "Must be none when ltaInputs does not exist" in {
     val calculationInputs = CalculationInputs(
       inputsResubmission(false, None),
-      Setup(Some(AnnualAllowanceSetup(Some(true))), Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))),
+      Setup(
+        Some(
+          AnnualAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(MaybePIAIncrease.No),
+            Some(MaybePIAUnchangedOrDecreased.No),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(false)
+          )
+        ),
+        Some(
+          LifetimeAllowanceSetup(
+            Some(true),
+            Some(false),
+            Some(true),
+            Some(false),
+            Some(false),
+            Some(false),
+            Some(true)
+          )
+        )
+      ),
       None,
       None
     )

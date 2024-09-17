@@ -25,7 +25,7 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.connectors.CalculateBackendConnector
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CalcUserAnswers, Done, RetrieveSubmissionInfo, UniqueId}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, ChangeInTaxCharge, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LifetimeAllowanceSetup, LtaProtectionOrEnhancements, NewLifeTimeAllowanceAdditions, ProtectionEnhancedChanged, ProtectionType, Resubmission, SchemeNameAndTaxRef, Setup, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, ExcessLifetimeAllowancePaid, LifeTimeAllowance, LifetimeAllowanceSetup, LtaProtectionOrEnhancements, MaybePIAIncrease, MaybePIAUnchangedOrDecreased, NewLifeTimeAllowanceAdditions, ProtectionEnhancedChanged, ProtectionType, Resubmission, SchemeNameAndTaxRef, Setup, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.RetrieveSubmissionResponse
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.{CalcUserAnswersRepository, SubmissionRepository}
 
@@ -67,8 +67,33 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
           CalculationInputs(
             Resubmission(false, None),
             Setup(
-              Some(AnnualAllowanceSetup(Some(true))),
-              Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))
+              Some(
+                AnnualAllowanceSetup(
+                  Some(true),
+                  Some(false),
+                  Some(false),
+                  Some(false),
+                  Some(false),
+                  Some(false),
+                  Some(MaybePIAIncrease.No),
+                  Some(MaybePIAUnchangedOrDecreased.No),
+                  Some(false),
+                  Some(false),
+                  Some(false),
+                  Some(false)
+                )
+              ),
+              Some(
+                LifetimeAllowanceSetup(
+                  Some(true),
+                  Some(false),
+                  Some(true),
+                  Some(false),
+                  Some(false),
+                  Some(false),
+                  Some(true)
+                )
+              )
             ),
             None,
             None
@@ -104,14 +129,38 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
         CalculationInputs(
           Resubmission(false, None),
           Setup(
-            Some(AnnualAllowanceSetup(Some(true))),
-            Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))
+            Some(
+              AnnualAllowanceSetup(
+                Some(true),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(MaybePIAIncrease.No),
+                Some(MaybePIAUnchangedOrDecreased.No),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(false)
+              )
+            ),
+            Some(
+              LifetimeAllowanceSetup(
+                Some(true),
+                Some(false),
+                Some(true),
+                Some(false),
+                Some(false),
+                Some(false),
+                Some(true)
+              )
+            )
           ),
           None,
           Some(
             LifeTimeAllowance(
               LocalDate.parse("2018-11-28"),
-              ChangeInTaxCharge.IncreasedCharge,
               LtaProtectionOrEnhancements.Protection,
               Some(ProtectionType.FixedProtection2014),
               Some("R41AB678TR23355"),
@@ -173,8 +222,33 @@ class CalculationDataServiceSpec extends AnyFreeSpec with MockitoSugar {
           CalculationInputs(
             Resubmission(false, None),
             Setup(
-              Some(AnnualAllowanceSetup(Some(true))),
-              Some(LifetimeAllowanceSetup(Some(true), Some(true), Some(false)))
+              Some(
+                AnnualAllowanceSetup(
+                  Some(true),
+                  Some(false),
+                  Some(false),
+                  Some(false),
+                  Some(false),
+                  Some(false),
+                  Some(MaybePIAIncrease.No),
+                  Some(MaybePIAUnchangedOrDecreased.No),
+                  Some(false),
+                  Some(false),
+                  Some(false),
+                  Some(false)
+                )
+              ),
+              Some(
+                LifetimeAllowanceSetup(
+                  Some(true),
+                  Some(false),
+                  Some(true),
+                  Some(false),
+                  Some(false),
+                  Some(false),
+                  Some(true)
+                )
+              )
             ),
             None,
             None

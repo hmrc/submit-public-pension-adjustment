@@ -21,6 +21,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{CalculationInputs, LifetimeAllowanceSetup, Setup}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.Period
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.{Compensation, MiniRegime}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CaseIdentifiers, QueueReference}
@@ -87,7 +88,8 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
     hadBce = "Yes",
     bceDate = "30/01/2017",
     changeInLtaPercentage = "Yes",
-    ltaChargeType = "New",
+    increaseInLTACharge = "No",
+    newLTACharge = "No",
     multipleBenefitCrystallisationEvent = "No",
     haveLtaProtectionOrEnhancement = "Protection",
     protectionType = "Primary protection",
@@ -248,5 +250,84 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
 
       result shouldEqual expectedViewModel
     }
+
+    "must correctly create a PDFViewModel using provided CaseIdentifiers and FinalSubmission with LifetimeAllowanceSetup having few fields  = None" in {
+
+      val finalSubmissionCopy = finalSubmission.copy(
+        calculationInputs = finalSubmission.calculationInputs.copy(
+          setup = finalSubmission.calculationInputs.setup.copy(
+            lifetimeAllowanceSetup = Some(
+              LifetimeAllowanceSetup(
+                Some(true),
+                Some(false),
+                Some(true),
+                None,
+                None,
+                Some(false),
+                Some(true)
+              )
+            )
+          )
+        )
+      )
+
+      val ltaSectionCopy = ltaSection.copy(increaseInLTACharge = "Not Applicable", newLTACharge = "Not Applicable")
+
+      val expectedViewModel = PDFViewModel(
+        caseNumber,
+        caseIdentificationSection,
+        administrativeDetailsSection,
+        Some(onBehalfOfSection),
+        Some(ltaSectionCopy),
+        publicSectorSchemeDetailsSections,
+        compensationSections,
+        taxAdministrationFrameworkSections,
+        Some(additionalOrHigherReliefSection),
+        Some(paymentInformationSection),
+        declarationsSection
+      )
+
+      val result = viewModelService.viewModel(caseIdentifiers, finalSubmissionCopy)
+
+      result shouldEqual expectedViewModel
+    }
+
+    "must correctly create a PDFViewModel using provided CaseIdentifiers and FinalSubmission with LifetimeAllowanceSetup = None" in {
+
+      val finalSubmissionCopy = finalSubmission.copy(
+        calculationInputs = finalSubmission.calculationInputs.copy(
+          setup = finalSubmission.calculationInputs.setup.copy(
+            lifetimeAllowanceSetup = None
+          )
+        )
+      )
+
+      val ltaSectionCopy = ltaSection.copy(
+        hadBce = "Not Applicable",
+        changeInLtaPercentage = "Not Applicable",
+        increaseInLTACharge = "Not Applicable",
+        newLTACharge = "Not Applicable",
+        multipleBenefitCrystallisationEvent = "Not Applicable"
+      )
+
+      val expectedViewModel = PDFViewModel(
+        caseNumber,
+        caseIdentificationSection,
+        administrativeDetailsSection,
+        Some(onBehalfOfSection),
+        Some(ltaSectionCopy),
+        publicSectorSchemeDetailsSections,
+        compensationSections,
+        taxAdministrationFrameworkSections,
+        Some(additionalOrHigherReliefSection),
+        Some(paymentInformationSection),
+        declarationsSection
+      )
+
+      val result = viewModelService.viewModel(caseIdentifiers, finalSubmissionCopy)
+
+      result shouldEqual expectedViewModel
+    }
+
   }
 }

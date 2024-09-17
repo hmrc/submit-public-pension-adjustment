@@ -17,7 +17,7 @@
 import java.time.LocalDate
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{ChangeInTaxCharge, EnhancementType, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, WhatNewProtectionTypeEnhancement, YearChargePaid}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{EnhancementType, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, WhatNewProtectionTypeEnhancement, YearChargePaid}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.SchemeCreditConsent
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Formatting
 
@@ -31,15 +31,6 @@ class FormattingSpec extends AnyFreeSpec with Matchers {
       "should format a given LocalDate correctly" in {
         val date = LocalDate.of(2023, 10, 3)
         formatter.format(date) shouldBe "03/10/2023"
-      }
-    }
-
-    "format(changeInTaxCharge: ChangeInTaxCharge)" - {
-      "should format ChangeInTaxCharge correctly" in {
-        formatter.format(ChangeInTaxCharge.NewCharge)       shouldBe "New"
-        formatter.format(ChangeInTaxCharge.IncreasedCharge) shouldBe "Increased"
-        formatter.format(ChangeInTaxCharge.DecreasedCharge) shouldBe "Decreased"
-        formatter.format(ChangeInTaxCharge.None)            shouldBe "Error"
       }
     }
 

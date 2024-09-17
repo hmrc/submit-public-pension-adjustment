@@ -18,23 +18,20 @@ package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs
 
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{Enumerable, WithName}
 
-sealed trait ChangeInTaxCharge
+sealed trait MaybePIAIncrease
 
-object ChangeInTaxCharge extends Enumerable.Implicits {
+object MaybePIAIncrease extends Enumerable.Implicits {
 
-  case object NewCharge extends WithName(s"newCharge") with ChangeInTaxCharge
-  case object IncreasedCharge extends WithName(s"increasedCharge") with ChangeInTaxCharge
-  case object DecreasedCharge extends WithName(s"decreasedCharge") with ChangeInTaxCharge
-  case object None extends WithName(s"none") with ChangeInTaxCharge
+  case object Yes extends WithName("yes") with MaybePIAIncrease
+  case object No extends WithName("no") with MaybePIAIncrease
+  case object IDoNotKnow extends WithName("idk") with MaybePIAIncrease
 
-  val values: Seq[ChangeInTaxCharge] = Seq(
-    NewCharge,
-    IncreasedCharge,
-    DecreasedCharge,
-    None
+  val values: Seq[MaybePIAIncrease] = Seq(
+    Yes,
+    No,
+    IDoNotKnow
   )
 
-  implicit val enumerable: Enumerable[ChangeInTaxCharge] =
+  implicit val enumerable: Enumerable[MaybePIAIncrease] =
     Enumerable(values.map(v => v.toString -> v): _*)
-
 }
