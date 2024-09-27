@@ -32,7 +32,8 @@ case class PDFViewModel(
   taxAdministrationFrameworkSections: Seq[TaxAdministrationFrameworkSection],
   additionalOrHigherReliefSection: Option[AdditionalOrHigherReliefSection],
   paymentInformationSection: Option[PaymentInformationSection],
-  declarationsSection: DeclarationsSection
+  declarationsSection: DeclarationsSection,
+  testSection: TestSection
 ) {
 
   def prettyPrint(messages: Messages): String = displayLines(messages).mkString("", "\n", "")
@@ -69,6 +70,7 @@ object PDFViewModel {
       TaxAdministrationFrameworkSection.build(finalSubmission),
       AdditionalOrHigherReliefSection.build(finalSubmission),
       PaymentInformationSection.build(finalSubmission),
-      DeclarationsSection.build(finalSubmission)
+      DeclarationsSection.build(finalSubmission),
+      TestSection.build(finalSubmission)
     )
 }

@@ -17,13 +17,14 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission
 
 import play.api.libs.json.{Format, Json}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.CalculationInputs
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{CalculationInputs, IncomeSubJourney}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.CalculationResponse
 
 case class FinalSubmission(
   calculationInputs: CalculationInputs,
   calculation: Option[CalculationResponse],
-  submissionInputs: SubmissionInputs
+  submissionInputs: SubmissionInputs,
+  incomeSubJourney: IncomeSubJourney
 ) {}
 
 object FinalSubmission {
