@@ -288,6 +288,7 @@ object TestData {
     contactDetails = true,
     powerOfAttorney = Some(false),
     claimOnBehalfOfDeceased = Some(false),
+    legalPersonalRepresentative = Some(false),
     schemeCreditConsent = Some(true)
   )
 
@@ -464,6 +465,6 @@ object TestData {
     Some(
       PaymentInformationSection(accountName = "accountName", sortCode = "sortCode", accountNumber = "accountNumber")
     ),
-    DeclarationsSection("Y", "Y", "Y", "Y", "Y", "Consent given")
+    DeclarationsSection("Y", "Y", "Y", "Y", "Y", "Y", "Consent given")
   )
 }

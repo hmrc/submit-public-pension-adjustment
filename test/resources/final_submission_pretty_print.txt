@@ -151,4 +151,5 @@ Declaration for tax administration framework : Yes
 Declaration for true and complete : Yes
 Declaration if claiming on behalf of a deceased individual : No
 Declaration if claiming on behalf of a member for whom you have a lasting power of attorney or deputyship : No
+Declaration if claiming on behalf of a member for whom you have legal personal representation : No
 Credit scheme consent : Consent given

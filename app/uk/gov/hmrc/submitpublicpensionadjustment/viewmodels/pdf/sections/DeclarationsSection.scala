@@ -25,10 +25,19 @@ case class DeclarationsSection(
   trueAndComplete: String,
   onBehalfDeceased: String,
   deputyship: String,
+  legalPersonalRepresentative: String,
   schemeCreditConsent: String
 ) extends Section {
   override def orderedFieldNames(): Seq[String] =
-    Seq("compensation", "tax", "trueAndComplete", "onBehalfDeceased", "deputyship", "schemeCreditConsent")
+    Seq(
+      "compensation",
+      "tax",
+      "trueAndComplete",
+      "onBehalfDeceased",
+      "deputyship",
+      "legalPersonalRepresentative",
+      "schemeCreditConsent"
+    )
 }
 
 object DeclarationsSection extends Formatting {
@@ -39,6 +48,8 @@ object DeclarationsSection extends Formatting {
       trueAndComplete = format(true),
       onBehalfDeceased = formatBoolean(finalSubmission.submissionInputs.declarations.claimOnBehalfOfDeceased),
       deputyship = formatBoolean(finalSubmission.submissionInputs.declarations.powerOfAttorney),
+      legalPersonalRepresentative =
+        formatBoolean(finalSubmission.submissionInputs.declarations.legalPersonalRepresentative),
       schemeCreditConsent = formatSchemeCreditConsent(finalSubmission.submissionInputs.declarations.schemeCreditConsent)
     )
 }
