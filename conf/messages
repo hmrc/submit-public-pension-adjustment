@@ -126,11 +126,11 @@ pdf.declarationsSection.legalPersonalRepresentative = Declaration if claiming on
 pdf.declarationsSection.schemeCreditConsent = Credit scheme consent
 
 pdf.incomeSubJourneySection.heading = Income Sub Journey
-pdf.incomeSubJourneySection.revisedPIA = Revised PIA
-pdf.incomeSubJourneySection.reducedNetIncome = Reduced Net Income
-pdf.incomeSubJourneySection.thresholdIncomeAmount = Threshold Income Amount
-pdf.incomeSubJourneySection.adjustedIncome = Adjusted Income
-pdf.incomeSubJourneySection.personalAllowance = Personal Allowance
+pdf.incomeSubJourneySection.incomeSubJourneySubSection.revisedPIA = Revised PIA
+pdf.incomeSubJourneySection.incomeSubJourneySubSection.reducedNetIncome = Reduced Net Income
+pdf.incomeSubJourneySection.incomeSubJourneySubSection.thresholdIncomeAmount = Threshold Income Amount
+pdf.incomeSubJourneySection.incomeSubJourneySubSection.adjustedIncome = Adjusted Income
+pdf.incomeSubJourneySection.incomeSubJourneySubSection.personalAllowance = Personal Allowance
 
 pdf.lifetimeAllowanceSection.hadBce = Have you had a benefit crystallisation event in your pension?
 pdf.lifetimeAllowanceSection.bceDate = What was the date of the benefit crystallisation event?

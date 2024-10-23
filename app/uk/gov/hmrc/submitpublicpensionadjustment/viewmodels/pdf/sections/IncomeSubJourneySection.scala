@@ -25,19 +25,22 @@ import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.Declara
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Row, Section}
 
 case class IncomeSubJourneySection(
-  revisedPIA: String,
-  reducedNetIncome: String,
-  thresholdIncomeAmount: String,
-  adjustedIncome: String,
-  personalAllowance: String,
-) extends Section
+//  revisedPIA: String,
+//  reducedNetIncome: String,
+//  thresholdIncomeAmount: String,
+//  adjustedIncome: String,
+//  personalAllowance: String,
+  testTitle: String,
+  incomeSubJourneySubSection: Seq[IncomeSubJourneySubSection] = Seq()
+                                  ) extends Section
     with Formatting {
 
   override def orderedFieldNames(): Seq[String] =
-    Seq("revisedPIA", "reducedNetIncome", "thresholdIncomeAmount", "adjustedIncome", "personalAllowance")
+    //Seq("revisedPIA", "reducedNetIncome", "thresholdIncomeAmount", "adjustedIncome", "personalAllowance")
+    Seq("testTitle")
 
 
-  override def period() = Some(relatingTo)
+  //override def period() = Some(relatingTo)
 
   override def rows(messages: Messages): Seq[Row] = {
 
@@ -49,40 +52,55 @@ case class IncomeSubJourneySection(
     incomeSubJourneySubSection.flatMap { ss =>
       Seq(
         Row(
-          displayLabel(messages, "schemePaidChargeDetailsSubSection.scheme"),
-          ss.index.toString,
+          displayLabel(messages, "incomeSubJourneySubSection.revisedPIA"),
+          formatPoundsAmount(ss.revisedPIA),
           false
         ),
         Row(
-          displayLabel(messages, "schemePaidChargeDetailsSubSection.amount"),
-          formatPoundsAmount(ss.amount),
+          displayLabel(messages, "incomeSubJourneySubSection.reducedNetIncome"),
+          formatPoundsAmount(ss.reducedNetIncome),
           true
         ),
         Row(
-          displayLabel(messages, "schemePaidChargeDetailsSubSection.name"),
-          ss.name,
+          displayLabel(messages, "incomeSubJourneySubSection.thresholdIncomeAmount"),
+          formatPoundsAmount(ss.thresholdIncomeAmount),
           true
         ),
         Row(
-          displayLabel(messages, "schemePaidChargeDetailsSubSection.reference"),
-          ss.pstr,
+          displayLabel(messages, "incomeSubJourneySubSection.adjustedIncome"),
+          formatPoundsAmount(ss.adjustedIncome),
+          true
+        ),
+        Row(
+          displayLabel(messages, "incomeSubJourneySubSection.personalAllowance"),
+          formatPoundsAmount(ss.personalAllowance),
           true
         )
+
       )
     }
 }
-case class incomeSubJourneySubSection(index: Int, amount: Int, name: String, pstr: String) {}
+
+case class IncomeSubJourneySubSection(revisedPIA: Int, reducedNetIncome: Int, thresholdIncomeAmount: Int, adjustedIncome: Int, personalAllowance: Int) {}
+
 
 object IncomeSubJourneySection extends Formatting {
 
   def build(finalSubmission: FinalSubmission): IncomeSubJourneySection = {
     IncomeSubJourneySection(
-      revisedPIA = 100.toString,
-      reducedNetIncome = 50.toString,
-      thresholdIncomeAmount = 500.toString,
-      adjustedIncome = 450.toString,
-      personalAllowance = 600.toString
+      testTitle = "Testing Subsection",
 
+        incomeSubJourneySubSection = Seq(IncomeSubJourneySubSection(100, 50, 500, 450, 600))
+
+    )
+  }
+  private def incomeSubJourneySubSection(
+                                           finalSubmission: FinalSubmission,
+                                           outDateCalc: OutOfDatesTaxYearsCalculation
+                                         ): Seq[IncomeSubJourneySubSection] = {
+
+
+      )
     )
   }
     private def allTaxYears(finalSubmission: FinalSubmission): Seq[TaxYear2016To2023] =
