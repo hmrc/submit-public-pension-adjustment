@@ -29,7 +29,7 @@ case class PDFViewModel(
   lifetimeAllowanceSection: Option[LifetimeAllowanceSection],
   publicSectorSchemeDetailsSections: Seq[PublicSectorSchemeDetailsSection],
   compensationSections: Seq[CompensationSection],
-  incomeSubJourneySection: Seq[IncomeSubJourneySection],
+  incomeSubJourneySection: IncomeSubJourneySection,
   taxAdministrationFrameworkSections: Seq[TaxAdministrationFrameworkSection],
   additionalOrHigherReliefSection: Option[AdditionalOrHigherReliefSection],
   paymentInformationSection: Option[PaymentInformationSection],
@@ -45,8 +45,8 @@ case class PDFViewModel(
       optionalDisplayLines(messages, lifetimeAllowanceSection) ++
       publicSectorSchemeDetailsSections.flatMap(section => optionalDisplayLines(messages, Some(section))) ++
       compensationSections.flatMap(section => optionalDisplayLines(messages, Some(section))) ++
-      incomeSubJourneySection.flatMap(section => optionalDisplayLines(messages, Some(section))) ++
-  taxAdministrationFrameworkSections.flatMap(section => optionalDisplayLines(messages, Some(section))) ++
+      incomeSubJourneySection.displayLines(messages) ++
+      taxAdministrationFrameworkSections.flatMap(section => optionalDisplayLines(messages, Some(section))) ++
       optionalDisplayLines(messages, additionalOrHigherReliefSection) ++
       optionalDisplayLines(messages, paymentInformationSection) ++
       declarationsSection.displayLines(messages)

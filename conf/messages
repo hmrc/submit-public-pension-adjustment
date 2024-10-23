@@ -125,6 +125,13 @@ pdf.declarationsSection.deputyship = Declaration if claiming on behalf of a memb
 pdf.declarationsSection.legalPersonalRepresentative = Declaration if claiming on behalf of a member for whom you have legal personal representation
 pdf.declarationsSection.schemeCreditConsent = Credit scheme consent
 
+pdf.incomeSubJourneySection.heading = Income Sub Journey
+pdf.incomeSubJourneySection.revisedPIA = Revised PIA
+pdf.incomeSubJourneySection.reducedNetIncome = Reduced Net Income
+pdf.declarationsSection.thresholdIncomeAmount = Threshold Income Amount
+pdf.declarationsSection.adjustedIncome = Adjusted Income
+pdf.declarationsSection.personalAllowance = Personal Allowance
+
 pdf.lifetimeAllowanceSection.hadBce = Have you had a benefit crystallisation event in your pension?
 pdf.lifetimeAllowanceSection.bceDate = What was the date of the benefit crystallisation event?
 pdf.lifetimeAllowanceSection.changeInLtaPercentage = Have you been told about a change in the lifetime allowance percentage?
