@@ -60,6 +60,9 @@
             }
             @line("","",false)
 
+            @pdfSection(Some(viewModel.incomeSubJourneySection), Some("incomeSubJourneySection"))
+            @line("","",false)
+
             <fo:block role="H3" id="taxAdministrationFrameworkSection" font-size="14pt" font-weight="bold" margin-bottom="0.5cm">
                 @messages("pdf.taxAdministrationFrameworkSection.heading")
             </fo:block>

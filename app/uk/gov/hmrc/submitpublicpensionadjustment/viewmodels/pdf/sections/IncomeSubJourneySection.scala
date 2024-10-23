@@ -25,35 +25,72 @@ import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.Declara
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Row, Section}
 
 case class IncomeSubJourneySection(
-  revisedPIA: Option[Int],
-  reducedNetIncome: Option[Int],
-  thresholdIncomeAmount: Option[Int],
-  adjustedIncome: Option[Int],
-  personalAllowance: Option[Int],
+  revisedPIA: String,
+  reducedNetIncome: String,
+  thresholdIncomeAmount: String,
+  adjustedIncome: String,
+  personalAllowance: String,
 ) extends Section
     with Formatting {
 
   override def orderedFieldNames(): Seq[String] =
     Seq("revisedPIA", "reducedNetIncome", "thresholdIncomeAmount", "adjustedIncome", "personalAllowance")
 
-}
 
-//case class SomethingSubSection(index: Int, amount: Int, name: String, pstr: String) {}
+  override def period() = Some(relatingTo)
+
+  override def rows(messages: Messages): Seq[Row] = {
+
+    val subsectionRows = buildSubSectionRows(messages)
+    super.rows(messages) ++ subsectionRows
+  }
+
+  private def buildSubSectionRows(messages: Messages) =
+    incomeSubJourneySubSection.flatMap { ss =>
+      Seq(
+        Row(
+          displayLabel(messages, "schemePaidChargeDetailsSubSection.scheme"),
+          ss.index.toString,
+          false
+        ),
+        Row(
+          displayLabel(messages, "schemePaidChargeDetailsSubSection.amount"),
+          formatPoundsAmount(ss.amount),
+          true
+        ),
+        Row(
+          displayLabel(messages, "schemePaidChargeDetailsSubSection.name"),
+          ss.name,
+          true
+        ),
+        Row(
+          displayLabel(messages, "schemePaidChargeDetailsSubSection.reference"),
+          ss.pstr,
+          true
+        )
+      )
+    }
+}
+case class incomeSubJourneySubSection(index: Int, amount: Int, name: String, pstr: String) {}
 
 object IncomeSubJourneySection extends Formatting {
 
-  def build(finalSubmission: FinalSubmission): IncomeSubJourneySection =
+  def build(finalSubmission: FinalSubmission): IncomeSubJourneySection = {
     IncomeSubJourneySection(
-      revisedPIA = Some(100),
-      reducedNetIncome = Some(50),
-      thresholdIncomeAmount = Some(500),
-      adjustedIncome = Some(450),
-      personalAllowance = Some(600)
-
+      revisedPIA = 100.toString,
+      reducedNetIncome = 50.toString,
+      thresholdIncomeAmount = 500.toString,
+      adjustedIncome = 450.toString,
+      personalAllowance = 600.toString
 
     )
+  }
+    private def allTaxYears(finalSubmission: FinalSubmission): Seq[TaxYear2016To2023] =
+      finalSubmission.calculationInputs.annualAllowance.map(_.taxYears).getOrElse(List()).collect {
+        case ty: TaxYear2016To2023 => ty
+      }
 
-//  def build(finalSubmission: FinalSubmission): Seq[IncomeSubJourneySection] = {
+  //  def build(finalSubmission: FinalSubmission): Seq[IncomeSubJourneySection] = {
 //    val outOfDates = finalSubmission.calculation
 //      .map(_.outDates)
 //      .getOrElse(Seq.empty)
@@ -88,10 +125,7 @@ object IncomeSubJourneySection extends Formatting {
 //    )
 //  }
 //
-//  private def allTaxYears(finalSubmission: FinalSubmission): Seq[TaxYear2016To2023] =
-//    finalSubmission.calculationInputs.annualAllowance.map(_.taxYears).getOrElse(List()).collect {
-//      case ty: TaxYear2016To2023 => ty
-//    }
+
 //
 //  private def taxYearSchemes(taxYear: TaxYear2016To2023): Seq[TaxYearScheme] =
 //    taxYear match {
