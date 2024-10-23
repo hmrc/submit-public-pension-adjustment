@@ -24,11 +24,11 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSub
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Row, Section}
 
 case class IncomeSubJourneySection(
-  //revisedPIA: Int,
-  //reducedNetIncome: Int,
+  revisedPIA: Option[Int],
+  reducedNetIncome: Option[Int],
   thresholdIncomeAmount: Option[Int],
-  //adjustedIncome: Int,
-  //personalAllowance: Int,
+  adjustedIncome: Option[Int],
+  personalAllowance: Option[Int],
 ) extends Section
     with Formatting {
 
@@ -87,7 +87,7 @@ object IncomeSubJourneySection extends Formatting {
     finalSubmission: FinalSubmission
   ): IncomeSubJourneySection =
     IncomeSubJourneySection(
-      thresholdIncomeAmount = finalSubmission.submissionInputs.incomeSubJourney.thresholdIncomeAmount
+      thresholdIncomeAmount = finalSubmission.submissionInputs.incomeSubJourneyValues.map(_.thresholdIncomeAmount)
     )
 
   private def schemePaidChargeSubSections(

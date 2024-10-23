@@ -17,7 +17,7 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission
 
 import play.api.libs.json._
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.IncomeSubJourney
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{IncomeSubJourney, IncomeSubJourneyValues}
 
 case class SubmissionInputs(
   administrativeDetails: AdministrativeDetails,
@@ -26,7 +26,7 @@ case class SubmissionInputs(
   schemeTaxRelief: Option[SchemeTaxRelief],
   bankAccountDetails: Option[BankAccountDetails],
   declarations: Declarations,
-  incomeSubJourney: IncomeSubJourney
+  incomeSubJourneyValues: Option[IncomeSubJourneyValues]
 ) {}
 
 object SubmissionInputs {
