@@ -19,7 +19,8 @@ package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 import play.api.i18n.Messages
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{IncomeSubJourney, IncomeSubJourneyValues, TaxYear2016To2023}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023.{InitialFlexiblyAccessedTaxYear, NormalTaxYear, PostFlexiblyAccessedTaxYear}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{OutOfDatesTaxYearsCalculation, Period, TaxYearScheme}
+//import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{OutOfDatesTaxYearsCalculation, Period, TaxYearScheme}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.Period
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.DeclarationsSection.{format, formatBoolean, formatSchemeCreditConsent}
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Row, Section}
@@ -73,12 +74,12 @@ case class IncomeSubJourneySection(
         ),
         Row(
           displayLabel(messages, "incomeSubJourneySubSection.adjustedIncome"),
-          formatPoundsAmount(ss.adjustedIncome),
+          formatPoundsAmount(ss.adjustedIncomeAmount),
           true
         ),
         Row(
           displayLabel(messages, "incomeSubJourneySubSection.personalAllowance"),
-          formatPoundsAmount(ss.personalAllowance),
+          formatPoundsAmount(ss.personalAllowanceAmount),
           true
         )
 
@@ -86,16 +87,16 @@ case class IncomeSubJourneySection(
     }
 }
 
-case class IncomeSubJourneySubSection(period: Period, revisedPIA: Int, reducedNetIncome: Int, thresholdIncomeAmount: Int, adjustedIncome: Int, personalAllowance: Int) {}
+case class IncomeSubJourneySubSection(period: Period, revisedPIA: Int, reducedNetIncome: Int, thresholdIncomeAmount: Int, adjustedIncomeAmount: Int, personalAllowanceAmount: Int) {}
 
 
 object IncomeSubJourneySection extends Formatting {
 
   def build(finalSubmission: FinalSubmission): IncomeSubJourneySection = {
     IncomeSubJourneySection(
-      testTitle = "Testing Subsection", // this should be the period
+      testTitle = "Additional Information", // this should be the period
 
-        incomeSubJourneySubSection = Seq(IncomeSubJourneySubSection(100, 50, 500, 450, 600))
+        incomeSubJourneySubSection = incomeSubJourneySubSection(finalSubmission)
 
     )
   }
@@ -107,8 +108,11 @@ object IncomeSubJourneySection extends Formatting {
 
     taxYears.map(taxYear => IncomeSubJourneySubSection(
       taxYear.period,
-      taxYearIncomeSubJourney(taxYear)
-    )
+      taxYearIncomeSubJourney(taxYear).thresholdIncomeAmount.getOrElse(0), // will be revised PIA
+      taxYearIncomeSubJourney(taxYear).reducedNetIncomeAmount.getOrElse(0),
+      taxYearIncomeSubJourney(taxYear).thresholdIncomeAmount.getOrElse(0),
+      taxYearIncomeSubJourney(taxYear).adjustedIncomeAmount.getOrElse(0),
+      taxYearIncomeSubJourney(taxYear).personalAllowanceAmount.getOrElse(0)
     )
 
     )
@@ -161,11 +165,5 @@ object IncomeSubJourneySection extends Formatting {
 //  }
 //
 
-//
-  private def taxYearSchemes(taxYear: TaxYear2016To2023): Seq[IncomeSubJourneyValues] =
-    taxYear match {
-      case ty: NormalTaxYear                  => ty.taxYearSchemes
-      case ty: InitialFlexiblyAccessedTaxYear => ty.taxYearSchemes
-      case ty: PostFlexiblyAccessedTaxYear    => ty.taxYearSchemes
-    }
+
 }
