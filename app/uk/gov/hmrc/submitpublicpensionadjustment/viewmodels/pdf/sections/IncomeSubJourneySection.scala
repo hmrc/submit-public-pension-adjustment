@@ -19,6 +19,8 @@ package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 import play.api.i18n.Messages
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{IncomeSubJourney, IncomeSubJourneyValues, TaxYear2016To2023}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023.{InitialFlexiblyAccessedTaxYear, NormalTaxYear, PostFlexiblyAccessedTaxYear}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.TaxYearScheme
+import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.CompensationSection.{allTaxYears, taxYearSchemes}
 //import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{OutOfDatesTaxYearsCalculation, Period, TaxYearScheme}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.Period
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
@@ -105,10 +107,15 @@ object IncomeSubJourneySection extends Formatting {
                                          ): Seq[IncomeSubJourneySubSection] = {
     val taxYears = allTaxYears(finalSubmission)
 
+    val outDatesSchemes: Seq[TaxYearScheme] = allTaxYears(finalSubmission)
+      .flatMap(ty => taxYearSchemes(ty))
+
+    val revisedPIA = outDatesSchemes.zipWithIndex.map(schemeWithIndex =>
+      schemeWithIndex._1.revisedPensionInputAmount)
 
     taxYears.map(taxYear => IncomeSubJourneySubSection(
       taxYear.period,
-      taxYearIncomeSubJourney(taxYear).thresholdIncomeAmount.getOrElse(0), // will be revised PIA
+      revisedPIA, // will be revised PIA
       taxYearIncomeSubJourney(taxYear).reducedNetIncomeAmount.getOrElse(0),
       taxYearIncomeSubJourney(taxYear).thresholdIncomeAmount.getOrElse(0),
       taxYearIncomeSubJourney(taxYear).adjustedIncomeAmount.getOrElse(0),
@@ -127,6 +134,13 @@ object IncomeSubJourneySection extends Formatting {
       case ty: NormalTaxYear                  => ty.incomeSubJourney
       case ty: InitialFlexiblyAccessedTaxYear => ty.incomeSubJourney
       case ty: PostFlexiblyAccessedTaxYear    => ty.incomeSubJourney
+    }
+
+  private def taxYearSchemes(taxYear: TaxYear2016To2023): Seq[TaxYearScheme] =
+    taxYear match {
+      case ty: NormalTaxYear                  => ty.taxYearSchemes
+      case ty: InitialFlexiblyAccessedTaxYear => ty.taxYearSchemes
+      case ty: PostFlexiblyAccessedTaxYear    => ty.taxYearSchemes
     }
 
   //  def build(finalSubmission: FinalSubmission): Seq[IncomeSubJourneySection] = {
