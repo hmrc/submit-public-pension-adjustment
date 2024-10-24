@@ -66,12 +66,17 @@ case class CompensationSection(
           displayLabel(messages, "schemePaidChargeDetailsSubSection.reference"),
           ss.pstr,
           true
+        ),
+        Row(
+          displayLabel(messages, "schemePaidChargeDetailsSubSection.revisedPIA"),
+          formatPoundsAmount(ss.revisedPIA),
+          true
         )
       )
     }
 }
 
-case class SchemePaidChargeDetailsSubSection(index: Int, amount: Int, name: String, pstr: String) {}
+case class SchemePaidChargeDetailsSubSection(index: Int, amount: Int, name: String, pstr: String, revisedPIA: Int) {}
 
 object CompensationSection extends Formatting {
 
@@ -110,7 +115,8 @@ object CompensationSection extends Formatting {
         schemeWithIndex._2 + 1,
         schemeWithIndex._1.chargePaidByScheme,
         schemeWithIndex._1.name,
-        schemeWithIndex._1.pensionSchemeTaxReference
+        schemeWithIndex._1.pensionSchemeTaxReference,
+        schemeWithIndex._1.revisedPensionInputAmount
       )
     )
   }

@@ -84,6 +84,7 @@ pdf.compensationSection.schemePaidChargeDetailsSubSection.scheme = Scheme
 pdf.compensationSection.schemePaidChargeDetailsSubSection.amount = How much of the charge did your pension scheme pay?
 pdf.compensationSection.schemePaidChargeDetailsSubSection.name = Name of scheme originally paid charge $period
 pdf.compensationSection.schemePaidChargeDetailsSubSection.reference = PSTR of scheme originally paid charge $period
+pdf.compensationSection.schemePaidChargeDetailsSubSection.revisedPIA = Revised pension input amount
 
 pdf.taxAdministrationFrameworkSection.heading = Tax administration framework
 
@@ -125,9 +126,9 @@ pdf.declarationsSection.deputyship = Declaration if claiming on behalf of a memb
 pdf.declarationsSection.legalPersonalRepresentative = Declaration if claiming on behalf of a member for whom you have legal personal representation
 pdf.declarationsSection.schemeCreditConsent = Credit scheme consent
 
-pdf.incomeSubJourneySection.heading = Income Sub Journey
+pdf.incomeSubJourneySection.heading = Additional information
+pdf.incomeSubJourneySection.incomeSubJourneyTitle = Income
 pdf.incomeSubJourneySection.incomeSubJourneySubSection.period = Period
-pdf.incomeSubJourneySection.incomeSubJourneySubSection.revisedPIA = Revised PIA
 pdf.incomeSubJourneySection.incomeSubJourneySubSection.reducedNetIncome = Reduced Net Income
 pdf.incomeSubJourneySection.incomeSubJourneySubSection.thresholdIncomeAmount = Threshold Income Amount
 pdf.incomeSubJourneySection.incomeSubJourneySubSection.adjustedIncome = Adjusted Income
