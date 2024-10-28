@@ -28,13 +28,17 @@ import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.Declara
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Row, Section}
 
 case class IncomeSubJourneySection(
-  incomeSubJourneyTitle: String,
-  incomeSubJourneySubSection: Seq[IncomeSubJourneySubSection] = Seq()
+                                    periodRange: String,
+                                    incomeSubJourneySubSection: IncomeSubJourneySubSection
+                                    //                                   reducedNetIncome: String,
+//                                   thresholdIncomeAmount: String,
+//                                   adjustedIncomeAmount: String,
+//                                   personalAllowanceAmount: String
 ) extends Section
     with Formatting {
 
   override def orderedFieldNames(): Seq[String] =
-    Seq("incomeSubJourneyTitle")
+    Seq("periodRange")
 
   override def rows(messages: Messages): Seq[Row] = {
 
@@ -42,40 +46,30 @@ case class IncomeSubJourneySection(
     super.rows(messages) ++ subsectionRows
   }
 
-  private def buildSubSectionRows(messages: Messages) =
-    incomeSubJourneySubSection.flatMap { ss =>
-      Seq(
-        Row(
-          displayLabel(messages, "incomeSubJourneySubSection.period"),
-          ss.period,
-          false
-        ),
-        Row(
-          displayLabel(messages, "incomeSubJourneySubSection.reducedNetIncome"),
-          ss.reducedNetIncome,
-          true
-        ),
-        Row(
-          displayLabel(messages, "incomeSubJourneySubSection.thresholdIncomeAmount"),
-          ss.thresholdIncomeAmount,
-          true
-        ),
-        Row(
-          displayLabel(messages, "incomeSubJourneySubSection.adjustedIncome"),
-          ss.adjustedIncomeAmount,
-          true
-        ),
-        Row(
-          displayLabel(messages, "incomeSubJourneySubSection.personalAllowance"),
-          ss.personalAllowanceAmount,
-          true
-        )
+  private def buildSubSectionRows(messages: Messages): Seq[Row] = {
+    Seq(
+      Row(
+        displayLabel(messages, "incomeSubJourneySubSection.thresholdIncomeAmount"),
+        incomeSubJourneySubSection.thresholdIncomeAmount,
+        true
+      ),
+      Row(
+        displayLabel(messages, "incomeSubJourneySubSection.adjustedIncome"),
+        incomeSubJourneySubSection.adjustedIncomeAmount,
+        true
+      ),
+      Row(
+        displayLabel(messages, "incomeSubJourneySubSection.personalAllowance"),
+        incomeSubJourneySubSection.personalAllowanceAmount,
+        true
       )
-    }
+    )
+
+
+  }
 }
 
 case class IncomeSubJourneySubSection(
-  period: String,
   reducedNetIncome: String,
   thresholdIncomeAmount: String,
   adjustedIncomeAmount: String,
@@ -84,26 +78,46 @@ case class IncomeSubJourneySubSection(
 
 object IncomeSubJourneySection extends Formatting {
 
-  def build(finalSubmission: FinalSubmission): IncomeSubJourneySection              =
-    IncomeSubJourneySection(
-      incomeSubJourneyTitle = "Income sub journey",
-      incomeSubJourneySubSection = incomeSubJourneySubSection(finalSubmission)
-    )
-  private def incomeSubJourneySubSection(
-    finalSubmission: FinalSubmission
-  ): Seq[IncomeSubJourneySubSection] = {
-    val taxYears = allTaxYears(finalSubmission)
+//  def build(finalSubmission: FinalSubmission): IncomeSubJourneySection              =
+//    IncomeSubJourneySection(
+//      incomeSubJourneyTitle = "Income sub journey",
+//      incomeSubJourneySubSection = incomeSubJourneySubSection(finalSubmission)
+//    )
 
-    taxYears.map(taxYear =>
-      IncomeSubJourneySubSection(
+  def build(finalSubmission: FinalSubmission): Seq[IncomeSubJourneySection] = {
+    val taxYears = allTaxYears(finalSubmission)
+    taxYears.map { taxYear =>
+      IncomeSubJourneySection(
         formatPeriodToRange(taxYear.period),
-        formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).reducedNetIncomeAmount),
-        formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).thresholdIncomeAmount),
-        formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).adjustedIncomeAmount),
-        formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).personalAllowanceAmount)
+        incomeSubJourneySubSection(taxYear)
       )
-    )
+    }
   }
+
+  private def incomeSubJourneySubSection(taxYear: TaxYear2016To2023): IncomeSubJourneySubSection = {
+    IncomeSubJourneySubSection(
+              formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).reducedNetIncomeAmount),
+              formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).thresholdIncomeAmount),
+              formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).adjustedIncomeAmount),
+              formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).personalAllowanceAmount)
+  )
+  }
+
+
+//  private def incomeSubJourneySubSection(
+//    finalSubmission: FinalSubmission
+//  ): Seq[IncomeSubJourneySubSection] = {
+//    val taxYears = allTaxYears(finalSubmission)
+//
+//    taxYears.map(taxYear =>
+//      IncomeSubJourneySubSection(
+//        formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).reducedNetIncomeAmount),
+//        formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).thresholdIncomeAmount),
+//        formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).adjustedIncomeAmount),
+//        formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).personalAllowanceAmount)
+//      )
+//    )
+//  }
   private def allTaxYears(finalSubmission: FinalSubmission): Seq[TaxYear2016To2023] =
     finalSubmission.calculationInputs.annualAllowance.map(_.taxYears).getOrElse(List()).collect {
       case ty: TaxYear2016To2023 => ty

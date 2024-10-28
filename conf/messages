@@ -127,12 +127,12 @@ pdf.declarationsSection.legalPersonalRepresentative = Declaration if claiming on
 pdf.declarationsSection.schemeCreditConsent = Credit scheme consent
 
 pdf.incomeSubJourneySection.heading = Additional information
-pdf.incomeSubJourneySection.incomeSubJourneyTitle = Section
-pdf.incomeSubJourneySection.incomeSubJourneySubSection.period = Period
-pdf.incomeSubJourneySection.incomeSubJourneySubSection.reducedNetIncome = Reduced net income amount
-pdf.incomeSubJourneySection.incomeSubJourneySubSection.thresholdIncomeAmount = Threshold income amount
-pdf.incomeSubJourneySection.incomeSubJourneySubSection.adjustedIncome = Adjusted income amount
-pdf.incomeSubJourneySection.incomeSubJourneySubSection.personalAllowance = Personal allowance amount
+
+pdf.incomeSubJourneySection.periodRange = Period
+pdf.incomeSubJourneySection.reducedNetIncome = Reduced net income amount
+pdf.incomeSubJourneySection.thresholdIncomeAmount = Threshold income amount
+pdf.incomeSubJourneySection.adjustedIncomeAmount = Adjusted income amount
+pdf.incomeSubJourneySection.personalAllowanceAmount = Personal allowance amount
 
 pdf.lifetimeAllowanceSection.hadBce = Have you had a benefit crystallisation event in your pension?
 pdf.lifetimeAllowanceSection.bceDate = What was the date of the benefit crystallisation event?
