@@ -438,9 +438,10 @@ object TestData {
         "1",
         "1",
         "1",
-        "1",
+        "1"
       )
-  ))
+    )
+  )
 
   val administrativeDetailsSection = AdministrativeDetailsSection(
     firstName = "firstName",

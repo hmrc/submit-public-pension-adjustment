@@ -166,32 +166,32 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
   )
 
   private val incomeSubJourneySection =
-    IncomeSubJourneySection("Income sub journey",
-    incomeSubJourneySubSection = Seq(
-      IncomeSubJourneySubSection(
-        "2018/19",
-        "£100",
-        "£50",
-        "£450",
-        "£25",
-      ),
+    IncomeSubJourneySection(
+      "Income sub journey",
+      incomeSubJourneySubSection = Seq(
         IncomeSubJourneySubSection(
-        "2017/18",
-        "£100",
-        "£50",
-        "£450",
-        "£25",
-      ),
-      IncomeSubJourneySubSection(
-        "2016/17",
-        "£100",
-        "£50",
-        "£450",
-        "£25",
+          "2018/19",
+          "£100",
+          "£50",
+          "£450",
+          "£25"
+        ),
+        IncomeSubJourneySubSection(
+          "2017/18",
+          "£100",
+          "£50",
+          "£450",
+          "£25"
+        ),
+        IncomeSubJourneySubSection(
+          "2016/17",
+          "£100",
+          "£50",
+          "£450",
+          "£25"
+        )
       )
     )
-
-  )
 
   private val taxAdministrationFrameworkSections = Seq(
     TaxAdministrationFrameworkSection(
