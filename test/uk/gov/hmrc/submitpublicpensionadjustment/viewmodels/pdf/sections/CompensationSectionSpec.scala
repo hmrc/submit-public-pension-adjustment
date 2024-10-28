@@ -35,8 +35,8 @@ class CompensationSectionSpec extends AnyFreeSpec with Matchers with Logging {
         revisedTaxChargeTotal = "£270",
         chargeYouPaid = "£50",
         schemePaidChargeSubSections = Seq(
-          SchemePaidChargeDetailsSubSection(1, 100, "TestName2017", "TestTaxRef2017"),
-          SchemePaidChargeDetailsSubSection(2, 100, "TestName2222017", "TestTaxRef")
+          SchemePaidChargeDetailsSubSection(1, 100, "TestName2017", "TestTaxRef2017", 991),
+          SchemePaidChargeDetailsSubSection(2, 100, "TestName2222017", "TestTaxRef", 991)
         )
       ),
       CompensationSection(
@@ -46,8 +46,8 @@ class CompensationSectionSpec extends AnyFreeSpec with Matchers with Logging {
         "£2702018",
         "£502018",
         Seq(
-          SchemePaidChargeDetailsSubSection(1, 100, "TestName2018", "TestTaxRef"),
-          SchemePaidChargeDetailsSubSection(2, 100, "TestName22018", "TestTaxRef")
+          SchemePaidChargeDetailsSubSection(1, 100, "TestName2018", "TestTaxRef", 991),
+          SchemePaidChargeDetailsSubSection(2, 100, "TestName22018", "TestTaxRef", 991)
         )
       ),
       CompensationSection(
@@ -57,8 +57,8 @@ class CompensationSectionSpec extends AnyFreeSpec with Matchers with Logging {
         "£2702019",
         "£502019",
         Seq(
-          SchemePaidChargeDetailsSubSection(1, 100, "TestName2019", "TestTaxRef"),
-          SchemePaidChargeDetailsSubSection(2, 100, "TestName22019", "TestTaxRef")
+          SchemePaidChargeDetailsSubSection(1, 100, "TestName2019", "TestTaxRef", 991),
+          SchemePaidChargeDetailsSubSection(2, 100, "TestName22019", "TestTaxRef", 991)
         )
       )
     )

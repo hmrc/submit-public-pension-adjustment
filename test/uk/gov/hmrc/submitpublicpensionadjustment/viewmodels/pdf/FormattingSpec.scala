@@ -17,7 +17,7 @@
 import java.time.LocalDate
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{EnhancementType, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, WhatNewProtectionTypeEnhancement, YearChargePaid}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{EnhancementType, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, Period, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, WhatNewProtectionTypeEnhancement, YearChargePaid}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.SchemeCreditConsent
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Formatting
 
@@ -176,6 +176,12 @@ class FormattingSpec extends AnyFreeSpec with Matchers {
       "should format an optional amount correctly with pound symbol" in {
         formatter.formatOptPoundsAmount(Some(100)) shouldBe "£100"
         formatter.formatOptPoundsAmount(None)      shouldBe "Not Applicable"
+      }
+    }
+
+    "formatPeriodToRange(period: Period)" - {
+      "should format an period correctly with range" in {
+        formatter.formatPeriodToRange(Period._2016) shouldBe "2015/16"
       }
     }
 

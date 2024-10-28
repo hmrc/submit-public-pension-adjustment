@@ -80,22 +80,22 @@ object TestData {
   )
 
   val incomeSubJourney = IncomeSubJourney(
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None
+    Some(1500),
+    Some(150),
+    Some(100),
+    Some(100),
+    Some(false),
+    Some(300),
+    Some(450),
+    Some(200),
+    Some(125),
+    Some(10),
+    Some(10),
+    Some(25),
+    Some(300),
+    Some(125),
+    Some(50),
+    Some(100)
   )
 
   val taxYear2016To2023SampleData2019 = TaxYear2016To2023.PostFlexiblyAccessedTaxYear(
@@ -430,6 +430,18 @@ object TestData {
   val finalSubmissionWithResubmissionReason =
     FinalSubmission(calculationInputsWithResubmissionReason, Some(calculationResponse), submissionInputs)
 
+  val incomeSubJourneySubJourneySection = IncomeSubJourneySection(
+    incomeSubJourneyTitle = "Income sub journey",
+    incomeSubJourneySubSection = Seq(
+      IncomeSubJourneySubSection(
+        "2017/18",
+        "1",
+        "1",
+        "1",
+        "1",
+      )
+  ))
+
   val administrativeDetailsSection = AdministrativeDetailsSection(
     firstName = "firstName",
     surname = "surname",
@@ -462,6 +474,7 @@ object TestData {
     None,
     Seq(),
     Seq(),
+    incomeSubJourneySubJourneySection,
     Seq(),
     None,
     Some(
