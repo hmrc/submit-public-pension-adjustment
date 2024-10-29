@@ -28,9 +28,9 @@ import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.Declara
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Row, Section}
 
 case class IncomeSubJourneySection(
-                                    periodRange: String,
-                                    incomeSubJourneySubSection: IncomeSubJourneySubSection
-                                    //                                   reducedNetIncome: String,
+  periodRange: String,
+  incomeSubJourneySubSection: IncomeSubJourneySubSection
+  //                                   reducedNetIncome: String,
 //                                   thresholdIncomeAmount: String,
 //                                   adjustedIncomeAmount: String,
 //                                   personalAllowanceAmount: String
@@ -46,27 +46,30 @@ case class IncomeSubJourneySection(
     super.rows(messages) ++ subsectionRows
   }
 
-  private def buildSubSectionRows(messages: Messages): Seq[Row] = {
+  private def buildSubSectionRows(messages: Messages): Seq[Row] =
     Seq(
+      Row(
+        displayLabel(messages, "incomeSubJourneySubSection.reducedNetIncome"),
+        incomeSubJourneySubSection.reducedNetIncome,
+        true
+      ),
       Row(
         displayLabel(messages, "incomeSubJourneySubSection.thresholdIncomeAmount"),
         incomeSubJourneySubSection.thresholdIncomeAmount,
         true
       ),
       Row(
-        displayLabel(messages, "incomeSubJourneySubSection.adjustedIncome"),
+        displayLabel(messages, "incomeSubJourneySubSection.adjustedIncomeAmount"),
         incomeSubJourneySubSection.adjustedIncomeAmount,
         true
       ),
       Row(
-        displayLabel(messages, "incomeSubJourneySubSection.personalAllowance"),
+        displayLabel(messages, "incomeSubJourneySubSection.personalAllowanceAmount"),
         incomeSubJourneySubSection.personalAllowanceAmount,
         true
       )
     )
 
-
-  }
 }
 
 case class IncomeSubJourneySubSection(
@@ -94,15 +97,13 @@ object IncomeSubJourneySection extends Formatting {
     }
   }
 
-  private def incomeSubJourneySubSection(taxYear: TaxYear2016To2023): IncomeSubJourneySubSection = {
+  private def incomeSubJourneySubSection(taxYear: TaxYear2016To2023): IncomeSubJourneySubSection =
     IncomeSubJourneySubSection(
-              formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).reducedNetIncomeAmount),
-              formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).thresholdIncomeAmount),
-              formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).adjustedIncomeAmount),
-              formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).personalAllowanceAmount)
-  )
-  }
-
+      formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).reducedNetIncomeAmount),
+      formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).thresholdIncomeAmount),
+      formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).adjustedIncomeAmount),
+      formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).personalAllowanceAmount)
+    )
 
 //  private def incomeSubJourneySubSection(
 //    finalSubmission: FinalSubmission

@@ -101,7 +101,6 @@ How much of the charge did your pension scheme pay? : £100
 Name of scheme originally paid charge 18/19 : TestName22019
 PSTR of scheme originally paid charge 18/19 : TestTaxRef
 Revised pension input amount : £991
-Section : Income sub journey
 Period : 2018/19
 Reduced net income amount : £100
 Threshold income amount : £50

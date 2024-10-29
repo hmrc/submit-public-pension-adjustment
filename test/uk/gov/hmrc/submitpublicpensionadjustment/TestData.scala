@@ -431,15 +431,12 @@ object TestData {
     FinalSubmission(calculationInputsWithResubmissionReason, Some(calculationResponse), submissionInputs)
 
   val incomeSubJourneySubJourneySection = IncomeSubJourneySection(
-    incomeSubJourneyTitle = "Income sub journey",
-    incomeSubJourneySubSection = Seq(
-      IncomeSubJourneySubSection(
-        "2017/18",
-        "1",
-        "1",
-        "1",
-        "1"
-      )
+    periodRange = "2017/18",
+    incomeSubJourneySubSection = IncomeSubJourneySubSection(
+      "1",
+      "1",
+      "1",
+      "1"
     )
   )
 
@@ -475,7 +472,7 @@ object TestData {
     None,
     Seq(),
     Seq(),
-    incomeSubJourneySubJourneySection,
+    Seq(incomeSubJourneySubJourneySection),
     Seq(),
     None,
     Some(
