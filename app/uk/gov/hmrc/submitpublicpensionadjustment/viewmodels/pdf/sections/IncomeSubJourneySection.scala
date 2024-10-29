@@ -30,10 +30,6 @@ import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Row
 case class IncomeSubJourneySection(
   periodRange: String,
   incomeSubJourneySubSection: IncomeSubJourneySubSection
-  //                                   reducedNetIncome: String,
-//                                   thresholdIncomeAmount: String,
-//                                   adjustedIncomeAmount: String,
-//                                   personalAllowanceAmount: String
 ) extends Section
     with Formatting {
 
@@ -81,12 +77,6 @@ case class IncomeSubJourneySubSection(
 
 object IncomeSubJourneySection extends Formatting {
 
-//  def build(finalSubmission: FinalSubmission): IncomeSubJourneySection              =
-//    IncomeSubJourneySection(
-//      incomeSubJourneyTitle = "Income sub journey",
-//      incomeSubJourneySubSection = incomeSubJourneySubSection(finalSubmission)
-//    )
-
   def build(finalSubmission: FinalSubmission): Seq[IncomeSubJourneySection] = {
     val taxYears = allTaxYears(finalSubmission)
     taxYears.map { taxYear =>
@@ -105,20 +95,6 @@ object IncomeSubJourneySection extends Formatting {
       formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).personalAllowanceAmount)
     )
 
-//  private def incomeSubJourneySubSection(
-//    finalSubmission: FinalSubmission
-//  ): Seq[IncomeSubJourneySubSection] = {
-//    val taxYears = allTaxYears(finalSubmission)
-//
-//    taxYears.map(taxYear =>
-//      IncomeSubJourneySubSection(
-//        formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).reducedNetIncomeAmount),
-//        formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).thresholdIncomeAmount),
-//        formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).adjustedIncomeAmount),
-//        formatOptPoundsAmount(taxYearIncomeSubJourney(taxYear).personalAllowanceAmount)
-//      )
-//    )
-//  }
   private def allTaxYears(finalSubmission: FinalSubmission): Seq[TaxYear2016To2023] =
     finalSubmission.calculationInputs.annualAllowance.map(_.taxYears).getOrElse(List()).collect {
       case ty: TaxYear2016To2023 => ty
