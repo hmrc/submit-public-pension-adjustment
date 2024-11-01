@@ -137,8 +137,8 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
       revisedTaxChargeTotal = "£270",
       chargeYouPaid = "£50",
       schemePaidChargeSubSections = Seq(
-        SchemePaidChargeDetailsSubSection(1, 100, "TestName2017", "TestTaxRef2017"),
-        SchemePaidChargeDetailsSubSection(2, 100, "TestName2222017", "TestTaxRef")
+        SchemePaidChargeDetailsSubSection(1, 100, "TestName2017", "TestTaxRef2017", 991),
+        SchemePaidChargeDetailsSubSection(2, 100, "TestName2222017", "TestTaxRef", 991)
       )
     ),
     CompensationSection(
@@ -148,8 +148,8 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
       "£2702018",
       "£502018",
       Seq(
-        SchemePaidChargeDetailsSubSection(1, 100, "TestName2018", "TestTaxRef"),
-        SchemePaidChargeDetailsSubSection(2, 100, "TestName22018", "TestTaxRef")
+        SchemePaidChargeDetailsSubSection(1, 100, "TestName2018", "TestTaxRef", 991),
+        SchemePaidChargeDetailsSubSection(2, 100, "TestName22018", "TestTaxRef", 991)
       )
     ),
     CompensationSection(
@@ -159,11 +159,42 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
       "£2702019",
       "£502019",
       Seq(
-        SchemePaidChargeDetailsSubSection(1, 100, "TestName2019", "TestTaxRef"),
-        SchemePaidChargeDetailsSubSection(2, 100, "TestName22019", "TestTaxRef")
+        SchemePaidChargeDetailsSubSection(1, 100, "TestName2019", "TestTaxRef", 991),
+        SchemePaidChargeDetailsSubSection(2, 100, "TestName22019", "TestTaxRef", 991)
       )
     )
   )
+
+  private val incomeSubJourneySection =
+    Seq(
+      IncomeSubJourneySection(
+        "2018/19",
+        IncomeSubJourneySubSection(
+          "£100",
+          "£50",
+          "£450",
+          "£25"
+        )
+      ),
+      IncomeSubJourneySection(
+        "2017/18",
+        IncomeSubJourneySubSection(
+          "£100",
+          "£50",
+          "£450",
+          "£25"
+        )
+      ),
+      IncomeSubJourneySection(
+        "2016/17",
+        IncomeSubJourneySubSection(
+          "£100",
+          "£50",
+          "£450",
+          "£25"
+        )
+      )
+    )
 
   private val taxAdministrationFrameworkSections = Seq(
     TaxAdministrationFrameworkSection(
@@ -240,6 +271,7 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
         Some(ltaSection),
         publicSectorSchemeDetailsSections,
         compensationSections,
+        incomeSubJourneySection,
         taxAdministrationFrameworkSections,
         Some(additionalOrHigherReliefSection),
         Some(paymentInformationSection),
@@ -281,6 +313,7 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
         Some(ltaSectionCopy),
         publicSectorSchemeDetailsSections,
         compensationSections,
+        incomeSubJourneySection,
         taxAdministrationFrameworkSections,
         Some(additionalOrHigherReliefSection),
         Some(paymentInformationSection),
@@ -318,6 +351,7 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
         Some(ltaSectionCopy),
         publicSectorSchemeDetailsSections,
         compensationSections,
+        incomeSubJourneySection,
         taxAdministrationFrameworkSections,
         Some(additionalOrHigherReliefSection),
         Some(paymentInformationSection),

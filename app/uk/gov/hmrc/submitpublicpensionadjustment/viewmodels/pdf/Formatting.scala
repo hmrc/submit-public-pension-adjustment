@@ -17,7 +17,7 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf
 
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.NewEnhancementType.{Both, InternationalEnhancement, PensionCredit}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{EnhancementType, ExcessLifetimeAllowancePaid, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{EnhancementType, ExcessLifetimeAllowancePaid, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, Period, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.SchemeCreditConsent
 
 import java.time.format.DateTimeFormatter
@@ -169,6 +169,18 @@ trait Formatting {
     optValue match {
       case Some(value) => s"£${value.toString}"
       case None        => NotApplicable
+    }
+
+  def formatPeriodToRange(period: Period): String =
+    period match {
+      case Period._2016 => "2015/16"
+      case Period._2017 => "2016/17"
+      case Period._2018 => "2017/18"
+      case Period._2019 => "2018/19"
+      case Period._2020 => "2019/20"
+      case Period._2021 => "2020/21"
+      case Period._2022 => "2021/22"
+      case Period._2023 => "2022/23"
     }
 
   val NotEntered    = "Not Entered"

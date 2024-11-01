@@ -60,6 +60,16 @@
             }
             @line("","",false)
 
+            <fo:block role="H3" id="incomeSubJourneySection" font-size="14pt" font-weight="bold" margin-bottom="0.5cm">
+                @messages("pdf.incomeSubJourneySection.heading")
+            </fo:block>
+
+            @viewModel.incomeSubJourneySection.map { section =>{
+            @pdfSection(Some(section), None)
+            }
+            }
+            @line("","",false)
+
             <fo:block role="H3" id="taxAdministrationFrameworkSection" font-size="14pt" font-weight="bold" margin-bottom="0.5cm">
                 @messages("pdf.taxAdministrationFrameworkSection.heading")
             </fo:block>
