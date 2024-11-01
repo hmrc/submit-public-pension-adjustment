@@ -45,17 +45,16 @@ class IncomeSubJourneySectionSpec extends AnyFreeSpec with Matchers with Logging
           "£450",
           "£25"
         )
+      ),
+      IncomeSubJourneySection(
+        "2016/17",
+        IncomeSubJourneySubSection(
+          "£100",
+          "£50",
+          "£450",
+          "£25"
+        )
       )
-      ,
-    IncomeSubJourneySection(
-      "2016/17",
-      IncomeSubJourneySubSection(
-        "£100",
-        "£50",
-        "£450",
-        "£25"
-      )
-    )
     )
   }
 
@@ -64,5 +63,6 @@ class IncomeSubJourneySectionSpec extends AnyFreeSpec with Matchers with Logging
     val sections = IncomeSubJourneySection.build(
       TestData.finalSubmission.copy(TestData.finalSubmission.calculationInputs.copy(annualAllowance = None))
     )
-    sections mustBe Seq.empty  }
+    sections mustBe Seq.empty
+  }
 }
