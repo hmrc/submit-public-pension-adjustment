@@ -156,7 +156,8 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
               List(
                 OutOfDatesTaxYearSchemeCalculation("Scheme 1", "00348916RT", 0),
                 OutOfDatesTaxYearSchemeCalculation("Scheme 2", "00348916RG", 0)
-              )
+              ),
+              Some(0)
             ),
             OutOfDatesTaxYearsCalculation(
               ResponsePeriod._2017,
@@ -170,7 +171,8 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
               List(
                 OutOfDatesTaxYearSchemeCalculation("Scheme 1", "00348916RT", 0),
                 OutOfDatesTaxYearSchemeCalculation("Scheme 2", "00348916RG", 0)
-              )
+              ),
+              Some(0)
             ),
             OutOfDatesTaxYearsCalculation(
               ResponsePeriod._2018,
@@ -184,7 +186,8 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
               List(
                 OutOfDatesTaxYearSchemeCalculation("Scheme 1", "00348916RT", 0),
                 OutOfDatesTaxYearSchemeCalculation("Scheme 2", "00348916RG", 0)
-              )
+              ),
+              Some(0)
             )
           ),
           List()

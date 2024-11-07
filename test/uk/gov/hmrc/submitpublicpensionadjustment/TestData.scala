@@ -352,7 +352,8 @@ object TestData {
     revisedChargableAmountBeforeTaxRate = 3002019,
     revisedChargableAmountAfterTaxRate = 2702019,
     unusedAnnualAllowance = 202019,
-    taxYearSchemes = List(OutOfDatesTaxYearSchemeCalculation("Scheme A2019", "PSTR1232019", 502018))
+    taxYearSchemes = List(OutOfDatesTaxYearSchemeCalculation("Scheme A2019", "PSTR1232019", 502018)),
+    adjustedCompensation = Some(1747981)
   )
 
   val outOfDatesCalculation2017 = OutOfDatesTaxYearsCalculation(
@@ -364,7 +365,8 @@ object TestData {
     revisedChargableAmountBeforeTaxRate = 300,
     revisedChargableAmountAfterTaxRate = 270,
     unusedAnnualAllowance = 20,
-    taxYearSchemes = List(OutOfDatesTaxYearSchemeCalculation("Scheme A", "PSTR123", 50))
+    taxYearSchemes = List(OutOfDatesTaxYearSchemeCalculation("Scheme A", "PSTR123", 50)),
+    adjustedCompensation = Some(175)
   )
 
   val outOfDatesCalculation2018 = OutOfDatesTaxYearsCalculation(
@@ -376,7 +378,8 @@ object TestData {
     revisedChargableAmountBeforeTaxRate = 3002018,
     revisedChargableAmountAfterTaxRate = 2702018,
     unusedAnnualAllowance = 202018,
-    taxYearSchemes = List(OutOfDatesTaxYearSchemeCalculation("Scheme A2018", "PSTR1232018", 502018))
+    taxYearSchemes = List(OutOfDatesTaxYearSchemeCalculation("Scheme A2018", "PSTR1232018", 502018)),
+    adjustedCompensation = Some(1747982)
   )
 
   val inDatesCalculation2019: InDatesTaxYearsCalculation = InDatesTaxYearsCalculation(
@@ -389,7 +392,8 @@ object TestData {
     revisedChargableAmountBeforeTaxRate = 300,
     revisedChargableAmountAfterTaxRate = 270,
     unusedAnnualAllowance = 20,
-    taxYearSchemes = List(InDatesTaxYearSchemeCalculation("Scheme B2019", "PSTR4562019", 100))
+    taxYearSchemes = List(InDatesTaxYearSchemeCalculation("Scheme B2019", "PSTR4562019", 100)),
+    totalCompensation = Some(-250)
   )
 
   val inDatesCalculation2017 = InDatesTaxYearsCalculation(
@@ -402,7 +406,8 @@ object TestData {
     revisedChargableAmountBeforeTaxRate = 300,
     revisedChargableAmountAfterTaxRate = 270,
     unusedAnnualAllowance = 20,
-    taxYearSchemes = List(InDatesTaxYearSchemeCalculation("Scheme B", "PSTR456", 100))
+    taxYearSchemes = List(InDatesTaxYearSchemeCalculation("Scheme B", "PSTR456", 100)),
+    totalCompensation = Some(-150)
   )
 
   val inDatesCalculation2018 = InDatesTaxYearsCalculation(
@@ -415,7 +420,8 @@ object TestData {
     revisedChargableAmountBeforeTaxRate = 4453,
     revisedChargableAmountAfterTaxRate = 3414,
     unusedAnnualAllowance = 151525,
-    taxYearSchemes = List(InDatesTaxYearSchemeCalculation("Scheme B2018", "PSTR4562018", 100))
+    taxYearSchemes = List(InDatesTaxYearSchemeCalculation("Scheme B2018", "PSTR4562018", 100)),
+    totalCompensation = Some(-4353)
   )
 
   val calculationResponse: CalculationResponse = CalculationResponse(
