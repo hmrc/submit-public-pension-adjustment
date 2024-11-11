@@ -27,7 +27,8 @@ case class OutOfDatesTaxYearsCalculation(
   revisedChargableAmountBeforeTaxRate: Int,
   revisedChargableAmountAfterTaxRate: Int,
   unusedAnnualAllowance: Int,
-  taxYearSchemes: List[OutOfDatesTaxYearSchemeCalculation]
+  taxYearSchemes: List[OutOfDatesTaxYearSchemeCalculation],
+  adjustedCompensation: Option[Int]
 )
 
 object OutOfDatesTaxYearsCalculation {
@@ -45,7 +46,8 @@ object OutOfDatesTaxYearsCalculation {
         (__ \ "revisedChargableAmountBeforeTaxRate").read[Int] and
         (__ \ "revisedChargableAmountAfterTaxRate").read[Int] and
         (__ \ "unusedAnnualAllowance").read[Int] and
-        (__ \ "taxYearSchemes").read[List[OutOfDatesTaxYearSchemeCalculation]]
+        (__ \ "taxYearSchemes").read[List[OutOfDatesTaxYearSchemeCalculation]] and
+        (__ \ "adjustedCompensation").readNullable[Int]
     )(OutOfDatesTaxYearsCalculation.apply _)
 
   }
@@ -63,7 +65,8 @@ object OutOfDatesTaxYearsCalculation {
         (__ \ "revisedChargableAmountBeforeTaxRate").write[Int] and
         (__ \ "revisedChargableAmountAfterTaxRate").write[Int] and
         (__ \ "unusedAnnualAllowance").write[Int] and
-        (__ \ "taxYearSchemes").write[List[OutOfDatesTaxYearSchemeCalculation]]
+        (__ \ "taxYearSchemes").write[List[OutOfDatesTaxYearSchemeCalculation]] and
+        (__ \ "adjustedCompensation").writeNullable[Int]
     )(a =>
       (
         a.period,
@@ -74,7 +77,8 @@ object OutOfDatesTaxYearsCalculation {
         a.revisedChargableAmountBeforeTaxRate,
         a.revisedChargableAmountAfterTaxRate,
         a.unusedAnnualAllowance,
-        a.taxYearSchemes
+        a.taxYearSchemes,
+        a.adjustedCompensation
       )
     )
   }

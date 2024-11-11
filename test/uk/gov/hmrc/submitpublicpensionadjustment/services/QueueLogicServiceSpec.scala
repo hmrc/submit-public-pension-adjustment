@@ -369,7 +369,8 @@ class QueueLogicServiceSpec
           revisedChargableAmountBeforeTaxRate = 0,
           revisedChargableAmountAfterTaxRate = 0,
           unusedAnnualAllowance = 0,
-          taxYearSchemes = List.empty
+          taxYearSchemes = List.empty,
+          adjustedCompensation = Some(0)
         )
       ),
       List(
@@ -383,7 +384,8 @@ class QueueLogicServiceSpec
           revisedChargableAmountBeforeTaxRate = 0,
           revisedChargableAmountAfterTaxRate = 0,
           unusedAnnualAllowance = 0,
-          taxYearSchemes = List.empty
+          taxYearSchemes = List.empty,
+          totalCompensation = Some(0)
         )
       )
     )
