@@ -202,6 +202,5 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
 
       }
     }
-
   }
 }
