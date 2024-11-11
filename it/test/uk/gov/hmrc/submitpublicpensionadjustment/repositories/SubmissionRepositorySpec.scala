@@ -132,7 +132,8 @@ class SubmissionRepositorySpec
           0,
           0,
           40000,
-          List(OutOfDatesTaxYearSchemeCalculation("Scheme 1", "00348916RT", 0))
+          List(OutOfDatesTaxYearSchemeCalculation("Scheme 1", "00348916RT", 0)),
+          Some(0)
         )
       ),
       List(
@@ -146,7 +147,8 @@ class SubmissionRepositorySpec
           10000,
           4500,
           0,
-          List(InDatesTaxYearSchemeCalculation("Scheme 1", "00348916RT", 9000))
+          List(InDatesTaxYearSchemeCalculation("Scheme 1", "00348916RT", 9000)),
+          Some(0)
         )
       )
     )
