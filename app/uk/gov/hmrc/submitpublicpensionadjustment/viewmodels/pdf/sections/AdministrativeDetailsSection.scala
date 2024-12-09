@@ -107,7 +107,6 @@ object AdministrativeDetailsSection extends Formatting {
       case _                                                                   => NotEntered
     }
 
-
   private def addressLine1(finalSubmission: FinalSubmission): String =
     finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails match {
       case PersonalDetails(_, _, _, Some(address), None, _, _, _)              => address.addressLine1
