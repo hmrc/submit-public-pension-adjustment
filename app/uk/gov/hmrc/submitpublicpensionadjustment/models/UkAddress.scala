@@ -19,11 +19,13 @@ package uk.gov.hmrc.submitpublicpensionadjustment.models
 import play.api.libs.json._
 
 case class UkAddress(
-  addressLine1: String,
-  addressLine2: Option[String],
-  townOrCity: String,
-  county: Option[String],
-  postCode: String
+                      organisation: Option[String],
+                      addressLine1: String,
+                      addressLine2: Option[String],
+                      addressLine3: Option[String],
+                      townOrCity: String,
+                      county: Option[String],
+                      postCode: Option[String]
 )
 
 object UkAddress {
