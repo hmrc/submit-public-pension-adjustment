@@ -249,8 +249,18 @@ object TestData {
       dateOfBirth = Some(LocalDate.of(1920, 1, 13)),
       None,
       None,
-      pensionSchemeMemberAddress =
-        Some(UkAddress("Behalf Address 1", Some("Behalf Address 2"), "City", Some("County"), "Postcode")),
+      pensionSchemeMemberAddress = Some(
+        UkAddress(
+          Some("org"),
+          "Behalf Address 1",
+          Some("Behalf Address 2"),
+          Some("Behalf Address 3"),
+          "City",
+          Some("County"),
+          Some("Postcode"),
+          Some("United Kingdom")
+        )
+      ),
       None,
       contactPhoneNumber = Some("1234567890")
     ),
@@ -267,11 +277,14 @@ object TestData {
         dateOfBirth = Some(LocalDate.of(1920, 1, 13)),
         address = Some(
           UkAddress(
+            Some("org"),
             "testLine1",
             Some("testLine2"),
+            Some("testLine3"),
             "TestCity",
             Some("TestCounty"),
-            "Postcode"
+            Some("Postcode"),
+            None
           )
         ),
         None,
@@ -450,8 +463,10 @@ object TestData {
     firstName = "firstName",
     surname = "surname",
     dob = "dob",
+    organisation = Some("org"),
     addressLine1 = "addressLine1",
     addressLine2 = "addressLine2",
+    addressLine3 = "addressLine3",
     postCode = Some("postCode"),
     country = "country",
     utr = "utr",

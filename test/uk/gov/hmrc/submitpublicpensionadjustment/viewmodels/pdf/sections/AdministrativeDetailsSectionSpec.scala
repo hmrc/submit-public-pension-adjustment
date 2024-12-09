@@ -34,8 +34,10 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
       firstName = "FirstName",
       surname = "Surname",
       dob = "13/01/1920",
+      organisation = Some("org"),
       addressLine1 = "testLine1",
       addressLine2 = "testLine2",
+      addressLine3 = "testLine3",
       townOrCity = "TestCity",
       county = Some("TestCounty"),
       stateOrRegion = None,
@@ -57,8 +59,10 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
       firstName = "FirstName",
       surname = "Surname",
       dob = "13/01/1920",
+      organisation = Some("org"),
       addressLine1 = "testLine1",
       addressLine2 = "testLine2",
+      addressLine3 = "testLine3",
       townOrCity = "TestCity",
       county = Some("TestCounty"),
       stateOrRegion = None,
@@ -109,8 +113,10 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
   "when constructing address lines" - {
     "should use international address when present" in {
       val internationalAddress           = InternationalAddress(
+        Some("org"),
         "Intl Address Line 1",
         Some("Intl Address Line 2"),
+        Some("Intl Address Line 3"),
         "Intl City",
         Some("Intl Region"),
         Some("Postalcode"),
@@ -131,8 +137,10 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
       )
 
       val section = AdministrativeDetailsSection.build(submissionWithIntlAddress)
+      section.organisation mustBe Some("org")
       section.addressLine1 mustBe "Intl Address Line 1"
       section.addressLine2 mustBe "Intl Address Line 2"
+      section.addressLine3 mustBe "Intl Address Line 3"
       section.townOrCity mustBe "Intl City"
       section.county mustBe None
       section.stateOrRegion mustBe Some("Intl Region")
@@ -158,8 +166,10 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
       )
 
       val section = AdministrativeDetailsSection.build(submissionWithoutIntlAddress)
+      section.organisation mustBe Some("Not Entered")
       section.addressLine1 mustBe "Not Entered"
       section.addressLine2 mustBe "Not Entered"
+      section.addressLine3 mustBe "Not Entered"
       section.townOrCity mustBe "Not Entered"
       section.county mustBe Some("Not Entered")
       section.stateOrRegion mustBe Some("Not Entered")
@@ -168,8 +178,17 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
       section.country mustBe "United Kingdom"
     }
 
-    "should return 'NotEntered' when addressLine2 is not present and is Uk Address" in {
-      val ukAddress                         = UkAddress("Address Line 1", None, "City", Some("County"), "Postcode")
+    "should return 'NotEntered' when addressLine2 or 3 is not present and is Uk Address" in {
+      val ukAddress                         = UkAddress(
+        Some("org"),
+        "Address Line 1",
+        None,
+        None,
+        "City",
+        Some("County"),
+        Some("Postcode"),
+        Some("United Kingdom")
+      )
       val personalDetailsWithoutIntlAddress = TestData.administrativeDetails.claimantDetails.copy(
         claimantPersonalDetails = TestData.administrativeDetails.claimantDetails.claimantPersonalDetails.copy(
           address = Some(ukAddress),
@@ -186,11 +205,21 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
 
       val section = AdministrativeDetailsSection.build(submissionWithoutIntlAddress)
       section.addressLine2 mustBe "Not Entered"
+      section.addressLine3 mustBe "Not Entered"
     }
 
     "should return 'NotEntered' when addressLine2 is not present and is International Address" in {
       val internationalAddress              =
-        InternationalAddress("Intl Address Line 1", None, "Intl City", Some("Intl Region"), Some("Postalcode"), "FR")
+        InternationalAddress(
+          Some("org"),
+          "Intl Address Line 1",
+          None,
+          None,
+          "Intl City",
+          Some("Intl Region"),
+          Some("Postalcode"),
+          "FR"
+        )
       val personalDetailsWithoutIntlAddress = TestData.administrativeDetails.claimantDetails.copy(
         claimantPersonalDetails = TestData.administrativeDetails.claimantDetails.claimantPersonalDetails.copy(
           address = None,
