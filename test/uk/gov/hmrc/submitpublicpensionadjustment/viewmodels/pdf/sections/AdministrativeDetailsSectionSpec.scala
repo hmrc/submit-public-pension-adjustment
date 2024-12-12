@@ -179,7 +179,16 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
     }
 
     "should return 'NotEntered' when addressLine2 or 3 is not present and is Uk Address" in {
-      val ukAddress                         = UkAddress(Some("org"), "Address Line 1", None, None, "City", Some("County"), Some("Postcode"), Some("United Kingdom"))
+      val ukAddress                         = UkAddress(
+        Some("org"),
+        "Address Line 1",
+        None,
+        None,
+        "City",
+        Some("County"),
+        Some("Postcode"),
+        Some("United Kingdom")
+      )
       val personalDetailsWithoutIntlAddress = TestData.administrativeDetails.claimantDetails.copy(
         claimantPersonalDetails = TestData.administrativeDetails.claimantDetails.claimantPersonalDetails.copy(
           address = Some(ukAddress),

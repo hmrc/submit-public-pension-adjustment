@@ -187,7 +187,16 @@ class OnBehalfOfSectionSpec extends AnyFreeSpec with Matchers with Logging {
       }
 
       "should return 'NotEntered' when addressLine2 or addressLine3 is not present and is Uk Address" in {
-        val ukAddress                              = UkAddress(Some("org"), "Address Line 1", None, None, "City", Some("County"), Some("Postcode"), Some("United Kingdom"))
+        val ukAddress                              = UkAddress(
+          Some("org"),
+          "Address Line 1",
+          None,
+          None,
+          "City",
+          Some("County"),
+          Some("Postcode"),
+          Some("United Kingdom")
+        )
         val onBehalfOfMemberDetailsWithIntlAddress = TestData.onBehalfOfMemberDetails.copy(
           memberPersonalDetails = TestData.onBehalfOfMemberDetails.memberPersonalDetails.copy(
             pensionSchemeMemberAddress = Some(ukAddress),
