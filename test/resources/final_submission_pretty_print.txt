@@ -2,8 +2,10 @@ Calculate your public service pension adjustment
 First name : FirstName
 Surname : Surname
 Date of birth : 13/01/1920
+Organisation : org
 Address line 1 : testLine1
 Address line 2 : testLine2
+Address line 3 : testLine3
 Town/City : TestCity
 County : TestCounty
 Postcode : Postcode
@@ -14,8 +16,10 @@ Contact number : 1234567890
 First name : FirstName
 Surname : Surname
 Date of birth : 13/01/1920
+Organisation : org
 Address line 1 : Behalf Address 1
 Address line 2 : Behalf Address 2
+Address line 3 : Behalf Address 3
 Town/City : City
 County : County
 Postcode : Postcode

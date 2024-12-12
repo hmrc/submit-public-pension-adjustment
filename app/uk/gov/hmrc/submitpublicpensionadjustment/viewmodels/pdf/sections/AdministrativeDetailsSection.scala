@@ -23,10 +23,10 @@ case class AdministrativeDetailsSection(
   firstName: String,
   surname: String,
   dob: String,
-  organisation: String,
+  organisation: Option[String],
   addressLine1: String,
   addressLine2: String,
-  addressLine3: String,
+  addressLine3: Option[String],
   townOrCity: String,
   county: Option[String],
   stateOrRegion: Option[String],
@@ -99,12 +99,12 @@ object AdministrativeDetailsSection extends Formatting {
       .getOrElse(NotEntered)
   }
 
-  private def organisation(finalSubmission: FinalSubmission): String =
+  private def organisation(finalSubmission: FinalSubmission): Option[String] =
     finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails match {
-      case PersonalDetails(_, _, _, Some(address), None, _, _, _)              => address.organisation.getOrElse(NotEntered)
+      case PersonalDetails(_, _, _, Some(address), None, _, _, _)              => address.organisation
       case PersonalDetails(_, _, _, None, Some(internationalAddress), _, _, _) =>
-        internationalAddress.organisation.getOrElse(NotEntered)
-      case _                                                                   => NotEntered
+        internationalAddress.organisation
+      case _                                                                   => Some(NotEntered)
     }
 
   private def addressLine1(finalSubmission: FinalSubmission): String =
@@ -122,12 +122,12 @@ object AdministrativeDetailsSection extends Formatting {
       case _                                                                   => NotEntered
     }
 
-  private def addressLine3(finalSubmission: FinalSubmission): String =
+  private def addressLine3(finalSubmission: FinalSubmission): Option[String] =
     finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails match {
-      case PersonalDetails(_, _, _, Some(address), None, _, _, _)              => address.addressLine3.getOrElse(NotEntered)
+      case PersonalDetails(_, _, _, Some(address), None, _, _, _)              => address.addressLine3
       case PersonalDetails(_, _, _, None, Some(internationalAddress), _, _, _) =>
-        internationalAddress.addressLine3.getOrElse(NotEntered)
-      case _                                                                   => NotEntered
+        internationalAddress.addressLine3
+      case _                                                                   => Some(NotEntered)
     }
 
   private def townOrCity(finalSubmission: FinalSubmission): String =
