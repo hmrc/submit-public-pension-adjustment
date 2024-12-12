@@ -25,7 +25,8 @@ case class UkAddress(
   addressLine3: Option[String],
   townOrCity: String,
   county: Option[String],
-  postCode: Option[String]
+  postCode: Option[String],
+  country: Option[String]
 )
 
 object UkAddress {

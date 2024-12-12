@@ -26,7 +26,7 @@ case class OnBehalfOfSection(
   organisation: Option[String],
   addressLine1: String,
   addressLine2: String,
-  addressLine3: Option[String],
+  addressLine3: String,
   townOrCity: String,
   county: Option[String],
   stateOrRegion: Option[String],
@@ -117,12 +117,12 @@ object OnBehalfOfSection extends Formatting {
       case _                                                                   => NotEntered
     }
 
-  private def addressLine3(onBehalfOfMember: OnBehalfOfMember): Option[String] =
+  private def addressLine3(onBehalfOfMember: OnBehalfOfMember): String =
     onBehalfOfMember.memberPersonalDetails match {
-      case PersonalDetails(_, _, _, _, _, Some(address), None, _)              => address.addressLine3
+      case PersonalDetails(_, _, _, _, _, Some(address), None, _)              => address.addressLine3.getOrElse(NotEntered)
       case PersonalDetails(_, _, _, _, _, None, Some(internationalAddress), _) =>
-        internationalAddress.addressLine3
-      case _                                                                   => Some(NotEntered)
+        internationalAddress.addressLine3.getOrElse(NotEntered)
+      case _                                                                   => NotEntered
     }
 
   private def townOrCity(onBehalfOfMember: OnBehalfOfMember): String =

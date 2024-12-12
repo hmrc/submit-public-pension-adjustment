@@ -39,7 +39,7 @@ class OnBehalfOfSectionSpec extends AnyFreeSpec with Matchers with Logging {
         organisation = Some("org"),
         addressLine1 = "Behalf Address 1",
         addressLine2 = "Behalf Address 2",
-        addressLine3 = Some("Behalf Address 3"),
+        addressLine3 = "Behalf Address 3",
         townOrCity = "City",
         county = Some("County"),
         stateOrRegion = None,
@@ -121,7 +121,7 @@ class OnBehalfOfSectionSpec extends AnyFreeSpec with Matchers with Logging {
         section.get.organisation mustBe Some("org")
         section.get.addressLine1 mustBe "Intl Address Line 1"
         section.get.addressLine2 mustBe "Intl Address Line 2"
-        section.get.addressLine3 mustBe Some("Intl Address Line 3")
+        section.get.addressLine3 mustBe "Intl Address Line 3"
         section.get.townOrCity mustBe "Intl City"
         section.get.county mustBe None
         section.get.stateOrRegion mustBe Some("Intl Region")
@@ -148,7 +148,7 @@ class OnBehalfOfSectionSpec extends AnyFreeSpec with Matchers with Logging {
         section.get.organisation mustBe Some("Not Entered")
         section.get.addressLine1 mustBe "Not Entered"
         section.get.addressLine2 mustBe "Not Entered"
-        section.get.addressLine3 mustBe Some("Not Entered")
+        section.get.addressLine3 mustBe "Not Entered"
         section.get.townOrCity mustBe "Not Entered"
         section.get.county mustBe Some("Not Entered")
         section.get.stateOrRegion mustBe Some("Not Entered")
@@ -186,8 +186,8 @@ class OnBehalfOfSectionSpec extends AnyFreeSpec with Matchers with Logging {
         section.get.addressLine2 mustBe "Not Entered"
       }
 
-      "should return 'NotEntered' when addressLine2 is not present and is Uk Address" in {
-        val ukAddress                              = UkAddress(Some("org"), "Address Line 1", None, None, "City", Some("County"), Some("Postcode"))
+      "should return 'NotEntered' when addressLine2 or addressLine3 is not present and is Uk Address" in {
+        val ukAddress                              = UkAddress(Some("org"), "Address Line 1", None, None, "City", Some("County"), Some("Postcode"), Some("United Kingdom"))
         val onBehalfOfMemberDetailsWithIntlAddress = TestData.onBehalfOfMemberDetails.copy(
           memberPersonalDetails = TestData.onBehalfOfMemberDetails.memberPersonalDetails.copy(
             pensionSchemeMemberAddress = Some(ukAddress),
@@ -203,6 +203,7 @@ class OnBehalfOfSectionSpec extends AnyFreeSpec with Matchers with Logging {
 
         val section = OnBehalfOfSection.build(finalSubmissionWithIntlAddress)
         section.get.addressLine2 mustBe "Not Entered"
+        section.get.addressLine3 mustBe "Not Entered"
       }
     }
 

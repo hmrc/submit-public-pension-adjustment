@@ -257,7 +257,8 @@ object TestData {
           Some("Behalf Address 3"),
           "City",
           Some("County"),
-          Some("Postcode")
+          Some("Postcode"),
+          Some("United Kingdom")
         )
       ),
       None,
@@ -282,7 +283,8 @@ object TestData {
             Some("testLine3"),
             "TestCity",
             Some("TestCounty"),
-            Some("Postcode")
+            Some("Postcode"),
+            None
           )
         ),
         None,
@@ -464,7 +466,7 @@ object TestData {
     organisation = Some("org"),
     addressLine1 = "addressLine1",
     addressLine2 = "addressLine2",
-    addressLine3 = Some("addressLine3"),
+    addressLine3 = "addressLine3",
     postCode = Some("postCode"),
     country = "country",
     utr = "utr",

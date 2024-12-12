@@ -26,7 +26,7 @@ case class AdministrativeDetailsSection(
   organisation: Option[String],
   addressLine1: String,
   addressLine2: String,
-  addressLine3: Option[String],
+  addressLine3: String,
   townOrCity: String,
   county: Option[String],
   stateOrRegion: Option[String],
@@ -122,12 +122,12 @@ object AdministrativeDetailsSection extends Formatting {
       case _                                                                   => NotEntered
     }
 
-  private def addressLine3(finalSubmission: FinalSubmission): Option[String] =
+  private def addressLine3(finalSubmission: FinalSubmission): String =
     finalSubmission.submissionInputs.administrativeDetails.claimantDetails.claimantPersonalDetails match {
-      case PersonalDetails(_, _, _, Some(address), None, _, _, _)              => address.addressLine3
+      case PersonalDetails(_, _, _, Some(address), None, _, _, _)              => address.addressLine3.getOrElse(NotEntered)
       case PersonalDetails(_, _, _, None, Some(internationalAddress), _, _, _) =>
-        internationalAddress.addressLine3
-      case _                                                                   => Some(NotEntered)
+        internationalAddress.addressLine3.getOrElse(NotEntered)
+      case _                                                                   => NotEntered
     }
 
   private def townOrCity(finalSubmission: FinalSubmission): String =
