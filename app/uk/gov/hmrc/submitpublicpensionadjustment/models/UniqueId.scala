@@ -22,7 +22,7 @@ import play.api.mvc.QueryStringBindable
 import scala.util.matching.Regex
 
 case class UniqueId(value: String) {
-  override def toString: String = value.toString
+  override def toString: String = value
 }
 
 object UniqueId {
@@ -52,5 +52,5 @@ object UniqueId {
   def fromString(uuidString: String): Option[Either[String, Option[UniqueId]]] =
     if (pattern.matches(uuidString)) Some(Right(Some(UniqueId(uuidString)))) else Some(Left("invalid param format"))
 
-  implicit val format = Json.format[UniqueId]
+  implicit val format: OFormat[UniqueId] = Json.format[UniqueId]
 }

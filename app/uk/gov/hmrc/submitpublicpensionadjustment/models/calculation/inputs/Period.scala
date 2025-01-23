@@ -30,9 +30,6 @@ sealed trait Period {
 
 object Period {
 
-  private val JsonValue2016Pre  = "2016-pre"
-  private val JsonValue2016Post = "2016-post"
-
   case class Year(year: Int) extends Period {
 
     override lazy val toString: String = year.toString

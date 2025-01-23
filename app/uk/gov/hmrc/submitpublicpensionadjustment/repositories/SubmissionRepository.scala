@@ -67,7 +67,7 @@ class SubmissionRepository @Inject() (
         replacement = updatedSubmission,
         options = ReplaceOptions().upsert(true)
       )
-      .toFuture()
+      .toFuture
       .map(_ => Done)
   }
 

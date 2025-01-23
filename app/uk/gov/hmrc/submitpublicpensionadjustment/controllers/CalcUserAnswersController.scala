@@ -33,14 +33,14 @@ class CalcUserAnswersController @Inject() (
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  def getById(id: String): Action[AnyContent] = identify.async { request =>
+  def getById(id: String): Action[AnyContent] = identify.async {
     calcUserAnswers.get(id).map {
       _.map(userAnswers => Ok(Json.toJson(userAnswers)))
         .getOrElse(NoContent)
     }
   }
 
-  def getByUniqueId(uniqueId: String): Action[AnyContent] = identify.async { request =>
+  def getByUniqueId(uniqueId: String): Action[AnyContent] = identify.async {
     calcUserAnswers.getByUniqueId(uniqueId).map {
       _.map(userAnswers => Ok(Json.toJson(userAnswers)))
         .getOrElse(NoContent)

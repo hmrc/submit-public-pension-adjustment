@@ -35,7 +35,7 @@ class SubmissionsController @Inject() (
 )(implicit ec: ExecutionContext)
     extends BackendController(cc) {
 
-  def getByUserId(userId: String): Action[AnyContent] = identify.async { request =>
+  def getByUserId(userId: String): Action[AnyContent] = identify.async {
     repository
       .getByUserId(userId)
       .map {
