@@ -1,8 +1,4 @@
-@import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.PDFViewModel
-
-@this()
-
-@(pdfViewModel: PDFViewModel)(implicit messages: Messages)
+@(implicit messages: Messages)
 
 <fo:bookmark-tree>
     <fo:bookmark internal-destination="title">
