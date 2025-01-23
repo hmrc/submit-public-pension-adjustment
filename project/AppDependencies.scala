@@ -2,8 +2,8 @@ import sbt.*
 
 object AppDependencies {
 
-  private val bootstrapVersion = "9.4.0"
-  private val hmrcMongoVersion = "1.9.0"
+  private val bootstrapVersion = "9.7.0"
+  private val hmrcMongoVersion = "2.4.0"
 
   val compile: Seq[ModuleID] = Seq(
     "uk.gov.hmrc"             %% "bootstrap-backend-play-30"    % bootstrapVersion,
@@ -11,9 +11,9 @@ object AppDependencies {
     "com.beachape"            %% "enumeratum-play-json"         % "1.8.0",
     "org.typelevel"           %% "cats-core"                    % "2.10.0",
     "uk.gov.hmrc"             %% "internal-auth-client-play-30" % "3.0.0",
-    "uk.gov.hmrc.objectstore" %% "object-store-client-play-30"  % "1.4.0",
+    "uk.gov.hmrc.objectstore" %% "object-store-client-play-30"  % "2.1.0",
     "org.apache.xmlgraphics"   % "fop"                          % "2.10",
-    "uk.gov.hmrc"             %% "crypto-json-play-30"          % "8.0.0",
+    "uk.gov.hmrc"             %% "crypto-json-play-30"          % "8.1.0",
     "commons-io"               % "commons-io"                   % "2.14.0"
   )
 
