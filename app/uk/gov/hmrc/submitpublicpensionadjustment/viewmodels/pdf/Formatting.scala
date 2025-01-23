@@ -158,6 +158,7 @@ trait Formatting {
     optValue match {
       case Some(true) => "Consent given"
       case None       => NotApplicable
+      case _          => NotApplicable
     }
 
   def format(value: Boolean): String = formatBoolean(Some(value))

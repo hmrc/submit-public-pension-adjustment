@@ -40,10 +40,10 @@ class CreateLocalPdfDmsSubmissionServiceSpec
     with MockitoSugar
     with BeforeAndAfterEach {
 
-  private val mockFopService              = mock[FopService]
-  private val mockViewModelService        = mock[ViewModelService]
-  private val mockFinalSubmissionPdf      = mock[FinalSubmissionPdf]
-  private val mockMessagesApi             = mock[MessagesApi]
+  private val mockFopService         = mock[FopService]
+  private val mockViewModelService   = mock[ViewModelService]
+  private val mockFinalSubmissionPdf = mock[FinalSubmissionPdf]
+  private val mockMessagesApi        = mock[MessagesApi]
 
   private lazy val service = new CreateLocalPdfDmsSubmissionService(
     mockFopService,
