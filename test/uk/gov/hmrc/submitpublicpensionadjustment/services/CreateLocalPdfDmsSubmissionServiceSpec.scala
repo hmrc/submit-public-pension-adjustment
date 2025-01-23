@@ -22,7 +22,7 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
-import play.api.i18n.{Messages, MessagesApi}
+import play.api.i18n.MessagesApi
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CaseIdentifiers, Done}
@@ -44,7 +44,6 @@ class CreateLocalPdfDmsSubmissionServiceSpec
   private val mockViewModelService        = mock[ViewModelService]
   private val mockFinalSubmissionPdf      = mock[FinalSubmissionPdf]
   private val mockMessagesApi             = mock[MessagesApi]
-  private implicit val messages: Messages = mockMessagesApi.preferred(Seq.empty)
 
   private lazy val service = new CreateLocalPdfDmsSubmissionService(
     mockFopService,

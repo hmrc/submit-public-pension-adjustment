@@ -47,7 +47,7 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
 
   private val service = app.injector.instanceOf[AuditService]
 
-  implicit val hc = HeaderCarrier()
+  implicit val hc: HeaderCarrier = HeaderCarrier()
 
   "AuditService" - {
 
