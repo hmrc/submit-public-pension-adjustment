@@ -31,9 +31,9 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.{Compensation, MiniRegime}
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.CalcUserAnswersRepository
 
+import java.time.Instant
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import java.time.Instant
 
 class FinalSubmissionServiceSpec
     extends AnyFreeSpec

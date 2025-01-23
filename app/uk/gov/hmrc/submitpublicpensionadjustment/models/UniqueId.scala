@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models
 
-import play.api.mvc.QueryStringBindable
 import play.api.libs.json._
+import play.api.mvc.QueryStringBindable
 
 import scala.util.matching.Regex
 

@@ -17,8 +17,7 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf
 
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.NewEnhancementType.{Both, InternationalEnhancement, PensionCredit}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{EnhancementType, ExcessLifetimeAllowancePaid, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, Period, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.SchemeCreditConsent
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs._
 
 import java.time.format.DateTimeFormatter
 import java.time.{LocalDate, ZoneId}

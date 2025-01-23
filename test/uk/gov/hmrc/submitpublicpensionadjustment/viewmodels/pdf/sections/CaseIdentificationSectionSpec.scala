@@ -17,7 +17,7 @@
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import uk.gov.hmrc.submitpublicpensionadjustment.models._
-import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.{Compensation, CompensationAmendment, LTA, MiniRegime, MiniRegimeAmendment}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.dms._
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.CaseIdentificationSection
 
 class CaseIdentificationSectionSpec extends AnyFreeSpec with Matchers {

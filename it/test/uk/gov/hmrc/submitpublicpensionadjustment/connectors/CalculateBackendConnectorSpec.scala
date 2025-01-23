@@ -31,7 +31,7 @@ import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND, OK}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, LifetimeAllowanceSetup, MaybePIAIncrease, MaybePIAUnchangedOrDecreased, Resubmission, Setup}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs._
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.RetrieveSubmissionResponse
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CalcUserAnswers, RetrieveSubmissionInfo, UniqueId}
 import uk.gov.hmrc.submitpublicpensionadjustment.utils.WireMockHelper

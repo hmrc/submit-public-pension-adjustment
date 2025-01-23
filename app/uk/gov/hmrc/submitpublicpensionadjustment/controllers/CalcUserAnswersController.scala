@@ -23,7 +23,7 @@ import uk.gov.hmrc.submitpublicpensionadjustment.controllers.actions.IdentifierA
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.CalcUserAnswersRepository
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class CalcUserAnswersController @Inject() (

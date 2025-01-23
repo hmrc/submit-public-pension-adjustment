@@ -18,9 +18,9 @@ package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response
 
 import play.api.Logging
 import play.api.libs.json._
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{Period => InputsPeriod}
 
 import scala.util.{Failure, Success, Try}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{Period => InputsPeriod}
 
 sealed trait Period {
 
