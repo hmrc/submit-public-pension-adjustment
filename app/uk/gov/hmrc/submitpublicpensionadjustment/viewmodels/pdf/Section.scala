@@ -62,7 +62,7 @@ trait Section {
     period() match {
       case Some(period) =>
         val periodLabel = messages(s"pdf.${period.toString}")
-        baseDataLabel.replace("$period", periodLabel)
+        baseDataLabel.replace("&period", periodLabel)
       case None         => baseDataLabel
     }
   }
