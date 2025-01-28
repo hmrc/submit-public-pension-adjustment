@@ -18,6 +18,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response
 
 import play.api.Logging
 import play.api.libs.json._
+import uk.gov.hmrc.submitpublicpensionadjustment.exceptions.InvalidInputException
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{Period => InputsPeriod}
 
 import scala.util.{Failure, Success, Try}
@@ -39,6 +40,7 @@ sealed trait Period {
       case Period._2021 => InputsPeriod._2021
       case Period._2022 => InputsPeriod._2022
       case Period._2023 => InputsPeriod._2023
+      case _            => throw InvalidInputException(s"Invalid period while mapping to Calculation Inputs period")
     }
 }
 

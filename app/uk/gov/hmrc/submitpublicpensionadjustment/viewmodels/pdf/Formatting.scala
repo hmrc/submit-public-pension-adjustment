@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf
 
+import uk.gov.hmrc.submitpublicpensionadjustment.exceptions.InvalidInputException
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.NewEnhancementType.{Both, InternationalEnhancement, PensionCredit}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs._
 
@@ -181,6 +182,7 @@ trait Formatting {
       case Period._2021 => "2020/21"
       case Period._2022 => "2021/22"
       case Period._2023 => "2022/23"
+      case _            => throw InvalidInputException(s"Invalid period while formatting period to range")
     }
 
   val NotEntered    = "Not Entered"
