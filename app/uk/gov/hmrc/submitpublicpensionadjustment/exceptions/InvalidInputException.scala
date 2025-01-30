@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,6 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.submitpublicpensionadjustment.config
+package uk.gov.hmrc.submitpublicpensionadjustment.exceptions
 
-import play.api.Configuration
-
-import javax.inject.{Inject, Singleton}
-
-@Singleton
-class AppConfig @Inject() (config: Configuration) {
-
-  val appName: String = config.get[String]("appName")
-
-  val submissionAuditEventName = config.get[String]("auditing.submission-request-event-name")
-
-  val ttlInDays: Long     = config.get[Int]("mongodb.ttlInDays")
-  val cppaBaseUrl: String = config.get[Service]("microservice.services.calculate-public-pension-adjustment").baseUrl
-
-}
+case class InvalidInputException(message: String, errorCode: Int = 2002) extends Exception(message)

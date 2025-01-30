@@ -18,9 +18,10 @@ package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response
 
 import play.api.Logging
 import play.api.libs.json._
+import uk.gov.hmrc.submitpublicpensionadjustment.exceptions.InvalidInputException
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{Period => InputsPeriod}
 
 import scala.util.{Failure, Success, Try}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{Period => InputsPeriod}
 
 sealed trait Period {
 
@@ -39,13 +40,11 @@ sealed trait Period {
       case Period._2021 => InputsPeriod._2021
       case Period._2022 => InputsPeriod._2022
       case Period._2023 => InputsPeriod._2023
+      case _            => throw InvalidInputException(s"Invalid period while mapping to Calculation Inputs period")
     }
 }
 
 object Period extends Logging {
-
-  private val JsonValue2016Pre  = "2016-pre"
-  private val JsonValue2016Post = "2016-post"
 
   case class Year(year: Int) extends Period {
 
@@ -88,8 +87,13 @@ object Period extends Logging {
       }
     }
 
-  implicit lazy val writes: Writes[Period] = Writes { case Period.Year(year) =>
-    JsString(year.toString)
+  implicit lazy val writes: Writes[Period] = Writes {
+    case Period.Year(year)    =>
+      JsString(year.toString)
+    case `_2016PreAlignment`  =>
+      JsString(_2016PreAlignment.toString)
+    case `_2016PostAlignment` =>
+      JsString(_2016PostAlignment.toString)
   }
 
   implicit lazy val ordering: Ordering[Period] =

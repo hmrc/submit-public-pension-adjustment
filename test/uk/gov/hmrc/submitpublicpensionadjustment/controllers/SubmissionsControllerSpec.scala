@@ -25,6 +25,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.Application
 import play.api.http.Status.{NOT_FOUND, NO_CONTENT, OK}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -37,7 +38,6 @@ import uk.gov.hmrc.submitpublicpensionadjustment.TestData
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.Submission
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.SubmissionRepository
 
-import java.time.temporal.ChronoUnit
 import java.time.Instant
 import scala.concurrent.Future
 
@@ -53,7 +53,6 @@ class SubmissionsControllerSpec
   private val mockRepo          = mock[SubmissionRepository]
   private val mockAuthConnector = mock[AuthConnector]
 
-  private val instant        = Instant.now.truncatedTo(ChronoUnit.MILLIS)
   private val userId         = "foo"
   private val submissionData =
     Submission("id", "uniqueId", TestData.calculationInputs, None, Instant.parse("2024-03-12T10:00:00Z"))
@@ -66,7 +65,7 @@ class SubmissionsControllerSpec
 
   implicit lazy val mat: Materializer = app.injector.instanceOf[Materializer]
 
-  lazy override val app = new GuiceApplicationBuilder()
+  lazy override val app: Application = new GuiceApplicationBuilder()
     .overrides(
       bind[SubmissionRepository].toInstance(mockRepo),
       bind[AuthConnector].toInstance(mockAuthConnector)

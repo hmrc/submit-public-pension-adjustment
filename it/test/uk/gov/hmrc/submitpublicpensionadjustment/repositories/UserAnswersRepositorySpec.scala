@@ -30,7 +30,6 @@ import uk.gov.hmrc.crypto.{Decrypter, Encrypter, SymmetricCryptoFactory}
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 import uk.gov.hmrc.submitpublicpensionadjustment.config.AppConfig
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CalcUserAnswers, Done, UserAnswers}
-import uk.gov.hmrc.submitpublicpensionadjustment.repositories.{CalcUserAnswersRepository, UserAnswersRepository}
 import uk.gov.hmrc.submitpublicpensionadjustment.utils.WireMockHelper
 
 import java.security.SecureRandom

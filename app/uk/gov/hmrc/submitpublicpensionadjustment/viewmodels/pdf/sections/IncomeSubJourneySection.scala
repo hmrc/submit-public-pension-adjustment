@@ -17,14 +17,10 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 
 import play.api.i18n.Messages
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{IncomeSubJourney, TaxYear2016To2023}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023.{InitialFlexiblyAccessedTaxYear, NormalTaxYear, PostFlexiblyAccessedTaxYear}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.TaxYearScheme
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.CompensationSection.{allTaxYears, taxYearSchemes}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{IncomeSubJourney, TaxYear2016To2023}
 //import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{OutOfDatesTaxYearsCalculation, Period, TaxYearScheme}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.Period
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.DeclarationsSection.{format, formatBoolean, formatSchemeCreditConsent}
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Row, Section}
 
 case class IncomeSubJourneySection(

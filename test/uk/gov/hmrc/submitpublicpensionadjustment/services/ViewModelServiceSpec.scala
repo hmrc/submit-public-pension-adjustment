@@ -21,7 +21,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{CalculationInputs, LifetimeAllowanceSetup, Setup}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.LifetimeAllowanceSetup
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.Period
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.{Compensation, MiniRegime}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CaseIdentifiers, QueueReference}

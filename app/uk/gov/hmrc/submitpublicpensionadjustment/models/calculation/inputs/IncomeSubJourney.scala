@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class IncomeSubJourney(
   salarySacrificeAmount: Option[Int],
@@ -38,5 +38,5 @@ case class IncomeSubJourney(
 )
 
 object IncomeSubJourney {
-  implicit val format = Json.format[IncomeSubJourney]
+  implicit val format: OFormat[IncomeSubJourney] = Json.format[IncomeSubJourney]
 }

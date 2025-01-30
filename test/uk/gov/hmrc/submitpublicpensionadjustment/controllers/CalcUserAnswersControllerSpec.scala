@@ -18,7 +18,6 @@ package uk.gov.hmrc.submitpublicpensionadjustment.controllers
 
 import org.apache.pekko.stream.Materializer
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.MockitoSugar
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
@@ -32,8 +31,8 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.auth.core.{AffinityGroup, AuthConnector}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.{CalcUserAnswers, Done, UserAnswers}
-import uk.gov.hmrc.submitpublicpensionadjustment.repositories.{CalcUserAnswersRepository, UserAnswersRepository}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{CalcUserAnswers, Done}
+import uk.gov.hmrc.submitpublicpensionadjustment.repositories.CalcUserAnswersRepository
 
 import java.time.temporal.ChronoUnit
 import java.time.{Clock, Instant, ZoneId}

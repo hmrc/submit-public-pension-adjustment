@@ -16,27 +16,19 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.controllers
 
-import ch.qos.logback.classic.{Level, Logger}
-import ch.qos.logback.classic.spi.ILoggingEvent
-import ch.qos.logback.core.Appender
-import org.apache.pekko.event.slf4j.{Logger, Slf4jLogger}
-import org.mockito.ArgumentCaptor
-import org.slf4j.LoggerFactory
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
-import play.api
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.Files.logger
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.internalauth.client.test.{BackendAuthComponentsStub, StubBehaviour}
 import uk.gov.hmrc.internalauth.client._
+import uk.gov.hmrc.internalauth.client.test.{BackendAuthComponentsStub, StubBehaviour}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.{NotificationRequest, SubmissionItemStatus}
 
 import scala.concurrent.ExecutionContext.Implicits.global

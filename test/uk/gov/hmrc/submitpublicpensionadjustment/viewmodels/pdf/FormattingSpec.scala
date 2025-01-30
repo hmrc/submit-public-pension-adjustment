@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import java.time.LocalDate
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{EnhancementType, LtaProtectionOrEnhancements, NewEnhancementType, NewExcessLifetimeAllowancePaid, Period, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, WhatNewProtectionTypeEnhancement, YearChargePaid}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.SchemeCreditConsent
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs._
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Formatting
+
+import java.time.LocalDate
 
 class FormattingSpec extends AnyFreeSpec with Matchers {
 

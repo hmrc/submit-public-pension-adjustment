@@ -81,7 +81,7 @@ class SubmissionRepository @Inject() (
         filter = byUserId(userId),
         update = Updates.set("lastUpdated", Instant.now(clock))
       )
-      .toFuture
+      .toFuture()
       .map(_ => true)
 
   def get(uniqueId: String): Future[Option[Submission]] =
@@ -97,6 +97,6 @@ class SubmissionRepository @Inject() (
   def clear(userId: String): Future[Boolean] =
     collection
       .deleteOne(byUserId(userId))
-      .toFuture
+      .toFuture()
       .map(_ => true)
 }

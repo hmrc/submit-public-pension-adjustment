@@ -20,8 +20,8 @@ import play.api.libs.json.{JsSuccess, JsValue, Json, Reads}
 import play.api.mvc.{Action, ControllerComponents, Request, Result}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import uk.gov.hmrc.submitpublicpensionadjustment.controllers.actions.{IdentifierAction, IdentifierRequest}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.{AuditMetadata, FinalSubmissionResponse}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
+import uk.gov.hmrc.submitpublicpensionadjustment.models.{AuditMetadata, FinalSubmissionResponse}
 import uk.gov.hmrc.submitpublicpensionadjustment.services.FinalSubmissionService
 
 import javax.inject.Inject

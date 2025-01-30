@@ -21,5 +21,5 @@ import play.api.libs.json._
 case class RetrieveSubmissionInfo(userId: String, submissionUniqueId: UniqueId)
 
 object RetrieveSubmissionInfo {
-  implicit val format = Json.format[RetrieveSubmissionInfo]
+  implicit val format: OFormat[RetrieveSubmissionInfo] = Json.format[RetrieveSubmissionInfo]
 }

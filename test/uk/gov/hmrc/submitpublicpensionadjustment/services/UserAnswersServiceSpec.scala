@@ -24,7 +24,6 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
 import play.api.libs.json.Json
-import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{Done, UserAnswers}
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.UserAnswersRepository
 
@@ -46,8 +45,6 @@ class UserAnswersServiceSpec
     super.beforeEach()
     reset(mockUserAnswersRepository)
   }
-
-  private val hc: HeaderCarrier = HeaderCarrier()
 
   private val service = new UserAnswersService(mockUserAnswersRepository)
 
