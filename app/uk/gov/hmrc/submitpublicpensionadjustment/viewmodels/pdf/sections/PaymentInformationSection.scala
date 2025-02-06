@@ -19,8 +19,13 @@ package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Section
 
-case class PaymentInformationSection(accountName: String, sortCode: String, accountNumber: String) extends Section {
-  override def orderedFieldNames(): Seq[String] = Seq("accountName", "sortCode", "accountNumber")
+case class PaymentInformationSection(
+  accountName: String,
+  sortCode: String,
+  accountNumber: String,
+  rollNumber: Option[String]
+) extends Section {
+  override def orderedFieldNames(): Seq[String] = Seq("accountName", "sortCode", "accountNumber", "rollNumber")
 }
 
 object PaymentInformationSection {
@@ -30,7 +35,8 @@ object PaymentInformationSection {
       PaymentInformationSection(
         accountName = bankDetails.accountName,
         sortCode = bankDetails.sortCode,
-        accountNumber = bankDetails.accountNumber
+        accountNumber = bankDetails.accountNumber,
+        rollNumber = bankDetails.rollNumber
       )
     }
 }

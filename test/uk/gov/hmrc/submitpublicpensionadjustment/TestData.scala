@@ -328,7 +328,8 @@ object TestData {
     BankAccountDetails(
       accountName = "TestAccountName",
       sortCode = "TestSortCode",
-      accountNumber = "TestAccountNumber"
+      accountNumber = "TestAccountNumber",
+      rollNumber = Some("TestRollNumber")
     )
   )
   val schemeDetails: SchemeDetails                   = SchemeDetails(schemeName = "TestSceme", pstr = PSTR("schemePstr"))
@@ -497,7 +498,12 @@ object TestData {
     Seq(),
     None,
     Some(
-      PaymentInformationSection(accountName = "accountName", sortCode = "sortCode", accountNumber = "accountNumber")
+      PaymentInformationSection(
+        accountName = "accountName",
+        sortCode = "sortCode",
+        accountNumber = "accountNumber",
+        rollNumber = Some("rollNumber")
+      )
     ),
     DeclarationsSection("Y", "Y", "Y", "Y", "Y", "Y", "Consent given")
   )

@@ -260,7 +260,8 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
   private val paymentInformationSection = PaymentInformationSection(
     accountName = "TestAccountName",
     sortCode = "TestSortCode",
-    accountNumber = "TestAccountNumber"
+    accountNumber = "TestAccountNumber",
+    rollNumber = Some("TestRollNumber")
   )
 
   private val declarationsSection = DeclarationsSection("Yes", "Yes", "Yes", "No", "No", "No", "Consent given")
