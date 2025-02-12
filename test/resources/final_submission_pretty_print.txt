@@ -171,6 +171,7 @@ PSTR of scheme paying : schemePstr
 Name on bank account : TestAccountName
 Sort code : TestSortCode
 Account number : TestAccountNumber
+Roll number : TestRollNumber
 Declaration for compensation : Yes
 Declaration for tax administration framework : Yes
 Declaration for true and complete : Yes

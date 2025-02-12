@@ -31,7 +31,8 @@ class PaymentInformationSectionSpec extends AnyFreeSpec with Matchers with Loggi
       PaymentInformationSection(
         accountName = "TestAccountName",
         sortCode = "TestSortCode",
-        accountNumber = "TestAccountNumber"
+        accountNumber = "TestAccountNumber",
+        rollNumber = Some("TestRollNumber")
       )
     )
   }

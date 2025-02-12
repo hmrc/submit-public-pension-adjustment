@@ -118,6 +118,7 @@ pdf.paymentInformationSection.heading = Payment information
 pdf.paymentInformationSection.accountName = Name on bank account
 pdf.paymentInformationSection.sortCode = Sort code
 pdf.paymentInformationSection.accountNumber = Account number
+pdf.paymentInformationSection.rollNumber = Roll number
 
 pdf.declarationsSection.heading = Declarations
 pdf.declarationsSection.compensation = Declaration for compensation
