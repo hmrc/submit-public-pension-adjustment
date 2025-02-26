@@ -164,11 +164,24 @@ trait Formatting {
 
   def format(value: Boolean): String = formatBoolean(Some(value))
 
-  def formatPoundsAmount(amount: Int): String = s"£${amount.toString}"
+  def formatNumberString(input: String): String =
+    if (input.forall(_.isDigit)) {
+      val formattedString = input.reverse
+        .grouped(3)
+        .mkString(",")
+        .reverse
+      "£" + formattedString
+    } else {
+      input
+    }
+
+  def formatPoundsAmount(amount: Int): String = s"${formatNumberString(amount.toString)}"
 
   def formatOptPoundsAmount(optValue: Option[Int]) =
     optValue match {
-      case Some(value) => s"£${value.toString}"
+      case Some(value) =>
+        val formattedValue = formatNumberString(value.toString)
+        s"${formattedValue}"
       case None        => NotApplicable
     }
 
