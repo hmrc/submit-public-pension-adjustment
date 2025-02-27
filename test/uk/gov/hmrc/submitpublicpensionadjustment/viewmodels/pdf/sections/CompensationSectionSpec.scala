@@ -41,10 +41,10 @@ class CompensationSectionSpec extends AnyFreeSpec with Matchers with Logging {
       ),
       CompensationSection(
         Period.Year(2018),
-        "£1002018",
-        "£2002018",
-        "£2702018",
-        "£502018",
+        "£1,002,018",
+        "£2,002,018",
+        "£2,702,018",
+        "£502,018",
         Seq(
           SchemePaidChargeDetailsSubSection(1, 100, "TestName2018", "TestTaxRef", 991),
           SchemePaidChargeDetailsSubSection(2, 100, "TestName22018", "TestTaxRef", 991)
@@ -52,10 +52,10 @@ class CompensationSectionSpec extends AnyFreeSpec with Matchers with Logging {
       ),
       CompensationSection(
         Period.Year(2019),
-        "£1002019",
-        "£2002019",
-        "£2702019",
-        "£502019",
+        "£1,002,019",
+        "£2,002,019",
+        "£2,702,019",
+        "£502,019",
         Seq(
           SchemePaidChargeDetailsSubSection(1, 100, "TestName2019", "TestTaxRef", 991),
           SchemePaidChargeDetailsSubSection(2, 100, "TestName22019", "TestTaxRef", 991)
@@ -88,19 +88,19 @@ class CompensationSectionSpec extends AnyFreeSpec with Matchers with Logging {
       ),
       CompensationSection(
         Period.Year(2018),
-        "£1002018",
-        "£2002018",
-        "£2702018",
-        "£502018",
+        "£1,002,018",
+        "£2,002,018",
+        "£2,702,018",
+        "£502,018",
         Seq(
         )
       ),
       CompensationSection(
         Period.Year(2019),
-        "£1002019",
-        "£2002019",
-        "£2702019",
-        "£502019",
+        "£1,002,019",
+        "£2,002,019",
+        "£2,702,019",
+        "£502,019",
         Seq(
         )
       )
