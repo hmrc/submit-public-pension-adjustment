@@ -77,10 +77,10 @@ How much of the charge did your pension scheme pay? : £100
 Name of scheme originally paid charge 16/17 : TestName2222017
 PSTR of scheme originally paid charge 16/17 : TestTaxRef
 Revised pension input amount : £991
-Amount of direct compensation 17/18 : £1002018
-Amount of indirect compensation 17/18 : £2002018
-Revised tax charge total 17/18 : £2702018
-How much of the charge did you pay? : £502018
+Amount of direct compensation 17/18 : £1,002,018
+Amount of indirect compensation 17/18 : £2,002,018
+Revised tax charge total 17/18 : £2,702,018
+How much of the charge did you pay? : £502,018
 Scheme : 1
 How much of the charge did your pension scheme pay? : £100
 Name of scheme originally paid charge 17/18 : TestName2018
@@ -91,10 +91,10 @@ How much of the charge did your pension scheme pay? : £100
 Name of scheme originally paid charge 17/18 : TestName22018
 PSTR of scheme originally paid charge 17/18 : TestTaxRef
 Revised pension input amount : £991
-Amount of direct compensation 18/19 : £1002019
-Amount of indirect compensation 18/19 : £2002019
-Revised tax charge total 18/19 : £2702019
-How much of the charge did you pay? : £502019
+Amount of direct compensation 18/19 : £1,002,019
+Amount of indirect compensation 18/19 : £2,002,019
+Revised tax charge total 18/19 : £2,702,019
+How much of the charge did you pay? : £502,019
 Scheme : 1
 How much of the charge did your pension scheme pay? : £100
 Name of scheme originally paid charge 18/19 : TestName2019
@@ -135,7 +135,7 @@ Date of election made to the scheme : 13/01/2017
 Value scheme is paying : 10
 PSTR of scheme paying : schemePstr
 Name of scheme paying : TestSceme
-Value of previous charge for 17/18 : £1700
+Value of previous charge for 17/18 : £1,700
 Who was the previous charge paid by? : Scheme
 Scheme : 1
 Name of scheme : TestName2018
@@ -143,14 +143,14 @@ PSTR of scheme : TestTaxRef
 Scheme : 2
 Name of scheme : TestName22018
 PSTR of scheme : TestTaxRef
-Credit value for 17/18 : £1145076
+Credit value for 17/18 : £1,145,076
 Debit value for 17/18 : £636
 Is the scheme paying the charge? : Yes
 Date of election made to the scheme : Not Applicable
 Value scheme is paying : 10
 PSTR of scheme paying : schemePstr
 Name of scheme paying : TestSceme
-Value of previous charge for 18/19 : £1700
+Value of previous charge for 18/19 : £1,700
 Who was the previous charge paid by? : Member
 Scheme : 1
 Name of scheme : TestName2019
@@ -165,7 +165,7 @@ Date of election made to the scheme : Not Applicable
 Value scheme is paying : Not Applicable
 PSTR of scheme paying : Not Applicable
 Name of scheme paying : Not Applicable
-Amount : £1000
+Amount : £1,000
 Name of scheme paying : SchemeA
 PSTR of scheme paying : schemePstr
 Name on bank account : TestAccountName

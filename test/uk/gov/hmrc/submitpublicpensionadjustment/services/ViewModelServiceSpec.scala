@@ -147,10 +147,10 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
     ),
     CompensationSection(
       Period.Year(2018),
-      "£1002018",
-      "£2002018",
-      "£2702018",
-      "£502018",
+      "£1,002,018",
+      "£2,002,018",
+      "£2,702,018",
+      "£502,018",
       Seq(
         SchemePaidChargeDetailsSubSection(1, 100, "TestName2018", "TestTaxRef", 991),
         SchemePaidChargeDetailsSubSection(2, 100, "TestName22018", "TestTaxRef", 991)
@@ -158,10 +158,10 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
     ),
     CompensationSection(
       Period.Year(2019),
-      "£1002019",
-      "£2002019",
-      "£2702019",
-      "£502019",
+      "£1,002,019",
+      "£2,002,019",
+      "£2,702,019",
+      "£502,019",
       Seq(
         SchemePaidChargeDetailsSubSection(1, 100, "TestName2019", "TestTaxRef", 991),
         SchemePaidChargeDetailsSubSection(2, 100, "TestName22019", "TestTaxRef", 991)
@@ -219,9 +219,9 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
     ),
     TaxAdministrationFrameworkSection(
       relatingTo = Period._2018,
-      previousChargeAmount = "£1700",
+      previousChargeAmount = "£1,700",
       whoChargePaidBy = "Scheme",
-      creditValue = "£1145076",
+      creditValue = "£1,145,076",
       debitValue = "£636",
       isSchemePayingCharge = "Yes",
       schemePaymentElectionDate = "Not Applicable",
@@ -235,7 +235,7 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
     ),
     TaxAdministrationFrameworkSection(
       relatingTo = Period._2019,
-      previousChargeAmount = "£1700",
+      previousChargeAmount = "£1,700",
       whoChargePaidBy = "Member",
       creditValue = "£200",
       debitValue = "£25",
@@ -252,7 +252,7 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
   )
 
   private val additionalOrHigherReliefSection = AdditionalOrHigherReliefSection(
-    amount = "£1000",
+    amount = "£1,000",
     schemePayingName = "SchemeA",
     schemePayingPstr = "schemePstr"
   )
