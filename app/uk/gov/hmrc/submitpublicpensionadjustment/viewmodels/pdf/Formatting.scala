@@ -181,7 +181,7 @@ trait Formatting {
     optValue match {
       case Some(value) =>
         val formattedValue = formatNumberString(value.toString)
-        s"${formattedValue}"
+        s"$formattedValue"
       case None        => NotApplicable
     }
 
