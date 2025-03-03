@@ -132,7 +132,7 @@ Credit value for 16/17 : £200
 Debit value for 16/17 : £25
 Is the scheme paying the charge? : Yes
 Date of election made to the scheme : 13/01/2017
-Value scheme is paying : 10
+Value scheme is paying : £10
 PSTR of scheme paying : schemePstr
 Name of scheme paying : TestSceme
 Value of previous charge for 17/18 : £1,700
@@ -147,7 +147,7 @@ Credit value for 17/18 : £1,145,076
 Debit value for 17/18 : £636
 Is the scheme paying the charge? : Yes
 Date of election made to the scheme : Not Applicable
-Value scheme is paying : 10
+Value scheme is paying : £10
 PSTR of scheme paying : schemePstr
 Name of scheme paying : TestSceme
 Value of previous charge for 18/19 : £1,700

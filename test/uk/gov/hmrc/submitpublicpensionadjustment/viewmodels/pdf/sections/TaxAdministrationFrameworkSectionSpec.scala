@@ -37,7 +37,7 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
         debitValue = "£25",
         isSchemePayingCharge = "Yes",
         schemePaymentElectionDate = "13/01/2017",
-        schemePayingChargeAmount = "10",
+        schemePayingChargeAmount = "£10",
         schemePayingPstr = "schemePstr",
         schemePayingName = "TestSceme",
         schemeDetailsSubSections = Seq(
@@ -53,7 +53,7 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
         debitValue = "£636",
         isSchemePayingCharge = "Yes",
         schemePaymentElectionDate = "Not Applicable",
-        schemePayingChargeAmount = "10",
+        schemePayingChargeAmount = "£10",
         schemePayingPstr = "schemePstr",
         schemePayingName = "TestSceme",
         schemeDetailsSubSections = Seq(
@@ -101,7 +101,7 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
         debitValue = "£25",
         isSchemePayingCharge = "Yes",
         schemePaymentElectionDate = "13/01/2017",
-        schemePayingChargeAmount = "10",
+        schemePayingChargeAmount = "£10",
         schemePayingPstr = "schemePstr",
         schemePayingName = "TestSceme",
         schemeDetailsSubSections = Seq()
@@ -114,7 +114,7 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
         debitValue = "£636",
         isSchemePayingCharge = "Yes",
         schemePaymentElectionDate = "Not Applicable",
-        schemePayingChargeAmount = "10",
+        schemePayingChargeAmount = "£10",
         schemePayingPstr = "schemePstr",
         schemePayingName = "TestSceme",
         schemeDetailsSubSections = Seq()
