@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models
 
-import play.api.libs.json._
+import play.api.libs.json.*
 
 case class InternationalAddress(
   organisation: Option[String],

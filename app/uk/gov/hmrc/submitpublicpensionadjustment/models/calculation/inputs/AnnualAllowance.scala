@@ -24,7 +24,7 @@ object AnnualAllowance {
 
   implicit lazy val reads: Reads[AnnualAllowance] = {
 
-    import play.api.libs.functional.syntax._
+    import play.api.libs.functional.syntax.*
 
     ((__ \ "scottishTaxYears").read[List[Period]] and
       (__ \ "taxYears").read[List[TaxYear]])(AnnualAllowance(_, _))

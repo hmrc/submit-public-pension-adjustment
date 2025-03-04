@@ -24,7 +24,7 @@ object TotalAmounts {
 
   implicit lazy val reads: Reads[TotalAmounts] = {
 
-    import play.api.libs.functional.syntax._
+    import play.api.libs.functional.syntax.*
 
     ((__ \ "outDatesCompensation").read[Int] and
       (__ \ "inDatesDebit").read[Int] and
@@ -33,7 +33,7 @@ object TotalAmounts {
 
   implicit lazy val writes: Writes[TotalAmounts] = {
 
-    import play.api.libs.functional.syntax._
+    import play.api.libs.functional.syntax.*
 
     (
       (__ \ "outDatesCompensation").write[Int] and

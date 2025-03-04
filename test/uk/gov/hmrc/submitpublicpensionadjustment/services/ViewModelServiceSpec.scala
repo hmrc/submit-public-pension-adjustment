@@ -26,7 +26,7 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.Per
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.{Compensation, MiniRegime}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CaseIdentifiers, QueueReference}
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.PDFViewModel
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections._
+import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.*
 
 class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
 

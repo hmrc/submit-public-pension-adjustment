@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.connectors
 
-import com.github.tomakehurst.wiremock.client.WireMock._
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.http.Fault
 import org.mockito.MockitoSugar
 import org.scalatest.concurrent.Eventually.eventually
@@ -31,7 +31,7 @@ import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND, OK}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs._
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.*
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.RetrieveSubmissionResponse
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CalcUserAnswers, RetrieveSubmissionInfo, UniqueId}
 import uk.gov.hmrc.submitpublicpensionadjustment.utils.WireMockHelper

@@ -16,7 +16,7 @@
 
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs._
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.*
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.Formatting
 
 import java.time.LocalDate

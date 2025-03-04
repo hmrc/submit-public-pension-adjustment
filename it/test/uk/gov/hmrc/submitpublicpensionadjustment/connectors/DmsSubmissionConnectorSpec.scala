@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.connectors
 
-import com.github.tomakehurst.wiremock.client.WireMock._
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import org.apache.pekko.actor.ActorSystem
 import org.apache.pekko.stream.scaladsl.Source
 import org.apache.pekko.util.ByteString

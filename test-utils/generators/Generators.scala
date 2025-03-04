@@ -16,10 +16,10 @@
 
 package generators
 
-import org.scalacheck.Gen._
+import org.scalacheck.Gen.*
 import org.scalacheck.{Gen, Shrink}
 
-import java.time._
+import java.time.*
 
 trait Generators {
 

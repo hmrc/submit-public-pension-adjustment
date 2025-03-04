@@ -27,7 +27,7 @@ import play.api.libs.json.JsObject
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
-import uk.gov.hmrc.submitpublicpensionadjustment.models._
+import uk.gov.hmrc.submitpublicpensionadjustment.models.*
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.{Compensation, MiniRegime}
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.CalcUserAnswersRepository
 
