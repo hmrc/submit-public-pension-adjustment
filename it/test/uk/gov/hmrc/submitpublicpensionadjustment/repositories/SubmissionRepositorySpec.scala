@@ -29,8 +29,8 @@ import uk.gov.hmrc.crypto.{Crypted, Decrypter, Encrypter, SymmetricCryptoFactory
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 import uk.gov.hmrc.submitpublicpensionadjustment.config.AppConfig
 import uk.gov.hmrc.submitpublicpensionadjustment.models.Done
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs._
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, TotalAmounts, Period => responsePeriod, Resubmission => ResponseResubmission}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.*
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, TotalAmounts, Period as responsePeriod, Resubmission as ResponseResubmission}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.Submission
 import uk.gov.hmrc.submitpublicpensionadjustment.utils.WireMockHelper
 

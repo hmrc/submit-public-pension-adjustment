@@ -1,7 +1,7 @@
 # microservice specific routes
 
 POST       /final-submission           uk.gov.hmrc.submitpublicpensionadjustment.controllers.FinalSubmissionController.submit
-POST       /dms/callback                 uk.gov.hmrc.submitpublicpensionadjustment.controllers.DmsSubmissionCallbackController.callback
+POST       /dms/callback                 uk.gov.hmrc.submitpublicpensionadjustment.controllers.DmsSubmissionCallbackController.callback()
 
 GET         /user-answers              uk.gov.hmrc.submitpublicpensionadjustment.controllers.UserAnswersController.get
 POST        /user-answers              uk.gov.hmrc.submitpublicpensionadjustment.controllers.UserAnswersController.set

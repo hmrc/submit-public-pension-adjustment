@@ -20,20 +20,20 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSub
 
 sealed trait DmsQueue {
   def isRequired(finalSubmission: FinalSubmission): Boolean
-  def queueName(): String
+  def queueName: String
   def precedence: Int
 
-  def isResubmission(finalSubmission: FinalSubmission) =
+  def isResubmission(finalSubmission: FinalSubmission): Boolean =
     finalSubmission.calculationInputs.resubmission.isResubmission
 
-  def compensationIsRequired(finalSubmission: FinalSubmission) =
+  def compensationIsRequired(finalSubmission: FinalSubmission): Boolean =
     finalSubmission.calculation match {
       case Some(calc) =>
         calc.outDates.exists(odCalc => odCalc.directCompensation > 0 || odCalc.indirectCompensation > 0)
       case None       => false
     }
 
-  def miniRegimeIsRequired(finalSubmission: FinalSubmission) =
+  def miniRegimeIsRequired(finalSubmission: FinalSubmission): Boolean =
     finalSubmission.calculation match {
       case Some(calc) =>
         calc.inDates.exists(idCalc => idCalc.memberCredit > 0 || idCalc.schemeCredit > 0 || idCalc.debit > 0)

@@ -24,7 +24,7 @@ import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.connectors.CalculateBackendConnector
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs._
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.*
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.RetrieveSubmissionResponse
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CalcUserAnswers, Done, RetrieveSubmissionInfo, UniqueId}
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.{CalcUserAnswersRepository, SubmissionRepository}

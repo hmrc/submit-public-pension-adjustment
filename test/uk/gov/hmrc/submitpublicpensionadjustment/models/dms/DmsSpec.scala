@@ -23,7 +23,7 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSub
 
 class DmsQueueSpec extends AnyFlatSpec with Matchers {
 
-  "MiniRegime"            should "return true if not a resubmission and mini regime is required" in {
+  "MiniRegime" should "return true if not a resubmission and mini regime is required" in {
     val miniRegime      = MiniRegime("MiniRegimeQueue")
     val finalSubmission = FinalSubmission(
       TestData.calculationInputs,
@@ -35,7 +35,7 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
     miniRegime.precedence                  shouldBe 1
   }
 
-  it                      should "return false if a resubmission" in {
+  it should "return false if a resubmission" in {
     val miniRegime      = MiniRegime("MiniRegimeQueue")
     val finalSubmission = FinalSubmission(
       TestData.calculationInputsWithResubmissionReason,
@@ -46,7 +46,7 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
     miniRegime.isRequired(finalSubmission) shouldBe false
   }
 
-  "MiniRegimeAmendment"   should "return true if a resubmission and mini regime is required" in {
+  "MiniRegimeAmendment" should "return true if a resubmission and mini regime is required" in {
     val miniRegimeAmendment = MiniRegimeAmendment("MiniRegimeAmendmentQueue")
     val finalSubmission     = FinalSubmission(
       TestData.calculationInputsWithResubmissionReason,
@@ -58,7 +58,7 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
     miniRegimeAmendment.precedence                  shouldBe 2
   }
 
-  it                      should "return false if not a resubmission" in {
+  it should "return false if not a resubmission" in {
     val miniRegimeAmendment = MiniRegimeAmendment("MiniRegimeAmendmentQueue")
     val finalSubmission     = FinalSubmission(
       TestData.calculationInputs,
@@ -69,7 +69,7 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
     miniRegimeAmendment.isRequired(finalSubmission) shouldBe false
   }
 
-  it                      should "return false when mini regime is not required" in {
+  it should "return false when mini regime is not required" in {
     val miniRegimeAmendment = MiniRegimeAmendment("MiniRegimeAmendmentQueue")
     val finalSubmission     = FinalSubmission(
       TestData.calculationInputs,
@@ -80,7 +80,7 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
     miniRegimeAmendment.miniRegimeIsRequired(finalSubmission) shouldBe false
   }
 
-  "Compensation"          should "return true if not a resubmission and compensation is required" in {
+  "Compensation" should "return true if not a resubmission and compensation is required" in {
     val compensation    = Compensation("CompensationQueue")
     val finalSubmission = FinalSubmission(
       TestData.calculationInputs,
@@ -92,7 +92,7 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
     compensation.precedence                  shouldBe 3
   }
 
-  it                      should "return false if a resubmission" in {
+  it should "return false if a resubmission" in {
     val compensation    = Compensation("CompensationQueue")
     val finalSubmission = FinalSubmission(
       TestData.calculationInputsWithResubmissionReason,
@@ -116,7 +116,7 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
 
   }
 
-  it    should "return false when compensation is not required" in {
+  it should "return false when compensation is not required" in {
     val compensationAmendment = CompensationAmendment("CompensationAmendmentQueue")
     val finalSubmission       = FinalSubmission(
       TestData.calculationInputs,
@@ -127,7 +127,7 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
     compensationAmendment.compensationIsRequired(finalSubmission) shouldBe false
   }
 
-  it    should "return false if not a resubmission" in {
+  it should "return false if not a resubmission" in {
     val compensationAmendment = CompensationAmendment("CompensationAmendmentQueue")
     val finalSubmission       = FinalSubmission(
       TestData.calculationInputs,
@@ -150,7 +150,7 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
     lta.precedence                  shouldBe 5
   }
 
-  it    should "return false if life time allowance is not defined" in {
+  it should "return false if life time allowance is not defined" in {
     val lta             = LTA("LTAQueue")
     val finalSubmission = FinalSubmission(
       TestData.calculationInputs.copy(lifeTimeAllowance = None),

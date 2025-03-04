@@ -26,9 +26,9 @@ import play.api.{Configuration, Logging}
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData.submissionInputs
 import uk.gov.hmrc.submitpublicpensionadjustment.models.QueueReference
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, LifeTimeAllowance, LifetimeAllowanceSetup, MaybePIAIncrease, MaybePIAUnchangedOrDecreased, Resubmission => InputsResubmission, Setup}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response._
-import uk.gov.hmrc.submitpublicpensionadjustment.models.dms._
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, LifeTimeAllowance, LifetimeAllowanceSetup, MaybePIAIncrease, MaybePIAUnchangedOrDecreased, Resubmission as InputsResubmission, Setup}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.*
+import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.*
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 
 class QueueLogicServiceSpec

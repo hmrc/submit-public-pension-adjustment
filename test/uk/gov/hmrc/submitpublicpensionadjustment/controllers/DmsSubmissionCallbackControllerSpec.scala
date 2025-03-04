@@ -26,8 +26,8 @@ import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import uk.gov.hmrc.internalauth.client._
+import play.api.test.Helpers.*
+import uk.gov.hmrc.internalauth.client.*
 import uk.gov.hmrc.internalauth.client.test.{BackendAuthComponentsStub, StubBehaviour}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.{NotificationRequest, SubmissionItemStatus}
 

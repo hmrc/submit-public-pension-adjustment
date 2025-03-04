@@ -17,7 +17,7 @@
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
-import play.api.libs.json._
+import play.api.libs.json.*
 import uk.gov.hmrc.submitpublicpensionadjustment.models.Enumerable
 
 class EnumerableSpec extends PlaySpec with MockitoSugar {

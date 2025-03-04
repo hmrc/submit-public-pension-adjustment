@@ -1,9 +1,9 @@
 import uk.gov.hmrc.DefaultBuildSettings.itSettings
 
-val scala2_13_12 = "2.13.12"
+val scala3_3_4 = "3.3.4"
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := scala2_13_12
+ThisBuild / scalaVersion := scala3_3_4
 
 lazy val it = project
   .enablePlugins(PlayScala)
@@ -16,18 +16,14 @@ lazy val microservice = Project("submit-public-pension-adjustment", file("."))
   .disablePlugins(JUnitXmlReportPlugin)
   .settings(
     majorVersion := 0,
-    scalaVersion := "2.13.12",
+    scalaVersion := "3.3.4",
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
     dependencyOverrides += "commons-codec" % "commons-codec" % "1.12",
     // https://www.scala-lang.org/2021/01/12/configuring-and-suppressing-warnings.html
     // suppress warnings in generated routes files
     scalacOptions ++= Seq(
       "-Wconf:src=routes/.*:s",
-      "-Ywarn-unused:imports", // Warn if an import selector is not referenced.
-      "-Ywarn-unused:locals", // Warn if a local definition is unused.
-      "-Ywarn-unused:params", // Warn if a value parameter is unused.
-      "-Ywarn-unused:patvars", // Warn if a variable bound in a pattern is unused.
-      "-Ywarn-unused:privates" // Warn if a private member is unused.
+      "-Wconf:msg=Flag.*repeatedly:s"
     ),
     PlayKeys.playDefaultPort := 12803
   )
