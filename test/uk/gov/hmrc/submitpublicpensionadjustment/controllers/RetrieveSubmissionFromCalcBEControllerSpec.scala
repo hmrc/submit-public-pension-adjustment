@@ -17,7 +17,8 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.controllers
 
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.Mockito.{mock, when}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
@@ -45,7 +46,7 @@ class RetrieveSubmissionFromCalcBEControllerSpec
         val mockCalculationDataService = mock[CalculationDataService]
         val submissionUniqueId         = "uniqueId"
         when(mockCalculationDataService.retrieveSubmissionFromCalcBE(any(), any())(any(), any()))
-          .thenReturn(Future.successful(true))
+          .`thenReturn`(Future.successful(true))
 
         val controller = new RetrieveSubmissionFromCalcBEController(
           mockCalculationDataService,
@@ -54,14 +55,14 @@ class RetrieveSubmissionFromCalcBEControllerSpec
         )
         val result     = controller.retrieveSubmissionStatus(submissionUniqueId).apply(FakeRequest(GET, "/"))
 
-        status(result) mustBe OK
+        status(result) `mustBe` OK
       }
 
       "return BadRequest when the submission status is found and false" in {
         val mockCalculationDataService = mock[CalculationDataService]
         val submissionUniqueId         = "uniqueId"
         when(mockCalculationDataService.retrieveSubmissionFromCalcBE(any(), any())(any(), any()))
-          .thenReturn(Future.successful(false))
+          .`thenReturn`(Future.successful(false))
 
         val controller = new RetrieveSubmissionFromCalcBEController(
           mockCalculationDataService,
@@ -70,7 +71,7 @@ class RetrieveSubmissionFromCalcBEControllerSpec
         )
         val result     = controller.retrieveSubmissionStatus(submissionUniqueId).apply(FakeRequest(GET, "/"))
 
-        status(result) mustBe BAD_REQUEST
+        status(result) `mustBe` BAD_REQUEST
       }
 
       class FakeIdentifierAction extends IdentifierAction(null, null)(null) {

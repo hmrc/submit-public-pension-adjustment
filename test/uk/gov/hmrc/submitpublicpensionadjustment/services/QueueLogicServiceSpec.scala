@@ -17,7 +17,8 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
 import org.mockito.ArgumentMatchers.any
-import org.mockito.{Mockito, MockitoSugar}
+import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.Mockito.{mock, reset, times, verify, when}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
@@ -51,8 +52,8 @@ class QueueLogicServiceSpec
     )
     super.beforeEach()
 
-    Mockito.when(mockConfiguration.get(any())(any())).thenReturn(mockDmsConfiguration)
-    Mockito.when(mockDmsConfiguration.get(any())(any())).thenReturn("VGVzdF9RdWV1ZQ==")
+    when(mockConfiguration.get(any())(any())).`thenReturn`(mockDmsConfiguration)
+    when(mockDmsConfiguration.get(any())(any())).`thenReturn`("VGVzdF9RdWV1ZQ==")
   }
 
   "QueueLogicService" - {
@@ -67,14 +68,14 @@ class QueueLogicServiceSpec
 
       val queueReference = queueLogicService().determineMostSignificantQueueReference(queueReferences)
 
-      queueReference mustBe QueueReference(MiniRegime("MiniRegime_Queue"), "submissionReference2")
+      queueReference `mustBe` QueueReference(MiniRegime("MiniRegime_Queue"), "submissionReference2")
     }
 
     "must compute a list of queue references" in {
       val queueReferences: Seq[QueueReference] = queueLogicService().computeQueueReferences(TestData.finalSubmission)
 
-      queueReferences.size mustBe >=(1)
-      queueReferences.count(q => q.dmsQueue.queueName() == "Test_Queue") mustBe >=(1)
+      queueReferences.size `mustBe` >=(1)
+      queueReferences.count(q => q.dmsQueue.queueName == "Test_Queue") `mustBe` >=(1)
     }
   }
 
@@ -346,7 +347,7 @@ class QueueLogicServiceSpec
 
     val dmsQueues: Seq[DmsQueue] = queueReferences.map(qr => qr.dmsQueue)
 
-    dmsQueues mustBe expectedDmsQueues
+    dmsQueues `mustBe` expectedDmsQueues
   }
 
   private def calculationResponseWith(

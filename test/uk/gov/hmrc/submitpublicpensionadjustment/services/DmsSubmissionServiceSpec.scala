@@ -19,8 +19,10 @@ package uk.gov.hmrc.submitpublicpensionadjustment.services
 import org.apache.pekko.stream.Materializer
 import org.apache.pekko.stream.scaladsl.{Keep, Sink, Source}
 import org.apache.pekko.util.ByteString
-import org.mockito.ArgumentMatchers.{any, eq as eqTo}
-import org.mockito.{ArgumentCaptor, MockitoSugar}
+import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.mockito.ArgumentCaptor
+import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.Mockito.{mock, never, reset, verify, when}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
@@ -86,10 +88,10 @@ class DmsSubmissionServiceSpec
       val bytes                                               = "PdfBytes".getBytes("UTF-8")
       val sourceCaptor: ArgumentCaptor[Source[ByteString, _]] = ArgumentCaptor.forClass(classOf[Source[ByteString, _]])
 
-      when(mockFopService.render(any())).thenReturn(Future.successful(bytes))
+      when(mockFopService.render(any())).`thenReturn`(Future.successful(bytes))
       when(mockDmsSubmissionConnector.submit(any(), any(), any(), any(), any())(any()))
-        .thenReturn(Future.successful(Done))
-      when(mockViewModelService.viewModel(any(), any())).thenReturn(TestData.viewModel)
+        .`thenReturn`(Future.successful(Done))
+      when(mockViewModelService.viewModel(any(), any())).`thenReturn`(TestData.viewModel)
 
       val expectedXml = finalSubmissionTemplate(TestData.viewModel).body
 
@@ -108,12 +110,12 @@ class DmsSubmissionServiceSpec
       val result =
         sourceCaptor.getValue().toMat(Sink.fold(ByteString.emptyByteString)(_ ++ _))(Keep.right).run().futureValue
 
-      result.decodeString("UTF-8") mustEqual "PdfBytes"
+      result.decodeString("UTF-8") `mustEqual` "PdfBytes"
     }
 
     "must fail if the fop service fails" in {
 
-      when(mockFopService.render(any())).thenReturn(Future.failed(new RuntimeException()))
+      when(mockFopService.render(any())).`thenReturn`(Future.failed(new RuntimeException()))
 
       service.send(caseIdentifiers, finalSubmission, submissionReference, dmsQueue.queueName)(hc).failed.futureValue
 
@@ -122,9 +124,9 @@ class DmsSubmissionServiceSpec
 
     "must fail if the dms submission connector fails" in {
 
-      when(mockFopService.render(any())).thenReturn(Future.successful(Array.emptyByteArray))
+      when(mockFopService.render(any())).`thenReturn`(Future.successful(Array.emptyByteArray))
       when(mockDmsSubmissionConnector.submit(any(), any(), any(), any(), any())(any()))
-        .thenReturn(Future.failed(new RuntimeException()))
+        .`thenReturn`(Future.failed(new RuntimeException()))
 
       service.send(caseIdentifiers, finalSubmission, submissionReference, dmsQueue.queueName)(hc).failed.futureValue
     }
@@ -142,7 +144,7 @@ class DmsSubmissionServiceSpec
     val result: Future[Done] = service.send(caseIdentifiers, finalSubmission, submissionReference, dmsQueueName)
 
     whenReady(result) { done =>
-      done mustBe Done
+      done `mustBe` Done
     }
   }
 
@@ -162,7 +164,7 @@ class DmsSubmissionServiceSpec
         .build()
 
       val service = app.injector.instanceOf[DmsSubmissionService]
-      service mustBe a[CreateLocalPdfDmsSubmissionService]
+      service `mustBe` a[CreateLocalPdfDmsSubmissionService]
     }
 
     "must bind to NoOpDmsSubmissionService when dms-submission.createLocalPdf is false" in {
@@ -179,7 +181,7 @@ class DmsSubmissionServiceSpec
         .build()
 
       val service = app.injector.instanceOf[DmsSubmissionService]
-      service mustBe a[NoOpDmsSubmissionService]
+      service `mustBe` a[NoOpDmsSubmissionService]
     }
   }
 }

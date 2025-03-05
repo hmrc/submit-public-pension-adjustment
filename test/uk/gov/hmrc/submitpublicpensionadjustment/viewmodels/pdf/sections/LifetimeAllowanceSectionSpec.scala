@@ -65,37 +65,37 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
 
     val ltaSection: LifetimeAllowanceSection = LifetimeAllowanceSection.build(finalSubmission).get
 
-    ltaSection.hadBce mustBe "Yes"
-    ltaSection.bceDate mustBe "30/01/2017"
-    ltaSection.changeInLtaPercentage mustBe "Yes"
-    ltaSection.multipleBenefitCrystallisationEvent mustBe "No"
-    ltaSection.haveLtaProtectionOrEnhancement mustBe "Protection"
-    ltaSection.protectionType mustBe "Primary protection"
-    ltaSection.protectionReference mustBe "originalReference"
-    ltaSection.enhancementType mustBe "Both"
-    ltaSection.internationalEnhancementReference mustBe "internationalRef"
-    ltaSection.pensionCreditReference mustBe "pensionCredRef"
-    ltaSection.changeToProtectionType mustBe "Protection"
-    ltaSection.newProtectionTypeOrEnhancement mustBe "Enhanced protection"
-    ltaSection.newProtectionTypeOrReference mustBe "newReference"
-    ltaSection.newEnhancementType mustBe "Both"
-    ltaSection.newInternationalEnhancementReference mustBe "newinternationEnhancementRef"
-    ltaSection.newPensionCreditReference mustBe "newPensionCredRef"
-    ltaSection.hadLtaCharge mustBe "Yes"
-    ltaSection.howExcessPaid mustBe "Lump Sum"
-    ltaSection.lumpSumValue mustBe "£5"
-    ltaSection.annualPaymentValue mustBe "£6"
-    ltaSection.whoPaidLtaCharge mustBe "Scheme"
-    ltaSection.schemeThatPaidChargeName mustBe "Scheme1"
-    ltaSection.schemeThatPaidChargeTaxRef mustBe "pstr1"
-    ltaSection.yearChargePaid mustBe "6 April 2015 to 5 April 2016"
-    ltaSection.quarterChargePaid mustBe "1 April to 30 June"
-    ltaSection.newExcessLifetimeAllowancePaid mustBe "Both"
-    ltaSection.newLumpSumValue mustBe "£7"
-    ltaSection.newAnnualPaymentValue mustBe "£8"
-    ltaSection.whoPayingExtraCharge mustBe "Scheme"
-    ltaSection.whoPayingExtraChargeSchemeName mustBe "Scheme2"
-    ltaSection.whoPayingExtraChargeTaxRef mustBe "pstr2"
+    ltaSection.hadBce `mustBe` "Yes"
+    ltaSection.bceDate `mustBe` "30/01/2017"
+    ltaSection.changeInLtaPercentage `mustBe` "Yes"
+    ltaSection.multipleBenefitCrystallisationEvent `mustBe` "No"
+    ltaSection.haveLtaProtectionOrEnhancement `mustBe` "Protection"
+    ltaSection.protectionType `mustBe` "Primary protection"
+    ltaSection.protectionReference `mustBe` "originalReference"
+    ltaSection.enhancementType `mustBe` "Both"
+    ltaSection.internationalEnhancementReference `mustBe` "internationalRef"
+    ltaSection.pensionCreditReference `mustBe` "pensionCredRef"
+    ltaSection.changeToProtectionType `mustBe` "Protection"
+    ltaSection.newProtectionTypeOrEnhancement `mustBe` "Enhanced protection"
+    ltaSection.newProtectionTypeOrReference `mustBe` "newReference"
+    ltaSection.newEnhancementType `mustBe` "Both"
+    ltaSection.newInternationalEnhancementReference `mustBe` "newinternationEnhancementRef"
+    ltaSection.newPensionCreditReference `mustBe` "newPensionCredRef"
+    ltaSection.hadLtaCharge `mustBe` "Yes"
+    ltaSection.howExcessPaid `mustBe` "Lump Sum"
+    ltaSection.lumpSumValue `mustBe` "£5"
+    ltaSection.annualPaymentValue `mustBe` "£6"
+    ltaSection.whoPaidLtaCharge `mustBe` "Scheme"
+    ltaSection.schemeThatPaidChargeName `mustBe` "Scheme1"
+    ltaSection.schemeThatPaidChargeTaxRef `mustBe` "pstr1"
+    ltaSection.yearChargePaid `mustBe` "6 April 2015 to 5 April 2016"
+    ltaSection.quarterChargePaid `mustBe` "1 April to 30 June"
+    ltaSection.newExcessLifetimeAllowancePaid `mustBe` "Both"
+    ltaSection.newLumpSumValue `mustBe` "£7"
+    ltaSection.newAnnualPaymentValue `mustBe` "£8"
+    ltaSection.whoPayingExtraCharge `mustBe` "Scheme"
+    ltaSection.whoPayingExtraChargeSchemeName `mustBe` "Scheme2"
+    ltaSection.whoPayingExtraChargeTaxRef `mustBe` "pstr2"
   }
 
   "formatExcessLifetimeAllowancePaid to Annual Payment when ExcessLifetimeAllowancePaid.Annualpayment" in {
@@ -142,7 +142,7 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
 
     val ltaSection: LifetimeAllowanceSection = LifetimeAllowanceSection.build(finalSubmission).get
 
-    ltaSection.howExcessPaid mustBe "Annual Payment"
+    ltaSection.howExcessPaid `mustBe` "Annual Payment"
   }
 
   "formatExcessLifetimeAllowancePaid to Both when ExcessLifetimeAllowancePaid.Both" in {
@@ -189,7 +189,7 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
 
     val ltaSection: LifetimeAllowanceSection = LifetimeAllowanceSection.build(finalSubmission).get
 
-    ltaSection.howExcessPaid mustBe "Both"
+    ltaSection.howExcessPaid `mustBe` "Both"
   }
 
   "formatExcessLifetimeAllowancePaid to NotApplicable when ExcessLifetimeAllowancePaid doesn't exist" in {
@@ -232,7 +232,7 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
 
     val ltaSection: LifetimeAllowanceSection = LifetimeAllowanceSection.build(finalSubmission).get
 
-    ltaSection.howExcessPaid mustBe "Not Applicable"
+    ltaSection.howExcessPaid `mustBe` "Not Applicable"
   }
 
   "formatWhoPaidLTACharge to Member when WhoPaidLTACharge.You" in {
@@ -275,7 +275,7 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
 
     val ltaSection: LifetimeAllowanceSection = LifetimeAllowanceSection.build(finalSubmission).get
 
-    ltaSection.whoPaidLtaCharge mustBe "Member"
+    ltaSection.whoPaidLtaCharge `mustBe` "Member"
   }
 
   "formatWhoPaidLTACharge to Not Applicable when WhoPaidLTACharge doesn't exist" in {
@@ -318,7 +318,7 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
 
     val ltaSection: LifetimeAllowanceSection = LifetimeAllowanceSection.build(finalSubmission).get
 
-    ltaSection.whoPaidLtaCharge mustBe "Not Applicable"
+    ltaSection.whoPaidLtaCharge `mustBe` "Not Applicable"
   }
 
   "formatWhoPayingExtraLtaCharge to Member when WhoPayingExtraLtaCharge.You" in {
@@ -361,7 +361,7 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
 
     val ltaSection: LifetimeAllowanceSection = LifetimeAllowanceSection.build(finalSubmission).get
 
-    ltaSection.whoPayingExtraCharge mustBe "Member"
+    ltaSection.whoPayingExtraCharge `mustBe` "Member"
   }
 
   "formatWhoPayingExtraLtaCharge to Not Applicable when WhoPayingExtraLtaCharge does not exist" in {
@@ -404,7 +404,7 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
 
     val ltaSection: LifetimeAllowanceSection = LifetimeAllowanceSection.build(finalSubmission).get
 
-    ltaSection.whoPayingExtraCharge mustBe "Not Applicable"
+    ltaSection.whoPayingExtraCharge `mustBe` "Not Applicable"
   }
 
   "section must be constructed with Not Applicable when row not present" in {
@@ -459,37 +459,37 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
 
     val ltaSection: LifetimeAllowanceSection = LifetimeAllowanceSection.build(finalSubmission).get
 
-    ltaSection.hadBce mustBe "Yes"
-    ltaSection.bceDate mustBe "30/01/2017"
-    ltaSection.changeInLtaPercentage mustBe "Yes"
-    ltaSection.multipleBenefitCrystallisationEvent mustBe "Yes"
-    ltaSection.haveLtaProtectionOrEnhancement mustBe "Protection"
-    ltaSection.protectionType mustBe "Primary protection"
-    ltaSection.protectionReference mustBe "originalReference"
-    ltaSection.enhancementType mustBe "Both"
-    ltaSection.internationalEnhancementReference mustBe "Not Applicable"
-    ltaSection.pensionCreditReference mustBe "Not Applicable"
-    ltaSection.changeToProtectionType mustBe "Protection"
-    ltaSection.newProtectionTypeOrEnhancement mustBe "Enhanced protection"
-    ltaSection.newProtectionTypeOrReference mustBe "Not Applicable"
-    ltaSection.newEnhancementType mustBe "Both"
-    ltaSection.newInternationalEnhancementReference mustBe "Not Applicable"
-    ltaSection.newPensionCreditReference mustBe "Not Applicable"
-    ltaSection.hadLtaCharge mustBe "Yes"
-    ltaSection.howExcessPaid mustBe "Lump Sum"
-    ltaSection.lumpSumValue mustBe "£5"
-    ltaSection.annualPaymentValue mustBe "£6"
-    ltaSection.whoPaidLtaCharge mustBe "Scheme"
-    ltaSection.schemeThatPaidChargeName mustBe "Not Applicable"
-    ltaSection.schemeThatPaidChargeTaxRef mustBe "Not Applicable"
-    ltaSection.yearChargePaid mustBe "6 April 2015 to 5 April 2016"
-    ltaSection.quarterChargePaid mustBe "1 April to 30 June"
-    ltaSection.newExcessLifetimeAllowancePaid mustBe "Both"
-    ltaSection.newLumpSumValue mustBe "£7"
-    ltaSection.newAnnualPaymentValue mustBe "£8"
-    ltaSection.whoPayingExtraCharge mustBe "Scheme"
-    ltaSection.whoPayingExtraChargeSchemeName mustBe "Not Applicable"
-    ltaSection.whoPayingExtraChargeTaxRef mustBe "Not Applicable"
+    ltaSection.hadBce `mustBe` "Yes"
+    ltaSection.bceDate `mustBe` "30/01/2017"
+    ltaSection.changeInLtaPercentage `mustBe` "Yes"
+    ltaSection.multipleBenefitCrystallisationEvent `mustBe` "Yes"
+    ltaSection.haveLtaProtectionOrEnhancement `mustBe` "Protection"
+    ltaSection.protectionType `mustBe` "Primary protection"
+    ltaSection.protectionReference `mustBe` "originalReference"
+    ltaSection.enhancementType `mustBe` "Both"
+    ltaSection.internationalEnhancementReference `mustBe` "Not Applicable"
+    ltaSection.pensionCreditReference `mustBe` "Not Applicable"
+    ltaSection.changeToProtectionType `mustBe` "Protection"
+    ltaSection.newProtectionTypeOrEnhancement `mustBe` "Enhanced protection"
+    ltaSection.newProtectionTypeOrReference `mustBe` "Not Applicable"
+    ltaSection.newEnhancementType `mustBe` "Both"
+    ltaSection.newInternationalEnhancementReference `mustBe` "Not Applicable"
+    ltaSection.newPensionCreditReference `mustBe` "Not Applicable"
+    ltaSection.hadLtaCharge `mustBe` "Yes"
+    ltaSection.howExcessPaid `mustBe` "Lump Sum"
+    ltaSection.lumpSumValue `mustBe` "£5"
+    ltaSection.annualPaymentValue `mustBe` "£6"
+    ltaSection.whoPaidLtaCharge `mustBe` "Scheme"
+    ltaSection.schemeThatPaidChargeName `mustBe` "Not Applicable"
+    ltaSection.schemeThatPaidChargeTaxRef `mustBe` "Not Applicable"
+    ltaSection.yearChargePaid `mustBe` "6 April 2015 to 5 April 2016"
+    ltaSection.quarterChargePaid `mustBe` "1 April to 30 June"
+    ltaSection.newExcessLifetimeAllowancePaid `mustBe` "Both"
+    ltaSection.newLumpSumValue `mustBe` "£7"
+    ltaSection.newAnnualPaymentValue `mustBe` "£8"
+    ltaSection.whoPayingExtraCharge `mustBe` "Scheme"
+    ltaSection.whoPayingExtraChargeSchemeName `mustBe` "Not Applicable"
+    ltaSection.whoPayingExtraChargeTaxRef `mustBe` "Not Applicable"
   }
 
   "Must be none when ltaInputs does not exist" in {
@@ -532,7 +532,7 @@ class LifetimeAllowanceSectionSpec extends AnyFreeSpec with Matchers with Loggin
 
     val ltaSection: Option[LifetimeAllowanceSection] = LifetimeAllowanceSection.build(finalSubmission)
 
-    ltaSection mustBe None
+    ltaSection `mustBe` None
   }
 
 }

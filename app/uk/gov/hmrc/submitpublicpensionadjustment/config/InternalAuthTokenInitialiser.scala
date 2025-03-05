@@ -60,7 +60,7 @@ class InternalAuthTokenInitialiserImpl @Inject() (
   private val delay: FiniteDuration =
     configuration.get[FiniteDuration]("internal-auth-token-initialiser.delay")
 
-  override lazy val initialised: Future[Done] =
+  override val initialised: Future[Done] =
     setup()
 
   actorSystem.scheduler.scheduleOnce(delay) {

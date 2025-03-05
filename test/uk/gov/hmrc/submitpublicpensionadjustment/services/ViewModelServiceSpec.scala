@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
-import org.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalatest.matchers.should.Matchers.shouldEqual
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.LifetimeAllowanceSetup
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.Period
@@ -285,7 +285,7 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
 
       val result = viewModelService.viewModel(caseIdentifiers, finalSubmission)
 
-      result shouldEqual expectedViewModel
+      result `shouldEqual` expectedViewModel
     }
 
     "must correctly create a PDFViewModel using provided CaseIdentifiers and FinalSubmission with LifetimeAllowanceSetup having few fields  = None" in {
@@ -327,7 +327,7 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
 
       val result = viewModelService.viewModel(caseIdentifiers, finalSubmissionCopy)
 
-      result shouldEqual expectedViewModel
+      result `shouldEqual` expectedViewModel
     }
 
     "must correctly create a PDFViewModel using provided CaseIdentifiers and FinalSubmission with LifetimeAllowanceSetup = None" in {
@@ -365,7 +365,7 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
 
       val result = viewModelService.viewModel(caseIdentifiers, finalSubmissionCopy)
 
-      result shouldEqual expectedViewModel
+      result `shouldEqual` expectedViewModel
     }
 
   }

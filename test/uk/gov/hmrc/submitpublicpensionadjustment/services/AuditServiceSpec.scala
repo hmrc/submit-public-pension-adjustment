@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
-import org.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.Mockito.{mock, when}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import play.api.inject.bind
@@ -198,7 +199,7 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
         val submissionAuditEvent =
           SubmissionAuditEvent(Some("uniqueId"), Some(true), "internalId", Individual, None, finalSubmission)
 
-        service.auditSubmitRequest(submissionAuditEvent)(hc) mustBe ()
+        service.auditSubmitRequest(submissionAuditEvent)(hc) `mustBe` ()
 
       }
     }
