@@ -17,12 +17,12 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.controllers
 
 import generators.ModelGenerators
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
-import org.scalatestplus.mockito.MockitoSugar
-import org.mockito.Mockito.{mock, reset, times, verify, when}
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
+import org.mockito.Mockito.*
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.Logging
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder

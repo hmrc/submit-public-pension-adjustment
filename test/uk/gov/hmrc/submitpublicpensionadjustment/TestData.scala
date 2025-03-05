@@ -17,7 +17,7 @@
 package uk.gov.hmrc.submitpublicpensionadjustment
 
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, AnnualAllowanceSetup, CalculationInputs, EnhancementType, ExcessLifetimeAllowancePaid, IncomeSubJourney, LifeTimeAllowance, LifetimeAllowanceSetup, LtaPensionSchemeDetails, LtaProtectionOrEnhancements, MaybePIAIncrease, MaybePIAUnchangedOrDecreased, NewEnhancementType, NewExcessLifetimeAllowancePaid, NewLifeTimeAllowanceAdditions, Period as InputPeriod, ProtectionEnhancedChanged, ProtectionType, QuarterChargePaid, Resubmission as inputsResubmission, SchemeNameAndTaxRef, Setup, TaxYear2016To2023, UserSchemeDetails, WhatNewProtectionTypeEnhancement, WhoPaidLTACharge, WhoPayingExtraLtaCharge, YearChargePaid}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, Period => ResponsePeriod, Resubmission => responseResubmission, TaxYearScheme, TotalAmounts}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, Period as ResponsePeriod, Resubmission as responseResubmission, TaxYearScheme, TotalAmounts}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.*
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.OnBehalfOfMemberType.Deceased
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{PSTR, UkAddress}

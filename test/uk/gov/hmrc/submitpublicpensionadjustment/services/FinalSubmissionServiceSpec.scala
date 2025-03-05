@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
-import org.scalatestplus.mockito.MockitoSugar
-import org.mockito.Mockito.{mock, reset, times, verify, when}
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
+import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.HeaderCarrier
@@ -74,7 +74,7 @@ class FinalSubmissionServiceSpec
 
       when(mockSubmissionReferenceService.random())
         .`thenReturn`("submissionReference1")
-        .andThenAnswer("submissionReference2")
+      when(mockSubmissionReferenceService.random()).`thenAnswer`(_ => "submissionReference2")
 
       val queueReferences =
         Seq(

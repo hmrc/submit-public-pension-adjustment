@@ -15,8 +15,8 @@
  */
 
 import org.mockito.ArgumentMatchers.anyString
+import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import org.mockito.Mockito.{mock, when}
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.*
 import uk.gov.hmrc.submitpublicpensionadjustment.models.Enumerable

@@ -17,9 +17,9 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.controllers
 
 import org.mockito.ArgumentMatchers.any
-import org.scalatestplus.mockito.MockitoSugar
-import org.mockito.Mockito.{mock, when}
+import org.mockito.Mockito.when
 import org.scalatest.concurrent.ScalaFutures
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import play.api.http.Status.{BAD_REQUEST, OK}

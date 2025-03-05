@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.repositories
 
+import org.mongodb.scala.SingleObservableFuture
 import org.mongodb.scala.bson.conversions.Bson
 import org.mongodb.scala.model.*
-import org.mongodb.scala.SingleObservableFuture
 import uk.gov.hmrc.crypto.{Decrypter, Encrypter}
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository

@@ -34,9 +34,9 @@ trait Generators {
     } yield chars.mkString
 
   def localDateTimeGen: Gen[LocalDateTime] = {
-    val rangeEnd = LocalDateTime.now(Clock.systemUTC()).toEpochSecond(ZoneOffset.UTC).apply
+    val rangeEnd = LocalDateTime.now(Clock.systemUTC()).toEpochSecond(ZoneOffset.UTC)
     Gen
-      .choose(0, rangeEnd)
+      .choose(0.toLong, rangeEnd)
       .map(second => LocalDateTime.ofEpochSecond(second, 0, ZoneOffset.UTC))
   }
 }
