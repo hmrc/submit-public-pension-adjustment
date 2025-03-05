@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
-import org.scalatestplus.mockito.MockitoSugar
-import org.mockito.Mockito.{mock, reset, times, verify, when}
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
+import org.mockito.Mockito.*
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.Json
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{Done, UserAnswers}
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.UserAnswersRepository

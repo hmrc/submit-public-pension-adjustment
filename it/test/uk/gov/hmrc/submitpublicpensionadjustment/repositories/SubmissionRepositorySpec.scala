@@ -16,13 +16,14 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.repositories
 
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters
 import org.scalatest.OptionValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.Configuration
 import play.api.libs.json.Json
 import uk.gov.hmrc.crypto.{Crypted, Decrypter, Encrypter, SymmetricCryptoFactory}
@@ -156,13 +157,13 @@ class SubmissionRepositorySpec
   private val submission: Submission =
     Submission("id", "submissionUniqueId", calculationInputs, calculation)
 
-  protected override val repository = new SubmissionRepository(
+  protected override val repository: SubmissionRepository = new SubmissionRepository(
     mongoComponent = mongoComponent,
     appConfig = mockAppConfig,
     clock = stubClock
   )
 
-  when(mockAppConfig.ttlInDays) thenReturn 900
+  when(mockAppConfig.ttlInDays) thenReturn 900.toLong
 
   ".insert" - {
 

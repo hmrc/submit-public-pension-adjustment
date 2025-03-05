@@ -17,12 +17,12 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
 import org.mockito.ArgumentMatchers.{any, eq as eqTo}
-import org.scalatestplus.mockito.MockitoSugar
-import org.mockito.Mockito.{mock, verify, when}
+import org.mockito.Mockito.{verify, when}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.i18n.MessagesApi
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData

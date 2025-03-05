@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
-import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.matchers.should.Matchers.shouldEqual
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.LifetimeAllowanceSetup
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.Period

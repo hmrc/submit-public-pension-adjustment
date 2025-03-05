@@ -16,10 +16,9 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
-import org.scalatestplus.mockito.MockitoSugar
-import org.mockito.Mockito.{mock, when}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import uk.gov.hmrc.auth.core.AffinityGroup.Individual

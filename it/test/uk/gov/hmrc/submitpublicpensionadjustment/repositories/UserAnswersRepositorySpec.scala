@@ -17,13 +17,14 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.repositories
 
 import com.fasterxml.jackson.core.JsonParseException
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters
 import org.scalatest.OptionValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.Configuration
 import play.api.libs.json.Json
 import uk.gov.hmrc.crypto.{Decrypter, Encrypter, SymmetricCryptoFactory}
@@ -88,9 +89,9 @@ class UserAnswersRepositorySpec
       appConfig = mockAppConfig,
       clock = stubClock
     )
-  when(mockAppConfig.ttlInDays) thenReturn 1
+  when(mockAppConfig.ttlInDays) thenReturn 1.toLong
 
-  protected override val repository =
+  protected override val repository: UserAnswersRepository =
     new UserAnswersRepository(
       mongoComponent = mongoComponent,
       appConfig = mockAppConfig,
