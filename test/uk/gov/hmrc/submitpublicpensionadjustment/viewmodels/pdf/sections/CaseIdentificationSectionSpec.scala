@@ -37,7 +37,7 @@ class CaseIdentificationSectionSpec extends AnyFreeSpec with Matchers {
 
       val section = CaseIdentificationSection.build(caseIdentifiers)
 
-      section mustBe CaseIdentificationSection(
+      section `mustBe` CaseIdentificationSection(
         compensation = "compRef",
         compensationAmendment = "compAmendRef",
         miniRegime = "miniRegimeRef",
@@ -55,7 +55,7 @@ class CaseIdentificationSectionSpec extends AnyFreeSpec with Matchers {
 
       val section = CaseIdentificationSection.build(caseIdentifiers)
 
-      section mustBe CaseIdentificationSection(
+      section `mustBe` CaseIdentificationSection(
         compensation = "Not Applicable",
         compensationAmendment = "Not Applicable",
         miniRegime = "Not Applicable",

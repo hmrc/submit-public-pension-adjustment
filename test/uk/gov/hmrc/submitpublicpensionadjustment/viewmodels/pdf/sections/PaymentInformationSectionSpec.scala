@@ -27,7 +27,7 @@ class PaymentInformationSectionSpec extends AnyFreeSpec with Matchers with Loggi
 
     val section = PaymentInformationSection.build(TestData.finalSubmission)
 
-    section mustBe Some(
+    section `mustBe` Some(
       PaymentInformationSection(
         accountName = "TestAccountName",
         sortCode = "TestSortCode",

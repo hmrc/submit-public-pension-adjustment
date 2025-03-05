@@ -17,9 +17,9 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.controllers
 
 import generators.ModelGenerators
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
-import org.mockito.MockitoSugar
+import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.Mockito.{mock, reset, times, verify, when}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
@@ -68,7 +68,7 @@ class FinalSubmissionControllerSpec
     "can serialise and deserialize symmetrically" in {
       val serialised                              = Json.prettyPrint(Json.toJson(TestData.finalSubmission))
       val deserialized: JsResult[FinalSubmission] = Json.parse(serialised).validate[FinalSubmission]
-      deserialized.get mustBe TestData.finalSubmission
+      deserialized.get `mustBe` TestData.finalSubmission
     }
 
     "must submit the final submission and return a submission response" in {
@@ -78,13 +78,13 @@ class FinalSubmissionControllerSpec
           any(),
           any()
         )(any(), any())
-      ).thenReturn(
+      ).`thenReturn`(
         Future.successful(
           new ~(new ~(Some("nino"), Some(AffinityGroup.Organisation)), Some(User))
         )
       )
 
-      when(mockFinalSubmissionService.submit(any(), any())(any())) thenReturn Future.successful(
+      when(mockFinalSubmissionService.submit(any(), any())(any())) `thenReturn` Future.successful(
         SubmissionReferences("ABCDEF123456", Seq("ABCDEF123456"))
       )
 
@@ -102,8 +102,8 @@ class FinalSubmissionControllerSpec
 
       val result = route(app, request).value
 
-      status(result) mustEqual OK
-      contentAsJson(result) mustEqual Json.toJson(
+      status(result) `mustEqual` OK
+      contentAsJson(result) `mustEqual` Json.toJson(
         FinalSubmissionResponse("ABCDEF123456")
       )
       verify(mockFinalSubmissionService, times(1)).submit(eqTo(finalSubmission), eqTo(expectedMetadata))(
@@ -118,7 +118,7 @@ class FinalSubmissionControllerSpec
             any(),
             any()
           )(any(), any())
-        ).thenReturn(
+        ).`thenReturn`(
           Future.successful(
             new ~(new ~(Some("nino"), Some(AffinityGroup.Organisation)), Some(User))
           )
@@ -129,7 +129,7 @@ class FinalSubmissionControllerSpec
           .withBody(invalidJson)
         val result      = route(app, request).value
 
-        status(result) mustEqual BAD_REQUEST
+        status(result) `mustEqual` BAD_REQUEST
         contentAsString(result) must include("Invalid Final Submission")
       }
     }

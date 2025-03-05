@@ -15,7 +15,8 @@
  */
 
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.Mockito.{mock, when}
 import org.scalatestplus.play.PlaySpec
 import play.api.libs.json.*
 import uk.gov.hmrc.submitpublicpensionadjustment.models.Enumerable
@@ -28,32 +29,32 @@ class EnumerableSpec extends PlaySpec with MockitoSugar {
 
     "correctly deserialize a valid string to an object" in {
       val mockEnumerable: Enumerable[DummyType] = mock[Enumerable[DummyType]]
-      when(mockEnumerable.withName("valid")).thenReturn(Some(DummyType("valid")))
+      when(mockEnumerable.withName("valid")).`thenReturn`(Some(DummyType("valid")))
 
       implicit val reads: Reads[DummyType] = TestImplicits.reads(mockEnumerable)
 
       val json = JsString("valid")
-      json.validate[DummyType] mustEqual JsSuccess(DummyType("valid"))
+      json.validate[DummyType] `mustEqual` JsSuccess(DummyType("valid"))
     }
 
     "return JsError for an invalid string" in {
       val mockEnumerable: Enumerable[DummyType] = mock[Enumerable[DummyType]]
-      when(mockEnumerable.withName(anyString)).thenReturn(None)
+      when(mockEnumerable.withName(anyString)).`thenReturn`(None)
 
       implicit val reads: Reads[DummyType] = TestImplicits.reads(mockEnumerable)
 
       val json = JsString("invalid")
-      json.validate[DummyType] mustBe a[JsError]
+      json.validate[DummyType] `mustBe` a[JsError]
     }
 
     "return JsError for non-JsString JSON" in {
       val mockEnumerable: Enumerable[DummyType] = mock[Enumerable[DummyType]]
-      when(mockEnumerable.withName(anyString)).thenReturn(None)
+      when(mockEnumerable.withName(anyString)).`thenReturn`(None)
 
       implicit val reads: Reads[DummyType] = TestImplicits.reads(mockEnumerable)
 
       val json = JsNumber(123)
-      json.validate[DummyType] mustBe a[JsError]
+      json.validate[DummyType] `mustBe` a[JsError]
     }
   }
 

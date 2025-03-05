@@ -17,7 +17,8 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.controllers
 
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.Mockito.{mock, reset, verify, when}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
@@ -72,33 +73,33 @@ class DmsSubmissionCallbackControllerSpec
 
     "must return OK when a valid request is received" in {
 
-      when(mockStubBehaviour.stubAuth[Unit](any(), any())).thenReturn(Future.unit)
+      when(mockStubBehaviour.stubAuth[Unit](any(), any())).`thenReturn`(Future.unit)
 
-      val request = FakeRequest(POST, routes.DmsSubmissionCallbackController.callback.url)
+      val request = FakeRequest(POST, routes.DmsSubmissionCallbackController.callback().url)
         .withHeaders(AUTHORIZATION -> "Some auth token")
         .withBody(Json.toJson(notification))
 
       val result = route(app, request).value
-      status(result) mustEqual OK
+      status(result) `mustEqual` OK
 
       verify(mockStubBehaviour).stubAuth(Some(predicate), Retrieval.EmptyRetrieval)
     }
 
     "must return BAD_REQUEST when an invalid request is received" in {
 
-      when(mockStubBehaviour.stubAuth[Unit](any(), any())).thenReturn(Future.unit)
+      when(mockStubBehaviour.stubAuth[Unit](any(), any())).`thenReturn`(Future.unit)
 
-      val request = FakeRequest(POST, routes.DmsSubmissionCallbackController.callback.url)
+      val request = FakeRequest(POST, routes.DmsSubmissionCallbackController.callback().url)
         .withHeaders(AUTHORIZATION -> "Some auth token")
         .withBody(Json.obj())
 
       val result = route(app, request).value
-      status(result) mustEqual BAD_REQUEST
+      status(result) `mustEqual` BAD_REQUEST
     }
 
     "must fail for an unauthenticated user" in {
 
-      val request = FakeRequest(POST, routes.DmsSubmissionCallbackController.callback.url)
+      val request = FakeRequest(POST, routes.DmsSubmissionCallbackController.callback().url)
         .withBody(Json.toJson(notification)) // No Authorization header
 
       route(app, request).value.failed.futureValue
@@ -106,9 +107,9 @@ class DmsSubmissionCallbackControllerSpec
 
     "must fail when the user is not authorised" in {
 
-      when(mockStubBehaviour.stubAuth[Unit](any(), any())).thenReturn(Future.failed(new RuntimeException()))
+      when(mockStubBehaviour.stubAuth[Unit](any(), any())).`thenReturn`(Future.failed(new RuntimeException()))
 
-      val request = FakeRequest(POST, routes.DmsSubmissionCallbackController.callback.url)
+      val request = FakeRequest(POST, routes.DmsSubmissionCallbackController.callback().url)
         .withHeaders(AUTHORIZATION -> "Some auth token")
         .withBody(Json.toJson(notification))
 
@@ -123,14 +124,14 @@ class DmsSubmissionCallbackControllerSpec
         failureReason = Some("Some failure reason")
       )
 
-      when(mockStubBehaviour.stubAuth[Unit](any(), any())).thenReturn(Future.unit)
+      when(mockStubBehaviour.stubAuth[Unit](any(), any())).`thenReturn`(Future.unit)
 
-      val request = FakeRequest(POST, routes.DmsSubmissionCallbackController.callback.url)
+      val request = FakeRequest(POST, routes.DmsSubmissionCallbackController.callback().url)
         .withHeaders(AUTHORIZATION -> "Some auth token")
         .withBody(Json.toJson(notification))
 
       val result = route(app, request).value
-      status(result) mustEqual OK
+      status(result) `mustEqual` OK
     }
   }
 }

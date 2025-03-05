@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
-import org.mockito.MockitoSugar
+import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.Mockito.{reset, times, verify, when}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
@@ -56,16 +56,16 @@ class SubmissionsServiceSpec
     "retrieveSubmissions" - {
 
       "must return a submission when it exists in the userAnswersRepository" in {
-        when(mockSubmissionRepository.get(any())).thenReturn(Future.successful(Some(submissionData)))
+        when(mockSubmissionRepository.get(any())).`thenReturn`(Future.successful(Some(submissionData)))
 
-        service.retrieveSubmissions("uniqueId").futureValue mustBe Some(submissionData)
+        service.retrieveSubmissions("uniqueId").futureValue `mustBe` Some(submissionData)
         verify(mockSubmissionRepository, times(1)).get(eqTo("uniqueId"))
       }
 
       "must return None when it does not exist in the repository" in {
-        when(mockSubmissionRepository.get("unknownId")).thenReturn(Future.successful(None))
+        when(mockSubmissionRepository.get("unknownId")).`thenReturn`(Future.successful(None))
 
-        service.retrieveSubmissions("unknownId").futureValue mustBe None
+        service.retrieveSubmissions("unknownId").futureValue `mustBe` None
         verify(mockSubmissionRepository, times(1)).get(eqTo("unknownId"))
       }
     }
@@ -73,16 +73,16 @@ class SubmissionsServiceSpec
     "retrieveSubmissionsById" - {
 
       "must return a submission when it exists in the userAnswersRepository" in {
-        when(mockSubmissionRepository.getByUserId(any())).thenReturn(Future.successful(Some(submissionData)))
+        when(mockSubmissionRepository.getByUserId(any())).`thenReturn`(Future.successful(Some(submissionData)))
 
-        service.retrieveSubmissionsById("id").futureValue mustBe Some(submissionData)
+        service.retrieveSubmissionsById("id").futureValue `mustBe` Some(submissionData)
         verify(mockSubmissionRepository, times(1)).getByUserId(eqTo("id"))
       }
 
       "must return None when it does not exist in the repository" in {
-        when(mockSubmissionRepository.getByUserId("unknownId")).thenReturn(Future.successful(None))
+        when(mockSubmissionRepository.getByUserId("unknownId")).`thenReturn`(Future.successful(None))
 
-        service.retrieveSubmissionsById("unknownId").futureValue mustBe None
+        service.retrieveSubmissionsById("unknownId").futureValue `mustBe` None
         verify(mockSubmissionRepository, times(1)).getByUserId(eqTo("unknownId"))
       }
     }
@@ -90,38 +90,38 @@ class SubmissionsServiceSpec
     "checkSubmissionsPresentWithUniqueId" - {
 
       "must return true when it exists in repository" - {
-        when(mockSubmissionRepository.get(any())).thenReturn(Future.successful(Some(submissionData)))
+        when(mockSubmissionRepository.get(any())).`thenReturn`(Future.successful(Some(submissionData)))
 
         val result = service.checkSubmissionsPresentWithUniqueId("ID")
 
-        result.futureValue mustBe true
+        result.futureValue `mustBe` true
       }
 
       "must return false it does not exists in repository" in {
-        when(mockSubmissionRepository.get(any())).thenReturn(Future.successful(None))
+        when(mockSubmissionRepository.get(any())).`thenReturn`(Future.successful(None))
 
         val result = service.checkSubmissionsPresentWithUniqueId("ID")
 
-        result.futureValue mustBe false
+        result.futureValue `mustBe` false
       }
     }
 
     "checkSubmissionsPresentWithId" - {
 
       "must return true when it exists in repository" - {
-        when(mockSubmissionRepository.getByUserId(any())).thenReturn(Future.successful(Some(submissionData)))
+        when(mockSubmissionRepository.getByUserId(any())).`thenReturn`(Future.successful(Some(submissionData)))
 
         val result = service.checkSubmissionsPresentWithId("ID")
 
-        result.futureValue mustBe true
+        result.futureValue `mustBe` true
       }
 
       "must return false it does not exists in repository" in {
-        when(mockSubmissionRepository.getByUserId(any())).thenReturn(Future.successful(None))
+        when(mockSubmissionRepository.getByUserId(any())).`thenReturn`(Future.successful(None))
 
         val result = service.checkSubmissionsPresentWithId("ID")
 
-        result.futureValue mustBe false
+        result.futureValue `mustBe` false
       }
     }
 

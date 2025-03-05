@@ -17,9 +17,9 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.controllers
 
 import org.apache.pekko.stream.Materializer
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
-import org.mockito.MockitoSugar
+import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.Mockito.{reset, when}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
@@ -76,14 +76,14 @@ class UserAnswersControllerSpec
     ".get" - {
 
       "must return OK and the data when user data can be found for this session id" in {
-        when(mockRepo.get(any[String])) thenReturn Future.successful(Some(userData))
+        when(mockRepo.get(any[String])) `thenReturn` Future.successful(Some(userData))
         when(
           mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
             any()
           )(any(), any())
         )
-          .thenReturn(
+          .`thenReturn`(
             Future.successful(
               new ~(new ~(Some("nino"), Some(AffinityGroup.Individual)), Some("User"))
             )
@@ -96,19 +96,19 @@ class UserAnswersControllerSpec
         val controller = app.injector.instanceOf[UserAnswersController]
         val result     = controller.get.apply(request)
 
-        status(result) mustEqual OK
-        contentAsJson(result) mustEqual Json.toJson(userData)
+        status(result) `mustEqual` OK
+        contentAsJson(result) `mustEqual` Json.toJson(userData)
       }
 
       "must return Not Found when user data cannot be found for this session id" in {
-        when(mockRepo.get(any[String])) thenReturn Future.successful(None)
+        when(mockRepo.get(any[String])) `thenReturn` Future.successful(None)
         when(
           mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
             any()
           )(any(), any())
         )
-          .thenReturn(
+          .`thenReturn`(
             Future.successful(
               new ~(new ~(Some("nino"), Some(AffinityGroup.Individual)), Some("User"))
             )
@@ -121,7 +121,7 @@ class UserAnswersControllerSpec
         val controller = app.injector.instanceOf[UserAnswersController]
         val result     = controller.get.apply(request)
 
-        status(result) mustEqual NOT_FOUND
+        status(result) `mustEqual` NOT_FOUND
       }
     }
 
@@ -129,14 +129,14 @@ class UserAnswersControllerSpec
 //      ".set" - {
 //
 //        "must return NoContent when the data is successfully saved" in {
-//          when(mockRepo.set(any[UserAnswers])) thenReturn Future.successful(Done)
+//          when(mockRepo.set(any[UserAnswers])) `thenReturn` Future.successful(Done)
 //          when(
 //            mockAuthConnector.authorise[Option[String] ~ Option[String] ~ Option[AffinityGroup] ~ Option[String]](
 //              any(),
 //              any()
 //            )(any(), any())
 //          )
-//            .thenReturn(
+//            .`thenReturn`(
 //              Future.successful(
 //                new ~(new ~(new ~(Some("nino"), Some(userId)), Some(AffinityGroup.Individual)), Some("User"))
 //              )
@@ -154,7 +154,7 @@ class UserAnswersControllerSpec
 //          val controller = app.injector.instanceOf[UserAnswersController]
 //          val result     = controller.set.apply(request)
 //
-//          status(result) mustEqual NO_CONTENT
+//          status(result) `mustEqual` NO_CONTENT
 //          verify(mockRepo, times(1)).set(eqTo(userData))
 //
 //        }
@@ -162,14 +162,14 @@ class UserAnswersControllerSpec
     ".keepAlive" - {
 
       "must return No Content when data is kept alive" in {
-        when(mockRepo.keepAlive(any[String])) thenReturn Future.successful(Done)
+        when(mockRepo.keepAlive(any[String])) `thenReturn` Future.successful(Done)
         when(
           mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
             any()
           )(any(), any())
         )
-          .thenReturn(
+          .`thenReturn`(
             Future.successful(
               new ~(new ~(Some("nino"), Some(AffinityGroup.Individual)), Some("User"))
             )
@@ -182,21 +182,21 @@ class UserAnswersControllerSpec
         val controller = app.injector.instanceOf[UserAnswersController]
         val result     = controller.keepAlive.apply(request)
 
-        status(result) mustEqual NO_CONTENT
+        status(result) `mustEqual` NO_CONTENT
       }
     }
 
     ".clear" - {
 
       "must return No Content when data is cleared" in {
-        when(mockRepo.clear(any[String])) thenReturn Future.successful(Done)
+        when(mockRepo.clear(any[String])) `thenReturn` Future.successful(Done)
         when(
           mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
             any()
           )(any(), any())
         )
-          .thenReturn(
+          .`thenReturn`(
             Future.successful(
               new ~(new ~(Some("nino"), Some(AffinityGroup.Individual)), Some("User"))
             )
@@ -209,12 +209,12 @@ class UserAnswersControllerSpec
         val controller = app.injector.instanceOf[UserAnswersController]
         val result     = controller.clear.apply(request)
 
-        status(result) mustEqual NO_CONTENT
+        status(result) `mustEqual` NO_CONTENT
       }
     }
     "checkUserAnswersPresentWithId" - {
       "Content must be true when record has been found" in {
-        when(mockRepo.get(eqTo(userId))) thenReturn Future.successful(Some(userData))
+        when(mockRepo.get(eqTo(userId))) `thenReturn` Future.successful(Some(userData))
 
         val request =
           FakeRequest(GET, routes.UserAnswersController.checkUserAnswersPresentWithId(userId).url)
@@ -222,12 +222,12 @@ class UserAnswersControllerSpec
 
         val result = route(app, request).value
 
-        status(result) mustEqual OK
-        contentAsJson(result) mustEqual Json.toJson(true)
+        status(result) `mustEqual` OK
+        contentAsJson(result) `mustEqual` Json.toJson(true)
       }
 
       "Content must be false when record has not been found" in {
-        when(mockRepo.get(eqTo(userId))) thenReturn Future.successful(None)
+        when(mockRepo.get(eqTo(userId))) `thenReturn` Future.successful(None)
 
         val request =
           FakeRequest(GET, routes.UserAnswersController.checkUserAnswersPresentWithId(userId).url)
@@ -235,8 +235,8 @@ class UserAnswersControllerSpec
 
         val result = route(app, request).value
 
-        status(result) mustEqual OK
-        contentAsJson(result) mustEqual Json.toJson(false)
+        status(result) `mustEqual` OK
+        contentAsJson(result) `mustEqual` Json.toJson(false)
       }
     }
   }

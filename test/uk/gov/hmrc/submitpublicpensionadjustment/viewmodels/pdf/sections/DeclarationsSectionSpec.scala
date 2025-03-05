@@ -27,6 +27,6 @@ class DeclarationsSectionSpec extends AnyFreeSpec with Matchers with Logging {
 
     val sections = DeclarationsSection.build(TestData.finalSubmission)
 
-    sections mustBe DeclarationsSection("Yes", "Yes", "Yes", "No", "No", "No", "Consent given")
+    sections `mustBe` DeclarationsSection("Yes", "Yes", "Yes", "No", "No", "No", "Consent given")
   }
 }
