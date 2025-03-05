@@ -31,8 +31,8 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
       TestData.submissionInputs
     )
 
-    miniRegime.isRequired(finalSubmission) shouldBe true
-    miniRegime.precedence                  shouldBe 1
+    miniRegime.isRequired(finalSubmission) `shouldBe` true
+    miniRegime.precedence `shouldBe` 1
   }
 
   it should "return false if a resubmission" in {
@@ -43,7 +43,7 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
       TestData.submissionInputs
     )
 
-    miniRegime.isRequired(finalSubmission) shouldBe false
+    miniRegime.isRequired(finalSubmission) `shouldBe` false
   }
 
   "MiniRegimeAmendment" should "return true if a resubmission and mini regime is required" in {
@@ -54,8 +54,8 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
       TestData.submissionInputs
     )
 
-    miniRegimeAmendment.isRequired(finalSubmission) shouldBe true
-    miniRegimeAmendment.precedence                  shouldBe 2
+    miniRegimeAmendment.isRequired(finalSubmission) `shouldBe` true
+    miniRegimeAmendment.precedence `shouldBe` 2
   }
 
   it should "return false if not a resubmission" in {
@@ -66,7 +66,7 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
       TestData.submissionInputs
     )
 
-    miniRegimeAmendment.isRequired(finalSubmission) shouldBe false
+    miniRegimeAmendment.isRequired(finalSubmission) `shouldBe` false
   }
 
   it should "return false when mini regime is not required" in {
@@ -77,7 +77,7 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
       TestData.submissionInputs
     )
 
-    miniRegimeAmendment.miniRegimeIsRequired(finalSubmission) shouldBe false
+    miniRegimeAmendment.miniRegimeIsRequired(finalSubmission) `shouldBe` false
   }
 
   "Compensation" should "return true if not a resubmission and compensation is required" in {
@@ -88,8 +88,8 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
       TestData.submissionInputs
     )
 
-    compensation.isRequired(finalSubmission) shouldBe true
-    compensation.precedence                  shouldBe 3
+    compensation.isRequired(finalSubmission) `shouldBe` true
+    compensation.precedence `shouldBe` 3
   }
 
   it should "return false if a resubmission" in {
@@ -100,7 +100,7 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
       TestData.submissionInputs
     )
 
-    compensation.isRequired(finalSubmission) shouldBe false
+    compensation.isRequired(finalSubmission) `shouldBe` false
   }
 
   "CompensationAmendment" should "return true if a resubmission and compensation is required" in {
@@ -111,8 +111,8 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
       TestData.submissionInputs
     )
 
-    compensationAmendment.isRequired(finalSubmission) shouldBe true
-    compensationAmendment.precedence                  shouldBe 4
+    compensationAmendment.isRequired(finalSubmission) `shouldBe` true
+    compensationAmendment.precedence `shouldBe` 4
 
   }
 
@@ -124,7 +124,7 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
       TestData.submissionInputs
     )
 
-    compensationAmendment.compensationIsRequired(finalSubmission) shouldBe false
+    compensationAmendment.compensationIsRequired(finalSubmission) `shouldBe` false
   }
 
   it should "return false if not a resubmission" in {
@@ -135,7 +135,7 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
       TestData.submissionInputs
     )
 
-    compensationAmendment.isRequired(finalSubmission) shouldBe false
+    compensationAmendment.isRequired(finalSubmission) `shouldBe` false
   }
 
   "LTA" should "return true if life time allowance is defined" in {
@@ -146,8 +146,8 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
       TestData.submissionInputs
     )
 
-    lta.isRequired(finalSubmission) shouldBe true
-    lta.precedence                  shouldBe 5
+    lta.isRequired(finalSubmission) `shouldBe` true
+    lta.precedence `shouldBe` 5
   }
 
   it should "return false if life time allowance is not defined" in {
@@ -158,7 +158,7 @@ class DmsQueueSpec extends AnyFlatSpec with Matchers {
       TestData.submissionInputs
     )
 
-    lta.isRequired(finalSubmission) shouldBe false
+    lta.isRequired(finalSubmission) `shouldBe` false
   }
 
 }
