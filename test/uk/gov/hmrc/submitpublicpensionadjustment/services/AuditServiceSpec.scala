@@ -16,9 +16,9 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
-import org.mockito.MockitoSugar
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import uk.gov.hmrc.auth.core.AffinityGroup.Individual
@@ -28,8 +28,8 @@ import uk.gov.hmrc.submitpublicpensionadjustment.TestData.{incomeSubJourney, sub
 import uk.gov.hmrc.submitpublicpensionadjustment.models.SubmissionAuditEvent
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.Income.BelowThreshold
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.TaxYear2016To2023.PostFlexiblyAccessedTaxYear
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, AnnualAllowanceSetup, CalculationInputs, LifetimeAllowanceSetup, MaybePIAIncrease, MaybePIAUnchangedOrDecreased, Period => InputsPeriod, Resubmission => InputsResubmission, Setup, TaxYear2011To2015}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, Period => ResponsePeriod, Resubmission => ResponseResubmission, TaxYearScheme, TotalAmounts}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowance, AnnualAllowanceSetup, CalculationInputs, LifetimeAllowanceSetup, MaybePIAIncrease, MaybePIAUnchangedOrDecreased, Period as InputsPeriod, Resubmission as InputsResubmission, Setup, TaxYear2011To2015}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, Period as ResponsePeriod, Resubmission as ResponseResubmission, TaxYearScheme, TotalAmounts}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 
 class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
@@ -198,7 +198,7 @@ class AuditServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
         val submissionAuditEvent =
           SubmissionAuditEvent(Some("uniqueId"), Some(true), "internalId", Individual, None, finalSubmission)
 
-        service.auditSubmitRequest(submissionAuditEvent)(hc) mustBe ()
+        service.auditSubmitRequest(submissionAuditEvent)(hc) `mustBe` ()
 
       }
     }

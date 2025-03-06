@@ -18,7 +18,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{Period => InputsPeriod}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.Period as InputsPeriod
 
 class ResponsePeriodSpec extends AnyFlatSpec with Matchers {
 

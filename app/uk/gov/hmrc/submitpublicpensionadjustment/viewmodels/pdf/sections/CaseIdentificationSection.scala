@@ -17,7 +17,7 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections
 
 import uk.gov.hmrc.submitpublicpensionadjustment.models.CaseIdentifiers
-import uk.gov.hmrc.submitpublicpensionadjustment.models.dms._
+import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.*
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.{Formatting, Section}
 
 case class CaseIdentificationSection(

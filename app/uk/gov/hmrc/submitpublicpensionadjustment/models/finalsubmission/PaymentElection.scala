@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.{Format, __}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.Period
 
 case class PaymentElection(
@@ -27,5 +28,9 @@ case class PaymentElection(
 
 object PaymentElection {
 
-  implicit lazy val formats: Format[PaymentElection] = Json.format
+  implicit lazy val formats: Format[PaymentElection] = (
+    (__ \ "period").format[Period] and
+      (__ \ "personalCharge").formatNullable[PersonalCharge] and
+      (__ \ "schemeCharge").formatNullable[SchemeCharge]
+  )(PaymentElection.apply, o => Tuple.fromProductTyped(o))
 }

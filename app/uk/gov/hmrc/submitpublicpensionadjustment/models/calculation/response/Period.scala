@@ -17,9 +17,9 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response
 
 import play.api.Logging
-import play.api.libs.json._
+import play.api.libs.json.*
 import uk.gov.hmrc.submitpublicpensionadjustment.exceptions.InvalidInputException
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{Period => InputsPeriod}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.Period as InputsPeriod
 
 import scala.util.{Failure, Success, Try}
 

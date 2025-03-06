@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.utils
 
-import com.github.tomakehurst.wiremock.client.WireMock._
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.client.{MappingBuilder, ResponseDefinitionBuilder, WireMock}
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.github.tomakehurst.wiremock.http.{HttpHeader, HttpHeaders}
@@ -24,7 +24,7 @@ import com.github.tomakehurst.wiremock.{WireMockServer, client}
 import uk.gov.hmrc.submitpublicpensionadjustment.utils.WireMockHelper.{MappingBuilderExt, ResponseDefinitionBuilderExt, wireMockPort}
 
 import java.net.ServerSocket
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 import scala.util.Using
 
 trait WireMockHelper {

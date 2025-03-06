@@ -16,21 +16,22 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.repositories
 
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters
 import org.scalatest.OptionValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.Configuration
 import play.api.libs.json.Json
 import uk.gov.hmrc.crypto.{Crypted, Decrypter, Encrypter, SymmetricCryptoFactory}
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 import uk.gov.hmrc.submitpublicpensionadjustment.config.AppConfig
 import uk.gov.hmrc.submitpublicpensionadjustment.models.Done
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs._
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, TotalAmounts, Period => responsePeriod, Resubmission => ResponseResubmission}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.*
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.{CalculationResponse, InDatesTaxYearSchemeCalculation, InDatesTaxYearsCalculation, OutOfDatesTaxYearSchemeCalculation, OutOfDatesTaxYearsCalculation, TotalAmounts, Period as responsePeriod, Resubmission as ResponseResubmission}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.submission.Submission
 import uk.gov.hmrc.submitpublicpensionadjustment.utils.WireMockHelper
 
@@ -156,13 +157,13 @@ class SubmissionRepositorySpec
   private val submission: Submission =
     Submission("id", "submissionUniqueId", calculationInputs, calculation)
 
-  protected override val repository = new SubmissionRepository(
+  protected override val repository: SubmissionRepository = new SubmissionRepository(
     mongoComponent = mongoComponent,
     appConfig = mockAppConfig,
     clock = stubClock
   )
 
-  when(mockAppConfig.ttlInDays) thenReturn 900
+  when(mockAppConfig.ttlInDays) thenReturn 900.toLong
 
   ".insert" - {
 

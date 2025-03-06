@@ -27,7 +27,7 @@ class AdditionalOrHigherReliefSectionSpec extends AnyFreeSpec with Matchers with
 
     val section = AdditionalOrHigherReliefSection.build(TestData.finalSubmission)
 
-    section mustBe Some(
+    section `mustBe` Some(
       AdditionalOrHigherReliefSection(
         amount = "£1000",
         schemePayingName = "SchemeA",

@@ -35,7 +35,7 @@ object OutOfDatesTaxYearsCalculation {
 
   implicit lazy val reads: Reads[OutOfDatesTaxYearsCalculation] = {
 
-    import play.api.libs.functional.syntax._
+    import play.api.libs.functional.syntax.*
 
     (
       (__ \ "period").read[Period] and
@@ -54,7 +54,7 @@ object OutOfDatesTaxYearsCalculation {
 
   implicit lazy val writes: Writes[OutOfDatesTaxYearsCalculation] = {
 
-    import play.api.libs.functional.syntax._
+    import play.api.libs.functional.syntax.*
 
     (
       (__ \ "period").write[Period] and

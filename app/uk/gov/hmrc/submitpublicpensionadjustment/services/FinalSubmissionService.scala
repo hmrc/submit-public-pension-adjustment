@@ -18,7 +18,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.services
 
 import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.submitpublicpensionadjustment.models._
+import uk.gov.hmrc.submitpublicpensionadjustment.models.*
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.CalcUserAnswersRepository
 
@@ -67,7 +67,7 @@ class FinalSubmissionService @Inject() (
             caseIdentifiers,
             finalSubmission,
             queueReference.submissionReference,
-            queueReference.dmsQueue.queueName()
+            queueReference.dmsQueue.queueName
           )
       } yield queueReference.submissionReference
     }
