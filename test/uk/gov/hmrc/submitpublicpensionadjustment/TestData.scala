@@ -94,7 +94,7 @@ object TestData {
     Some(25),
     Some(300),
     Some(125),
-    Some(50),
+    Some(50000),
     Some(100)
   )
 

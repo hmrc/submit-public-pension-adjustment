@@ -31,7 +31,7 @@ class IncomeSubJourneySectionSpec extends AnyFreeSpec with Matchers with Logging
         "2018/19",
         IncomeSubJourneySubSection(
           "£100",
-          "£50",
+          "£50,000",
           "£450",
           "£25"
         )
@@ -40,7 +40,7 @@ class IncomeSubJourneySectionSpec extends AnyFreeSpec with Matchers with Logging
         "2017/18",
         IncomeSubJourneySubSection(
           "£100",
-          "£50",
+          "£50,000",
           "£450",
           "£25"
         )
@@ -49,7 +49,7 @@ class IncomeSubJourneySectionSpec extends AnyFreeSpec with Matchers with Logging
         "2016/17",
         IncomeSubJourneySubSection(
           "£100",
-          "£50",
+          "£50,000",
           "£450",
           "£25"
         )
