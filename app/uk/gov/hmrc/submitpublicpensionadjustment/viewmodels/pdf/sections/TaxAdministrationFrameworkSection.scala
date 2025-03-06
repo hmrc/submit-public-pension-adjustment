@@ -103,7 +103,7 @@ object TaxAdministrationFrameworkSection extends Formatting {
         debitValue = formatPoundsAmount(inDateCalc.debit),
         isSchemePayingCharge = format(electionSchemeCharge.map(_.amount).getOrElse(0) > 0),
         schemePaymentElectionDate = getSchemePaymentElectionDate(electionSchemeCharge),
-        schemePayingChargeAmount = electionSchemeCharge.map(_.amount.toString).getOrElse(NotApplicable),
+        schemePayingChargeAmount = formatOptPoundsAmount(electionSchemeCharge.map(_.amount)),
         schemePayingPstr = electionSchemeCharge.map(_.schemeDetails.pstr.value).getOrElse(NotApplicable),
         schemePayingName = electionSchemeCharge.map(_.schemeDetails.schemeName).getOrElse(NotApplicable),
         schemeDetailsSubSections = schemeDetailsSubSections(finalSubmission, inDateCalc)
