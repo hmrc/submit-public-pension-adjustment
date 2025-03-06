@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.{Format, __}
 
 case class Declarations(
   compensation: Boolean,
@@ -30,5 +31,13 @@ case class Declarations(
 
 object Declarations {
 
-  implicit lazy val formats: Format[Declarations] = Json.format
+  implicit lazy val formats: Format[Declarations] = (
+    (__ \ "compensation").format[Boolean] and
+      (__ \ "tax").format[Boolean] and
+      (__ \ "contactDetails").format[Boolean] and
+      (__ \ "powerOfAttorney").formatNullable[Boolean] and
+      (__ \ "claimOnBehalfOfDeceased").formatNullable[Boolean] and
+      (__ \ "legalPersonalRepresentative").formatNullable[Boolean] and
+      (__ \ "schemeCreditConsent").formatNullable[Boolean]
+  )(Declarations.apply, o => Tuple.fromProductTyped(o))
 }
