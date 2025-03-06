@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.{Format, __}
 
 case class BankAccountDetails(
   accountName: String,
@@ -27,5 +28,10 @@ case class BankAccountDetails(
 
 object BankAccountDetails {
 
-  implicit lazy val formats: Format[BankAccountDetails] = Json.format
+  implicit lazy val formats: Format[BankAccountDetails] = (
+    (__ \ "accountName").format[String] and
+      (__ \ "sortCode").format[String] and
+      (__ \ "accountNumber").format[String] and
+      (__ \ "rollNumber").formatNullable[String]
+  )(BankAccountDetails.apply, o => Tuple.fromProductTyped(o))
 }

@@ -16,10 +16,14 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models
 
+import play.api.libs.functional.syntax.*
 import play.api.libs.json.*
 
 case class RetrieveSubmissionInfo(userId: String, submissionUniqueId: UniqueId)
 
 object RetrieveSubmissionInfo {
-  implicit val format: OFormat[RetrieveSubmissionInfo] = Json.format[RetrieveSubmissionInfo]
+  implicit lazy val format: Format[RetrieveSubmissionInfo] = (
+    (__ \ "userId").format[String] and
+      (__ \ "submissionUniqueId").format[UniqueId]
+  )(RetrieveSubmissionInfo.apply, o => Tuple.fromProductTyped(o))
 }

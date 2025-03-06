@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.{Format, __}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.CalculationInputs
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.CalculationResponse
 
@@ -28,5 +29,9 @@ case class FinalSubmission(
 
 object FinalSubmission {
 
-  implicit lazy val formats: Format[FinalSubmission] = Json.format
+  implicit lazy val formats: Format[FinalSubmission] = (
+    (__ \ "calculationInputs").format[CalculationInputs] and
+      (__ \ "calculation").formatNullable[CalculationResponse] and
+      (__ \ "submissionInputs").format[SubmissionInputs]
+  )(FinalSubmission.apply, o => Tuple.fromProductTyped(o))
 }

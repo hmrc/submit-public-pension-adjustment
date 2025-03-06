@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.{Format, __}
 
 case class AdministrativeDetails(
   claimantDetails: ClaimantDetails,
@@ -25,5 +26,8 @@ case class AdministrativeDetails(
 
 object AdministrativeDetails {
 
-  implicit lazy val formats: Format[AdministrativeDetails] = Json.format
+  implicit lazy val formats: Format[AdministrativeDetails] = (
+    (__ \ "claimantDetails").format[ClaimantDetails] and
+      (__ \ "onBehalfOfMember").formatNullable[OnBehalfOfMember]
+  )(AdministrativeDetails.apply, o => Tuple.fromProductTyped(o))
 }
