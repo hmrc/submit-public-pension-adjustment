@@ -107,17 +107,17 @@ PSTR of scheme originally paid charge 18/19 : TestTaxRef
 Revised pension input amount : £991
 Period : 2018/19
 Reduced net income amount : £100
-Threshold income amount : £50
+Threshold income amount : £50,000
 Adjusted income amount : £450
 Personal allowance amount : £25
 Period : 2017/18
 Reduced net income amount : £100
-Threshold income amount : £50
+Threshold income amount : £50,000
 Adjusted income amount : £450
 Personal allowance amount : £25
 Period : 2016/17
 Reduced net income amount : £100
-Threshold income amount : £50
+Threshold income amount : £50,000
 Adjusted income amount : £450
 Personal allowance amount : £25
 Value of previous charge for 16/17 : £300

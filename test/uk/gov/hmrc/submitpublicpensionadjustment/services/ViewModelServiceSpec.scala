@@ -175,7 +175,7 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
         "2018/19",
         IncomeSubJourneySubSection(
           "£100",
-          "£50",
+          "£50,000",
           "£450",
           "£25"
         )
@@ -184,7 +184,7 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
         "2017/18",
         IncomeSubJourneySubSection(
           "£100",
-          "£50",
+          "£50,000",
           "£450",
           "£25"
         )
@@ -193,7 +193,7 @@ class ViewModelServiceSpec extends AnyFreeSpec with Matchers with MockitoSugar {
         "2016/17",
         IncomeSubJourneySubSection(
           "£100",
-          "£50",
+          "£50,000",
           "£450",
           "£25"
         )
