@@ -16,18 +16,18 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
-import org.mockito.MockitoSugar
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
+import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
-import uk.gov.hmrc.submitpublicpensionadjustment.models._
+import uk.gov.hmrc.submitpublicpensionadjustment.models.*
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.{Compensation, MiniRegime}
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.CalcUserAnswersRepository
 
@@ -73,8 +73,8 @@ class FinalSubmissionServiceSpec
     "must send to DMS and return a submissionReference" in {
 
       when(mockSubmissionReferenceService.random())
-        .thenReturn("submissionReference1")
-        .andThenAnswer("submissionReference2")
+        .`thenReturn`("submissionReference1")
+      when(mockSubmissionReferenceService.random()).`thenAnswer`(_ => "submissionReference2")
 
       val queueReferences =
         Seq(
@@ -91,7 +91,7 @@ class FinalSubmissionServiceSpec
             eqTo("Compensation_Queue")
           )(any())
       )
-        .thenReturn(Future.successful(Done))
+        .`thenReturn`(Future.successful(Done))
 
       when(
         mockDmsSubmissionService
@@ -102,12 +102,12 @@ class FinalSubmissionServiceSpec
             eqTo("MiniRegime_Queue")
           )(any())
       )
-        .thenReturn(Future.successful(Done))
+        .`thenReturn`(Future.successful(Done))
 
       when(mockQueueLogicService.computeQueueReferences(any()))
-        .thenReturn(queueReferences)
+        .`thenReturn`(queueReferences)
 
-      when(mockQueueLogicService.determineMostSignificantQueueReference(any())).thenReturn(queueReferences(0))
+      when(mockQueueLogicService.determineMostSignificantQueueReference(any())).`thenReturn`(queueReferences(0))
 
       val finalSubmission = TestData.finalSubmission
 
@@ -117,7 +117,7 @@ class FinalSubmissionServiceSpec
         credentialRole = None
       )
 
-      when(mockCalcUserAnswersRepository.get(auditMetadata.userId)).thenReturn(
+      when(mockCalcUserAnswersRepository.get(auditMetadata.userId)).`thenReturn`(
         Future.successful(
           Some(
             CalcUserAnswers(
@@ -143,7 +143,10 @@ class FinalSubmissionServiceSpec
 
       val result = service.submit(finalSubmission, auditMetadata)(hc).futureValue
 
-      result mustEqual SubmissionReferences("submissionReference1", Seq("submissionReference1", "submissionReference2"))
+      result `mustEqual` SubmissionReferences(
+        "submissionReference1",
+        Seq("submissionReference1", "submissionReference2")
+      )
 
       verify(mockDmsSubmissionService, times(1))
         .send(

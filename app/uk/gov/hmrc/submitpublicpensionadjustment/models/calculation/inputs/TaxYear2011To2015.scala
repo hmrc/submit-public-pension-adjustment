@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs
 
-import play.api.libs.json._
+import play.api.libs.json.*
 
 import scala.math.Ordered.orderingToOrdered
 
@@ -28,7 +28,7 @@ case class TaxYear2011To2015(
 object TaxYear2011To2015 {
   implicit lazy val reads: Reads[TaxYear2011To2015] = {
 
-    import play.api.libs.functional.syntax._
+    import play.api.libs.functional.syntax.*
 
     (__ \ "period")
       .read[Period]
@@ -47,7 +47,7 @@ object TaxYear2011To2015 {
 
   implicit lazy val writes: Writes[TaxYear2011To2015] = {
 
-    import play.api.libs.functional.syntax._
+    import play.api.libs.functional.syntax.*
 
     (
       (__ \ "pensionInputAmount").write[Int] and

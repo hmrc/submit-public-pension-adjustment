@@ -23,7 +23,7 @@ case class Resubmission(isResubmission: Boolean, reason: Option[String])
 object Resubmission {
 
   implicit lazy val reads: Reads[Resubmission] = {
-    import play.api.libs.functional.syntax._
+    import play.api.libs.functional.syntax.*
 
     ((__ \ "isResubmission").read[Boolean] and
       (__ \ "reason").readNullable[String])(Resubmission(_, _))
@@ -31,7 +31,7 @@ object Resubmission {
   }
 
   implicit lazy val writes: Writes[Resubmission] = {
-    import play.api.libs.functional.syntax._
+    import play.api.libs.functional.syntax.*
 
     ((__ \ "isResubmission").write[Boolean] and
       (__ \ "reason").writeNullable[String])(a => (a.isResubmission, a.reason))

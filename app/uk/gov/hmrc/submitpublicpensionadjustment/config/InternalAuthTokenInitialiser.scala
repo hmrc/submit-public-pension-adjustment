@@ -18,6 +18,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.config
 
 import org.apache.pekko.actor.ActorSystem
 import play.api.libs.json.Json
+import play.api.libs.ws.writeableOf_JsValue
 import play.api.{Configuration, Logging}
 import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
 import uk.gov.hmrc.http.client.HttpClientV2
@@ -59,7 +60,7 @@ class InternalAuthTokenInitialiserImpl @Inject() (
   private val delay: FiniteDuration =
     configuration.get[FiniteDuration]("internal-auth-token-initialiser.delay")
 
-  override lazy val initialised: Future[Done] =
+  override val initialised: Future[Done] =
     setup()
 
   actorSystem.scheduler.scheduleOnce(delay) {

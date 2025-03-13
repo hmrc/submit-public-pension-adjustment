@@ -28,7 +28,7 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
 
     val sections = TaxAdministrationFrameworkSection.build(TestData.finalSubmission)
 
-    sections mustBe Seq(
+    sections `mustBe` Seq(
       TaxAdministrationFrameworkSection(
         relatingTo = Period._2017,
         previousChargeAmount = "£300",
@@ -83,7 +83,7 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
   "section must be constructed empty with an empty calculation" in {
     val sections = TaxAdministrationFrameworkSection.build(TestData.finalSubmission.copy(calculation = None))
 
-    sections mustBe Seq.empty
+    sections `mustBe` Seq.empty
   }
 
   "section must be constructed with an empty relevantTaxYear" in {
@@ -92,7 +92,7 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
       TestData.finalSubmission.copy(TestData.calculationInputs.copy(annualAllowance = None))
     )
 
-    sections mustBe Seq(
+    sections `mustBe` Seq(
       TaxAdministrationFrameworkSection(
         relatingTo = Period._2017,
         previousChargeAmount = "£0",
@@ -147,7 +147,7 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
       )
     )
 
-    sections mustBe Seq(
+    sections `mustBe` Seq(
       TaxAdministrationFrameworkSection(
         relatingTo = Period._2019,
         previousChargeAmount = "£1,700",

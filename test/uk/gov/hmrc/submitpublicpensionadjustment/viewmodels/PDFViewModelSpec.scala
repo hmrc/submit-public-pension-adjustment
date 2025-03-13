@@ -89,10 +89,10 @@ class PDFViewModelSpec extends AnyFreeSpec with Matchers with Logging {
   }
 
   private def checkContent(viewModel: PDFViewModel) = {
-    viewModel.caseNumber mustBe "submissionReference"
+    viewModel.caseNumber `mustBe` "submissionReference"
 
     val prettyPrintedOutput = viewModel.prettyPrint(messages)
     val expectedPrettyPrint = Files.readString(Paths.get("test/resources/final_submission_pretty_print.txt"))
-    prettyPrintedOutput mustBe expectedPrettyPrint
+    prettyPrintedOutput `mustBe` expectedPrettyPrint
   }
 }

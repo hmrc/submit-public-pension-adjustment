@@ -27,7 +27,7 @@ class PublicSectorSchemeDetailsSectionSpec extends AnyFreeSpec with Matchers wit
 
     val section = PublicSectorSchemeDetailsSection.build(TestData.finalSubmission)
 
-    section mustBe Seq(
+    section `mustBe` Seq(
       PublicSectorSchemeDetailsSection(
         schemeName = "TestScheme",
         pstr = "TestPSTR",

@@ -16,10 +16,10 @@
 
 package generators
 
-import org.scalacheck.Gen._
+import org.scalacheck.Gen.*
 import org.scalacheck.{Gen, Shrink}
 
-import java.time._
+import java.time.*
 
 trait Generators {
 
@@ -36,7 +36,7 @@ trait Generators {
   def localDateTimeGen: Gen[LocalDateTime] = {
     val rangeEnd = LocalDateTime.now(Clock.systemUTC()).toEpochSecond(ZoneOffset.UTC)
     Gen
-      .choose(0, rangeEnd)
+      .choose(0.toLong, rangeEnd)
       .map(second => LocalDateTime.ofEpochSecond(second, 0, ZoneOffset.UTC))
   }
 }

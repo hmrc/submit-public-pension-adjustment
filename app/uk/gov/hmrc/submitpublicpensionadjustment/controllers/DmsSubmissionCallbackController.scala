@@ -17,8 +17,8 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.controllers
 
 import play.api.Logging
-import play.api.mvc.ControllerComponents
-import uk.gov.hmrc.internalauth.client._
+import play.api.mvc.{Action, ControllerComponents}
+import uk.gov.hmrc.internalauth.client.*
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendBaseController
 import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.{NotificationRequest, SubmissionItemStatus}
 
@@ -41,7 +41,7 @@ class DmsSubmissionCallbackController @Inject() (
 
   private val authorised = auth.authorizedAction(predicate)
 
-  def callback = authorised(parse.json[NotificationRequest]) { implicit request =>
+  def callback(): Action[NotificationRequest] = authorised(parse.json[NotificationRequest]) { implicit request =>
     val notification = request.body
 
     if (notification.status == SubmissionItemStatus.Failed) {

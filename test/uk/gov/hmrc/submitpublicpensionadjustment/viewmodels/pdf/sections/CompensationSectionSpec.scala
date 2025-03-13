@@ -27,7 +27,7 @@ class CompensationSectionSpec extends AnyFreeSpec with Matchers with Logging {
   "section must be constructed based on final submission" in {
 
     val sections = CompensationSection.build(TestData.finalSubmission)
-    sections mustBe Seq(
+    sections `mustBe` Seq(
       CompensationSection(
         relatingTo = Period._2017,
         directAmount = "£100",
@@ -68,7 +68,7 @@ class CompensationSectionSpec extends AnyFreeSpec with Matchers with Logging {
 
     val sections = CompensationSection.build(TestData.finalSubmission.copy(calculation = None))
 
-    sections mustBe Seq.empty
+    sections `mustBe` Seq.empty
   }
 
   "schemePaidChargeSubSections must be empty when taxYears do not exist" in {
@@ -76,7 +76,7 @@ class CompensationSectionSpec extends AnyFreeSpec with Matchers with Logging {
     val sections = CompensationSection.build(
       TestData.finalSubmission.copy(TestData.finalSubmission.calculationInputs.copy(annualAllowance = None))
     )
-    sections mustBe Seq(
+    sections `mustBe` Seq(
       CompensationSection(
         relatingTo = Period._2017,
         directAmount = "£100",

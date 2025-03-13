@@ -16,12 +16,13 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
-import org.mockito.MockitoSugar
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
+import org.mockito.Mockito.{verify, when}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.i18n.MessagesApi
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
@@ -64,18 +65,18 @@ class CreateLocalPdfDmsSubmissionServiceSpec
       val pdfBytes = "PdfContent".getBytes("UTF-8")
       val filePath = Paths.get(s"test/output/${caseIdentifiers.caseNumber}.pdf")
 
-      when(mockFopService.render(any())).thenReturn(Future.successful(pdfBytes))
-      when(mockViewModelService.viewModel(any(), any())).thenReturn(TestData.viewModel)
-      when(mockFinalSubmissionPdf.apply(any())(any())).thenReturn(mock[play.twirl.api.XmlFormat.Appendable])
+      when(mockFopService.render(any())).`thenReturn`(Future.successful(pdfBytes))
+      when(mockViewModelService.viewModel(any(), any())).`thenReturn`(TestData.viewModel)
+      when(mockFinalSubmissionPdf.apply(any())(any())).`thenReturn`(mock[play.twirl.api.XmlFormat.Appendable])
 
       val result = service.send(caseIdentifiers, finalSubmission, submissionReference, dmsQueueName).futureValue
 
       verify(mockFopService).render(any())
       verify(mockViewModelService).viewModel(eqTo(caseIdentifiers), eqTo(finalSubmission))
 
-      Files.exists(filePath) mustBe true
-      Files.readAllBytes(filePath) mustEqual pdfBytes
-      result mustBe Done
+      Files.exists(filePath) `mustBe` true
+      Files.readAllBytes(filePath) `mustEqual` pdfBytes
+      result `mustBe` Done
     }
   }
 }

@@ -19,7 +19,7 @@ package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf
 import play.api.i18n.Messages
 import uk.gov.hmrc.submitpublicpensionadjustment.models.CaseIdentifiers
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
-import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections._
+import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.*
 
 case class PDFViewModel(
   caseNumber: String,

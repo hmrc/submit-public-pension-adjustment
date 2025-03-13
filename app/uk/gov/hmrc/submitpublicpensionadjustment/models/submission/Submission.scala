@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models.submission
 
-import play.api.libs.functional.syntax.{toFunctionalBuilderOps, unlift}
-import play.api.libs.json._
+import play.api.libs.functional.syntax.toFunctionalBuilderOps
+import play.api.libs.json.*
 import uk.gov.hmrc.crypto.Sensitive.SensitiveString
 import uk.gov.hmrc.crypto.json.JsonEncryption
 import uk.gov.hmrc.crypto.{Decrypter, Encrypter}
@@ -53,13 +53,13 @@ object Submission {
         (__ \ "calculationInputs").write[CalculationInputs] and
         (__ \ "calculation").writeNullable[CalculationResponse] and
         (__ \ "lastUpdated").write(MongoJavatimeFormats.instantFormat)
-    )(unlift(Submission.unapply))
+    )(o => Tuple.fromProductTyped(o))
 
   implicit val format: Format[Submission] = Format(reads, writes)
 
   def encryptedFormat(implicit crypto: Encrypter with Decrypter): Format[Submission] = {
 
-    import play.api.libs.functional.syntax._
+    import play.api.libs.functional.syntax.*
 
     implicit val sensitiveFormat: Format[SensitiveString] =
       JsonEncryption.sensitiveEncrypterDecrypter(SensitiveString.apply)

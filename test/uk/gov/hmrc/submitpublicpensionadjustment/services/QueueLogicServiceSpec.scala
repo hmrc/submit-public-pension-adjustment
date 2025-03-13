@@ -17,18 +17,19 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
 import org.mockito.ArgumentMatchers.any
-import org.mockito.{Mockito, MockitoSugar}
+import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.{Configuration, Logging}
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData.submissionInputs
 import uk.gov.hmrc.submitpublicpensionadjustment.models.QueueReference
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, LifeTimeAllowance, LifetimeAllowanceSetup, MaybePIAIncrease, MaybePIAUnchangedOrDecreased, Resubmission => InputsResubmission, Setup}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response._
-import uk.gov.hmrc.submitpublicpensionadjustment.models.dms._
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.{AnnualAllowanceSetup, CalculationInputs, LifeTimeAllowance, LifetimeAllowanceSetup, MaybePIAIncrease, MaybePIAUnchangedOrDecreased, Resubmission as InputsResubmission, Setup}
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.response.*
+import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.*
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 
 class QueueLogicServiceSpec
@@ -51,8 +52,8 @@ class QueueLogicServiceSpec
     )
     super.beforeEach()
 
-    Mockito.when(mockConfiguration.get(any())(any())).thenReturn(mockDmsConfiguration)
-    Mockito.when(mockDmsConfiguration.get(any())(any())).thenReturn("VGVzdF9RdWV1ZQ==")
+    when(mockConfiguration.get(any())(any())).`thenReturn`(mockDmsConfiguration)
+    when(mockDmsConfiguration.get(any())(any())).`thenReturn`("VGVzdF9RdWV1ZQ==")
   }
 
   "QueueLogicService" - {
@@ -67,14 +68,14 @@ class QueueLogicServiceSpec
 
       val queueReference = queueLogicService().determineMostSignificantQueueReference(queueReferences)
 
-      queueReference mustBe QueueReference(MiniRegime("MiniRegime_Queue"), "submissionReference2")
+      queueReference `mustBe` QueueReference(MiniRegime("MiniRegime_Queue"), "submissionReference2")
     }
 
     "must compute a list of queue references" in {
       val queueReferences: Seq[QueueReference] = queueLogicService().computeQueueReferences(TestData.finalSubmission)
 
-      queueReferences.size mustBe >=(1)
-      queueReferences.count(q => q.dmsQueue.queueName() == "Test_Queue") mustBe >=(1)
+      queueReferences.size `mustBe` >=(1)
+      queueReferences.count(q => q.dmsQueue.queueName == "Test_Queue") `mustBe` >=(1)
     }
   }
 
@@ -346,7 +347,7 @@ class QueueLogicServiceSpec
 
     val dmsQueues: Seq[DmsQueue] = queueReferences.map(qr => qr.dmsQueue)
 
-    dmsQueues mustBe expectedDmsQueues
+    dmsQueues `mustBe` expectedDmsQueues
   }
 
   private def calculationResponseWith(
