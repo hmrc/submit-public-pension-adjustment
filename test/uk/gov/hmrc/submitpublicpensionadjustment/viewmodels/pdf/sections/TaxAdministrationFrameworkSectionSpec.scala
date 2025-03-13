@@ -37,7 +37,7 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
         debitValue = "£25",
         isSchemePayingCharge = "Yes",
         schemePaymentElectionDate = "13/01/2017",
-        schemePayingChargeAmount = "10",
+        schemePayingChargeAmount = "£10",
         schemePayingPstr = "schemePstr",
         schemePayingName = "TestSceme",
         schemeDetailsSubSections = Seq(
@@ -47,13 +47,13 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
       ),
       TaxAdministrationFrameworkSection(
         relatingTo = Period._2018,
-        previousChargeAmount = "£1700",
+        previousChargeAmount = "£1,700",
         whoChargePaidBy = "Scheme",
-        creditValue = "£1145076",
+        creditValue = "£1,145,076",
         debitValue = "£636",
         isSchemePayingCharge = "Yes",
         schemePaymentElectionDate = "Not Applicable",
-        schemePayingChargeAmount = "10",
+        schemePayingChargeAmount = "£10",
         schemePayingPstr = "schemePstr",
         schemePayingName = "TestSceme",
         schemeDetailsSubSections = Seq(
@@ -63,7 +63,7 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
       ),
       TaxAdministrationFrameworkSection(
         relatingTo = Period._2019,
-        previousChargeAmount = "£1700",
+        previousChargeAmount = "£1,700",
         whoChargePaidBy = "Member",
         creditValue = "£200",
         debitValue = "£25",
@@ -101,7 +101,7 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
         debitValue = "£25",
         isSchemePayingCharge = "Yes",
         schemePaymentElectionDate = "13/01/2017",
-        schemePayingChargeAmount = "10",
+        schemePayingChargeAmount = "£10",
         schemePayingPstr = "schemePstr",
         schemePayingName = "TestSceme",
         schemeDetailsSubSections = Seq()
@@ -110,11 +110,11 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
         relatingTo = Period._2018,
         previousChargeAmount = "£0",
         whoChargePaidBy = "Scheme",
-        creditValue = "£1145076",
+        creditValue = "£1,145,076",
         debitValue = "£636",
         isSchemePayingCharge = "Yes",
         schemePaymentElectionDate = "Not Applicable",
-        schemePayingChargeAmount = "10",
+        schemePayingChargeAmount = "£10",
         schemePayingPstr = "schemePstr",
         schemePayingName = "TestSceme",
         schemeDetailsSubSections = Seq()
@@ -150,7 +150,7 @@ class TaxAdministrationFrameworkSectionSpec extends AnyFreeSpec with Matchers wi
     sections mustBe Seq(
       TaxAdministrationFrameworkSection(
         relatingTo = Period._2019,
-        previousChargeAmount = "£1700",
+        previousChargeAmount = "£1,700",
         whoChargePaidBy = "None",
         creditValue = "£200",
         debitValue = "£25",

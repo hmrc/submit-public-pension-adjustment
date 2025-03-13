@@ -29,7 +29,7 @@ class AdditionalOrHigherReliefSectionSpec extends AnyFreeSpec with Matchers with
 
     section mustBe Some(
       AdditionalOrHigherReliefSection(
-        amount = "£1000",
+        amount = "£1,000",
         schemePayingName = "SchemeA",
         schemePayingPstr = "schemePstr"
       )
