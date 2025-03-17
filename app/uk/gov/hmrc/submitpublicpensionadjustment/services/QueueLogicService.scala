@@ -17,8 +17,8 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
 import play.api.Configuration
-import uk.gov.hmrc.submitpublicpensionadjustment.models._
-import uk.gov.hmrc.submitpublicpensionadjustment.models.dms._
+import uk.gov.hmrc.submitpublicpensionadjustment.models.*
+import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.*
 import uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission.FinalSubmission
 import uk.gov.hmrc.submitpublicpensionadjustment.services.QueueLogicService.base64Decode
 

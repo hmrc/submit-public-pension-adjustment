@@ -16,11 +16,15 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.{Format, __}
 
 case class SchemeTaxRelief(amount: Int, individualSchemeIdentifier: IndividualSchemeIdentifier) {}
 
 object SchemeTaxRelief {
 
-  implicit lazy val formats: Format[SchemeTaxRelief] = Json.format
+  implicit lazy val formats: Format[SchemeTaxRelief] = (
+    (__ \ "amount").format[Int] and
+      (__ \ "individualSchemeIdentifier").format[IndividualSchemeIdentifier]
+  )(SchemeTaxRelief.apply, o => Tuple.fromProductTyped(o))
 }

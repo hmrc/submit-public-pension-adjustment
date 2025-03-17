@@ -18,17 +18,18 @@ package uk.gov.hmrc.submitpublicpensionadjustment.controllers
 
 import org.apache.pekko.stream.Materializer
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.{reset, when}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.auth.core.{AffinityGroup, AuthConnector}
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{CalcUserAnswers, Done}
@@ -76,14 +77,14 @@ class CalcUserAnswersControllerSpec
     ".getById" - {
 
       "must return OK and the data when user data can be found for this session id" in {
-        when(mockRepo.get(userId)) thenReturn Future.successful(Some(userData))
+        when(mockRepo.get(userId)) `thenReturn` Future.successful(Some(userData))
         when(
           mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
             any()
           )(any(), any())
         )
-          .thenReturn(
+          .`thenReturn`(
             Future.successful(
               new ~(new ~(Some(userId), Some(AffinityGroup.Individual)), Some("User"))
             )
@@ -96,19 +97,19 @@ class CalcUserAnswersControllerSpec
         val controller = app.injector.instanceOf[CalcUserAnswersController]
         val result     = controller.getById(userId) apply request
 
-        status(result) mustEqual OK
-        contentAsJson(result) mustEqual Json.toJson(userData)
+        status(result) `mustEqual` OK
+        contentAsJson(result) `mustEqual` Json.toJson(userData)
       }
 
       "must return NO_CONTENT when user data cannot be found for this session id" in {
-        when(mockRepo.get(userId)) thenReturn Future.successful(None)
+        when(mockRepo.get(userId)) `thenReturn` Future.successful(None)
         when(
           mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
             any()
           )(any(), any())
         )
-          .thenReturn(
+          .`thenReturn`(
             Future.successful(
               new ~(new ~(Some("nino"), Some(AffinityGroup.Individual)), Some("User"))
             )
@@ -121,21 +122,21 @@ class CalcUserAnswersControllerSpec
         val controller = app.injector.instanceOf[CalcUserAnswersController]
         val result     = controller.getById(userId).apply(request)
 
-        status(result) mustEqual NO_CONTENT
+        status(result) `mustEqual` NO_CONTENT
       }
     }
 
     ".getByUniqueId" - {
 
       "must return OK and the data when user data can be found for this session id" in {
-        when(mockRepo.getByUniqueId(uniqueId)) thenReturn Future.successful(Some(userData))
+        when(mockRepo.getByUniqueId(uniqueId)) `thenReturn` Future.successful(Some(userData))
         when(
           mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
             any()
           )(any(), any())
         )
-          .thenReturn(
+          .`thenReturn`(
             Future.successful(
               new ~(new ~(Some(userId), Some(AffinityGroup.Individual)), Some("User"))
             )
@@ -148,19 +149,19 @@ class CalcUserAnswersControllerSpec
         val controller = app.injector.instanceOf[CalcUserAnswersController]
         val result     = controller.getByUniqueId(uniqueId) apply request
 
-        status(result) mustEqual OK
-        contentAsJson(result) mustEqual Json.toJson(userData)
+        status(result) `mustEqual` OK
+        contentAsJson(result) `mustEqual` Json.toJson(userData)
       }
 
       "must return NO_CONTENT when user data cannot be found for this session id" in {
-        when(mockRepo.getByUniqueId(uniqueId)) thenReturn Future.successful(None)
+        when(mockRepo.getByUniqueId(uniqueId)) `thenReturn` Future.successful(None)
         when(
           mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
             any()
           )(any(), any())
         )
-          .thenReturn(
+          .`thenReturn`(
             Future.successful(
               new ~(new ~(Some("nino"), Some(AffinityGroup.Individual)), Some("User"))
             )
@@ -173,21 +174,21 @@ class CalcUserAnswersControllerSpec
         val controller = app.injector.instanceOf[CalcUserAnswersController]
         val result     = controller.getByUniqueId(uniqueId).apply(request)
 
-        status(result) mustEqual NO_CONTENT
+        status(result) `mustEqual` NO_CONTENT
       }
     }
 
     ".clear" - {
 
       "must return No Content when data is cleared" in {
-        when(mockRepo.clear(any[String])) thenReturn Future.successful(Done)
+        when(mockRepo.clear(any[String])) `thenReturn` Future.successful(Done)
         when(
           mockAuthConnector.authorise[Option[String] ~ Option[AffinityGroup] ~ Option[String]](
             any(),
             any()
           )(any(), any())
         )
-          .thenReturn(
+          .`thenReturn`(
             Future.successful(
               new ~(new ~(Some("nino"), Some(AffinityGroup.Individual)), Some("User"))
             )
@@ -200,7 +201,7 @@ class CalcUserAnswersControllerSpec
         val controller = app.injector.instanceOf[CalcUserAnswersController]
         val result     = controller.clear.apply(request)
 
-        status(result) mustEqual NO_CONTENT
+        status(result) `mustEqual` NO_CONTENT
       }
     }
 

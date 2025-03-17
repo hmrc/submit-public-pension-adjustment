@@ -26,7 +26,7 @@ class PSTRSpec extends AnyFreeSpec with Matchers {
       val validInputs = Seq("12345678AB", "87654321CD")
 
       validInputs.foreach { input =>
-        PSTR.fromString(input) should be(Some(PSTR(input)))
+        PSTR.fromString(input) `should` `be`(Some(PSTR(input)))
       }
     }
 
@@ -34,7 +34,7 @@ class PSTRSpec extends AnyFreeSpec with Matchers {
       val invalidInputs = Seq("1234ABCD", "ABCDEFGH", "1234567A", "", "123456789AB")
 
       invalidInputs.foreach { input =>
-        PSTR.fromString(input) should be(None)
+        PSTR.fromString(input) `should` `be`(None)
       }
     }
   }

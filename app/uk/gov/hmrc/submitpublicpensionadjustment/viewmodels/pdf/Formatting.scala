@@ -17,8 +17,8 @@
 package uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf
 
 import uk.gov.hmrc.submitpublicpensionadjustment.exceptions.InvalidInputException
+import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.*
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.NewEnhancementType.{Both, InternationalEnhancement, PensionCredit}
-import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs._
 
 import java.time.format.DateTimeFormatter
 import java.time.{LocalDate, ZoneId}

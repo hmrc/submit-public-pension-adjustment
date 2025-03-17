@@ -16,13 +16,13 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
-import org.mockito.MockitoSugar
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
+import org.mockito.Mockito.*
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{BeforeAndAfterEach, OptionValues}
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.Json
 import uk.gov.hmrc.submitpublicpensionadjustment.models.{Done, UserAnswers}
 import uk.gov.hmrc.submitpublicpensionadjustment.repositories.UserAnswersRepository
@@ -56,16 +56,16 @@ class UserAnswersServiceSpec
 
         val userAnswers = UserAnswers("id", Json.obj("foo" -> "bar"), Instant.ofEpochSecond(1))
 
-        when(mockUserAnswersRepository.get(any())).thenReturn(Future.successful(Some(userAnswers)))
+        when(mockUserAnswersRepository.get(any())).`thenReturn`(Future.successful(Some(userAnswers)))
 
-        service.retrieveUserAnswers("uniqueId").futureValue mustBe Some(userAnswers)
+        service.retrieveUserAnswers("uniqueId").futureValue `mustBe` Some(userAnswers)
         verify(mockUserAnswersRepository, times(1)).get(eqTo("uniqueId"))
       }
 
       "must return None when it does not exist in the repository" in {
-        when(mockUserAnswersRepository.get("unknownId")).thenReturn(Future.successful(None))
+        when(mockUserAnswersRepository.get("unknownId")).`thenReturn`(Future.successful(None))
 
-        service.retrieveUserAnswers("unknownId").futureValue mustBe None
+        service.retrieveUserAnswers("unknownId").futureValue `mustBe` None
         verify(mockUserAnswersRepository, times(1)).get(eqTo("unknownId"))
       }
     }
@@ -75,19 +75,19 @@ class UserAnswersServiceSpec
       "must return true when it exists in repository" - {
         val userAnswers = new UserAnswers("id", Json.obj("foo" -> "bar"), Instant.ofEpochSecond(1))
 
-        when(mockUserAnswersRepository.get(any())).thenReturn(Future.successful(Some(userAnswers)))
+        when(mockUserAnswersRepository.get(any())).`thenReturn`(Future.successful(Some(userAnswers)))
 
         val result = service.checkUserAnswersPresentWithId("ID")
 
-        result.futureValue mustBe true
+        result.futureValue `mustBe` true
       }
 
       "must return false it does not exists in repository" in {
-        when(mockUserAnswersRepository.get(any())).thenReturn(Future.successful(None))
+        when(mockUserAnswersRepository.get(any())).`thenReturn`(Future.successful(None))
 
         val result = service.checkUserAnswersPresentWithId("ID")
 
-        result.futureValue mustBe false
+        result.futureValue `mustBe` false
       }
     }
 
@@ -95,8 +95,8 @@ class UserAnswersServiceSpec
 
       "must clear a UserAnswer when it exists in the repository" in {
 
-        when(mockUserAnswersRepository.clear("id")).thenReturn(Future.successful(Done))
-        service.clearById("id").futureValue mustBe Done
+        when(mockUserAnswersRepository.clear("id")).`thenReturn`(Future.successful(Done))
+        service.clearById("id").futureValue `mustBe` Done
       }
 
     }

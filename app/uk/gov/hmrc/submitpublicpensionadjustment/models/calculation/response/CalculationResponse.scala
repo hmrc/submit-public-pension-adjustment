@@ -29,7 +29,7 @@ object CalculationResponse {
 
   implicit lazy val reads: Reads[CalculationResponse] = {
 
-    import play.api.libs.functional.syntax._
+    import play.api.libs.functional.syntax.*
 
     ((__ \ "resubmission").read[Resubmission] and
       (__ \ "totalAmounts").read[TotalAmounts] and
@@ -39,7 +39,7 @@ object CalculationResponse {
 
   implicit lazy val writes: Writes[CalculationResponse] = {
 
-    import play.api.libs.functional.syntax._
+    import play.api.libs.functional.syntax.*
 
     (
       (__ \ "resubmission").write[Resubmission] and

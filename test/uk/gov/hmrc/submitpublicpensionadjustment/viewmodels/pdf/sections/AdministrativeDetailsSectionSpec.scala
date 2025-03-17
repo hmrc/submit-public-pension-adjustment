@@ -30,7 +30,7 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
 
     val section = AdministrativeDetailsSection.build(TestData.finalSubmission)
 
-    section mustBe AdministrativeDetailsSection(
+    section `mustBe` AdministrativeDetailsSection(
       firstName = "FirstName",
       surname = "Surname",
       dob = "13/01/1920",
@@ -55,7 +55,7 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
 
     val section = AdministrativeDetailsSection.build(TestData.finalSubmissionWithResubmissionReason)
 
-    section mustBe AdministrativeDetailsSection(
+    section `mustBe` AdministrativeDetailsSection(
       firstName = "FirstName",
       surname = "Surname",
       dob = "13/01/1920",
@@ -90,7 +90,7 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
         )
       )
       val section                = AdministrativeDetailsSection.build(finalSubmissionWithDOB)
-      section.dob mustBe "01/01/1980"
+      section.dob `mustBe` "01/01/1980"
     }
 
     "should return 'NotEntered' if dateOfBirth is None" in {
@@ -106,7 +106,7 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
         )
       )
       val section                   = AdministrativeDetailsSection.build(finalSubmissionWithoutDOB)
-      section.dob mustBe "Not Entered"
+      section.dob `mustBe` "Not Entered"
     }
   }
 
@@ -137,16 +137,16 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
       )
 
       val section = AdministrativeDetailsSection.build(submissionWithIntlAddress)
-      section.organisation mustBe Some("org")
-      section.addressLine1 mustBe "Intl Address Line 1"
-      section.addressLine2 mustBe "Intl Address Line 2"
-      section.addressLine3 mustBe "Intl Address Line 3"
-      section.townOrCity mustBe "Intl City"
-      section.county mustBe None
-      section.stateOrRegion mustBe Some("Intl Region")
-      section.postCode mustBe None
-      section.postalCode mustBe Some("Postalcode")
-      section.country mustBe "FR"
+      section.organisation `mustBe` Some("org")
+      section.addressLine1 `mustBe` "Intl Address Line 1"
+      section.addressLine2 `mustBe` "Intl Address Line 2"
+      section.addressLine3 `mustBe` "Intl Address Line 3"
+      section.townOrCity `mustBe` "Intl City"
+      section.county `mustBe` None
+      section.stateOrRegion `mustBe` Some("Intl Region")
+      section.postCode `mustBe` None
+      section.postalCode `mustBe` Some("Postalcode")
+      section.country `mustBe` "FR"
 
     }
 
@@ -166,16 +166,16 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
       )
 
       val section = AdministrativeDetailsSection.build(submissionWithoutIntlAddress)
-      section.organisation mustBe Some("Not Entered")
-      section.addressLine1 mustBe "Not Entered"
-      section.addressLine2 mustBe "Not Entered"
-      section.addressLine3 mustBe "Not Entered"
-      section.townOrCity mustBe "Not Entered"
-      section.county mustBe Some("Not Entered")
-      section.stateOrRegion mustBe Some("Not Entered")
-      section.postCode mustBe Some("Not Entered")
-      section.postalCode mustBe Some("Not Entered")
-      section.country mustBe "United Kingdom"
+      section.organisation `mustBe` Some("Not Entered")
+      section.addressLine1 `mustBe` "Not Entered"
+      section.addressLine2 `mustBe` "Not Entered"
+      section.addressLine3 `mustBe` "Not Entered"
+      section.townOrCity `mustBe` "Not Entered"
+      section.county `mustBe` Some("Not Entered")
+      section.stateOrRegion `mustBe` Some("Not Entered")
+      section.postCode `mustBe` Some("Not Entered")
+      section.postalCode `mustBe` Some("Not Entered")
+      section.country `mustBe` "United Kingdom"
     }
 
     "should return 'NotEntered' when addressLine2 or 3 is not present and is Uk Address" in {
@@ -204,8 +204,8 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
       )
 
       val section = AdministrativeDetailsSection.build(submissionWithoutIntlAddress)
-      section.addressLine2 mustBe "Not Entered"
-      section.addressLine3 mustBe "Not Entered"
+      section.addressLine2 `mustBe` "Not Entered"
+      section.addressLine3 `mustBe` "Not Entered"
     }
 
     "should return 'NotEntered' when addressLine2 is not present and is International Address" in {
@@ -235,7 +235,7 @@ class AdministrativeDetailsSectionSpec extends AnyFreeSpec with Matchers with Lo
       )
 
       val section = AdministrativeDetailsSection.build(submissionWithoutIntlAddress)
-      section.addressLine2 mustBe "Not Entered"
+      section.addressLine2 `mustBe` "Not Entered"
     }
   }
 }

@@ -16,8 +16,8 @@
 
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
-import uk.gov.hmrc.submitpublicpensionadjustment.models._
-import uk.gov.hmrc.submitpublicpensionadjustment.models.dms._
+import uk.gov.hmrc.submitpublicpensionadjustment.models.*
+import uk.gov.hmrc.submitpublicpensionadjustment.models.dms.*
 import uk.gov.hmrc.submitpublicpensionadjustment.viewmodels.pdf.sections.CaseIdentificationSection
 
 class CaseIdentificationSectionSpec extends AnyFreeSpec with Matchers {
@@ -37,7 +37,7 @@ class CaseIdentificationSectionSpec extends AnyFreeSpec with Matchers {
 
       val section = CaseIdentificationSection.build(caseIdentifiers)
 
-      section mustBe CaseIdentificationSection(
+      section `mustBe` CaseIdentificationSection(
         compensation = "compRef",
         compensationAmendment = "compAmendRef",
         miniRegime = "miniRegimeRef",
@@ -55,7 +55,7 @@ class CaseIdentificationSectionSpec extends AnyFreeSpec with Matchers {
 
       val section = CaseIdentificationSection.build(caseIdentifiers)
 
-      section mustBe CaseIdentificationSection(
+      section `mustBe` CaseIdentificationSection(
         compensation = "Not Applicable",
         compensationAmendment = "Not Applicable",
         miniRegime = "Not Applicable",

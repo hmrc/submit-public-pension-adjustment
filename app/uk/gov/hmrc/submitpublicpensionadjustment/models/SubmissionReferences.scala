@@ -16,11 +16,15 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.{OFormat, __}
 
 final case class SubmissionReferences(userSubmissionReference: String, allSubmissionReferences: Seq[String])
 
 object SubmissionReferences {
 
-  implicit lazy val format: OFormat[SubmissionReferences] = Json.format
+  implicit lazy val format: OFormat[SubmissionReferences] = (
+    (__ \ "userSubmissionReference").format[String] and
+      (__ \ "allSubmissionReferences").format[Seq[String]]
+  )(SubmissionReferences.apply, o => Tuple.fromProductTyped(o))
 }

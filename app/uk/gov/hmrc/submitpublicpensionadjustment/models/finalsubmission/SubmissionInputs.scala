@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission
 
-import play.api.libs.json._
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.{Format, __}
 
 case class SubmissionInputs(
   administrativeDetails: AdministrativeDetails,
@@ -29,5 +30,12 @@ case class SubmissionInputs(
 
 object SubmissionInputs {
 
-  implicit lazy val formats: Format[SubmissionInputs] = Json.format
+  implicit lazy val formats: Format[SubmissionInputs] = (
+    (__ \ "administrativeDetails").format[AdministrativeDetails] and
+      (__ \ "paymentElections").format[List[PaymentElection]] and
+      (__ \ "calculationInputSchemeIdentifiers").format[List[IndividualSchemeIdentifier]] and
+      (__ \ "schemeTaxRelief").formatNullable[SchemeTaxRelief] and
+      (__ \ "bankAccountDetails").formatNullable[BankAccountDetails] and
+      (__ \ "declarations").format[Declarations]
+  )(SubmissionInputs.apply, o => Tuple.fromProductTyped(o))
 }

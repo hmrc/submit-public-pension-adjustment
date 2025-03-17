@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models
 
-import play.api.libs.json._
-import uk.gov.hmrc.crypto.Sensitive._
+import play.api.libs.json.*
+import uk.gov.hmrc.crypto.Sensitive.*
 import uk.gov.hmrc.crypto.json.JsonEncryption
 import uk.gov.hmrc.crypto.{Decrypter, Encrypter}
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
@@ -37,7 +37,7 @@ object CalcUserAnswers {
 
   val reads: Reads[CalcUserAnswers] = {
 
-    import play.api.libs.functional.syntax._
+    import play.api.libs.functional.syntax.*
 
     (
       (__ \ "_id").read[String] and
@@ -51,7 +51,7 @@ object CalcUserAnswers {
 
   val writes: OWrites[CalcUserAnswers] = {
 
-    import play.api.libs.functional.syntax._
+    import play.api.libs.functional.syntax.*
 
     (
       (__ \ "_id").write[String] and
@@ -60,14 +60,14 @@ object CalcUserAnswers {
         (__ \ "lastUpdated").write(MongoJavatimeFormats.instantFormat) and
         (__ \ "authenticated").write[Boolean] and
         (__ \ "submissionStarted").write[Boolean]
-    )(unlift(CalcUserAnswers.unapply))
+    )(o => Tuple.fromProductTyped(o))
   }
 
   implicit val format: OFormat[CalcUserAnswers] = OFormat(reads, writes)
 
   def encryptedFormat(implicit crypto: Encrypter with Decrypter): OFormat[CalcUserAnswers] = {
 
-    import play.api.libs.functional.syntax._
+    import play.api.libs.functional.syntax.*
 
     implicit val sensitiveFormat: Format[SensitiveString] =
       JsonEncryption.sensitiveEncrypterDecrypter(SensitiveString.apply)

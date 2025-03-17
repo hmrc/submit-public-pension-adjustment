@@ -16,7 +16,8 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.models.finalsubmission
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.{Format, __}
 
 case class IndividualSchemeIdentifier(
   relatedToScheme: SchemeDetails,
@@ -26,5 +27,9 @@ case class IndividualSchemeIdentifier(
 
 object IndividualSchemeIdentifier {
 
-  implicit lazy val formats: Format[IndividualSchemeIdentifier] = Json.format
+  implicit lazy val formats: Format[IndividualSchemeIdentifier] = (
+    (__ \ "relatedToScheme").format[SchemeDetails] and
+      (__ \ "legacyReference").formatNullable[String] and
+      (__ \ "reformReference").formatNullable[String]
+  )(IndividualSchemeIdentifier.apply, o => Tuple.fromProductTyped(o))
 }

@@ -18,8 +18,8 @@ package uk.gov.hmrc.submitpublicpensionadjustment.models.response
 
 import org.apache.pekko.util.Helpers.Requiring
 import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
-import org.scalatest.matchers.should.Matchers
+import org.scalatest.matchers.must.Matchers.mustBe
+import org.scalatest.matchers.should.Matchers.shouldEqual
 import play.api.libs.json.JsString
 import play.api.mvc.PathBindable
 import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.Period
@@ -27,14 +27,14 @@ import uk.gov.hmrc.submitpublicpensionadjustment.models.calculation.inputs.Perio
 
 import scala.util.Try
 
-class PeriodSpec extends AnyFlatSpec with Matchers {
+class PeriodSpec extends AnyFlatSpec {
 
   "Period Model" should "serialise JsString to period" in {
 
     val json   = JsString("2017")
     val result = Try(json.as[Period])
 
-    result.get shouldEqual Period.Year(2017)
+    result.get `shouldEqual` Period.Year(2017)
   }
 
   "Period Model" should "return correct period from string" in {
@@ -43,9 +43,9 @@ class PeriodSpec extends AnyFlatSpec with Matchers {
     val year2017String = "2017"
     val year2016String = "2016"
 
-    Period.fromString(invalidString)  shouldEqual None
-    Period.fromString(year2017String) shouldEqual Some(Year(2017))
-    Period.fromString(year2016String) shouldEqual Some(Year(2016))
+    Period.fromString(invalidString) `shouldEqual` None
+    Period.fromString(year2017String) `shouldEqual` Some(Year(2017))
+    Period.fromString(year2016String) `shouldEqual` Some(Year(2016))
   }
 
   "Period Model" should "should return PathBindable period from string when string is a valid tax year" in {
@@ -54,7 +54,7 @@ class PeriodSpec extends AnyFlatSpec with Matchers {
     val period       = Period._2017
 
     val bind: Either[String, Period] = pathBindable.bind("", "2017")
-    bind.value mustBe Right(period)
+    bind.value `mustBe` Right(period)
   }
 
   "Period Model" should "return fold left and error when string is not a valid tax year" in {
@@ -62,7 +62,7 @@ class PeriodSpec extends AnyFlatSpec with Matchers {
     val pathBindable = implicitly[PathBindable[Period]]
 
     val bind: Either[String, Period] = pathBindable.bind("", "aaaa")
-    bind.value mustBe Left("Invalid tax year")
+    bind.value `mustBe` Left("Invalid tax year")
   }
 
   "Period Model" should "unbind year from period and return as a string" in {
@@ -70,6 +70,6 @@ class PeriodSpec extends AnyFlatSpec with Matchers {
     val pathBindable = implicitly[PathBindable[Period]]
 
     val bindValue = pathBindable.unbind("", Period._2017)
-    bindValue mustBe "2017"
+    bindValue `mustBe` "2017"
   }
 }

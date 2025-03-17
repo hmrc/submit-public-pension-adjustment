@@ -16,11 +16,12 @@
 
 package uk.gov.hmrc.submitpublicpensionadjustment.services
 
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
-import org.mockito.MockitoSugar
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
+import org.mockito.Mockito.{verify, when}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.i18n.MessagesApi
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.submitpublicpensionadjustment.TestData
@@ -41,7 +42,7 @@ class DefaultDmsSubmissionServiceSpec extends AnyFreeSpec with Matchers with Sca
   private val mockMessagesApi            = mock[MessagesApi]
   private val mockXmlFormatAppendable    = mock[play.twirl.api.XmlFormat.Appendable]
 
-  when(mockFinalSubmissionPdf.apply(any())(any())).thenReturn(mockXmlFormatAppendable)
+  when(mockFinalSubmissionPdf.apply(any())(any())).`thenReturn`(mockXmlFormatAppendable)
 
   private lazy val service = new DefaultDmsSubmissionService(
     mockDmsSubmissionConnector,
@@ -70,9 +71,9 @@ class DefaultDmsSubmissionServiceSpec extends AnyFreeSpec with Matchers with Sca
       )
 
       when(mockDmsSubmissionConnector.submit(any(), any(), any(), any(), any())(any()))
-        .thenReturn(Future.successful(Done))
-      when(mockFopService.render(any())).thenReturn(Future.successful(Array.emptyByteArray))
-      when(mockViewModelService.viewModel(any(), any())).thenReturn(TestData.viewModel)
+        .`thenReturn`(Future.successful(Done))
+      when(mockFopService.render(any())).`thenReturn`(Future.successful(Array.emptyByteArray))
+      when(mockViewModelService.viewModel(any(), any())).`thenReturn`(TestData.viewModel)
 
       service.send(caseIdentifiers, modifiedFinalSubmission, "submissionReference", "dmsQueueName").futureValue
 
@@ -93,9 +94,9 @@ class DefaultDmsSubmissionServiceSpec extends AnyFreeSpec with Matchers with Sca
       )
 
       when(mockDmsSubmissionConnector.submit(any(), any(), any(), any(), any())(any()))
-        .thenReturn(Future.successful(Done))
-      when(mockFopService.render(any())).thenReturn(Future.successful(Array.emptyByteArray))
-      when(mockViewModelService.viewModel(any(), any())).thenReturn(TestData.viewModel)
+        .`thenReturn`(Future.successful(Done))
+      when(mockFopService.render(any())).`thenReturn`(Future.successful(Array.emptyByteArray))
+      when(mockViewModelService.viewModel(any(), any())).`thenReturn`(TestData.viewModel)
 
       service.send(caseIdentifiers, modifiedFinalSubmission, "submissionReference", "dmsQueueName").futureValue
 
@@ -115,9 +116,9 @@ class DefaultDmsSubmissionServiceSpec extends AnyFreeSpec with Matchers with Sca
       )
 
       when(mockDmsSubmissionConnector.submit(any(), any(), any(), any(), any())(any()))
-        .thenReturn(Future.successful(Done))
-      when(mockFopService.render(any())).thenReturn(Future.successful(Array.emptyByteArray))
-      when(mockViewModelService.viewModel(any(), any())).thenReturn(TestData.viewModel)
+        .`thenReturn`(Future.successful(Done))
+      when(mockFopService.render(any())).`thenReturn`(Future.successful(Array.emptyByteArray))
+      when(mockViewModelService.viewModel(any(), any())).`thenReturn`(TestData.viewModel)
 
       service.send(caseIdentifiers, modifiedFinalSubmission, "submissionReference", "dmsQueueName").futureValue
 

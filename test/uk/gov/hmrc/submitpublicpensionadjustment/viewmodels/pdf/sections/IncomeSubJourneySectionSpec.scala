@@ -26,7 +26,7 @@ class IncomeSubJourneySectionSpec extends AnyFreeSpec with Matchers with Logging
   "section must be constructed based on final submission" in {
 
     val sections = IncomeSubJourneySection.build(TestData.finalSubmission)
-    sections mustBe Seq(
+    sections `mustBe` Seq(
       IncomeSubJourneySection(
         "2018/19",
         IncomeSubJourneySubSection(
@@ -62,6 +62,6 @@ class IncomeSubJourneySectionSpec extends AnyFreeSpec with Matchers with Logging
     val sections = IncomeSubJourneySection.build(
       TestData.finalSubmission.copy(TestData.finalSubmission.calculationInputs.copy(annualAllowance = None))
     )
-    sections mustBe Seq.empty
+    sections `mustBe` Seq.empty
   }
 }
