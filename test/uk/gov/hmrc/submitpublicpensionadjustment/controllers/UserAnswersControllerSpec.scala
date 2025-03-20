@@ -125,40 +125,6 @@ class UserAnswersControllerSpec
       }
     }
 
-    // TO DO Revisit this unit test
-//      ".set" - {
-//
-//        "must return NoContent when the data is successfully saved" in {
-//          when(mockRepo.set(any[UserAnswers])) `thenReturn` Future.successful(Done)
-//          when(
-//            mockAuthConnector.authorise[Option[String] ~ Option[String] ~ Option[AffinityGroup] ~ Option[String]](
-//              any(),
-//              any()
-//            )(any(), any())
-//          )
-//            .`thenReturn`(
-//              Future.successful(
-//                new ~(new ~(new ~(Some("nino"), Some(userId)), Some(AffinityGroup.Individual)), Some("User"))
-//              )
-//            )
-//
-//          val request =
-//            FakeRequest(POST, routes.UserAnswersController.set.url)
-//              .withHeaders(
-//                HeaderNames.xSessionId -> "foo",
-//                "Content-Type"         -> "application/json",
-//                "Authorization"        -> "Bearer token"
-//              )
-//              .withJsonBody(Json.toJson(userData))
-//
-//          val controller = app.injector.instanceOf[UserAnswersController]
-//          val result     = controller.set.apply(request)
-//
-//          status(result) `mustEqual` NO_CONTENT
-//          verify(mockRepo, times(1)).set(eqTo(userData))
-//
-//        }
-
     ".keepAlive" - {
 
       "must return No Content when data is kept alive" in {
