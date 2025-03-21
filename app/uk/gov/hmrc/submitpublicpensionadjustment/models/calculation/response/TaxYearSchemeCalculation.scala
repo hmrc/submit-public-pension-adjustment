@@ -37,7 +37,7 @@ object OutOfDatesTaxYearSchemeCalculation {
       (__ \ "name").read[String] and
         (__ \ "pensionSchemeTaxReference").read[String] and
         (__ \ "compensation").read[Int]
-      )(OutOfDatesTaxYearSchemeCalculation.apply _)
+    )(OutOfDatesTaxYearSchemeCalculation.apply _)
 
   }
 
@@ -49,7 +49,7 @@ object OutOfDatesTaxYearSchemeCalculation {
       (__ \ "name").write[String] and
         (__ \ "pensionSchemeTaxReference").write[String] and
         (__ \ "compensation").write[Int]
-      )(a =>
+    )(a =>
       (
         a.name,
         a.pensionSchemeTaxReference,
@@ -71,7 +71,7 @@ object InDatesTaxYearSchemeCalculation {
       (__ \ "name").read[String] and
         (__ \ "pensionSchemeTaxReference").read[String] and
         (__ \ "chargePaidByScheme").read[Int]
-      )(InDatesTaxYearSchemeCalculation.apply _)
+    )(InDatesTaxYearSchemeCalculation.apply _)
 
   }
 
@@ -83,7 +83,7 @@ object InDatesTaxYearSchemeCalculation {
       (__ \ "name").write[String] and
         (__ \ "pensionSchemeTaxReference").write[String] and
         (__ \ "chargePaidByScheme").write[Int]
-      )(a =>
+    )(a =>
       (
         a.name,
         a.pensionSchemeTaxReference,
