@@ -1,9 +1,7 @@
 import uk.gov.hmrc.DefaultBuildSettings.itSettings
 
-val scala3_3_4 = "3.3.4"
-
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := scala3_3_4
+ThisBuild / scalaVersion := "3.3.4"
 
 lazy val it = project
   .enablePlugins(PlayScala)
@@ -15,8 +13,6 @@ lazy val microservice = Project("submit-public-pension-adjustment", file("."))
   .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin, ScalafmtPlugin)
   .disablePlugins(JUnitXmlReportPlugin)
   .settings(
-    majorVersion := 0,
-    scalaVersion := "3.3.4",
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
     dependencyOverrides += "commons-codec" % "commons-codec" % "1.12",
     // https://www.scala-lang.org/2021/01/12/configuring-and-suppressing-warnings.html
