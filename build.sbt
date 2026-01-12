@@ -26,7 +26,6 @@ lazy val microservice = Project("submit-public-pension-adjustment", file("."))
     PlayKeys.playDefaultPort := 12803
   )
   .settings(inConfig(Test)(testSettings): _*)
-  .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings: _*)
   .settings(scoverageSettings)
 
