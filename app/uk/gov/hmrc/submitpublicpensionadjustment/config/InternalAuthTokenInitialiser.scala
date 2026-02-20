@@ -116,8 +116,8 @@ class InternalAuthTokenInitialiserImpl @Inject() (
       .post(url"${internalAuthService.baseUrl}/test-only/token")(HeaderCarrier())
       .withBody(
         Json.obj(
-          "token"       -> UUID.randomUUID(),
-          "principal"   -> "dms-submission",
+          "token"       -> authToken,
+          "principal"   -> appName,
           "permissions" -> Seq(
             Json.obj(
               "resourceType"     -> "submit-public-pension-adjustment",
