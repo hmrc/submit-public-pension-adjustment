@@ -77,8 +77,10 @@ class InternalAuthTokenInitialiserImpl @Inject() (
         logger.info("Auth token is already valid")
         Future.successful(Done)
       } else {
-        createClientAuthToken()
-        addDmsSubmissionGrants()
+        for {
+          _ <- createClientAuthToken()
+          _ <- addDmsSubmissionGrants()
+        } yield Done
       }
     }
 
@@ -95,6 +97,11 @@ class InternalAuthTokenInitialiserImpl @Inject() (
               "resourceType"     -> "dms-submission",
               "resourceLocation" -> "submit",
               "actions"          -> List("WRITE")
+            ),
+            Json.obj(
+              "resourceType"     -> "object-store",
+              "resourceLocation" -> "dms-submission",
+              "actions"          -> List("READ", "WRITE", "DELETE")
             )
           )
         )
@@ -123,6 +130,11 @@ class InternalAuthTokenInitialiserImpl @Inject() (
               "resourceType"     -> "submit-public-pension-adjustment",
               "resourceLocation" -> "dms/callback",
               "actions"          -> List("WRITE")
+            ),
+            Json.obj(
+              "resourceType"     -> "object-store",
+              "resourceLocation" -> "dms-submission",
+              "actions"          -> List("READ", "WRITE", "DELETE")
             )
           )
         )

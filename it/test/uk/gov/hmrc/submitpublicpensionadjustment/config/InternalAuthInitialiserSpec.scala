@@ -69,6 +69,11 @@ class InternalAuthInitialiserSpec
             "resourceType"     -> "dms-submission",
             "resourceLocation" -> "submit",
             "actions"          -> List("WRITE")
+          ),
+          Json.obj(
+            "resourceType"     -> "object-store",
+            "resourceLocation" -> "dms-submission",
+            "actions"          -> List("READ", "WRITE", "DELETE")
           )
         )
       )
@@ -174,7 +179,7 @@ class InternalAuthInitialiserSpec
         app.injector.instanceOf[InternalAuthTokenInitialiser].initialised.futureValue
       }
 
-      exception.getMessage mustBe "The future returned an exception of type: java.lang.RuntimeException, with message: Unable to add dms-submission grants."
+      exception.getMessage mustBe "The future returned an exception of type: java.lang.RuntimeException, with message: Unable to initialise internal-auth token."
     }
 
     "must fail to add dms-submission grants if the addition fails" in {
@@ -190,7 +195,7 @@ class InternalAuthInitialiserSpec
       wireMockServer.stubFor(
         post(urlMatching("/test-only/token"))
           .inScenario("Add DMS Submission Grants")
-          .whenScenarioStateIs("STARTED")
+          .whenScenarioStateIs(com.github.tomakehurst.wiremock.stubbing.Scenario.STARTED)
           .willReturn(aResponse().withStatus(CREATED))
           .willSetStateTo("Grants Stage")
       )
