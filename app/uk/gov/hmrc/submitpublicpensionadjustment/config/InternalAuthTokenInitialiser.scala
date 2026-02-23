@@ -72,10 +72,17 @@ class InternalAuthTokenInitialiserImpl @Inject() (
   } yield Done
 
   private def ensureAuthToken(): Future[Done] =
-    for {
-      _ <- createClientAuthToken()
-      _ <- addDmsSubmissionGrants()
-    } yield Done
+    authTokenIsValid.flatMap { isValid =>
+      if (isValid) {
+        logger.info("Auth token is already valid")
+        Future.successful(Done)
+      } else {
+        for {
+          _ <- createClientAuthToken()
+          _ <- addDmsSubmissionGrants()
+        } yield Done
+      }
+    }
 
   private def createClientAuthToken(): Future[Done] = {
     logger.info("Initialising auth token")
@@ -90,6 +97,11 @@ class InternalAuthTokenInitialiserImpl @Inject() (
               "resourceType"     -> "dms-submission",
               "resourceLocation" -> "submit",
               "actions"          -> List("WRITE")
+            ),
+            Json.obj(
+              "resourceType"     -> "object-store",
+              "resourceLocation" -> "dms-submission",
+              "actions"          -> List("READ", "WRITE", "DELETE")
             )
           )
         )
